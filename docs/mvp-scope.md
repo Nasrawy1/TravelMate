@@ -1,6 +1,7 @@
 # TravelMate — MVP Scope
 
-**Version:** 1.1 
+**Version:** 1.2 (Scope clarified for implementation)  
+**Status:** Proposed for team approval  
 **Project:** TravelMate Graduation Project  
 **Related documents:** `architecture.md`, `api-contracts.md`, `database-schema.md`
 
@@ -16,7 +17,7 @@ The MVP emphasizes a reliable end-to-end experience over breadth. The applicatio
 
 ## 2. Fixed MVP Boundaries
 
-| Area | Proposed v1.1 boundary |
+| Area | Proposed v1.2 boundary |
 |---|---|
 | Target user | One individual planning a trip for themselves or a small adult group |
 | Locations | One departure city and one destination city; supported locations only |
@@ -33,7 +34,7 @@ The MVP emphasizes a reliable end-to-end experience over breadth. The applicatio
 
 **Dates convention:** A trip of 3 nights runs from its start date through the return date 3 days later. The itinerary may describe arrival and departure days; it must not present the return date as an additional hotel night.
 
-**Location constraint:** A city/route may be unsupported by the chosen travel provider. The application must explain this without claiming that missing travel prices are live.
+**Supported locations policy:** The v1 list of selectable departure/destination cities or routes must be based on the selected provider's verified geographic coverage, established during feasibility testing. The team documents which locations/search combinations it has tested. React should offer only supported choices (or clearly validate unsupported ones); FastAPI is the final authority on validation. Do not claim worldwide coverage. A search without live offers may still return a transparently partial AI itinerary, but cannot count as a successful live-price acceptance case.
 
 ## 3. Feature Scope and Priorities
 
@@ -54,6 +55,8 @@ The MVP emphasizes a reliable end-to-end experience over breadth. The applicatio
 **Definition of “live integration”:** A genuine request from the FastAPI backend to an authorized third-party travel-data service that returns data for the user's supported route/dates/occupancy. A static fixture, AI-invented price, hard-coded response, or provider's fixed mock/sandbox example **does not satisfy F-08A**. If a provider offers only test-mode access, the team must verify whether the returned data counts as real for project assessment before claiming acceptance.
 
 **Decision B is a minimum, not a restriction:** Integrate both flight and hotel providers if feasible, but do not let the second integration delay delivery of the working core.
+
+**Dynamic integration requirement:** The mandatory provider adapter must construct queries from actual user-entered supported locations, dates, and passenger count or hotel occupancy. It must not return one hard-coded route/date as if it were a dynamic live search. Verify at least two distinct supported input combinations when the provider offers sufficient coverage and data. Record requests, sanitized response evidence, and whether actual offers were returned; at least one successful real-price response is still mandatory.
 
 ## 4. Trip Input and Validation
 
@@ -80,6 +83,8 @@ A successful **normal-mode result** must:
 5. Show an understandable trip-wide budget breakdown and its status: `within_budget`, `over_budget`, or `uncertain`.
 6. Label all prices as provider-sourced, estimated, or unavailable; do not present provisional quotes as guaranteed bookable prices.
 7. Render in the React UI, not only as raw JSON, with warnings where data is incomplete.
+
+**Minimum AI activity structure:** Each itinerary day must include its date and an ordered list of meaningful activities. Each activity must include an activity name, a destination-appropriate location or area, a short description, and an estimated USD cost or an explicit `unknown` cost status. Arrival and return days may have fewer activities. AI-generated flight/hotel names, offers, or prices are suggestions at most: they must never be shown as provider-sourced offers unless validated against actual provider results.
 
 The **offline demo result** is evaluated separately. It must display a complete, preloaded itinerary in the same results UI, clearly marked **DEMO**, but does **not** count toward the real-AI or live-price acceptance criteria.
 
@@ -146,7 +151,7 @@ Display **provider-known subtotal**, **estimated subtotal**, **projected trip to
 - **Honest sourcing:** Preserve price category, source/provider, retrieval time, coverage (per-person/per-night versus total), and missing data in the UI.
 - **Safety:** Validate input; keep API keys in the backend; authorize protected operations and restrict saved trips to their owner.
 - **User experience:** Show visible loading feedback and friendly failures; prevent multiple accidental generation requests; use bounded backend provider timeouts/retries.
-- **Testing:** Check form validation, real AI output parsing, one confirmed live-price integration, both price categories absent, budget logic, demo mode, and (if built) account ownership for saved trips.
+- **Testing:** Check form validation, supported-location rules, minimum AI activity fields, real AI output parsing, at least one actual live-price response plus a second distinct supported query where feasible, both price categories absent, budget logic, demo mode, and (if built) account ownership for saved trips.
 - **Handover:** Verify normal online operation and offline demo operation on a second computer before submission.
 
 ## 11. MVP Acceptance Checklist
@@ -156,8 +161,10 @@ Display **provider-known subtotal**, **estimated subtotal**, **projected trip to
 - [ ] Application launches locally according to the README.
 - [ ] Normal-mode sign-up, sign-in, and sign-out work using Supabase Auth.
 - [ ] The trip form enforces **1–4 adults**, **1–7 nights**, distinct locations, and **USD total budget**.
-- [ ] A valid online request invokes a real AI API and displays a coherent day-by-day itinerary.
-- [ ] **At least one live travel API (flight OR hotel)** returns real, search-relevant provider price information for a documented supported test case.
+- [ ] A valid online request invokes a real AI API and displays days and activities with dates, order, names, locations, descriptions, and estimated or unknown costs.
+- [ ] **At least one live travel API (flight OR hotel)** returns real, search-relevant provider price information for a documented supported test case; provider queries use user inputs rather than fixed response fixtures.
+- [ ] The provider adapter has been exercised with two different supported input combinations where feasible, with results/evidence documented (at least one real price result is mandatory).
+- [ ] Supported cities/routes are documented, and unsupported queries receive an honest message.
 - [ ] Live offer displays provider/source, retrieval time, and clear amount coverage.
 - [ ] The second category is displayed when available, or honestly labeled estimated/unavailable.
 - [ ] Backend returns budget subtotals, missing-cost warnings, and a correct status; no missing cost is counted as zero.
@@ -173,7 +180,7 @@ Display **provider-known subtotal**, **estimated subtotal**, **projected trip to
 
 ## 12. Decisions, Feasibility Gate, and Change Control
 
-**Confirmed decision and proposed v1.1 working limits (subject to team sign-off):**
+**Confirmed decision and proposed v1.2 working limits (subject to team sign-off):**
 
 - **Confirmed by team lead:** Delivery policy is **Option B — at least one live flight or hotel integration is mandatory**.
 - 1–4 adult passengers; one destination; 1–7 nights; round-trip travel.
@@ -184,9 +191,9 @@ Display **provider-known subtotal**, **estimated subtotal**, **projected trip to
 
 **Provider feasibility checkpoint (first two working days of integration work):**
 
-1. Test candidate flight and hotel APIs for accessible credentials, permitted use, supported routes/dates, usable real price results, currency/occupancy coverage, rate limits, and cost.
-2. Demonstrate at least one real end-to-end price response from FastAPI for a documented trip search.
-3. Record which provider is the mandatory integration; prioritize completion of that one before the optional second provider.
+1. Test candidate flight and hotel APIs for accessible credentials, permitted use, supported routes/dates, usable real price results, currency/occupancy coverage, rate limits, and cost. **Start this research immediately, alongside the API-contract drafting, rather than waiting for frontend/backend implementation.**
+2. Demonstrate at least one real end-to-end price response from FastAPI for a documented, dynamically constructed trip search; test a second supported input combination where possible.
+3. Record the chosen mandatory provider, verified locations/routes, example search inputs, limitations, and sample normalized output. Prioritize that provider before the optional second one.
 4. If **neither** provider is viable, escalate immediately to the team lead and supervisor for an explicit scope decision. Do not silently mark demo/mock prices as meeting the live requirement.
 
 **Still to specify in implementation documents (not new features):** exact provider names and supported city searches, exchange-rate handling if non-USD data is unavoidable, precise request/response JSON types, data retention for optional saved plans, and detailed Supabase tables/RLS policies.
