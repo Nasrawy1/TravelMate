@@ -1,146 +1,198 @@
 # TravelMate — MVP Scope
 
-**Version:** 1.0 (Proposed)  
-**Status:** Draft — team review required  
+**Version:** 1.1 
 **Project:** TravelMate Graduation Project  
-**Related:** `architecture.md`, `api-contracts.md`, `database-schema.md`
+**Related documents:** `architecture.md`, `api-contracts.md`, `database-schema.md`
 
 ## 1. MVP Objective
 
-Build a locally runnable web application that lets a user enter trip details and receive an AI-generated, day-by-day travel plan with a transparent budget breakdown. Where supported, the plan includes externally sourced flight and hotel options. The evaluator must be able to complete a dependable end-to-end demonstration.
+Build a locally runnable, AI-powered travel-planning web application. A user signs in, enters trip details, and receives a structured day-by-day itinerary with a transparent trip-wide budget assessment. In normal online mode, the itinerary is generated through a real AI API and **at least one of the two travel categories (flights or hotels) must provide real provider-sourced price data** for a supported trip search.
 
-**Primary success scenario:** Sign in → enter trip details → generate a plan → review the itinerary and costs. Saving and reopening the generated trip is a secondary goal.
+The MVP emphasizes a reliable end-to-end experience over breadth. The application runs on the evaluator's computer; online authentication and live AI/travel APIs require internet access. A separate, clearly labeled offline demo remains available for presentation if external services fail.
 
-## 2. Target User and Scope Boundary
+**Primary success path:** Sign in -> enter trip details -> generate an AI itinerary -> retrieve at least one real flight/hotel price -> review the itinerary and budget breakdown.
 
-- **Target user:** An individual planning one trip for themselves or a small group.
-- **Trip format:** One departure location, one destination, one date range, one total trip budget.
-- **Platform:** Desktop-friendly responsive web application running locally in a browser.
-- **Delivery:** Source code and launch instructions; **no public deployment** required.
-- **Bookings and payments:** No real bookings or payments in the MVP.
+**Secondary success path:** Save and reopen a generated plan, if time permits.
 
-## 3. Functional Requirements and Priorities
+## 2. Fixed MVP Boundaries
 
-| ID | Feature | Priority | Expected MVP behavior |
+| Area | Proposed v1.1 boundary |
+|---|---|
+| Target user | One individual planning a trip for themselves or a small adult group |
+| Locations | One departure city and one destination city; supported locations only |
+| Trip pattern | One round trip, one destination, one continuous hotel stay |
+| Dates | Future start date; **1–7 nights**; end date is the return/departure date |
+| Passengers | **1–4 adults**; children/infants excluded |
+| Accommodation | A single hotel/property option for the stay, with occupancy and total cost appropriate for all travelers; do not assume one room fits four adults |
+| Budget | One **total budget for all travelers and the whole trip**, not per person |
+| Currency | **USD for budget input and displayed totals** in v1 |
+| Platform | Desktop-friendly, responsive local web application (React + Vite and FastAPI) |
+| Storage/auth | Supabase Auth for normal mode; Supabase PostgreSQL if saved trips are implemented |
+| Deployment | No public deployment required; provide runnable code and launch instructions |
+| Payments/bookings | No real booking, checkout, ticket issuance, or payments |
+
+**Dates convention:** A trip of 3 nights runs from its start date through the return date 3 days later. The itinerary may describe arrival and departure days; it must not present the return date as an additional hotel night.
+
+**Location constraint:** A city/route may be unsupported by the chosen travel provider. The application must explain this without claiming that missing travel prices are live.
+
+## 3. Feature Scope and Priorities
+
+| ID | Feature | Priority | Required behavior |
 |---|---|---|---|
-| F-01 | User authentication | Must Have | Sign up, sign in, and sign out using Supabase Auth in normal online mode. |
-| F-02 | Trip input form | Must Have | Collect departure, destination, departure/start date, return/end date, passenger count, total budget, and currency. |
-| F-03 | Input validation | Must Have | Reject missing or inconsistent values and show understandable errors. |
-| F-04 | AI itinerary generation | Must Have | Produce a structured day-by-day plan using the submitted trip details. |
-| F-05 | Trip results page | Must Have | Display dates, daily activities, available travel options, budget breakdown, and data warnings. |
-| F-06 | Budget assessment | Must Have | Calculate known/estimated costs and label budget status without hiding missing amounts. |
-| F-07 | Demo mode | Must Have | Provide a clearly labeled, deterministic sample journey independent of external AI/travel APIs. |
-| F-08 | Flight and hotel price integrations | Target for MVP; feasibility gate | Query real providers for selected supported searches and display provider-sourced results; confirm achievable access before making this a delivery dependency. |
-| F-09 | Save and reopen trips | Should Have | Authenticated users can explicitly save, list, and reopen their own generated plans. |
-| F-10 | Basic retry/error handling | Must Have | Show meaningful errors, partial-data warnings, and retry where appropriate. |
+| F-01 | User authentication | Must Have | Sign up, sign in, sign out with Supabase Auth in normal online mode |
+| F-02 | Trip input form | Must Have | Departure city, destination city, start date, return date, adult count, total budget; currency defaults to USD |
+| F-03 | Input validation | Must Have | Reject invalid/missing fields, unsupported limits, and inconsistent dates with clear messages |
+| F-04 | Real AI itinerary generation | Must Have | Generate a structured itinerary using a real AI API for valid normal-mode requests |
+| F-05 | Results page | Must Have | Show day-by-day activities, travel-data availability, price labels, total/cost categories, and warnings |
+| F-06 | Budget assessment | Must Have | Backend computes totals from normalized amounts; outputs `within_budget`, `over_budget`, or `uncertain` |
+| F-07 | Offline demo mode | Must Have | Read-only, explicitly labeled sample trip experience without live AI, travel APIs, or hosted Supabase sign-in |
+| F-08A | **At least one live travel-price integration** | **Must Have** | Successfully retrieve and display **real provider-sourced flight OR hotel prices** for an explicitly supported search; show source and retrieval time |
+| F-08B | Second live travel-price integration | Should Have | Add the other category after the first works; missing category remains labeled estimate/unavailable, never passed off as live |
+| F-09 | Save, list, and reopen trips | Should Have | Signed-in users explicitly save plans and retrieve only their own saved plans |
+| F-10 | Failure and retry handling | Must Have | Loading, understandable errors, retry, partial-data states, and honest fallback labels |
 
-**Priority definitions:** Must Have = required to demonstrate the core flow; Should Have = implement after the core works; Feasibility gate = confirm availability, limits, and legal/technical access before committing to delivery. If price APIs cannot be used, the team must explicitly approve a scope change rather than present simulated prices as live.
+**Definition of “live integration”:** A genuine request from the FastAPI backend to an authorized third-party travel-data service that returns data for the user's supported route/dates/occupancy. A static fixture, AI-invented price, hard-coded response, or provider's fixed mock/sandbox example **does not satisfy F-08A**. If a provider offers only test-mode access, the team must verify whether the returned data counts as real for project assessment before claiming acceptance.
 
-## 4. Trip Input — Minimum Fields
+**Decision B is a minimum, not a restriction:** Integrate both flight and hotel providers if feasible, but do not let the second integration delay delivery of the working core.
 
-| Field | Example | Validation |
+## 4. Trip Input and Validation
+
+| Field | Example | Rule |
 |---|---|---|
-| Departure | Istanbul | Non-empty supported city/location |
-| Destination | Rome | Non-empty supported city/location; distinct from departure |
-| Start date | 2026-11-10 | Valid future date |
-| End date | 2026-11-15 | After start date |
-| Passengers | 2 | Positive integer; initial supported limit to be agreed |
-| Total budget | 1500 | Positive number |
-| Currency | USD | Currency supported by the cost-calculation rules |
+| Departure city | Istanbul | Required; valid supported city, different from destination |
+| Destination city | Rome | Required; valid supported city |
+| Start date | 2026-11-10 | Required; future calendar date |
+| Return date | 2026-11-15 | Required; later than start date; 1–7 nights total |
+| Adult passengers | 2 | Required integer between 1 and 4 |
+| Total trip budget | 1500 | Required positive number in USD |
+| Currency | USD | Fixed to USD in v1; no currency-selection requirement |
 
-**Not required in v1:** Passport details, traveler names, preferences questionnaire, multi-destination routes, or payment details.
+**Not collected:** Passport numbers, payment information, traveler names, child ages, accessibility/preference questionnaires, or multiple destinations.
 
 ## 5. Minimum Successful Trip Result
 
-A generated result counts as **successful** only if it:
+A successful **normal-mode result** must:
 
-1. Matches the submitted destination and travel dates.
-2. Provides a structured daily itinerary for the trip dates, with meaningful activities for each day.
-3. Displays the available flight and hotel options **or clearly explains why they are unavailable**.
-4. Shows a budget breakdown and labels each amount by its source/type: provider price, estimate, or unavailable.
-5. States whether the budget is `within_budget`, `over_budget`, or `uncertain`; it must not claim a fit when material costs are missing.
-6. Presents the result in the UI without requiring the user to inspect raw JSON.
+1. Match the requested destination, date range, and adult count.
+2. Contain a structured itinerary with meaningful activities for each relevant travel day, including sensible arrival/return-day handling.
+3. Show **at least one real flight or hotel offer** for the supported acceptance-test search, sourced through the live integration, with provider name and retrieval timestamp. A supported search may return no offers at a particular moment; acceptance must use an agreed reproducible supported test case with actual available data.
+4. Identify the other travel category as **provider-sourced**, **estimated**, or **unavailable**. Never silently replace missing live data with demo data.
+5. Show an understandable trip-wide budget breakdown and its status: `within_budget`, `over_budget`, or `uncertain`.
+6. Label all prices as provider-sourced, estimated, or unavailable; do not present provisional quotes as guaranteed bookable prices.
+7. Render in the React UI, not only as raw JSON, with warnings where data is incomplete.
 
-A successful **live-priced** result additionally contains provider metadata and retrieval times for the prices actually received from travel providers. An AI-generated number must never be labeled a live price.
+The **offline demo result** is evaluated separately. It must display a complete, preloaded itinerary in the same results UI, clearly marked **DEMO**, but does **not** count toward the real-AI or live-price acceptance criteria.
 
-## 6. Budget Scope and Rules
+## 6. Budget Scope and Calculation Rules
 
-The total user budget applies to **the whole trip and all passengers**, not per person or per night.
+The entire entered budget applies to **all travelers and all nights**. The backend, not the AI, performs arithmetic.
 
-| Cost category | MVP treatment |
+| Category | Treatment in MVP |
 |---|---|
-| Round-trip flights | Use provider prices if available; otherwise mark missing or estimated (never live). |
-| Accommodation | Use quote for relevant dates and occupancy when available; otherwise mark missing or estimated. |
-| Activities / attractions | Show estimates only when grounded enough to be useful; label as estimated. |
-| Food and local transport | May be represented by explicitly labeled estimates; otherwise list as not included/unknown. |
-| Taxes, fees, currency conversion | Include if returned by provider; disclose unknowns. Currency conversion method must be decided before mixing currencies. |
+| Round-trip flights | Total for all adult passengers; use provider quote when available; otherwise label any estimate or missing amount |
+| Accommodation | Total for the entire stay at appropriate occupancy; include multiple rooms if a returned quote requires them, or mark occupancy/pricing as uncertain |
+| Activities/attractions | Show estimated costs where reasonably supportable; otherwise explicitly mark unknown |
+| Food and local transportation | Include clearly labeled trip-wide or daily estimates if available; otherwise explicitly mark as missing/not included |
+| Taxes and fees | Include known amounts and disclose exclusions or uncertain provider fees |
 
-The backend, not the AI, computes totals and budget status. If costs are incomplete, show known totals separately from estimates and use `uncertain` when a reliable full-budget comparison is impossible.
+**Currency rule:** Request USD quotes when a provider supports it. Do not add a non-USD price to a USD total unless an identifiable exchange rate/source and conversion timestamp are available; otherwise show it separately and treat the comparable amount as unavailable.
+
+**Budget status:**
+
+- `over_budget` if the known minimum cost already exceeds the entered budget, or the calculated complete projected total exceeds it.
+- `within_budget` only if every material category has a usable provider amount or explicitly labeled estimate and the projected total does not exceed budget. This is an **estimate of affordability**, not a price guarantee.
+- `uncertain` if significant categories, occupancy details, or currency conversions are missing and a meaningful whole-trip comparison cannot be made.
+
+Display **provider-known subtotal**, **estimated subtotal**, **projected trip total when calculable**, and **missing/excluded costs** separately. Do not replace missing values with zero.
 
 ## 7. Core User Journey
 
-1. The user opens TravelMate and signs in (normal mode).
-2. The user completes the trip form and presses **Generate Trip**.
-3. The frontend shows a loading state while FastAPI validates and processes the request.
-4. The backend requests available travel prices and generates an AI itinerary.
-5. The backend validates the result and computes budget totals/status.
-6. The user sees the plan, source labels, warnings, and budget assessment.
-7. If the Should Have scope is completed, the user can **Save Trip** and reopen it later.
+1. Open TravelMate and sign in using Supabase Auth (normal online mode).
+2. Enter a supported departure/destination, 1–7-night date range, 1–4 adults, and total USD budget.
+3. Submit **Generate Trip** and show progress/loading feedback.
+4. FastAPI validates input, retrieves available live flight/hotel information, and passes normalized travel context to the real AI API.
+5. FastAPI validates the itinerary response and independently assesses the trip budget.
+6. React shows daily activities, available travel offers, provenance labels, cost breakdown, budget status, and missing-data warnings.
+7. If F-09 is delivered, select **Save Trip**, then reopen the saved itinerary from the user's account.
 
-## 8. Failure Handling and Demo Behavior
+## 8. Error Handling, Partial Data, and Demo Behavior
 
-- **No flight/hotel results:** Show a partial itinerary where meaningful, with explicit missing-data notices.
-- **AI generation error or invalid output:** Show a clear error and allow the user to retry; do not invent successful live results.
-- **Provider timeout / quota / authentication error:** Handle gracefully and show a user-safe message.
-- **Demo mode:** Show sample inputs and predetermined sample output marked `DEMO`; do not call live AI, flight, or hotel APIs.
-- **Offline presentation:** A fully offline demo may bypass hosted Supabase login through a separate read-only demo flow. This is not a replacement for normal authentication and must not pretend to be a real account.
+| Situation | Required behavior |
+|---|---|
+| Invalid form | Explain invalid fields before or after submission; do not call external APIs needlessly |
+| AI unavailable/invalid output | Display an error and offer retry; never claim a fresh AI plan was generated |
+| One travel provider unavailable | Continue with valid partial data where useful; label the absent category clearly |
+| Neither travel provider yields real data | A partial itinerary may still appear, but **it does not satisfy F-08A/live integration acceptance** for that test |
+| Provider rate limit, timeout, or key issue | Handle safely, expose a user-readable error, and avoid endless retries |
+| Budget cannot be reliably assessed | Return `uncertain`, not a misleading success message |
+| Offline demo selected | Use predetermined fixtures; clearly mark DEMO; make no online provider requests or hosted Supabase login |
 
-## 9. Out of Scope for MVP
+**Demo scope:** Provide **2–3 selectable predefined example trips** (not arbitrary live generation), each with sample input and a complete results view. Demo mode is read-only and must not create fake real accounts or claim live prices.
 
-- Actual flight/hotel booking or payment processing.
-- Payment gateway; if displayed later, only a clearly labeled simulation.
-- AI chat assistant or conversational itinerary editing.
-- Real-time route navigation, GPS, and maps integration.
-- Multi-city/multi-country itinerary optimization.
-- Recommendation engine based on user history.
-- Social features, sharing accounts, reviews, or an admin dashboard.
+## 9. Out of Scope
+
+- Real bookings, ticket purchases, or payment processing.
+- AI chat assistant, conversational plan changes, or unlimited regeneration.
+- Maps, live navigation, GPS, route optimization, or multi-city trips.
+- Travelers under 18 and detailed traveler profiles.
+- Multi-currency budget selection or unverified currency conversions.
+- Personalization based on historical user behavior, social features, reviews, or admin panel.
 - Native Android/iOS apps and public production deployment.
+- Guaranteed pricing or guaranteed flight/hotel availability.
 
-## 10. Non-Functional and Handover Requirements
+## 10. Quality, Testing, and Handover
 
-- **Reliability:** Support a repeatable end-to-end demo even when external integrations cannot be accessed.
-- **Security:** Keep secret API keys server-side; authenticate protected operations; isolate saved trips per user.
-- **Clarity:** Clearly separate actual provider-sourced prices, estimates, and missing costs.
-- **Maintainability:** Frontend and backend follow the agreed API contracts; third-party services use adapters.
-- **Local run:** Provide `README.md`, `.env.example`, and a documented launch script/instructions for the evaluator's computer.
-- **Testing:** Verify the happy path, invalid input, AI error, missing travel data, and demo mode. Test the launch instructions on another machine.
+- **Local launch:** Provide `README.md`, `.env.example`, dependency installation instructions, and a startup script for the evaluator's computer. Do not commit secrets.
+- **Honest sourcing:** Preserve price category, source/provider, retrieval time, coverage (per-person/per-night versus total), and missing data in the UI.
+- **Safety:** Validate input; keep API keys in the backend; authorize protected operations and restrict saved trips to their owner.
+- **User experience:** Show visible loading feedback and friendly failures; prevent multiple accidental generation requests; use bounded backend provider timeouts/retries.
+- **Testing:** Check form validation, real AI output parsing, one confirmed live-price integration, both price categories absent, budget logic, demo mode, and (if built) account ownership for saved trips.
+- **Handover:** Verify normal online operation and offline demo operation on a second computer before submission.
 
 ## 11. MVP Acceptance Checklist
 
-- [ ] The app launches locally using documented instructions.
-- [ ] Normal online sign-up/sign-in/sign-out works with Supabase Auth.
-- [ ] Trip form captures and validates all minimum fields.
-- [ ] A valid request produces a structured daily itinerary using a real AI API.
-- [ ] Results page shows itinerary, costs, statuses, and warnings.
-- [ ] Backend performs budget calculations; missing costs are not hidden.
-- [ ] Failure and retry states are understandable.
-- [ ] Demo mode displays a complete labeled sample trip without live AI/travel calls.
-- [ ] Travel API feasibility has been tested and the team has documented whether live flight/hotel integration is part of the final acceptance gate.
-- [ ] Normal-mode protected data cannot be read by another user.
-- [ ] App was successfully tested on a second computer before submission.
+### Mandatory (MVP passes only if these are satisfied)
 
-### Secondary Acceptance (Should Have)
+- [ ] Application launches locally according to the README.
+- [ ] Normal-mode sign-up, sign-in, and sign-out work using Supabase Auth.
+- [ ] The trip form enforces **1–4 adults**, **1–7 nights**, distinct locations, and **USD total budget**.
+- [ ] A valid online request invokes a real AI API and displays a coherent day-by-day itinerary.
+- [ ] **At least one live travel API (flight OR hotel)** returns real, search-relevant provider price information for a documented supported test case.
+- [ ] Live offer displays provider/source, retrieval time, and clear amount coverage.
+- [ ] The second category is displayed when available, or honestly labeled estimated/unavailable.
+- [ ] Backend returns budget subtotals, missing-cost warnings, and a correct status; no missing cost is counted as zero.
+- [ ] UI handles invalid input, loading, API failure, partial availability, and retry.
+- [ ] Read-only offline demo shows **2–3 predefined complete sample trips** without online dependencies and is visibly marked DEMO.
+- [ ] Protected user data cannot be accessed using another user's identity.
+- [ ] Full local setup and demo have been tested on a second computer.
 
-- [ ] Signed-in users can explicitly save a generated plan.
-- [ ] Signed-in users can list and reopen only their own saved plans.
+### Secondary (does not block MVP acceptance)
 
-## 12. Decisions Required Before Implementation
+- [ ] The second travel-data category uses a real provider API.
+- [ ] Users can save, list, and reopen their own plans.
 
-1. **Travel API feasibility:** Which providers cover the intended routes/dates, and are sandbox/free credentials available? Confirm whether both live integrations can be mandatory.
-2. **Passenger limit:** What is the maximum passenger count supported in v1?
-3. **Currencies:** One display currency initially, or conversion support? If converting, what exchange-rate source?
-4. **Activity estimates:** Are food, local transportation, and attraction costs required or optional estimates?
-5. **Demo authentication:** Read-only guest demo or a different local demonstration path?
-6. **Result storage:** Whether/how much of external price snapshots should be saved with trips.
+## 12. Decisions, Feasibility Gate, and Change Control
 
-**Scope rule:** A new feature enters the MVP only if it is required for the core end-to-end experience or explicitly approved by the team after evaluating its time and integration cost.
+**Confirmed decision and proposed v1.1 working limits (subject to team sign-off):**
+
+- **Confirmed by team lead:** Delivery policy is **Option B — at least one live flight or hotel integration is mandatory**.
+- 1–4 adult passengers; one destination; 1–7 nights; round-trip travel.
+- USD as the sole budget/display currency for MVP totals.
+- Provider quotes and estimates are explicitly distinguishable.
+- Read-only offline demo with 2–3 predefined journeys.
+- Real AI generation is mandatory in normal online mode; save/reopen and the second travel integration remain secondary.
+
+**Provider feasibility checkpoint (first two working days of integration work):**
+
+1. Test candidate flight and hotel APIs for accessible credentials, permitted use, supported routes/dates, usable real price results, currency/occupancy coverage, rate limits, and cost.
+2. Demonstrate at least one real end-to-end price response from FastAPI for a documented trip search.
+3. Record which provider is the mandatory integration; prioritize completion of that one before the optional second provider.
+4. If **neither** provider is viable, escalate immediately to the team lead and supervisor for an explicit scope decision. Do not silently mark demo/mock prices as meeting the live requirement.
+
+**Still to specify in implementation documents (not new features):** exact provider names and supported city searches, exchange-rate handling if non-USD data is unavoidable, precise request/response JSON types, data retention for optional saved plans, and detailed Supabase tables/RLS policies.
+
+**Change control:** New MVP functionality requires team approval after considering time, API access, and integration cost. Any change to the live-price acceptance gate must be documented and agreed explicitly.
+
+---
+
+**Architecture compatibility:** This scope follows `architecture.md` v1.1: React + Vite frontend, FastAPI modular-monolith backend, Supabase Auth/PostgreSQL, real AI/travel adapters, and an explicit offline demo flow.
