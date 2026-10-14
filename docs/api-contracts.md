@@ -2,7 +2,9 @@
 
 **Version:** 0.3 (Implementation baseline candidate)  
 **Status:** Draft — pending team review and provider feasibility sign-off  
-**Related:** `architecture.md` v1.1; `mvp-scope.md` v1.2
+**Related:** `architecture.md` v1.2; `mvp-scope.md` v1.3; `database-schema.md` v0.2
+
+**Editorial revision:** 2026-10-14 review candidate. Core wire schema remains v0.3; no field names or status enums changed.
 
 ## 1. Purpose and conventions
 
@@ -311,11 +313,11 @@ This checks the locally running backend; it does not guarantee Supabase or exter
 - `GET /api/v1/trips`: return a list of the signed-in user's saved trips.
 - `GET /api/v1/trips/{trip_id}`: return one saved trip only if owned by that user; otherwise respond `404` (do not expose ownership).
 
-**Exact saved-trip request/response models are intentionally deferred** until the team decides the storage schema and snapshots in `database-schema.md`. Do not begin implementing these endpoints against assumed payloads.
+**Exact saved-trip request/response models are intentionally deferred** until F-09 is prioritized. `database-schema.md` v0.2 already defines the proposed single-table storage and backend-only access path; it does not finalize HTTP payloads. Define those payloads jointly before implementation. Generation never waits for or writes to the optional table.
 
 ## 7. API contract testing and ownership
 
-- **Diyar (React):** use example JSON as mock data; implement form validation, loading/error/partial UI states, budget labels, and result rendering.
+- **Diyar (React):** use example JSON as mock data; implement form validation, loading/error/missing-price UI states, budget labels, and result rendering.
 - **Adel (FastAPI):** implement the endpoint route, Pydantic schemas, token verification, normalized responses, and budget calculations.
 - **Ziyad (integrations):** supply provider feasibility findings, supported search cases, stable internal travel adapter output, and actual source/timestamp metadata.
 - **Team Lead:** review contract changes and verify that frontend/backend agree on field names and error codes.
@@ -328,10 +330,11 @@ Contract acceptance tests: HTTP 200 always has `generation_status: "complete"` a
 2. **Location identifiers:** confirm whether canonical city labels are enough or public `city_id`/IATA codes are preferable.
 3. **Cost model details:** define estimated food/local transport and activity pricing policy, plus handling provider quotes in currencies other than USD.
 4. **Budget completeness:** finalize which cost categories are significant enough to require `projected_total_usd: null` and `uncertain`.
-5. **Saved trips:** decide saved payload format and RLS schema if F-09 is implemented.
+5. **Saved trips:** finalize exact HTTP payloads if F-09 is prioritized; follow the backend-only access/grants design in `database-schema.md` v0.2. Do not add direct browser table policies.
 6. **Offer selection:** confirm or adjust the provisional cheapest-valid-offer rule and whether taxes/fees are sufficiently represented.
 7. **Timeout tuning:** confirm the proposed provider, AI, and overall deadlines through measured integration tests; the starting values in this draft are not guarantees.
 
 **v0.2 → v0.3 change note:** A successfully validated itinerary now always returns `generation_status: "complete"`; the old 200 `partial` state is removed. Missing travel data and cost coverage remain observable through their independent fields. The budget response now exposes the two selected-offer IDs; error responses include `request_id`; timeout/retry defaults are documented.
 
-**Change rule:** Altering field names or meanings requires agreement between frontend, backend, and integration owners before merging implementation branches. This draft becomes an implementation baseline only after team review and confirmation that the selected provider can satisfy the mandatory live-price requirement.
+**Change rule:** Altering field names or meanings requires agreement between frontend, backend, and integration owners before merging implementation branches. Setup, wireframes and structural mocks may proceed against this candidate. It becomes the approved integration baseline only after team review and confirmation that the selected provider can satisfy the mandatory live-price requirement.
+

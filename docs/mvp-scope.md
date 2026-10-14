@@ -1,6 +1,6 @@
 # TravelMate — MVP Scope
 
-**Version:** 1.2 (Scope clarified for implementation)  
+**Version:** 1.3 (Documentation and task alignment)  
 **Status:** Proposed for team approval  
 **Project:** TravelMate Graduation Project  
 **Related documents:** `architecture.md`, `api-contracts.md`, `database-schema.md`
@@ -17,7 +17,7 @@ The MVP emphasizes a reliable end-to-end experience over breadth. The applicatio
 
 ## 2. Fixed MVP Boundaries
 
-| Area | Proposed v1.2 boundary |
+| Area | Proposed v1.3 boundary |
 |---|---|
 | Target user | One individual planning a trip for themselves or a small adult group |
 | Locations | One departure city and one destination city; supported locations only |
@@ -34,7 +34,7 @@ The MVP emphasizes a reliable end-to-end experience over breadth. The applicatio
 
 **Dates convention:** A trip of 3 nights runs from its start date through the return date 3 days later. The itinerary may describe arrival and departure days; it must not present the return date as an additional hotel night.
 
-**Supported locations policy:** The v1 list of selectable departure/destination cities or routes must be based on the selected provider's verified geographic coverage, established during feasibility testing. The team documents which locations/search combinations it has tested. React should offer only supported choices (or clearly validate unsupported ones); FastAPI is the final authority on validation. Do not claim worldwide coverage. A search without live offers may still return a transparently partial AI itinerary, but cannot count as a successful live-price acceptance case.
+**Supported locations policy:** The v1 list of selectable departure/destination cities or routes must be based on the selected provider's verified geographic coverage, established during feasibility testing. The team documents which locations/search combinations it has tested. React should offer only supported choices (or clearly validate unsupported ones); FastAPI is the final authority on validation. Do not claim worldwide coverage. A search without live offers may still return a complete AI itinerary with transparently missing travel-price data, but cannot count as a successful live-price acceptance case.
 
 ## 3. Feature Scope and Priorities
 
@@ -126,8 +126,8 @@ Display **provider-known subtotal**, **estimated subtotal**, **projected trip to
 |---|---|
 | Invalid form | Explain invalid fields before or after submission; do not call external APIs needlessly |
 | AI unavailable/invalid output | Display an error and offer retry; never claim a fresh AI plan was generated |
-| One travel provider unavailable | Continue with valid partial data where useful; label the absent category clearly |
-| Neither travel provider yields real data | A partial itinerary may still appear, but **it does not satisfy F-08A/live integration acceptance** for that test |
+| One travel provider unavailable | Continue only with a complete valid AI itinerary; label missing travel prices clearly |
+| Neither travel provider yields real data | A complete valid itinerary with missing travel prices may still appear, but **it does not satisfy F-08A/live integration acceptance** for that test |
 | Provider rate limit, timeout, or key issue | Handle safely, expose a user-readable error, and avoid endless retries |
 | Budget cannot be reliably assessed | Return `uncertain`, not a misleading success message |
 | Offline demo selected | Use predetermined fixtures; clearly mark DEMO; make no online provider requests or hosted Supabase login |
@@ -135,6 +135,8 @@ Display **provider-known subtotal**, **estimated subtotal**, **projected trip to
 **Demo scope:** Provide **2–3 selectable predefined example trips** (not arbitrary live generation), each with sample input and a complete results view. Demo mode is read-only and must not create fake real accounts or claim live prices.
 
 ## 9. Out of Scope
+
+- Demo booking/confirmation screens are deferred beyond this MVP; the mandatory demo is the read-only offline trip experience, not a simulated checkout.
 
 - Real bookings, ticket purchases, or payment processing.
 - AI chat assistant, conversational plan changes, or unlimited regeneration.
@@ -180,7 +182,7 @@ Display **provider-known subtotal**, **estimated subtotal**, **projected trip to
 
 ## 12. Decisions, Feasibility Gate, and Change Control
 
-**Confirmed decision and proposed v1.2 working limits (subject to team sign-off):**
+**Confirmed decision and proposed v1.3 working limits (subject to team sign-off):**
 
 - **Confirmed by team lead:** Delivery policy is **Option B — at least one live flight or hotel integration is mandatory**.
 - 1–4 adult passengers; one destination; 1–7 nights; round-trip travel.
@@ -196,10 +198,13 @@ Display **provider-known subtotal**, **estimated subtotal**, **projected trip to
 3. Record the chosen mandatory provider, verified locations/routes, example search inputs, limitations, and sample normalized output. Prioritize that provider before the optional second one.
 4. If **neither** provider is viable, escalate immediately to the team lead and supervisor for an explicit scope decision. Do not silently mark demo/mock prices as meeting the live requirement.
 
-**Still to specify in implementation documents (not new features):** exact provider names and supported city searches, exchange-rate handling if non-USD data is unavoidable, precise request/response JSON types, data retention for optional saved plans, and detailed Supabase tables/RLS policies.
+**Defined in companion documents:** `api-contracts.md` v0.3 specifies core HTTP schemas and `database-schema.md` v0.2 specifies the optional one-table backend-only storage design. `implementation-plan.md` proposes the task sequence and owners.
+
+**Still pending:** exact provider names and verified city searches, evidence for the AI provider choice, estimation/conversion policy, confirmation of offer selection and timeouts, and exact F-09 HTTP payloads if saving is prioritized. No provider or team sign-off is implied by this documentation revision.
 
 **Change control:** New MVP functionality requires team approval after considering time, API access, and integration cost. Any change to the live-price acceptance gate must be documented and agreed explicitly.
 
 ---
 
-**Architecture compatibility:** This scope follows `architecture.md` v1.1: React + Vite frontend, FastAPI modular-monolith backend, Supabase Auth/PostgreSQL, real AI/travel adapters, and an explicit offline demo flow.
+**Architecture compatibility:** This scope follows `architecture.md` v1.2: React + Vite frontend, FastAPI modular-monolith backend, Supabase Auth/PostgreSQL, real AI/travel adapters, and an explicit offline demo flow.
+

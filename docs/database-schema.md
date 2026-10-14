@@ -3,7 +3,9 @@
 **Version:** 0.2 (Backend-only access and security baseline)  
 **Status:** Proposed security baseline — ready for team review; execute migration only when F-09 is approved  
 **Project:** TravelMate Graduation Project  
-**Related documents:** `architecture.md` v1.1, `mvp-scope.md` v1.2, `api-contracts.md` v0.3
+**Related documents:** `architecture.md` v1.2, `mvp-scope.md` v1.3, `api-contracts.md` v0.3
+
+**Editorial revision:** 2026-10-14 review candidate. The v0.2 table design, SQL migration and security model are unchanged. Core setup uses Supabase Auth only; optional migration work is tracked separately in `implementation-plan.md`.
 
 ## 1. Purpose and MVP Boundary
 
@@ -247,3 +249,4 @@ Confirm from a separate client using a real signed-in user that direct Supabase 
 - Supabase — [Row Level Security: grants and policies](https://supabase.com/docs/guides/database/postgres/row-level-security)
 - Supabase — [API keys, elevated access and secret keys](https://supabase.com/docs/guides/getting-started/api-keys)
 - Supabase — [Securing your data](https://supabase.com/docs/guides/database/secure-data)
+
