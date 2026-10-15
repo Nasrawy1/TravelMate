@@ -1,7 +1,7 @@
 # TravelMate — Implementation Plan
 
-**Status:** Proposed for review; no GitHub issues or Project fields have been changed.
-**Date:** 2026-10-14
+**Status:** Published planning document; scope and general architecture approved by team lead Nasrawy (Nasrawy1) on 2026-10-15. Task proposals are not a live Project-status snapshot.
+**Date:** 2026-10-15
 **Baseline:** architecture v1.2, scope v1.3, API wire schema v0.3, database v0.2.
 
 ## Priorities and ownership
@@ -18,7 +18,7 @@ P0 unlocks work or resolves feasibility. P1 delivers the mandatory MVP. P2 is op
 
 ## Work sequence
 
-1. Start #10/#11 review, #3 wireframes, #12 React setup, BE-00/#7 backend/Auth setup, and #4/#5 feasibility in parallel. Review the reported #2 completion evidence rather than repeating completed research.
+1. Use the team-lead-approved #10 scope/architecture; continue #11 review, #3 wireframes, #12 React setup, BE-00/#7 backend/Auth setup, and #4/#5 feasibility in parallel. Review the reported #2 completion evidence rather than repeating completed research.
 2. Within the first two integration working days, choose one viable travel category and document supported searches. Escalate if neither works; never silently weaken F-08A.
 3. Ali releases approved screens one at a time. Diyar builds with fixtures; Adel implements auth/schemas/budget; Ziyad implements AI and the selected travel adapter after agreeing the boundary.
 4. Combine the protected real generation endpoint with the UI, then verify failure paths, explicit offline demo and second-computer handover.
@@ -32,9 +32,9 @@ P0 unlocks work or resolves feasibility. P1 delivers the mandatory MVP. P2 is op
 - Small PRs linked to issues; Nasrawy reviews. Mock-based checks may precede live integration but never prove live pricing.
 - This plan assigns no board status: the Project columns were not available through the connector.
 
-## Existing issue replacements
+## Existing issue alignment
 
-The sections below are proposed title/body replacements for review. Preserve assignees, labels, state and existing discussion unless separately approved. For #2, retain all existing completed checklist items and append the evidence-review section; no checkbox or state reset.
+The sections below describe intended task scope, not live completion checklists. PLAN-01 (#10) now records team-lead approval, and BE-01 (#7) has already been aligned to Auth-only setup. Other replacements remain proposals until separately applied; existing issues are authoritative for actual assignees and progress. Preserve assignees, labels, state and discussion unless separately approved. For #2, retain completed research items and review evidence without resetting progress.
 
 ### #1: PLAN-00: Track MVP Foundations
 
@@ -170,7 +170,7 @@ The sections below are proposed title/body replacements for review. Preserve ass
 
 - [ ] The project is available for Auth integration; safe environment instructions exist; no application-table dependency blocks core generation.
 
-**Dependencies:** #10 candidate stack
+**Dependencies:** #10 approved stack
 
 ### #8: BE-02: Integrate Supabase Auth & Verify Backend Tokens
 
@@ -216,22 +216,25 @@ The sections below are proposed title/body replacements for review. Preserve ass
 ### #10: PLAN-01: Align MVP Scope & Architecture
 
 **Owner:** Nasrawy1  
-**Proposed priority:** P0  
-**Start:** Start now
+**Priority:** P0  
+**Planning status:** Scope and general architecture approved by the team lead on 2026-10-15. Issue #10 was already closed as completed before this documentation update.
 
-**Tasks**
+**Completed planning deliverables**
 
-- [ ] Review architecture v1.2 and scope v1.3 with team.
-- [ ] Confirm React/Vite + FastAPI + Supabase Auth and mandatory AI/one-live-provider flow.
-- [ ] Keep second provider and saving optional; defer booking UI.
-- [ ] Confirm client-only offline demo and local handover requirements.
-- [ ] Link the reviewed docs; do not label provider feasibility complete without evidence.
+- [x] Document scope v1.3 and architecture v1.2.
+- [x] Confirm React/Vite + FastAPI + Supabase Auth and real AI with at least one mandatory live flight OR hotel provider.
+- [x] Keep the second provider and saved trips optional; defer booking/confirmation UI.
+- [x] Define client-only offline demo, component ownership and local handover approach.
+- [x] Record team-lead approval and link authoritative documents.
 
-**Acceptance**
+**Outstanding follow-up (not claimed complete)**
 
-- [ ] Core boundaries and owners are understood; provider gate and deferred scope are explicit.
+- [ ] Review/acknowledge the approved boundaries with the remaining team members and confirm document access.
+- [ ] Complete PLAN-02 (#11) contract/interface review and provider feasibility under #2/#4/#5, with corrective evidence tracked in #13.
 
-**Dependencies:** None
+Approval of this planning baseline is not evidence of implementation or successful live integration.
+
+**Dependencies:** None for the general design; provider evidence gates final integration acceptance.
 
 ### #11: PLAN-02: Review API v0.3 & Shared Fixtures
 
@@ -271,7 +274,13 @@ The sections below are proposed title/body replacements for review. Preserve ass
 
 - [ ] Frontend runs locally; routes work; no secret credentials; mock response can be rendered without completed backend.
 
-**Dependencies:** #10 candidate stack; coordinate #3
+**Dependencies:** #10 approved stack; coordinate #3
+
+## Existing corrective follow-up
+
+### #13: API-TEST-01: Fix AI Test Data Accuracy & Validate End-to-End Results
+
+Ziyad's prototype correction and evidence review is tracked in [#13](https://github.com/Nasrawy1/TravelMate/issues/13). Its distinct code is API-TEST-01. API-04 below remains reserved for implementing the AI adapter; dependencies on API-04 do not refer to #13. Refer to #13 for its current checklist and progress.
 
 ## New implementation issues proposed
 
@@ -463,5 +472,8 @@ The sections below are proposed title/body replacements for review. Preserve ass
 
 ## Approval and publication boundary
 
-This is a local review package. No commits, remote branches, PRs, issue updates or Project mutations have been made. After user approval, re-read current GitHub files/issues and reconcile any newer team changes before publishing. The canonical rename must add docs/api-contracts.md and remove docs/api-contracts (2).md together. Do not close #2 without evidence review or mark tasks Done merely because documentation exists. F-09 migration execution is not authorized by this documentation review.
+This document is published in the repository. The canonical contract is `docs/api-contracts.md`; the earlier filename migration is already complete.
 
+On 2026-10-15, Nasrawy (Nasrawy1) explicitly approved the scope/general architecture and authorized the documentation and PLAN-01 description alignment. This is not a record of full-team acknowledgment, provider approval, completed implementation, or Project-column changes. PLAN-02 and provider evidence remain separate gates.
+
+Task proposals not explicitly applied remain proposals. Do not close #2 without evidence review or mark implementation tasks Done merely because documentation exists. F-09 migration execution remains deferred until separately prioritized and approved.
