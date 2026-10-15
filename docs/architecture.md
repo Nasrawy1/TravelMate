@@ -1,7 +1,7 @@
 # TravelMate — System Architecture
 
 **Version:** 1.2 (Scope and contract alignment)  
-**Status:** Review candidate — pending team-lead approval and provider feasibility  
+**Status:** General architecture approved by team lead Nasrawy (Nasrawy1) on 2026-10-15; provider feasibility and integration-contract sign-off remain pending  
 **Project:** TravelMate Graduation Project
 
 ## 1. Overview
@@ -167,6 +167,8 @@ Work can proceed in parallel using agreed mock responses and shared contracts.
 
 ## 12. Remaining Decisions and Delivery Order
 
+**Approval record:** Nasrawy (Nasrawy1) approved the general architecture and scope on 2026-10-15 under PLAN-01 (#10). This records team-lead approval only. Review/acknowledgment by the remaining team members is not yet recorded. API v0.3 remains subject to PLAN-02 review; no implementation, provider selection, or live-price acceptance is implied.
+
 Resolved by companion documents: snake_case request/response schemas, separate client-only offline demo, generation without persistence, and backend-only optional storage.
 
 Still pending:
@@ -185,7 +187,7 @@ Delivery order:
 4. Verify failure handling, offline fixtures and second-computer startup.
 5. Consider F-09 and the second live provider only after the core acceptance gate.
 
-Provider feasibility is a gate for claiming the final baseline and live-price acceptance; it does not block setup or mock-based UI work. Full task proposals are in [implementation-plan.md](implementation-plan.md).
+Provider feasibility is a gate for claiming the final integration baseline and live-price acceptance; it does not block setup or mock-based UI work. Full task proposals are in [implementation-plan.md](implementation-plan.md).
 
 ---
 
