@@ -1,7 +1,7 @@
 # TravelMate — MVP Scope
 
 **Version:** 1.3 (Documentation and task alignment)  
-**Status:** Proposed for team approval  
+**Status:** Scope baseline approved by team lead Nasrawy (Nasrawy1) on 2026-10-15; team acknowledgment and provider feasibility remain pending  
 **Project:** TravelMate Graduation Project  
 **Related documents:** `architecture.md`, `api-contracts.md`, `database-schema.md`
 
@@ -17,7 +17,7 @@ The MVP emphasizes a reliable end-to-end experience over breadth. The applicatio
 
 ## 2. Fixed MVP Boundaries
 
-| Area | Proposed v1.3 boundary |
+| Area | Team-lead-approved v1.3 boundary |
 |---|---|
 | Target user | One individual planning a trip for themselves or a small adult group |
 | Locations | One departure city and one destination city; supported locations only |
@@ -182,7 +182,7 @@ Display **provider-known subtotal**, **estimated subtotal**, **projected trip to
 
 ## 12. Decisions, Feasibility Gate, and Change Control
 
-**Confirmed decision and proposed v1.3 working limits (subject to team sign-off):**
+**Scope and v1.3 working limits approved by team lead Nasrawy (Nasrawy1) on 2026-10-15 under PLAN-01 (#10). Review/acknowledgment by the remaining team members is not yet recorded:**
 
 - **Confirmed by team lead:** Delivery policy is **Option B — at least one live flight or hotel integration is mandatory**.
 - 1–4 adult passengers; one destination; 1–7 nights; round-trip travel.
@@ -200,7 +200,7 @@ Display **provider-known subtotal**, **estimated subtotal**, **projected trip to
 
 **Defined in companion documents:** `api-contracts.md` v0.3 specifies core HTTP schemas and `database-schema.md` v0.2 specifies the optional one-table backend-only storage design. `implementation-plan.md` proposes the task sequence and owners.
 
-**Still pending:** exact provider names and verified city searches, evidence for the AI provider choice, estimation/conversion policy, confirmation of offer selection and timeouts, and exact F-09 HTTP payloads if saving is prioritized. No provider or team sign-off is implied by this documentation revision.
+**Still pending:** exact provider names and verified city searches, evidence for the AI provider choice, estimation/conversion policy, confirmation of offer selection and timeouts, and exact F-09 HTTP payloads if saving is prioritized. This approval covers scope and architecture only; it does not establish provider feasibility, full-team acknowledgment, or PLAN-02 integration-contract approval.
 
 **Change control:** New MVP functionality requires team approval after considering time, API access, and integration cost. Any change to the live-price acceptance gate must be documented and agreed explicitly.
 
