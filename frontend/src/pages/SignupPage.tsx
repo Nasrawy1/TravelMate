@@ -125,7 +125,7 @@ export default function SignupPage() {
                 <span aria-live="polite">{loading ? 'Creating account…' : 'Create account'}</span>
               </button>
             </form>
-            <Link to="/offline-demo" className="login-demo-link"><span>DEMO</span>Explore a demo trip first</Link>
+            <Link to="/offline-demo" className="login-demo-link"><span>DEMO</span>Demo trips are coming soon.</Link>
           </section>
         </div>
       </main>

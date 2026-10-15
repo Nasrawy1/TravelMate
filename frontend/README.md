@@ -1,6 +1,6 @@
 # TravelMate frontend — FE-01 (#12)
 
-React + Vite + TypeScript frontend owned by Diyar. The Welcome and authentication UI follow Ali’s Riviera sources in `../docs/design/travelmate-des01-welcome-auth.zip`. This is a frontend UI foundation, not a working authenticated travel-planning application.
+React + Vite + TypeScript frontend owned by Diyar. The Welcome and authentication UI follow [Ali’s original Riviera design archive](../docs/design/travelmate-des01-welcome-auth.zip), stored at `docs/design/travelmate-des01-welcome-auth.zip` from the repository root. The unchanged ZIP contains `design/welcome-auth.md` and the original Welcome/authentication HTML sources under `travelmate-des01-welcome-auth/`. This is a frontend UI foundation, not a working authenticated travel-planning application.
 
 ## Implemented UI and current limits
 

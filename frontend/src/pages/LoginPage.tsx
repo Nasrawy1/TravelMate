@@ -13,7 +13,7 @@ function validateEmail(email: string) {
 }
 
 const errorMessages = {
-  not_configured: { title: 'Sign-in is not connected yet', message: 'Supabase Auth integration is still pending. You have not been signed in. You can explore the demo without an account.' },
+  not_configured: { title: 'Sign-in is not connected yet', message: 'Supabase Auth integration is still pending. You have not been signed in. Demo trips are coming soon.' },
   invalid_credentials: { title: 'Wrong email or password', message: 'Check both and try again. Passwords are case-sensitive.' },
   unavailable: { title: 'Unable to sign in', message: 'Sign-in is unavailable right now. Please try again later.' },
 }
@@ -97,7 +97,7 @@ export default function LoginPage() {
               </button>
             </form>
             <div className="login-divider"><span />or<span /></div>
-            <Link to="/offline-demo" className="login-demo-link"><span>DEMO</span>Explore a demo trip</Link>
+            <Link to="/offline-demo" className="login-demo-link"><span>DEMO</span>Demo trips are coming soon.</Link>
           </section>
         </div>
       </main>
