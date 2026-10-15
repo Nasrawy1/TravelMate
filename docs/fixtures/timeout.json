@@ -1,0 +1,8 @@
+{
+  "error": {
+    "code": "GENERATION_TIMEOUT",
+    "message": "Trip generation exceeded the deadline.",
+    "details": null
+  },
+  "request_id": "fixture-timeout"
+}

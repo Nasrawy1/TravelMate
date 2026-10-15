@@ -1,0 +1,187 @@
+{
+  "generation_status": "complete",
+  "live_integration_status": "no_price",
+  "trip": {
+    "departure_city": "Istanbul",
+    "destination_city": "Rome",
+    "start_date": "2026-11-10",
+    "return_date": "2026-11-12",
+    "adults": 2,
+    "nights": 2
+  },
+  "itinerary": [
+    {
+      "date": "2026-11-10",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Arrival walk",
+          "area": "Rome",
+          "description": "Illustrative activity for contract testing.",
+          "cost": {
+            "amount_usd": 0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-11-11",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Museum visit",
+          "area": "Rome",
+          "description": "Illustrative activity for contract testing.",
+          "cost": {
+            "amount_usd": 40,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Departure preparation",
+          "area": "Rome",
+          "description": "Illustrative activity for contract testing.",
+          "cost": {
+            "amount_usd": 0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        }
+      ]
+    }
+  ],
+  "travel_options": {
+    "flights": {
+      "status": "unavailable",
+      "offers": []
+    },
+    "hotels": {
+      "status": "unavailable",
+      "offers": []
+    }
+  },
+  "budget": {
+    "budget_usd": 1500,
+    "selected_flight_offer_id": null,
+    "selected_hotel_offer_id": null,
+    "cost_items": [
+      {
+        "id": "flight",
+        "category": "flights",
+        "label": "flight",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "No comparable flight quote.",
+        "source_offer_id": null,
+        "activity_ref": null
+      },
+      {
+        "id": "hotel",
+        "category": "accommodation",
+        "label": "hotel",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "No comparable hotel quote.",
+        "source_offer_id": null,
+        "activity_ref": null
+      },
+      {
+        "id": "activity-2026-11-10",
+        "category": "activities",
+        "label": "activity-2026-11-10",
+        "amount_usd": 0,
+        "kind": "estimate",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "Illustrative whole-group activity estimate.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-10",
+          "order": 1
+        }
+      },
+      {
+        "id": "activity-2026-11-11",
+        "category": "activities",
+        "label": "activity-2026-11-11",
+        "amount_usd": 40,
+        "kind": "estimate",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "Illustrative whole-group activity estimate.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-11",
+          "order": 1
+        }
+      },
+      {
+        "id": "activity-2026-11-12",
+        "category": "activities",
+        "label": "activity-2026-11-12",
+        "amount_usd": 0,
+        "kind": "estimate",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "Illustrative whole-group activity estimate.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-12",
+          "order": 1
+        }
+      },
+      {
+        "id": "food",
+        "category": "food",
+        "label": "food",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "No supported food estimate.",
+        "source_offer_id": null,
+        "activity_ref": null
+      },
+      {
+        "id": "transport",
+        "category": "local_transport",
+        "label": "transport",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "No supported transport estimate.",
+        "source_offer_id": null,
+        "activity_ref": null
+      }
+    ],
+    "provider_subtotal_usd": 0,
+    "estimated_subtotal_usd": 40,
+    "projected_total_usd": null,
+    "status": "uncertain",
+    "missing_categories": [
+      "flights",
+      "accommodation",
+      "food",
+      "local_transport"
+    ],
+    "notes": [
+      "Significant costs are missing."
+    ]
+  },
+  "warnings": [
+    {
+      "code": "BUDGET_INCOMPLETE",
+      "message": "Some significant costs are missing."
+    }
+  ]
+}

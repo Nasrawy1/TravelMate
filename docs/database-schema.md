@@ -7,6 +7,8 @@
 
 **Editorial revision:** 2026-10-14 review candidate. The v0.2 table design, SQL migration and security model are unchanged. Core setup uses Supabase Auth only; optional migration work is tracked separately in `implementation-plan.md`.
 
+**PLAN-02 preparation update (2026-10-15):** [API contract v0.4](api-contracts.md), [internal adapter contracts](adapter-contracts.md), and [validated structural fixtures](fixtures/README.md) are now available as a review candidate. References below to v0.3 describe the preceding baseline; v0.4 adoption requires Diyar/Adel/Ziyad review and provider compatibility evidence. This update does not approve implementation, provider selection, or optional storage execution.
+
 ## 1. Purpose and MVP Boundary
 
 TravelMate uses **Supabase Auth** for account management and **Supabase PostgreSQL** only for data that must be saved between sessions.

@@ -1,340 +1,220 @@
 # TravelMate — API Contracts
 
-**Version:** 0.3 (Implementation baseline candidate)  
-**Status:** Draft — pending team review and provider feasibility sign-off  
-**Related:** `architecture.md` v1.2; `mvp-scope.md` v1.3; `database-schema.md` v0.2
+**Version:** 0.4 (complete contract and fixture review candidate)  
+**Status:** Draft — prepared with team-lead authorization on 2026-10-15; pending Diyar/Adel/Ziyad review and provider feasibility sign-off.  
+**Scope authority:** Team-lead-approved scope v1.3 and architecture v1.2. PLAN-01 approval does not approve this integration contract.
 
-**Editorial revision:** 2026-10-14 review candidate. Core wire schema remains v0.3; no field names or status enums changed.
+## 1. Purpose and authoritative artifacts
 
-## 1. Purpose and conventions
+This contract defines React ↔ FastAPI HTTP messages. [Internal adapter contracts](adapter-contracts.md) define FastAPI ↔ Ziyad's adapters. [JSON Schema](contracts/api-v0.4.schema.json) is the normative field/type/required/nullability definition; the semantic rules below are also mandatory. [Fixtures](fixtures/README.md) demonstrate valid shapes and arithmetic, not real prices or provider feasibility.
 
-This document defines the interface between the React frontend and FastAPI backend. It is **not** a provider-specific AI, flight, or hotel API specification.
+v0.4 changes the response: required `budget.cost_items`, offer `taxes`, nullable hotel `room_qty`, and daily `empty_day_reason` are added. Request fields, endpoints and status enums are unchanged from v0.3. Coordinate adoption before integrating branches. Do not silently validate v0.4 using v0.3 models.
 
-- Base URL (local development): `http://localhost:8000`
-- Prefix: `/api/v1`
-- Transport: HTTP; JSON request/response (`application/json`).
-- Property naming: `snake_case`.
-- Monetary amounts: JSON numbers in **USD**. Round/display to two decimal places; backend calculations should use decimal-safe arithmetic.
-- Dates: `YYYY-MM-DD`; timestamps: ISO 8601 UTC with `Z`.
-- Normal-mode protected endpoints: `Authorization: Bearer <supabase_access_token>`.
-- Frontend uses Supabase Auth SDK for sign-up/sign-in/sign-out; FastAPI validates access tokens on protected endpoints.
-- The backend owns validation, third-party API calls, cost aggregation, and budget status. The frontend must not infer missing costs as zero.
-- The offline demo is a **separate, read-only client flow** using bundled fixtures; it does not call the live generation endpoint or require Supabase login.
-- The backend attaches an opaque `request_id` to error responses and logs for troubleshooting; it must not log secrets or full access tokens.
-- One successful HTTP 200 generation response always contains a **complete, schema-valid itinerary**. Missing travel prices are conveyed by offer availability, budget status, and warnings—not by an incomplete itinerary.
+## 2. HTTP and conventions
 
-## 2. Endpoint inventory
+- Local base: `http://localhost:8000/api/v1`; JSON bodies; public fields use snake_case.
+- Currency: USD only; budget and totals cover all adults and the entire trip. Server arithmetic uses decimal-safe amounts and rounds each normalized ledger item to cents before summing; display two decimals. Reject NaN/infinity.
+- Calendar dates: YYYY-MM-DD. Proposed validation reference is today's **UTC calendar date**, consistently in client tests and server validation; start_date must be strictly later. This is a validation convention, not a conversion of destination travel dates.
+- Travel dates refer to local dates at the relevant departure airport/hotel. UTC offer timestamps end in Z. The flight adapter retains airport timezone information internally to verify that UTC departures correspond to the requested local travel dates.
+- Every schema property is required unless its enclosing object is absent by design; unknown allowed values are explicit nulls. Arrays such as warnings, notes and offers are always present, including when empty. Unknown properties are rejected for this candidate.
+- Schema format checks must be enabled. Cross-field/date/reference/arithmetic rules require additional semantic validation.
 
-| Method | Path | Authentication | Status | Purpose |
-|---|---|---|---|---|
-| GET | `/api/v1/health` | None | MVP | Local health check |
-| POST | `/api/v1/trips/generate` | Supabase bearer token | MVP | Generate itinerary with available travel prices |
-| POST | `/api/v1/trips` | Supabase bearer token | Should Have | Save a generated itinerary |
-| GET | `/api/v1/trips` | Supabase bearer token | Should Have | List own saved trips |
-| GET | `/api/v1/trips/{trip_id}` | Supabase bearer token | Should Have | Retrieve own saved trip |
+| Method | Path | Auth | Scope |
+|---|---|---|---|
+| GET | /health | None | Mandatory |
+| POST | /trips/generate | Supabase bearer token | Mandatory |
+| POST | /trips | Supabase bearer token | Optional F-09, payload deferred |
+| GET | /trips | Supabase bearer token | Optional F-09, payload deferred |
+| GET | /trips/{trip_id} | Supabase bearer token | Optional F-09, payload deferred |
 
-No separate FastAPI `/login` or `/signup` route is planned.
+Supabase Auth SDK provides signup/signin/signout and session management. Do not duplicate login/signup routes in FastAPI. Protected routes verify token signature, expiry and issuer/audience as appropriate and derive identity from that verified token.
 
-## 3. Generate trip — request
+## 3. Generate request
 
-**POST** `/api/v1/trips/generate`
-
-```http
-Authorization: Bearer <supabase_access_token>
-Content-Type: application/json
-```
+`POST /api/v1/trips/generate` with `Authorization: Bearer <access_token>`.
 
 ```json
 {
   "departure_city": "Istanbul",
   "destination_city": "Rome",
   "start_date": "2026-11-10",
-  "return_date": "2026-11-15",
+  "return_date": "2026-11-12",
   "adults": 2,
-  "budget_usd": 1500.00
+  "budget_usd": 1500
 }
 ```
 
-| Field | Type | Rule |
+| Field | Type | Constraint |
 |---|---|---|
-| `departure_city` | string | Required; canonical supported city label; different from destination |
-| `destination_city` | string | Required; canonical supported city label |
-| `start_date` | date string | Required; future local calendar date |
-| `return_date` | date string | Required; after `start_date`; 1–7 nights |
-| `adults` | integer | Required; 1–4 |
-| `budget_usd` | number | Required; greater than 0; entire trip/all travelers |
+| departure_city | string | Canonical supported city label |
+| destination_city | string | Canonical supported label; distinct from departure |
+| start_date | date string | Future UTC calendar date under validation convention above |
+| return_date | date string | 1–7 nights after start_date |
+| adults | integer | 1–4 adults; reject booleans, fractions and numeric strings |
+| budget_usd | number | Positive whole-trip, all-adult budget |
 
-**Location contract for v0.3:** use agreed canonical city labels in the public API; adapters map them to provider-specific identifiers (e.g., airport/city codes). The supported city/route list is to be finalized after Ziyad's provider feasibility tests. Do not silently pass arbitrary user text as a provider ID. If the provider forces a stronger canonical ID scheme, revise the contract *before frontend/backend integration*.
+No currency selector, one-way switch or client user_id. Reject unsupported cities with 400 UNSUPPORTED_LOCATION. Provider adapters map canonical labels to provider IDs. A supported city pair with no offers is distinct from an unsupported city input. The actual supported list and identifier mapping remain pending feasibility; fixture cities do not establish coverage.
 
-## 4. Generate trip — successful response
+## 4. Successful response and required fields
 
-**HTTP 200** — a successful request returns `generation_status: "complete"` when the AI itinerary covers every trip date and passes backend validation. This status is **independent** of travel-price availability and budget completeness. An invalid or incomplete itinerary is **not** a successful 200 response. The example below is a complete six-day illustrative response for a five-night trip, suitable as a structural mock (but never evidence of real provider data).
+HTTP 200 requires a complete, validated itinerary, even when travel prices are unavailable. No persistence occurs and no saved trip ID is returned.
 
-```json
-{
-  "generation_status": "complete",
-  "live_integration_status": "price_received",
-  "trip": {
-    "departure_city": "Istanbul",
-    "destination_city": "Rome",
-    "start_date": "2026-11-10",
-    "return_date": "2026-11-15",
-    "nights": 5,
-    "adults": 2
-  },
-  "itinerary": [
-    {
-      "date": "2026-11-10",
-      "activities": [
-        { "order": 1, "name": "Historic center walk", "area": "Central Rome", "description": "Explore local squares after arrival.", "cost": { "amount_usd": 0, "kind": "estimate", "coverage": "all_travelers" } }
-      ]
-    },
-    {
-      "date": "2026-11-11",
-      "activities": [
-        { "order": 1, "name": "Colosseum visit", "area": "Colosseo", "description": "Visit the ancient amphitheater.", "cost": { "amount_usd": 40, "kind": "estimate", "coverage": "all_travelers" } }
-      ]
-    },
-    {
-      "date": "2026-11-12",
-      "activities": [
-        { "order": 1, "name": "Trastevere walking tour", "area": "Trastevere", "description": "Discover the neighborhood on foot.", "cost": { "amount_usd": 0, "kind": "estimate", "coverage": "all_travelers" } }
-      ]
-    },
-    {
-      "date": "2026-11-13",
-      "activities": [
-        { "order": 1, "name": "Museum visit", "area": "Central Rome", "description": "Explore a museum during the afternoon.", "cost": { "amount_usd": 20, "kind": "estimate", "coverage": "all_travelers" } }
-      ]
-    },
-    {
-      "date": "2026-11-14",
-      "activities": [
-        { "order": 1, "name": "Public gardens walk", "area": "Villa Borghese", "description": "Spend time outdoors in the park.", "cost": { "amount_usd": 0, "kind": "estimate", "coverage": "all_travelers" } }
-      ]
-    },
-    {
-      "date": "2026-11-15",
-      "activities": [
-        { "order": 1, "name": "Departure preparation", "area": "Rome", "description": "Pack and prepare for the return journey.", "cost": { "amount_usd": 0, "kind": "estimate", "coverage": "all_travelers" } }
-      ]
-    }
-  ],
-  "travel_options": {
-    "flights": {
-      "status": "unavailable",
-      "offers": []
-    },
-    "hotels": {
-      "status": "live",
-      "offers": [
-        {
-          "id": "hotel-offer-1",
-          "name": "Example Hotel",
-          "area": "Central Rome",
-          "source": "example-provider",
-          "retrieved_at": "2026-10-14T11:00:00Z",
-          "price": { "amount_usd": 650, "kind": "provider", "coverage": "entire_trip_all_travelers" },
-          "check_in": "2026-11-10",
-          "check_out": "2026-11-15",
-          "occupancy_adults": 2
-        }
-      ]
-    }
-  },
-  "budget": {
-    "budget_usd": 1500,
-    "selected_flight_offer_id": null,
-    "selected_hotel_offer_id": "hotel-offer-1",
-    "provider_subtotal_usd": 650,
-    "estimated_subtotal_usd": 60,
-    "projected_total_usd": null,
-    "status": "uncertain",
-    "missing_categories": ["flights", "food", "local_transport"],
-    "notes": ["Flight, food and local transportation costs are not available."]
-  },
-  "warnings": [
-    { "code": "FLIGHTS_UNAVAILABLE", "message": "Live flight prices are not available for this search." },
-    { "code": "BUDGET_INCOMPLETE", "message": "Some significant costs are missing; the total is uncertain." }
-  ]
-}
-```
+| Object/field | Required interpretation |
+|---|---|
+| generation_status | Always complete on HTTP 200; partial is not supported |
+| live_integration_status | price_received if at least one valid live flight/hotel offer exists, otherwise no_price |
+| trip | departure_city, destination_city, start_date, return_date, adults match request; nights equals date difference |
+| itinerary | Exactly nights + 1 entries, ordered, one per date inclusive |
+| travel_options | Both flights and hotels objects always present |
+| budget | Original budget, selected offer IDs, itemized costs, subtotals, projected total, status, missing categories and notes |
+| warnings | Array of code/message pairs; empty when none |
 
-**Example data only:** All itinerary suggestions, the hotel name, provider string, and amounts are **illustrative fixture values**, not verified live offers. A real response may use `kind: "provider"` and `live_integration_status: "price_received"` only after the backend genuinely receives and validates a live offer. Do not use this fixture to claim live integration acceptance.
+Each itinerary day has date, activities and empty_day_reason. Activities require order, name, area, description and cost. Order is contiguous from 1 within a day. Each nonempty day has empty_day_reason null. Only first/last days may have zero activities; they require a nonempty travel-related reason. Other days must contain at least one meaningful activity.
 
-### Response semantics and independent status fields
+Activity cost uses amount_usd, kind and coverage. Normal AI activities permit estimate (nonnegative, coverage all_travelers) or unknown (amount and coverage null). Do not present AI prices as provider facts. An explicit zero estimate is allowed for a justified free activity; missing is not zero.
 
-| Field | Allowed values | Meaning |
-|---|---|---|
-| `generation_status` | `complete` | The AI-generated itinerary passed structural validation and covers every day. **HTTP 200 returns only `complete` in MVP v0.3.** |
-| `live_integration_status` | `price_received`, `no_price` | Whether this request returned at least one validated, real priced flight/hotel offer. |
-| `budget.status` | `within_budget`, `over_budget`, `uncertain` | Affordability assessment, computed independently by the backend. |
-| `travel_options.<category>.status` | `live`, `unavailable` | Whether that category has one or more usable, real priced offers. |
+### Travel offers
 
-- **Breaking clarification from v0.2:** `generation_status: "partial"` is retired for the MVP. Missing prices or partial travel data must **not** downgrade a complete AI itinerary. A malformed, incomplete, or unusable AI itinerary must cause an error rather than HTTP 200.
-- `live_integration_status: "price_received"` means at least one genuine provider offer was obtained **for this particular request**, but does not on its own prove the project passed the dynamic integration acceptance tests. If none is obtained (including zero-result searches), return `no_price`.
-- `travel_options.<category>.status` is `live` only if a valid live price exists. `unavailable` covers unsupported searches, provider errors, and zero results; distinguish causes through warning codes.
-- `cost.kind`: `provider` for validated supplier prices; `estimate` for approximations; `unknown` with `amount_usd: null` and `coverage: null` for missing amounts. Any cost counted in USD subtotals must already be normalized to **all adults** or **the entire stay/round trip**.
-- `projected_total_usd` is `null` when any material budget component is unknown or currency normalization is unreliable. **Never replace unknown with zero.**
-- The backend returns exactly one itinerary entry per date from `start_date` to `return_date` inclusive (`nights + 1` dates), in order. Arrival/return days may have zero activities only if explicitly justified by travel; day entries cannot be omitted.
-- Provider offers include `source`, UTC `retrieved_at`, all-adult coverage, and occupancy/traveler count. A quote is **not** guaranteed current availability or bookability.
-- An unsaved generated response includes **no persisted trip ID**. Saving is a separate Should Have endpoint.
+The JSON Schema defines every field. Both categories always return status live or unavailable and offers array. live requires at least one usable offer; unavailable requires [].
 
-### Budget calculation — normative MVP rules
+- Flight fields: id, airline, departure_airport_code, arrival_airport_code, outbound_departure_at, return_departure_at, adults, source, retrieved_at, price, taxes.
+- Hotel fields: id, name, area, check_in, check_out, occupancy_adults, room_qty, source, retrieved_at, price, taxes.
+- Hotel area and room_qty may be null if the provider does not expose them. Null room_qty does not waive verified all-adult occupancy; exclude any quote whose occupancy cannot be established.
+- IDs are unique across all offers in a response. They identify options, not stored database records.
+- Offer price.kind is provider; amount_usd is nonnegative; coverage is entire_trip_all_travelers. Flight quotes cover the round trip for all adults. Hotel quotes cover all requested nights/adults; never multiply an already totalled quote again.
+- The adapter may combine two valid one-way quotes internally; the public shape still describes one complete round trip.
+- source identifies the actual data service; retrieved_at is the UTC retrieval time, not a guarantee of booking availability. Preserve any older supplier quotation timestamp internally.
+- Only offers matching the request's dates, route and passenger/occupancy scope qualify. Arbitrary route-page deals are not eligible.
+- Request USD upstream when possible. Non-USD amounts require a documented conversion source/rate/time retained internally before normalization. Without an approved conversion method, exclude the offer from USD-priced results and warn; never relabel GBP as USD.
 
-Budgeting uses exactly one **selected valid offer per flight/hotel category** (when available), not the sum of every alternative offer. Each price that contributes to a subtotal must already be normalized to USD and the whole relevant trip/group coverage.
+Each offer has taxes:
+- included: additional_amount_usd = 0; the price already includes all known mandatory fees.
+- additional_known: additional_amount_usd > 0, the mandatory additional total for all travelers/whole stay or round trip; this amount is NOT already in price.amount_usd.
+- unknown: additional_amount_usd = null; fee completeness cannot be established. A known base quote can remain visible, but the budget must disclose missing taxes_fees and cannot claim a complete projected total.
+- Where fees are partly known, normalize the known portion into price with internal evidence, then mark remaining fee uncertainty unknown. Never discard known charges.
 
-1. `provider_subtotal_usd` = selected real-priced flight total (if present) + selected real-priced accommodation total (if present) + any other **distinct** provider-priced expenses explicitly included. Known taxes/fees already included in a quote are **not added again**.
-2. `estimated_subtotal_usd` = sum of distinct available estimates for all-adult activities, food and local transport, and other disclosed expenses **not already counted**. Daily estimates are multiplied by their applicable days exactly once; one-off activities are counted once per occurrence.
-3. If **all material cost categories** are accounted for with usable provider prices or labeled estimates: `projected_total_usd = provider_subtotal_usd + estimated_subtotal_usd`. Any known or estimated taxes/fees not already included in an offer must first be added to the appropriate subtotal exactly once; **no hidden third subtotal**.
-4. If a material cost category is missing (or occupancy/currency is unverified): `projected_total_usd = null`, retain the known/estimated subtotals, and list missing categories. Do **not** silently use zero.
-5. Assign `budget.status` in this order:
-   - `over_budget` when the reliable known minimum (provider-priced subtotal and any other **verified, unavoidable** charges) already exceeds `budget_usd`, **even if the projected total is null**; or when a complete projected total is greater than the budget.
-   - `within_budget` only when the projected total is non-null and less than or equal to the budget; this is a *projected fit*, not a price guarantee.
-   - `uncertain` otherwise.
+**Proposed selection rule:** Prefer comparable offers with known fee totals (included/additional_known); choose the lowest base + additional total, tie-break by ID. If all eligible offers have unknown fees, choose lowest known base, warn that this is not a verified cheapest final total. Select exactly one offer per available category, or null when no valid offer exists. Diyar highlights the backend selection and never selects independently. This refines the provisional v0.3 rule and needs team review.
 
-**Selected-offer references:** `budget.selected_flight_offer_id` and `budget.selected_hotel_offer_id` are required fields, each either a string matching an `id` in the corresponding returned `offers[]` array or `null` when no valid offer was chosen. Only the referenced offers contribute flight/hotel amounts to the budget. The frontend highlights these offers and must not calculate a different selection independently.
+### Itemized budget
 
-**Example from above:** chosen hotel = $650; all-adult activity estimates = $60; flights, food, and local transport unknown. Thus `provider_subtotal_usd = 650`, `estimated_subtotal_usd = 60`, `projected_total_usd = null`, and `budget.status = uncertain` (because the known minimum does not exceed $1,500 and the entire trip is not priced).
+budget.cost_items is the only source for budget arithmetic. Each entry has:
 
-### Travel offer and price schema (normative for MVP)
+| Field | Rule |
+|---|---|
+| id | Unique cost-item ID within result |
+| category | flights, accommodation, activities, food, local_transport, taxes_fees |
+| label | User-readable expense name |
+| amount_usd | Whole-group/whole-trip amount, or null for unknown |
+| kind | provider, estimate, unknown |
+| coverage | Always entire_trip_all_travelers after normalization |
+| basis | Explain source/estimate calculation or why unknown; no secrets |
+| source_offer_id | Selected offer ID for provider lines; otherwise null |
+| activity_ref | {date, order} for activity entries; otherwise null |
 
-Both offer types below are **backend-normalized response objects**, not third-party API payloads. `source` and `retrieved_at` must identify real source data; example offers are not evidence of live integration.
+Ledger rules:
+1. Include exactly one base line for flights and one for accommodation. If no valid selected offer exists, use unknown; this candidate does not invent estimates for missing flights/hotels.
+2. Provider base lines equal the selected offer's base price. Non-selected alternatives never enter the ledger.
+3. Add exactly one provider taxes_fees line for each selected offer with additional_known fees; add one unknown taxes_fees line for each with unknown fees. Included fees require no extra line.
+4. Include one activities entry per itinerary activity; preserve its amount/kind and activity_ref. No duplicate activity references. These are whole-group one-occurrence costs, counted once.
+5. Include one food and one local_transport entry for the whole trip. Use an estimate only when a reviewed estimation policy exists; otherwise unknown. Do not multiply by days or adults again after normalization.
+6. For this candidate, provider ledger entries come only from selected flight/hotel quotes and their fees. Activity/food/transport expenses are estimates or unknown. Extra categories or supplier activity offers require a contract revision.
+7. Core material categories are flights, accommodation, activities, food and local_transport. taxes_fees is material when a selected offer has additional/unknown charges. missing_categories is the unique set of categories containing unknown entries. For a two-day travel-only itinerary with no activities, no activity cost is missing merely because there is no planned activity.
+8. Unknown entries have amount null; provider/estimate entries have nonnegative amounts. A zero subtotal means there are no known costs of that kind, not that unknown travel is free.
 
-**Shared price object**
+Calculation order:
+- provider_subtotal_usd = sum(provider ledger entries).
+- estimated_subtotal_usd = sum(estimate ledger entries).
+- projected_total_usd = null if any unknown entry exists; otherwise sum of both subtotals.
+- status = over_budget if the reliable provider-known subtotal already exceeds budget, even with missing costs; otherwise over_budget if a complete projected total exceeds budget; otherwise within_budget when total is non-null and ≤ budget; otherwise uncertain.
+- Estimates do not prove a reliable minimum when other categories are missing.
+- Fees are counted in either the quote's base or its additional line, never both.
+- Selected IDs must exist in the corresponding offers array; missing IDs are null.
+- notes and warnings explain missing costs and fee assumptions. within_budget means a projected fit, not guaranteed prices.
 
-| Field | Type | Meaning |
-|---|---|---|
-| `amount_usd` | number or null | Normalized USD amount; null if unknown |
-| `kind` | `provider` / `estimate` / `unknown` | Provenance of price |
-| `coverage` | `entire_trip_all_travelers` / `all_travelers` / null | Total coverage, never ambiguous per-night or per-person amounts |
+Full ready-to-load responses are in [fixtures](fixtures/README.md). within-budget totals: provider $950, estimates $190, projected $1,140. partial-prices: provider $550, estimates $40, total null. These are artificial test amounts.
 
-For real flight/hotel offers, `kind` must be `provider`, `amount_usd` must be non-negative, `coverage` must be `entire_trip_all_travelers`, and `source`/`retrieved_at` are required. A provider quote in a non-USD currency may only be normalized with a recorded conversion source and time; if conversion cannot be performed, it cannot be included as a USD priced offer. The backend may retain original currency and quote internally.
+## 5. Errors, availability and retries
 
-**Flight offer shape** (`travel_options.flights.offers[]`):
-
-```json
-{
-  "id": "flight-offer-1",
-  "airline": "Example Airline",
-  "departure_airport_code": "IST",
-  "arrival_airport_code": "FCO",
-  "outbound_departure_at": "2026-11-10T07:00:00Z",
-  "return_departure_at": "2026-11-15T18:00:00Z",
-  "adults": 2,
-  "source": "example-provider",
-  "retrieved_at": "2026-10-14T11:00:00Z",
-  "price": { "amount_usd": 480.00, "kind": "provider", "coverage": "entire_trip_all_travelers" }
-}
-```
-
-Times are UTC ISO 8601. The flight quote must cover the **round trip for all adults**; if a provider returns one-way fares, the adapter must construct and validate a combined round-trip price before presenting this shape.
-
-**Hotel offer shape** (`travel_options.hotels.offers[]`):
-
-```json
-{
-  "id": "hotel-offer-1",
-  "name": "Example Hotel",
-  "area": "Central Rome",
-  "check_in": "2026-11-10",
-  "check_out": "2026-11-15",
-  "occupancy_adults": 2,
-  "source": "example-provider",
-  "retrieved_at": "2026-10-14T11:00:00Z",
-  "price": { "amount_usd": 650.00, "kind": "provider", "coverage": "entire_trip_all_travelers" }
-}
-```
-
-Hotel quotes must cover **all nights and all travelers**, including room count where needed. If the provider cannot establish suitable occupancy, exclude the offer or return an explicit warning; never assume a single room accommodates four adults.
-
-**Selection rule (provisional):** Offers are **alternatives**, never costs to sum. The backend selects the cheapest eligible, comparable priced offer in each category (tie-break by offer ID), after confirming round-trip coverage or correct hotel occupancy/all nights and currency normalization. The `budget.selected_*_offer_id` fields make the chosen offers visible to React. If no valid offer exists in a category, return `null` for its selected ID and do not invent a price. This selection algorithm requires team sign-off and may be revisited if the provider offers non-comparable fare or room types.
-
-**Activity costs:** `amount_usd` describes the cost **for all adults in that activity**, not per adult. Every activity still needs `order`, `name`, `area`, `description`, and a price object (`kind: unknown` if no sound estimate).
-
-### Complete itinerary fixture rule
-
-The full example in Section 4 contains **November 10–15 inclusive** (six dates for five nights). Diyar and Adel can use this structure for frontend/backend mock contract tests. It intentionally uses illustrative amounts and MUST NOT be displayed as a live result without a real provider request. Demo mode uses separately marked read-only fixtures. Date-validation tests should calculate future dates relative to the test runtime, rather than relying indefinitely on the static November 2026 dates.
-
-## 5. Error response contract
-
-Non-2xx responses use the common shape below. Never leak credentials or raw provider payloads. FastAPI default Pydantic validation errors **must** be translated via exception handlers to the same envelope. `details` is an object (or null), with field-specific errors optionally represented as `details.fields` (array of `{field, message}` objects). `request_id` is a backend-generated opaque identifier present on every API error response and mirrored in the `X-Request-ID` response header; it helps the team correlate failures with **sanitized** server logs.
-
+Non-2xx body:
 ```json
 {
   "error": {
-    "code": "INVALID_TRIP_DATES",
-    "message": "Trip duration must be between 1 and 7 nights.",
-    "details": { "field": "return_date" }
+    "code": "VALIDATION_ERROR",
+    "message": "Adults must be between 1 and 4.",
+    "details": {"fields": [{"field": "adults", "message": "Must be between 1 and 4."}]}
   },
-  "request_id": "e1adf1ba-26ee-4f5c-9b5b-6f6f4ef4fe16"
+  "request_id": "opaque-request-id"
 }
 ```
 
-| HTTP | Code | Meaning / frontend action |
-|---|---|---|
-| 400 | `INVALID_TRIP_DATES` | Correct date fields |
-| 400 | `UNSUPPORTED_LOCATION` | Select supported cities |
-| 401 | `UNAUTHORIZED` | Sign in / refresh session |
-| 403 | `FORBIDDEN` | Authenticated but insufficient permission (where applicable) |
-| 404 | `NOT_FOUND` | Record not found or not owned; do not reveal existence |
-| 422 | `VALIDATION_ERROR` | Correct invalid input fields |
-| 429 | `RATE_LIMITED` | Wait and retry later |
-| 502 | `AI_GENERATION_FAILED` | Generation failed; retry; no fabricated plan |
-| 503 | `PROVIDER_UNAVAILABLE` | Required upstream service unavailable; retry |
-| 504 | `GENERATION_TIMEOUT` | Timed out; retry |
-| 500 | `INTERNAL_ERROR` | Generic safe error; log details server-side |
+error.details is always present as an object or null. Field errors use details.fields with field/message pairs. Error responses always include request_id and a matching X-Request-ID header. Translate FastAPI/Pydantic errors into this envelope.
 
-Travel-provider failures may still produce **HTTP 200 with `generation_status: "complete"`** if a complete valid AI itinerary was generated. In that case, missing travel data is explicit through category `status`, `live_integration_status`, budget `status`, and warning codes. Use `VALIDATION_ERROR` for generic 422 schema errors; use specific 400 codes for domain validation. `429` may include `Retry-After` if known. If AI generation fails or remains invalid after bounded recovery, return a non-2xx error, never a fabricated itinerary.
+| HTTP | Code |
+|---|---|
+| 400 | INVALID_TRIP_DATES, UNSUPPORTED_LOCATION |
+| 401 | UNAUTHORIZED |
+| 403 | FORBIDDEN (where applicable) |
+| 404 | NOT_FOUND (optional records, including another owner's record) |
+| 422 | VALIDATION_ERROR |
+| 429 | RATE_LIMITED |
+| 502 | AI_GENERATION_FAILED |
+| 503 | PROVIDER_UNAVAILABLE |
+| 504 | GENERATION_TIMEOUT |
+| 500 | INTERNAL_ERROR |
 
-### Timeouts and retries — initial implementation defaults
+Wrong types/missing fields/range errors use 422. Well-typed but invalid date relationships use 400 INVALID_TRIP_DATES. Missing, expired or invalid auth uses 401.
 
-- `TRAVEL_API_TIMEOUT_SECONDS = 10` **per provider request**; an unavailable travel provider may yield an otherwise valid result with missing-price warnings.
-- `AI_API_TIMEOUT_SECONDS = 35` **per attempt**; failure to obtain a usable AI itinerary yields `504 GENERATION_TIMEOUT` for timeouts or `502 AI_GENERATION_FAILED` for invalid/unusable output.
-- `GENERATION_TIMEOUT_SECONDS = 60` **overall server-side deadline**, including adapters, generation, and validation. Exceeding it yields `504 GENERATION_TIMEOUT`; frontend should allow a slightly longer transport deadline (e.g., 70 seconds) and show a loading state.
-- At most **one retry** for idempotent travel-provider lookups on transient failures, only if it fits the overall deadline; **do not automatically retry chargeable AI generation** in the MVP. Do not retry authentication, validation, or unsupported-location errors. Honor known rate limits/`Retry-After` if compatible with the deadline.
-- These are **proposed configuration defaults**, not measured provider guarantees. Adel and Ziyad should adjust them after real feasibility tests. Prevent duplicate generation submissions in the frontend.
+Travel errors alone do not cause total generation failure: if AI succeeds, return 200 with empty failed-category offers and warnings. AI timeout uses 504; invalid AI structure uses 502; confirmed AI service outage may use 503; upstream AI rate limits may use 429. A travel-provider 429 is a warning within an otherwise valid 200 result, not an automatic whole-request 429.
 
-## 6. Other endpoints — provisional
+Proposed warning codes: FLIGHTS_UNAVAILABLE, HOTELS_UNAVAILABLE, TRAVEL_RATE_LIMITED, TRAVEL_TIMEOUT, CURRENCY_UNAVAILABLE, TAXES_UNKNOWN, BUDGET_INCOMPLETE. Document any newly introduced codes before UI integration; frontend must display the safe message for unrecognized codes too.
 
-### GET `/api/v1/health` (MVP)
+Initial configuration defaults, pending measured tests:
+- Travel lookup: 10 seconds per request.
+- AI: 35 seconds per attempt.
+- Overall generation: 60 seconds including all lookups, AI and validation.
+- Frontend transport allowance: 70 seconds.
+- At most one retry for an idempotent travel lookup on transient failure, only within the overall deadline. Honor Retry-After when it fits.
+- No automatic retry of chargeable AI generation; no auth/validation/unsupported-input retries. Prevent duplicate submits.
+- If generation reaches its overall deadline, return 504.
+- Never expose provider secrets, tokens or raw debug responses.
 
-HTTP 200:
+GET /health returns 200 {"status":"ok","service":"travelmate-api"} and proves only local backend health.
 
-```json
-{ "status": "ok", "service": "travelmate-api" }
-```
+## 6. Offline demo and fixtures
 
-This checks the locally running backend; it does not guarantee Supabase or external providers are currently reachable.
+Offline demo is a separate explicit client path, not a query parameter or authentication bypass on /trips/generate. It uses bundled read-only fixtures, with no backend generation, hosted sign-in or provider calls. Online service initialization must not fire on entering demo.
 
-### Saved-trip endpoints (Should Have; not mandatory MVP gate)
+The fixture manifest carries data_mode structural_mock and live_evidence false outside the public response. Diyar must preserve this context and show a DEMO/MOCK banner whenever these files are rendered, even though payload fields simulate live shapes. These examples are not production fallbacks and do not count as real-price evidence. Final 2–3 curated demo journeys remain FE-03 work.
 
-- `POST /api/v1/trips`: explicitly save a validated generated plan; server derives owner from the access token; never trust client-supplied `user_id`.
-- `GET /api/v1/trips`: return a list of the signed-in user's saved trips.
-- `GET /api/v1/trips/{trip_id}`: return one saved trip only if owned by that user; otherwise respond `404` (do not expose ownership).
+Dates are fixed for reproducibility. Fixtures use validation_today_utc = 2026-10-15; dynamic integration tests must generate future dates relative to runtime. Never use an old fixture date as a production supported-search promise.
 
-**Exact saved-trip request/response models are intentionally deferred** until F-09 is prioritized. `database-schema.md` v0.2 already defines the proposed single-table storage and backend-only access path; it does not finalize HTTP payloads. Define those payloads jointly before implementation. Generation never waits for or writes to the optional table.
+## 7. Internal ownership and flow
 
-## 7. API contract testing and ownership
+React validates input → FastAPI verifies JWT and validates request → travel adapter normalizes genuine offers → FastAPI selects offers → AI adapter proposes complete itinerary → FastAPI validates output, creates expense ledger and calculates totals → React renders.
 
-- **Diyar (React):** use example JSON as mock data; implement form validation, loading/error/missing-price UI states, budget labels, and result rendering.
-- **Adel (FastAPI):** implement the endpoint route, Pydantic schemas, token verification, normalized responses, and budget calculations.
-- **Ziyad (integrations):** supply provider feasibility findings, supported search cases, stable internal travel adapter output, and actual source/timestamp metadata.
-- **Team Lead:** review contract changes and verify that frontend/backend agree on field names and error codes.
+- Adel: public schemas/routes, auth, deadlines, orchestration, offer selection, deterministic ledger/budget and final response.
+- Ziyad: provider ID mapping, travel normalization/evidence and AI adapter typed output.
+- Diyar: forms, API handling, mocks, demo context, and backend-determined results.
+- Team lead: review decisions, fixture consistency, and cross-owner approval.
 
-Contract acceptance tests: HTTP 200 always has `generation_status: "complete"` and exactly `nights + 1` dates; invalid/incomplete AI output yields non-2xx; both `live_integration_status` values with independently computed `budget.status`; selected offer IDs either reference returned eligible offers or are null; only selected offers counted; flight/hotel normalized schemas and all-traveler coverage; no missing cost treated as zero; common error envelope with `request_id`; input/auth validation; expected timeout behavior; metadata for actual live offers; no secrets in browser responses. Test a real provider using user-dependent searches before counting the live-price MVP requirement as met.
+See [adapter-contracts.md](adapter-contracts.md) for input/output objects, failure envelopes and handoff checklist.
 
-## 8. Decisions pending before v1.0 approval
+## 8. Optional storage
 
-1. **Live provider:** choose flight or hotel as the mandatory live integration and list verified supported searches.
-2. **Location identifiers:** confirm whether canonical city labels are enough or public `city_id`/IATA codes are preferable.
-3. **Cost model details:** define estimated food/local transport and activity pricing policy, plus handling provider quotes in currencies other than USD.
-4. **Budget completeness:** finalize which cost categories are significant enough to require `projected_total_usd: null` and `uncertain`.
-5. **Saved trips:** finalize exact HTTP payloads if F-09 is prioritized; follow the backend-only access/grants design in `database-schema.md` v0.2. Do not add direct browser table policies.
-6. **Offer selection:** confirm or adjust the provisional cheapest-valid-offer rule and whether taxes/fees are sufficiently represented.
-7. **Timeout tuning:** confirm the proposed provider, AI, and overall deadlines through measured integration tests; the starting values in this draft are not guarantees.
+F-09 remains deferred. Generate never writes to the database. Saved-trip HTTP payloads are not finalized here. If prioritized, follow database-schema.md: React uses Auth only; FastAPI alone accesses public.trips through its server-only elevated client and enforces verified user ownership explicitly because that client bypasses RLS. Snapshots remain unverified historical user-submitted copies. Validate against the actual adopted contract version; do not execute a migration under PLAN-02.
 
-**v0.2 → v0.3 change note:** A successfully validated itinerary now always returns `generation_status: "complete"`; the old 200 `partial` state is removed. Missing travel data and cost coverage remain observable through their independent fields. The budget response now exposes the two selected-offer IDs; error responses include `request_id`; timeout/retry defaults are documented.
+## 9. Review gates before PLAN-02 Done
 
-**Change rule:** Altering field names or meanings requires agreement between frontend, backend, and integration owners before merging implementation branches. Setup, wireframes and structural mocks may proceed against this candidate. It becomes the approved integration baseline only after team review and confirmation that the selected provider can satisfy the mandatory live-price requirement.
+Prepared in this revision: field schema, expense ledger, adapter boundary proposal, structural examples and semantic checks.
 
+Still pending:
+- [ ] Diyar confirms forms/results/errors/demo context against these fixtures.
+- [ ] Adel confirms schemas, ledger rules, UTC validation reference, error mappings and adapter boundary.
+- [ ] Ziyad confirms provider normalization, AI output contract, route timezone handling and fee/occupancy evidence.
+- [ ] Select the mandatory provider and verify supported cities/routes; confirm canonical labels suffice.
+- [ ] Approve a food/local-transport estimation policy; until then these remain unknown in real output. Fixture rates are illustrative, not an approved policy.
+- [ ] Approve a conversion method or keep non-USD quotes unavailable.
+- [ ] Confirm fee-aware selection and timeout defaults using actual provider evidence.
+- [ ] Record team-lead integration approval after the above reviews.
+
+Provider-independent scaffolding and mock UI may proceed. This document does not claim a live provider has passed acceptance or that team review is complete.

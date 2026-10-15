@@ -1,0 +1,82 @@
+# TravelMate — Internal Adapter Contracts
+
+**Version:** 0.4 candidate, 2026-10-15.  
+**Status:** Proposed handoff for Adel and Ziyad; not a record of their agreement. Public HTTP authority: [api-contracts.md](api-contracts.md).
+
+Adapters are Python module boundaries inside FastAPI, not new HTTP endpoints. Functions may use equivalent Pydantic objects; names below are proposed. The public JSON Schema provides request, offer and day definitions.
+
+## Travel adapter: search_travel
+
+Input (all fields required):
+- trip_request: the exact public request object.
+- categories: array containing flights, hotels, or both, limited to implemented providers.
+- deadline_at: absolute UTC ISO timestamp from Adel's overall deadline.
+- request_id: sanitized log correlation ID, never an access token.
+
+Ziyad validates configured canonical-city-to-provider mappings and constructs provider queries using request dates and adults. Adel validates supported public inputs first.
+
+Output:
+- flights and hotels: each {status, offers, reason_code}.
+- status: available or unavailable; offers use public flight/hotel schema.
+- reason_code: null for available; otherwise not_configured, unsupported_search, no_results, rate_limited, timeout, auth_error, provider_error or invalid_response.
+- warnings: array of safe {code, message}.
+- provenance: array of internal evidence objects, one per returned offer.
+
+Every provenance object contains:
+- offer_id: returned offer ID.
+- original_currency and original_amount: source base quote before conversion.
+- quote_timestamp: nullable provider timestamp.
+- conversion: null for USD; otherwise {source, rate_to_usd, converted_at}.
+- provider_query: sanitized actual route/destination, dates, adults and room parameters (no headers or keys).
+- coverage_evidence: nonempty explanation of group/round-trip/full-stay scope and fee treatment.
+- airport_timezones: null for hotels; for flights {departure, destination} with IANA names used to verify local-date matching.
+
+Retain this evidence in sanitized development output; never expose raw credentials or arbitrary supplier payloads to React. Public retrieved_at is assigned at retrieval.
+
+Rules:
+- available requires usable offers and reason_code null. unavailable requires [] and a reason.
+- Unconfigured optional category is returned explicitly, not silently omitted.
+- No fixture substitution. Provider failures become unavailable; no-results is not a reason to rotate keys.
+- Currency conversion requires the reviewed policy. All flight/hotel prices are normalized before returning; uncertain occupancy or mismatched dates excludes the offer.
+- Known base quotes with unknown taxes may be returned only with taxes.status unknown.
+- Apply configured timeout bounded by deadline_at; at most one permitted travel retry.
+- An unexpected adapter programming failure is caught by orchestration, logged safely and converted to a category warning, subject to successful AI generation.
+
+## AI adapter: generate_itinerary
+
+Input:
+- trip_request: public request.
+- selected_offers: {flight: flight offer or null, hotel: hotel offer or null}.
+- travel_availability: {flights: live/unavailable, hotels: live/unavailable}.
+- estimation_policy: {id: string or null, food: string or null, local_transport: string or null}. Null means no approved estimate basis. Descriptions must specify units/group/day coverage.
+- deadline_at and request_id as above.
+
+Output is exactly one of:
+- Success: {status: "ok", itinerary: day[], ancillary_estimates: {food: estimate_object, local_transport: estimate_object}}.
+- Failure: {status: "error", error: {code, message}}.
+
+estimate_object fields are all required:
+- amount_usd: nonnegative whole-trip/all-adult number, or null.
+- kind: estimate or unknown.
+- basis: nonempty methodology or missing-data explanation.
+- policy_id: reviewed policy identifier or null.
+Unknown means amount and policy_id are null. Estimates require a non-null matching policy_id and explanatory basis; if no policy is approved, both ancillary objects must be unknown. Activity estimates need meaningful descriptions and are always labeled estimates; uncertain amounts stay null.
+
+Success itinerary uses the same day/activity schema as the public response: exactly nights + 1 dates, contiguous order and justified empty travel days. AI may not manufacture provider offers, select different options, calculate authoritative budget totals or return a saved-trip ID.
+
+AI errors: timeout, rate_limited, unavailable, invalid_output. Ziyad parses and validates structured output; Adel independently validates before publishing. Map these to the public error envelope (504, 429, 503, 502 respectively). Do not auto-retry chargeable generation.
+
+## Budget boundary: Adel
+
+Inputs: validated request, normalized travel options, selected offer IDs, validated itinerary and ancillary estimates.
+
+Adel constructs cost_items and applies the public ledger rules. Activity refs connect each cost line to exactly one activity. Provider costs come from selected offers only. AI-supplied subtotals/statuses are ignored.
+
+Frontend receives the completed public result, never the raw internal adapter envelope. Error request_id is added by FastAPI.
+
+## Handoff checklist
+
+- [ ] Adel and Ziyad agree function names/types and validate a normalized sample.
+- [ ] Ziyad supplies actual provider provenance, supported mapping and limitations.
+- [ ] Diyar confirms the public result matches display needs.
+- [ ] Team lead records agreement and provider/estimate decisions under PLAN-02.

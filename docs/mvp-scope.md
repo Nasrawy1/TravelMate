@@ -5,6 +5,8 @@
 **Project:** TravelMate Graduation Project  
 **Related documents:** `architecture.md`, `api-contracts.md`, `database-schema.md`
 
+**PLAN-02 preparation update (2026-10-15):** [API contract v0.4](api-contracts.md), [internal adapter contracts](adapter-contracts.md), and [validated structural fixtures](fixtures/README.md) are now available as a review candidate. References below to v0.3 describe the preceding baseline; v0.4 adoption requires Diyar/Adel/Ziyad review and provider compatibility evidence. This update does not approve implementation, provider selection, or optional storage execution.
+
 ## 1. MVP Objective
 
 Build a locally runnable, AI-powered travel-planning web application. A user signs in, enters trip details, and receives a structured day-by-day itinerary with a transparent trip-wide budget assessment. In normal online mode, the itinerary is generated through a real AI API and **at least one of the two travel categories (flights or hotels) must provide real provider-sourced price data** for a supported trip search.

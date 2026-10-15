@@ -1,0 +1,8 @@
+{
+  "error": {
+    "code": "AI_GENERATION_FAILED",
+    "message": "The AI did not return a valid complete itinerary.",
+    "details": null
+  },
+  "request_id": "fixture-ai-failure"
+}

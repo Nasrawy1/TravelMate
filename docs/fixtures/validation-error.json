@@ -1,0 +1,15 @@
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Adults must be an integer between 1 and 4.",
+    "details": {
+      "fields": [
+        {
+          "field": "adults",
+          "message": "Must be between 1 and 4."
+        }
+      ]
+    }
+  },
+  "request_id": "fixture-validation-error"
+}

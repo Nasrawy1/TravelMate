@@ -1,0 +1,1198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TravelMate API 0.4 candidate",
+  "$defs": {
+    "request": {
+      "type": "object",
+      "properties": {
+        "departure_city": {
+          "type": "string",
+          "minLength": 1
+        },
+        "destination_city": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "return_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "adults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "budget_usd": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "departure_city",
+        "destination_city",
+        "start_date",
+        "return_date",
+        "adults",
+        "budget_usd"
+      ],
+      "additionalProperties": false
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "generation_status": {
+          "enum": [
+            "complete"
+          ]
+        },
+        "live_integration_status": {
+          "enum": [
+            "price_received",
+            "no_price"
+          ]
+        },
+        "trip": {
+          "type": "object",
+          "properties": {
+            "departure_city": {
+              "type": "string",
+              "minLength": 1
+            },
+            "destination_city": {
+              "type": "string",
+              "minLength": 1
+            },
+            "start_date": {
+              "type": "string",
+              "format": "date"
+            },
+            "return_date": {
+              "type": "string",
+              "format": "date"
+            },
+            "nights": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 7
+            },
+            "adults": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4
+            }
+          },
+          "required": [
+            "departure_city",
+            "destination_city",
+            "start_date",
+            "return_date",
+            "nights",
+            "adults"
+          ],
+          "additionalProperties": false
+        },
+        "itinerary": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": {
+                "type": "string",
+                "format": "date"
+              },
+              "activities": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "order": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "area": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "description": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "cost": {
+                      "type": "object",
+                      "properties": {
+                        "amount_usd": {
+                          "anyOf": [
+                            {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "kind": {
+                          "enum": [
+                            "provider",
+                            "estimate",
+                            "unknown"
+                          ]
+                        },
+                        "coverage": {
+                          "enum": [
+                            "entire_trip_all_travelers",
+                            "all_travelers",
+                            null
+                          ]
+                        }
+                      },
+                      "required": [
+                        "amount_usd",
+                        "kind",
+                        "coverage"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "order",
+                    "name",
+                    "area",
+                    "description",
+                    "cost"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "empty_day_reason": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "date",
+              "activities",
+              "empty_day_reason"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "travel_options": {
+          "type": "object",
+          "properties": {
+            "flights": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "enum": [
+                    "live",
+                    "unavailable"
+                  ]
+                },
+                "offers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "source": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "retrieved_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "Z$"
+                      },
+                      "price": {
+                        "type": "object",
+                        "properties": {
+                          "amount_usd": {
+                            "anyOf": [
+                              {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "kind": {
+                            "enum": [
+                              "provider",
+                              "estimate",
+                              "unknown"
+                            ]
+                          },
+                          "coverage": {
+                            "enum": [
+                              "entire_trip_all_travelers",
+                              "all_travelers",
+                              null
+                            ]
+                          }
+                        },
+                        "required": [
+                          "amount_usd",
+                          "kind",
+                          "coverage"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "taxes": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "enum": [
+                              "included",
+                              "additional_known",
+                              "unknown"
+                            ]
+                          },
+                          "additional_amount_usd": {
+                            "anyOf": [
+                              {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "status",
+                          "additional_amount_usd"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "airline": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "departure_airport_code": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "arrival_airport_code": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "outbound_departure_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "Z$"
+                      },
+                      "return_departure_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "Z$"
+                      },
+                      "adults": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "source",
+                      "retrieved_at",
+                      "price",
+                      "taxes",
+                      "airline",
+                      "departure_airport_code",
+                      "arrival_airport_code",
+                      "outbound_departure_at",
+                      "return_departure_at",
+                      "adults"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "status",
+                "offers"
+              ],
+              "additionalProperties": false
+            },
+            "hotels": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "enum": [
+                    "live",
+                    "unavailable"
+                  ]
+                },
+                "offers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "source": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "retrieved_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "Z$"
+                      },
+                      "price": {
+                        "type": "object",
+                        "properties": {
+                          "amount_usd": {
+                            "anyOf": [
+                              {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "kind": {
+                            "enum": [
+                              "provider",
+                              "estimate",
+                              "unknown"
+                            ]
+                          },
+                          "coverage": {
+                            "enum": [
+                              "entire_trip_all_travelers",
+                              "all_travelers",
+                              null
+                            ]
+                          }
+                        },
+                        "required": [
+                          "amount_usd",
+                          "kind",
+                          "coverage"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "taxes": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "enum": [
+                              "included",
+                              "additional_known",
+                              "unknown"
+                            ]
+                          },
+                          "additional_amount_usd": {
+                            "anyOf": [
+                              {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "status",
+                          "additional_amount_usd"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "name": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "area": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "check_in": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "check_out": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "occupancy_adults": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4
+                      },
+                      "room_qty": {
+                        "anyOf": [
+                          {
+                            "type": "integer",
+                            "minimum": 1
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "source",
+                      "retrieved_at",
+                      "price",
+                      "taxes",
+                      "name",
+                      "area",
+                      "check_in",
+                      "check_out",
+                      "occupancy_adults",
+                      "room_qty"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "status",
+                "offers"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "flights",
+            "hotels"
+          ],
+          "additionalProperties": false
+        },
+        "budget": {
+          "type": "object",
+          "properties": {
+            "budget_usd": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "selected_flight_offer_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "selected_hotel_offer_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "cost_items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "category": {
+                    "enum": [
+                      "flights",
+                      "accommodation",
+                      "activities",
+                      "food",
+                      "local_transport",
+                      "taxes_fees"
+                    ]
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "amount_usd": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "kind": {
+                    "enum": [
+                      "provider",
+                      "estimate",
+                      "unknown"
+                    ]
+                  },
+                  "coverage": {
+                    "enum": [
+                      "entire_trip_all_travelers"
+                    ]
+                  },
+                  "basis": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_offer_id": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "activity_ref": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "date": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "order": {
+                            "type": "integer",
+                            "minimum": 1
+                          }
+                        },
+                        "required": [
+                          "date",
+                          "order"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "category",
+                  "label",
+                  "amount_usd",
+                  "kind",
+                  "coverage",
+                  "basis",
+                  "source_offer_id",
+                  "activity_ref"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "provider_subtotal_usd": {
+              "type": "number",
+              "minimum": 0
+            },
+            "estimated_subtotal_usd": {
+              "type": "number",
+              "minimum": 0
+            },
+            "projected_total_usd": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "status": {
+              "enum": [
+                "within_budget",
+                "over_budget",
+                "uncertain"
+              ]
+            },
+            "missing_categories": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "flights",
+                  "accommodation",
+                  "activities",
+                  "food",
+                  "local_transport",
+                  "taxes_fees"
+                ]
+              },
+              "uniqueItems": true
+            },
+            "notes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": [
+            "budget_usd",
+            "selected_flight_offer_id",
+            "selected_hotel_offer_id",
+            "cost_items",
+            "provider_subtotal_usd",
+            "estimated_subtotal_usd",
+            "projected_total_usd",
+            "status",
+            "missing_categories",
+            "notes"
+          ],
+          "additionalProperties": false
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "generation_status",
+        "live_integration_status",
+        "trip",
+        "itinerary",
+        "travel_options",
+        "budget",
+        "warnings"
+      ],
+      "additionalProperties": false
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "enum": [
+                "INVALID_TRIP_DATES",
+                "UNSUPPORTED_LOCATION",
+                "UNAUTHORIZED",
+                "FORBIDDEN",
+                "NOT_FOUND",
+                "VALIDATION_ERROR",
+                "RATE_LIMITED",
+                "AI_GENERATION_FAILED",
+                "PROVIDER_UNAVAILABLE",
+                "GENERATION_TIMEOUT",
+                "INTERNAL_ERROR"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1
+            },
+            "details": {
+              "anyOf": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "details"
+          ],
+          "additionalProperties": false
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "error",
+        "request_id"
+      ],
+      "additionalProperties": false
+    },
+    "activity": {
+      "type": "object",
+      "properties": {
+        "order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "area": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cost": {
+          "type": "object",
+          "properties": {
+            "amount_usd": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "kind": {
+              "enum": [
+                "provider",
+                "estimate",
+                "unknown"
+              ]
+            },
+            "coverage": {
+              "enum": [
+                "entire_trip_all_travelers",
+                "all_travelers",
+                null
+              ]
+            }
+          },
+          "required": [
+            "amount_usd",
+            "kind",
+            "coverage"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "order",
+        "name",
+        "area",
+        "description",
+        "cost"
+      ],
+      "additionalProperties": false
+    },
+    "day": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "activities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "order": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "area": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "cost": {
+                "type": "object",
+                "properties": {
+                  "amount_usd": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "kind": {
+                    "enum": [
+                      "provider",
+                      "estimate",
+                      "unknown"
+                    ]
+                  },
+                  "coverage": {
+                    "enum": [
+                      "entire_trip_all_travelers",
+                      "all_travelers",
+                      null
+                    ]
+                  }
+                },
+                "required": [
+                  "amount_usd",
+                  "kind",
+                  "coverage"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "order",
+              "name",
+              "area",
+              "description",
+              "cost"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "empty_day_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "date",
+        "activities",
+        "empty_day_reason"
+      ],
+      "additionalProperties": false
+    },
+    "flight": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "retrieved_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "price": {
+          "type": "object",
+          "properties": {
+            "amount_usd": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "kind": {
+              "enum": [
+                "provider",
+                "estimate",
+                "unknown"
+              ]
+            },
+            "coverage": {
+              "enum": [
+                "entire_trip_all_travelers",
+                "all_travelers",
+                null
+              ]
+            }
+          },
+          "required": [
+            "amount_usd",
+            "kind",
+            "coverage"
+          ],
+          "additionalProperties": false
+        },
+        "taxes": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "included",
+                "additional_known",
+                "unknown"
+              ]
+            },
+            "additional_amount_usd": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "additional_amount_usd"
+          ],
+          "additionalProperties": false
+        },
+        "airline": {
+          "type": "string",
+          "minLength": 1
+        },
+        "departure_airport_code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "arrival_airport_code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "outbound_departure_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "return_departure_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "adults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        }
+      },
+      "required": [
+        "id",
+        "source",
+        "retrieved_at",
+        "price",
+        "taxes",
+        "airline",
+        "departure_airport_code",
+        "arrival_airport_code",
+        "outbound_departure_at",
+        "return_departure_at",
+        "adults"
+      ],
+      "additionalProperties": false
+    },
+    "hotel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "retrieved_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "price": {
+          "type": "object",
+          "properties": {
+            "amount_usd": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "kind": {
+              "enum": [
+                "provider",
+                "estimate",
+                "unknown"
+              ]
+            },
+            "coverage": {
+              "enum": [
+                "entire_trip_all_travelers",
+                "all_travelers",
+                null
+              ]
+            }
+          },
+          "required": [
+            "amount_usd",
+            "kind",
+            "coverage"
+          ],
+          "additionalProperties": false
+        },
+        "taxes": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "included",
+                "additional_known",
+                "unknown"
+              ]
+            },
+            "additional_amount_usd": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "additional_amount_usd"
+          ],
+          "additionalProperties": false
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "area": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "check_in": {
+          "type": "string",
+          "format": "date"
+        },
+        "check_out": {
+          "type": "string",
+          "format": "date"
+        },
+        "occupancy_adults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "room_qty": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "source",
+        "retrieved_at",
+        "price",
+        "taxes",
+        "name",
+        "area",
+        "check_in",
+        "check_out",
+        "occupancy_adults",
+        "room_qty"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

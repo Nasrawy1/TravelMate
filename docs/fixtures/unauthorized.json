@@ -1,0 +1,8 @@
+{
+  "error": {
+    "code": "UNAUTHORIZED",
+    "message": "Sign in again.",
+    "details": null
+  },
+  "request_id": "fixture-unauthorized"
+}

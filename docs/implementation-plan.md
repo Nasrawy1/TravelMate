@@ -4,6 +4,8 @@
 **Date:** 2026-10-15
 **Baseline:** architecture v1.2, scope v1.3, API wire schema v0.3, database v0.2.
 
+**PLAN-02 preparation update (2026-10-15):** [API contract v0.4](api-contracts.md), [internal adapter contracts](adapter-contracts.md), and [validated structural fixtures](fixtures/README.md) are now available as a review candidate. References below to v0.3 describe the preceding baseline; v0.4 adoption requires Diyar/Adel/Ziyad review and provider compatibility evidence. This update does not approve implementation, provider selection, or optional storage execution.
+
 ## Priorities and ownership
 
 P0 unlocks work or resolves feasibility. P1 delivers the mandatory MVP. P2 is optional after core acceptance. Priorities below are proposals, not observed Project statuses. Existing issue assignees are preserved. New task codes are local proposals, not assigned GitHub issue numbers.
@@ -236,25 +238,28 @@ Approval of this planning baseline is not evidence of implementation or successf
 
 **Dependencies:** None for the general design; provider evidence gates final integration acceptance.
 
-### #11: PLAN-02: Review API v0.3 & Shared Fixtures
+### #11: PLAN-02: Review API v0.4 & Shared Fixtures
 
 **Owner:** Nasrawy1  
 **Proposed priority:** P0  
-**Start:** Start now; final provider sign-off after feasibility
+**Status:** Contract preparation available; review and integration approval pending. No completion of #11 is implied.
 
-**Tasks**
+**Prepared deliverables**
 
-- [ ] Use canonical docs/api-contracts.md; confirm public snake_case request/response/error schemas.
-- [ ] Agree normalized adapter boundary with Adel and Ziyad and UI fixtures with Diyar.
-- [ ] Provide structural fixtures for live-price-shaped results, no-price results, over-budget and errors; mark mocks visibly in development.
-- [ ] Keep separate offline-demo wrapper/metadata; fixture data never counts as live evidence.
-- [ ] Record pending provider/city list, estimates, offer selection and measured deadlines; approve integration baseline after feasibility.
+- [x] Define required/nullable fields in the v0.4 JSON Schema and contract.
+- [x] Specify itemized costs, fee treatment, selection proposal and budget arithmetic.
+- [x] Propose internal travel/AI adapter inputs and outputs for Adel and Ziyad.
+- [x] Supply structural request, success, missing-price, over-budget, unknown-tax and error fixtures, with explicit mock metadata.
+- [x] Check fixtures structurally and semantically; reject representative invalid mutations.
 
-**Acceptance**
+**Remaining acceptance**
 
-- [ ] Core contract is shared; fixtures validate against it; unresolved choices are documented; F-09 payloads remain deferred.
+- [ ] Diyar, Adel and Ziyad agree on fields, internal interfaces, cost rules and demo context.
+- [ ] Verify chosen provider/canonical city mappings, occupancy, dates, currency and fees.
+- [ ] Approve estimation/conversion policy, selection and timeout settings; unknown amounts remain explicit meanwhile.
+- [ ] Record integration baseline approval and update adopted version references consistently.
 
-**Dependencies:** #10; #4/#5 for final supported searches
+**Dependencies:** #10 approved scope; #2/#4/#5 and #13 evidence. F-09 HTTP models remain deferred.
 
 ### #12: FE-01: Initialize React + Vite Frontend
 

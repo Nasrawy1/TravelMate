@@ -1,0 +1,218 @@
+{
+  "generation_status": "complete",
+  "live_integration_status": "price_received",
+  "trip": {
+    "departure_city": "Istanbul",
+    "destination_city": "Rome",
+    "start_date": "2026-11-10",
+    "return_date": "2026-11-12",
+    "adults": 2,
+    "nights": 2
+  },
+  "itinerary": [
+    {
+      "date": "2026-11-10",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Arrival walk",
+          "area": "Rome",
+          "description": "Illustrative activity for contract testing.",
+          "cost": {
+            "amount_usd": 0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-11-11",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Museum visit",
+          "area": "Rome",
+          "description": "Illustrative activity for contract testing.",
+          "cost": {
+            "amount_usd": 40,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Departure preparation",
+          "area": "Rome",
+          "description": "Illustrative activity for contract testing.",
+          "cost": {
+            "amount_usd": 0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        }
+      ]
+    }
+  ],
+  "travel_options": {
+    "flights": {
+      "status": "unavailable",
+      "offers": []
+    },
+    "hotels": {
+      "status": "live",
+      "offers": [
+        {
+          "id": "fixture-hotel-1",
+          "source": "fixture-provider",
+          "retrieved_at": "2026-10-15T11:00:00Z",
+          "price": {
+            "amount_usd": 500,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 50
+          },
+          "name": "Example Hotel",
+          "area": null,
+          "check_in": "2026-11-10",
+          "check_out": "2026-11-12",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        }
+      ]
+    }
+  },
+  "budget": {
+    "budget_usd": 500,
+    "selected_flight_offer_id": null,
+    "selected_hotel_offer_id": "fixture-hotel-1",
+    "cost_items": [
+      {
+        "id": "flight",
+        "category": "flights",
+        "label": "flight",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "No comparable flight quote.",
+        "source_offer_id": null,
+        "activity_ref": null
+      },
+      {
+        "id": "hotel",
+        "category": "accommodation",
+        "label": "hotel",
+        "amount_usd": 500,
+        "kind": "provider",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "Selected quote for two adults, two nights, excluding listed additional tax.",
+        "source_offer_id": "fixture-hotel-1",
+        "activity_ref": null
+      },
+      {
+        "id": "activity-2026-11-10",
+        "category": "activities",
+        "label": "activity-2026-11-10",
+        "amount_usd": 0,
+        "kind": "estimate",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "Illustrative whole-group activity estimate.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-10",
+          "order": 1
+        }
+      },
+      {
+        "id": "activity-2026-11-11",
+        "category": "activities",
+        "label": "activity-2026-11-11",
+        "amount_usd": 40,
+        "kind": "estimate",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "Illustrative whole-group activity estimate.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-11",
+          "order": 1
+        }
+      },
+      {
+        "id": "activity-2026-11-12",
+        "category": "activities",
+        "label": "activity-2026-11-12",
+        "amount_usd": 0,
+        "kind": "estimate",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "Illustrative whole-group activity estimate.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-12",
+          "order": 1
+        }
+      },
+      {
+        "id": "food",
+        "category": "food",
+        "label": "food",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "No supported food estimate.",
+        "source_offer_id": null,
+        "activity_ref": null
+      },
+      {
+        "id": "transport",
+        "category": "local_transport",
+        "label": "transport",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "No supported transport estimate.",
+        "source_offer_id": null,
+        "activity_ref": null
+      },
+      {
+        "id": "hotel-tax",
+        "category": "taxes_fees",
+        "label": "hotel-tax",
+        "amount_usd": 50,
+        "kind": "provider",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "Additional mandatory hotel tax excluded from selected base quote.",
+        "source_offer_id": "fixture-hotel-1",
+        "activity_ref": null
+      }
+    ],
+    "provider_subtotal_usd": 550,
+    "estimated_subtotal_usd": 40,
+    "projected_total_usd": null,
+    "status": "over_budget",
+    "missing_categories": [
+      "flights",
+      "food",
+      "local_transport"
+    ],
+    "notes": [
+      "Significant costs are missing."
+    ]
+  },
+  "warnings": [
+    {
+      "code": "BUDGET_INCOMPLETE",
+      "message": "Some significant costs are missing."
+    }
+  ]
+}

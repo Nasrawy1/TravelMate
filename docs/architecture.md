@@ -4,6 +4,8 @@
 **Status:** General architecture approved by team lead Nasrawy (Nasrawy1) on 2026-10-15; provider feasibility and integration-contract sign-off remain pending  
 **Project:** TravelMate Graduation Project
 
+**PLAN-02 preparation update (2026-10-15):** [API contract v0.4](api-contracts.md), [internal adapter contracts](adapter-contracts.md), and [validated structural fixtures](fixtures/README.md) are now available as a review candidate. References below to v0.3 describe the preceding baseline; v0.4 adoption requires Diyar/Adel/Ziyad review and provider compatibility evidence. This update does not approve implementation, provider selection, or optional storage execution.
+
 ## 1. Overview
 
 TravelMate is an AI-powered travel-planning web application. A user enters departure and destination locations, travel dates, passenger count, and a total budget. The system obtains available flight and hotel data, asks an AI provider to propose a day-by-day itinerary, and presents a cost breakdown with clear distinctions between live prices and estimates.

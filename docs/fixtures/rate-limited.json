@@ -1,0 +1,8 @@
+{
+  "error": {
+    "code": "RATE_LIMITED",
+    "message": "Please retry later.",
+    "details": null
+  },
+  "request_id": "fixture-rate-limited"
+}

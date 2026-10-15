@@ -1,0 +1,8 @@
+{
+  "departure_city": "Istanbul",
+  "destination_city": "Rome",
+  "start_date": "2026-11-10",
+  "return_date": "2026-11-12",
+  "adults": 2,
+  "budget_usd": 1500
+}

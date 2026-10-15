@@ -1,0 +1,132 @@
+{
+  "contract_version": "0.4",
+  "data_mode": "structural_mock",
+  "live_evidence": false,
+  "validation_today_utc": "2026-10-15",
+  "cases": [
+    {
+      "file": "within-budget.json",
+      "schema": "response",
+      "http_status": 200,
+      "request": {
+        "departure_city": "Istanbul",
+        "destination_city": "Rome",
+        "start_date": "2026-11-10",
+        "return_date": "2026-11-12",
+        "adults": 2,
+        "budget_usd": 1500
+      }
+    },
+    {
+      "file": "over-budget.json",
+      "schema": "response",
+      "http_status": 200,
+      "request": {
+        "departure_city": "Istanbul",
+        "destination_city": "Rome",
+        "start_date": "2026-11-10",
+        "return_date": "2026-11-12",
+        "adults": 2,
+        "budget_usd": 1000
+      }
+    },
+    {
+      "file": "partial-prices.json",
+      "schema": "response",
+      "http_status": 200,
+      "request": {
+        "departure_city": "Istanbul",
+        "destination_city": "Rome",
+        "start_date": "2026-11-10",
+        "return_date": "2026-11-12",
+        "adults": 2,
+        "budget_usd": 1500
+      }
+    },
+    {
+      "file": "no-prices.json",
+      "schema": "response",
+      "http_status": 200,
+      "request": {
+        "departure_city": "Istanbul",
+        "destination_city": "Rome",
+        "start_date": "2026-11-10",
+        "return_date": "2026-11-12",
+        "adults": 2,
+        "budget_usd": 1500
+      }
+    },
+    {
+      "file": "known-minimum-over-budget.json",
+      "schema": "response",
+      "http_status": 200,
+      "request": {
+        "departure_city": "Istanbul",
+        "destination_city": "Rome",
+        "start_date": "2026-11-10",
+        "return_date": "2026-11-12",
+        "adults": 2,
+        "budget_usd": 500
+      }
+    },
+    {
+      "file": "request.json",
+      "schema": "request",
+      "http_status": null
+    },
+    {
+      "file": "unauthorized.json",
+      "schema": "error",
+      "http_status": 401,
+      "headers": {
+        "X-Request-ID": "fixture-unauthorized"
+      }
+    },
+    {
+      "file": "validation-error.json",
+      "schema": "error",
+      "http_status": 422,
+      "headers": {
+        "X-Request-ID": "fixture-validation-error"
+      }
+    },
+    {
+      "file": "ai-failure.json",
+      "schema": "error",
+      "http_status": 502,
+      "headers": {
+        "X-Request-ID": "fixture-ai-failure"
+      }
+    },
+    {
+      "file": "timeout.json",
+      "schema": "error",
+      "http_status": 504,
+      "headers": {
+        "X-Request-ID": "fixture-timeout"
+      }
+    },
+    {
+      "file": "rate-limited.json",
+      "schema": "error",
+      "http_status": 429,
+      "headers": {
+        "X-Request-ID": "fixture-rate-limited",
+        "Retry-After": "30"
+      }
+    },
+    {
+      "file": "unknown-taxes.json",
+      "schema": "response",
+      "http_status": 200,
+      "request": {
+        "departure_city": "Istanbul",
+        "destination_city": "Rome",
+        "start_date": "2026-11-10",
+        "return_date": "2026-11-12",
+        "adults": 2,
+        "budget_usd": 1500
+      }
+    }
+  ]
+}
