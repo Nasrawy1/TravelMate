@@ -8,7 +8,7 @@
 
 ## Priorities and ownership
 
-P0 unlocks work or resolves feasibility. P1 delivers the mandatory MVP. P2 is optional after core acceptance. Priorities below are proposals, not observed Project statuses. Existing issue assignees are preserved. New task codes are local proposals, not assigned GitHub issue numbers.
+P0 unlocks work or resolves feasibility. P1 delivers the mandatory MVP. P2 is optional after core acceptance. Priorities below are proposals, not observed Project statuses. Existing issue assignees are preserved. BE-00 (#15) and FE-02 (#16) are created issues; other new task codes remain local proposals until separately created.
 
 | Owner | Account | First deliverable | Collaboration |
 |---|---|---|---|
@@ -36,25 +36,34 @@ P0 unlocks work or resolves feasibility. P1 delivers the mandatory MVP. P2 is op
 
 ## Existing issue alignment
 
-The sections below describe intended task scope, not live completion checklists. PLAN-01 (#10) now records team-lead approval, and BE-01 (#7) has already been aligned to Auth-only setup. Other replacements remain proposals until separately applied; existing issues are authoritative for actual assignees and progress. Preserve assignees, labels, state and discussion unless separately approved. For #2, retain completed research items and review evidence without resetting progress.
+This document distinguishes proposed scope from actual delivery. PLAN-01 (#10) records team-lead approval; PLAN-02 (#11) remains pending contract adoption; BE-01 (#7) is Auth-only setup; FE-01 (#12) was merged in #14 and closed. The Phase One descriptions below become applied issue scope only when their corresponding GitHub updates are published after Nasrawy's explicit approval. Preserve current assignees, labels, state and discussion. Task text alone does not mark implementation complete.
 
 ### #1: PLAN-00: Track MVP Foundations
 
 **Owner:** Nasrawy1  
-**Proposed priority:** P0  
-**Start:** Tracking only; not an additional implementation task
+**State:** Remain open as a tracker.
 
-**Tasks**
+#### Objective
+Track the authoritative foundation decisions and handoff links without duplicating the implementation or approval checklists in PLAN-01 and PLAN-02.
 
-- [ ] Track #10 and #11 as the authoritative planning tasks.
-- [ ] Link accepted documentation and provider feasibility evidence.
-- [ ] Remove duplicated architecture/API work from this issue.
+#### Checklist
+- [x] Link PLAN-01 (#10) for team-lead-approved scope, stack and general architecture.
+- [x] Link PLAN-02 (#11) for prepared contracts, schemas, shared fixtures and remaining approval decisions.
+- [x] Link provider research #2/#4/#5 and the open corrective follow-up #13.
+- [ ] Confirm the relevant team members can access and have reviewed the authoritative documentation.
+- [ ] Track completion of PLAN-02 review/decisions and link its recorded integration approval.
+- [ ] Record unresolved provider constraints and the handoff to implementation tasks before closing this tracker.
 
-**Acceptance**
+#### References
+- [Scope](https://github.com/Nasrawy1/TravelMate/blob/main/docs/mvp-scope.md)
+- [Architecture](https://github.com/Nasrawy1/TravelMate/blob/main/docs/architecture.md)
+- [API contract](https://github.com/Nasrawy1/TravelMate/blob/main/docs/api-contracts.md)
+- [Internal adapters](https://github.com/Nasrawy1/TravelMate/blob/main/docs/adapter-contracts.md)
+- [Fixtures](https://github.com/Nasrawy1/TravelMate/blob/main/docs/fixtures/README.md)
+- [Implementation plan](https://github.com/Nasrawy1/TravelMate/blob/main/docs/implementation-plan.md)
 
-- [ ] #10 and #11 have reviewed deliverables; remaining provider decisions are explicit.
-
-**Dependencies:** #10, #11
+#### Completion Rule
+Close only when foundation approval and handoff evidence are linked. This tracker does not require the entire MVP implementation to finish. Closing research issues is not evidence that #13 corrections or PLAN-02 provider sign-off are complete.
 
 ### #2: API-01: Research & Test AI API
 
@@ -66,7 +75,7 @@ The sections below describe intended task scope, not live completion checklists.
 
 - [ ] Preserve the existing completed research checklist.
 - [ ] Attach the provider/model, sanitized request and structured output, measured latency, observed cost/limits and recommendation.
-- [ ] Compare the sample with API v0.3: complete nights + 1 itinerary; no invented live travel offers.
+- [ ] Compare the sample with the v0.4 review candidate; final integration follows the version explicitly adopted under #11: complete nights + 1 itinerary; no invented live travel offers.
 - [ ] Team lead reviews evidence before changing issue state.
 
 **Acceptance**
@@ -137,22 +146,36 @@ The sections below describe intended task scope, not live completion checklists.
 
 ### #6: DES-02: Design Core MVP Screens & States
 
-**Owner:** aliyousifalqudsi-bot  
-**Proposed priority:** P1  
-**Start:** After each approved wireframe
+**Owner:** aliyousifalqudsi-bot (Ali)  
+**Priority:** P1
 
-**Tasks**
+#### Objective
+Deliver implementation-ready designs for the remaining core TravelMate screens, reusing Ali's existing Riviera Welcome/Auth design and the frontend foundation merged in PR #14.
 
-- [ ] Define small reusable color/type/spacing/button/form/card styles.
-- [ ] Deliver auth, input, results, loading, errors and offline-demo screens incrementally.
-- [ ] Specify price origin, missing-data labels, selected-offer highlighting and budget states.
-- [ ] Show laptop/desktop responsive behavior; defer booking and saved-trip UI.
+#### Tasks
+- [ ] Review the existing Welcome/Auth design and implementation with Diyar; identify only necessary consistency or missing-state changes rather than rebuilding delivered screens.
+- [ ] Document reusable colors, typography, spacing, buttons, inputs, cards and status labels.
+- [ ] Design the trip form: departure/destination from supported choices, travel dates, 1–4 adults and positive whole-trip/all-adult USD budget; trip duration is 1–7 nights.
+- [ ] Design loading, field-validation, request-error, retry and session-expiry states.
+- [ ] Design itinerary results for all trip dates, selected flight/hotel offers, source/retrieval-time labels, itemized costs and warnings.
+- [ ] Design within_budget, over_budget and uncertain states; unknown prices must not appear as zero.
+- [ ] Design the separate offline-demo entry, sample selection and visible DEMO identification.
+- [ ] Document responsive behavior for laptop/desktop and narrower layouts.
+- [ ] Deliver screens incrementally with accessible design sources, assets and implementation notes; include a Figma link when used.
+- [ ] Review each delivered screen with Diyar and Nasrawy.
 
-**Acceptance**
+#### Acceptance Criteria
+- [ ] All mandatory screens and meaningful loading/error/missing-price states have usable specifications.
+- [ ] Existing Welcome/Auth work is referenced and reused.
+- [ ] Visual fields are mapped to the reviewed contract; unresolved v0.4 fields are explicitly flagged.
+- [ ] Diyar can implement one approved screen without waiting for the whole design set.
+- [ ] Nasrawy reviews the delivered designs and Diyar confirms access to sources/assets.
 
-- [ ] Diyar has usable Figma specifications and assets for all mandatory states; team lead reviews.
+#### Scope Boundaries
+No booking, checkout, payment or booking-confirmation screens. Saved-trip screens remain deferred under optional F-09. A polished design does not prove live prices or completed integration.
 
-**Dependencies:** #3 per screen; not all screens at once
+#### Dependencies and Deliverables
+Use PLAN-01 (#10), available DES-01 (#3) design sources, and PLAN-02 (#11) candidate fields. Final data-bound designs require the reviewed field agreement. Deliver screen designs, a small shared style/component specification, assets and handoff notes.
 
 ### #7: BE-01: Configure Supabase Auth Environment
 
@@ -176,44 +199,93 @@ The sections below describe intended task scope, not live completion checklists.
 
 ### #8: BE-02: Integrate Supabase Auth & Verify Backend Tokens
 
-**Owner:** AdelbahaMattar  
-**Proposed priority:** P1  
-**Start:** After Auth and app foundations
+**Owner:** AdelbahaMattar (Adel)  
+**Collaborator:** dyarraed (Diyar)  
+**Priority:** P1
 
-**Tasks**
+#### Objective
+Connect existing frontend authentication UI to Supabase Auth and enforce verified bearer authentication in FastAPI.
 
-- [ ] Diyar owns React signup/signin/signout/session forms; Adel owns FastAPI token verification.
-- [ ] Verify signature, expiration and issuer/audience as appropriate; derive identity from verified token.
-- [ ] Require bearer authentication on generation; map invalid/missing/expired token to common 401 envelope.
-- [ ] Document session refresh/expiry behavior and verify with Diyar using multiple accounts.
-- [ ] Offline demo is client-only; do not add a server-side authentication bypass.
+#### Tasks — Diyar
+- [ ] Connect existing signup, signin and signout flows to Supabase Auth; remove the unconnected-service behavior only when real integration exists.
+- [ ] Handle initial session loading, refresh, expiration and signout; avoid misleading authenticated states.
+- [ ] Implement signup/email-confirmation behavior agreed in BE-01 (#7), with useful validation/error/loading messages.
+- [ ] Connect existing forgot/reset-password forms; require a valid recovery session before allowing an actual password change.
+- [ ] Attach the current access token to protected FastAPI calls and handle standardized 401 responses.
+- [ ] Keep explicit offline-demo access independent of hosted login and avoid initializing online services in that path.
 
-**Acceptance**
+#### Tasks — Adel
+- [ ] Verify JWT signature, expiry and configured issuer/audience as appropriate; derive identity from the verified token.
+- [ ] Provide reusable authentication enforcement for protected backend operations.
+- [ ] Reject missing, expired, malformed or invalid tokens with the agreed 401 envelope and request_id.
+- [ ] Coordinate configuration with Diyar using placeholder-only examples; keep elevated credentials server-side.
+- [ ] Validate a protected backend request with Diyar as soon as FastAPI foundation exists. If generation is not ready, use an isolated development/test probe, not a new permanent public product endpoint.
 
-- [ ] Online signup/login/logout work; protected calls reject invalid tokens; no duplicate FastAPI login/signup routes or unnecessary tables.
+#### Joint Acceptance
+- [ ] Signup/confirmation behavior, login/logout and session handling work locally with real Supabase Auth.
+- [ ] Recovery works only with a verified recovery session; visiting the reset page alone cannot change credentials.
+- [ ] A valid token reaches a protected backend handler; missing/invalid/expired tokens are rejected.
+- [ ] Test with at least two test accounts and record sanitized outcomes without tokens or passwords.
+- [ ] The offline-demo path does not require online signin.
+- [ ] Setup and test instructions are reproducible.
 
-**Dependencies:** #7, #12, BE-00
+#### Dependencies and Scope
+Depends on BE-01 (#7), merged FE-01 (#12 / PR #14), and BE-00 (#15) backend foundation. Coordinate common error details with PLAN-02 (#11). No application tables or optional saved-trip migration are required. Do not build duplicate FastAPI login/signup endpoints. Auth configuration belongs to #7; this issue implements and verifies integration.
+
+#### Deliverables
+Frontend Auth integration, backend JWT verification, safe setup instructions and sanitized integration evidence.
 
 ### #9: BE-03: Implement Generate Trip Endpoint
 
-**Owner:** AdelbahaMattar  
-**Proposed priority:** P1  
-**Start:** Build schemas first; integrate after dependencies
+**Owner:** AdelbahaMattar (Adel)  
+**Priority:** P1
 
-**Tasks**
+#### Objective
+Implement authenticated POST /api/v1/trips/generate, orchestrating normalized travel offers, a validated AI itinerary and backend-owned budget calculation. Generation does not persist a trip.
 
-- [ ] Implement POST /api/v1/trips/generate using API v0.3 request fields and validation.
-- [ ] Enforce supported locations, future dates, 1–7 nights, 1–4 adults and positive whole-trip USD budget.
-- [ ] Verify bearer token, orchestrate normalized travel and AI adapters, then call the budget service.
-- [ ] Return 200 only for a complete validated itinerary covering nights + 1 dates.
-- [ ] Use independent price/budget states and common error envelope/request_id; enforce bounded deadlines.
-- [ ] Never persist generation, require a trips table, or return a persisted trip ID.
+#### Contract Baseline
+Target the v0.4 review candidate in docs/api-contracts.md and docs/contracts/api-v0.4.schema.json. PLAN-02 (#11) must record adoption before final integration acceptance. Do not mix v0.3 models with v0.4 responses or treat this issue rewrite as contract approval.
 
-**Acceptance**
+#### Tasks
+- [ ] Implement strict request models for departure_city, destination_city, start_date, return_date, adults and budget_usd.
+- [ ] Validate supported canonical locations, distinct cities, future dates, 1–7 nights, 1–4 adults and positive whole-trip USD budget, following the reviewed date convention.
+- [ ] Apply BE-02 verified bearer authentication.
+- [ ] Call the agreed travel adapter and use normalized eligible offers; no fabricated live-price fallback.
+- [ ] Apply reviewed offer-selection rules and pass selected context to the AI adapter.
+- [ ] Validate complete nights + 1 itinerary output, required fields, references and cost semantics.
+- [ ] Use the BE-04 budget service to construct the expense ledger and calculate totals/statuses; never trust AI-computed authoritative totals.
+- [ ] Return the agreed response with travel availability, selected IDs, itemized budget and warnings.
+- [ ] Apply common errors, request_id and deadlines; preserve valid generation with explicit unavailable travel categories when AI succeeds.
+- [ ] Keep generation independent of database writes; do not return a persisted trip ID.
+- [ ] Add meaningful request/auth/response/error checks and document reproducible examples.
 
-- [ ] Core contract and error/auth cases pass; actual generation integrates real AI and chosen live travel adapter; unavailable prices remain explicit.
+#### Example Request
+```json
+{
+  "departure_city": "Istanbul",
+  "destination_city": "Rome",
+  "start_date": "2026-11-10",
+  "return_date": "2026-11-12",
+  "adults": 2,
+  "budget_usd": 1500
+}
+```
+These dates/cities illustrate the shape only. Runtime tests need future dates and verified supported locations.
 
-**Dependencies:** #11 baseline, #8, API-04, API-05, BE-04; scaffold/schema work can start after BE-00
+#### Acceptance Criteria
+- [ ] Valid authenticated requests produce a complete contract-conforming response.
+- [ ] Invalid fields/date relationships and unsupported locations use the reviewed error mappings; unauthorized requests are rejected.
+- [ ] Totals come from deterministic backend arithmetic with no duplicate fees or unknown-as-zero amounts.
+- [ ] Real AI and the chosen mandatory live-price adapter are integrated and evidence is recorded separately from mock tests.
+- [ ] Provider no-results/failure and AI invalid-output/timeout cases behave as specified.
+- [ ] Generation neither writes a trip to Supabase nor requires application tables.
+- [ ] Diyar can consume the documented result and errors locally.
+
+#### Dependencies and Delivery Order
+Scaffold/models may start after BE-00 (#15) using the explicitly identified candidate. Final integration depends on PLAN-02 (#11), BE-02 (#8), API-04 (AI adapter), API-05 (mandatory travel adapter), and BE-04 (budget calculation). API-04/API-05/BE-04 are existing planning codes, not newly created issues in this review package. Provider compatibility evidence comes from #13.
+
+#### Deliverables
+Generate endpoint, validated models, orchestration, integration checks and frontend-facing examples. Optional saved-trip endpoints remain outside this issue.
 
 ### #10: PLAN-01: Align MVP Scope & Architecture
 
@@ -264,22 +336,15 @@ Approval of this planning baseline is not evidence of implementation or successf
 ### #12: FE-01: Initialize React + Vite Frontend
 
 **Owner:** dyarraed  
-**Proposed priority:** P0  
-**Start:** Start now
+**Delivery record:** PR #14 merged on 2026-10-16; issue #12 closed as completed. No Project-board Done status is asserted here.
 
-**Tasks**
+**Delivered foundation:** React/Vite/TypeScript structure, routes, shared styles, Welcome/Auth/recovery UI, placeholder environment example and setup documentation.
 
-- [ ] Initialize React/Vite folder structure and routes for core journey and offline demo.
-- [ ] Prepare pages, components, services, assets and local fixture folders.
-- [ ] Add placeholder-only .env.example; keep secrets and service-role keys out of VITE variables.
-- [ ] Set up API client conventions, loading/error handling foundation and shared styles with Ali.
-- [ ] Document installation/start commands that actually work and submit a small PR.
+**Verification boundary:** The author's README records clean installation, typecheck/build and local startup checks. This planning update does not claim independently rerun tests, CI success or working Supabase/backend integration.
 
-**Acceptance**
+**Acceptance scope:** Local frontend foundation, organized routes/configuration and documented setup. Contract-shaped mock-result rendering is assigned to FE-02 and is not an outstanding FE-01 acceptance condition.
 
-- [ ] Frontend runs locally; routes work; no secret credentials; mock response can be rendered without completed backend.
-
-**Dependencies:** #10 approved stack; coordinate #3
+**Follow-up:** FE-02 owns trip forms and mock/result rendering; BE-02 (#8) owns actual Auth integration jointly with Adel; FE-03 owns complete offline-demo delivery. PLAN-02 (#11) still gates final contract adoption.
 
 ## Existing corrective follow-up
 
@@ -287,25 +352,41 @@ Approval of this planning baseline is not evidence of implementation or successf
 
 Ziyad's prototype correction and evidence review is tracked in [#13](https://github.com/Nasrawy1/TravelMate/issues/13). Its distinct code is API-TEST-01. API-04 below remains reserved for implementing the AI adapter; dependencies on API-04 do not refer to #13. Refer to #13 for its current checklist and progress.
 
-## New implementation issues proposed
+## Implementation issues and remaining proposals
 
-### BE-00: Initialize FastAPI Backend
+### #15: BE-00: Initialize FastAPI Backend
+
+**Issue:** [#15](https://github.com/Nasrawy1/TravelMate/issues/15)
+
+**Phase:** Phase Zero — foundations
 
 **Owner:** AdelbahaMattar  
-**Proposed priority:** P0  
-**Start:** Start alongside frontend
+**Priority:** P0; start alongside remaining setup when capacity permits.
 
-**Tasks**
+#### Objective
+Create the local FastAPI foundation needed for authentication and generation integration.
 
-- [ ] Set up modular FastAPI structure: routes/schemas, auth, services and adapters.
-- [ ] Add GET /api/v1/health, explicit local CORS origins, sanitized logging and common exception envelope with request_id.
-- [ ] Document pinned/tested dependency installation, startup and placeholder-only environment settings.
+#### Tasks
+- [ ] Organize backend modules for routes, schemas, auth, services and adapters without implementing speculative product endpoints.
+- [ ] Implement GET /api/v1/health returning {"status":"ok","service":"travelmate-api"}.
+- [ ] Configure explicit local frontend CORS origins, coordinated with Diyar; document port overrides.
+- [ ] Add common exception handling and sanitized logs with request_id; error responses include the matching X-Request-ID header.
+- [ ] Provide placeholder-only environment examples and keep local secrets out of Git.
+- [ ] Document the tested Python version, dependency installation and backend startup command.
+- [ ] Confirm the frontend can call the health endpoint locally.
+- [ ] Submit a small PR with setup evidence.
 
-**Acceptance**
+#### Acceptance Criteria
+- [ ] A teammate can install dependencies and start the backend using documented instructions.
+- [ ] Health returns the documented JSON locally and is reachable from the configured frontend origin.
+- [ ] Standard error formatting and request correlation are demonstrated.
+- [ ] No secrets, application-table requirement or provider-availability dependency blocks startup.
 
-- [ ] Health endpoint works locally; no secret committed; Diyar can call backend from local frontend.
+#### Dependencies and Scope
+PLAN-01 (#10). Coordinate error conventions with PLAN-02 (#11); final v0.4 adoption remains pending. No dependency on completed Supabase configuration or live travel-provider tests for the health endpoint. Health proves local backend availability only.
 
-**Dependencies:** #10
+#### Deliverables
+Backend skeleton, health route, safe config examples, installation/start instructions and local verification evidence.
 
 ### API-04: Implement AI Adapter
 
@@ -363,24 +444,44 @@ Ziyad's prototype correction and evidence review is tracked in [#13](https://git
 
 **Dependencies:** #11 cost/selection agreement, BE-00
 
-### FE-02: Implement Core Forms, Auth UI & Results
+### #16: FE-02: Implement Trip Form & Contract-Based Results
+
+**Issue:** [#16](https://github.com/Nasrawy1/TravelMate/issues/16)
+
+**Phase:** Phase One — implementation
 
 **Owner:** dyarraed  
-**Proposed priority:** P1  
-**Start:** Implement incrementally with fixtures
+**Priority:** P1
 
-**Tasks**
+#### Objective
+Build the core trip form and reusable results UI, beginning with structural fixtures and later consuming the real generation API. Reuse Welcome/Auth UI from FE-01; actual Auth integration remains tracked jointly under BE-02 (#8).
 
-- [ ] Implement auth UI jointly with Adel under #8.
-- [ ] Build trip form with supported-location choices and contract validation.
-- [ ] Render complete itinerary, source/time/coverage, selected offers, missing costs and budget states.
-- [ ] Implement loading, prevent duplicate submits, show safe errors/retry and handle session expiry.
+#### Tasks
+- [ ] Review v0.4 public fields and fixtures with Adel and Nasrawy under PLAN-02 (#11); track any required changes explicitly.
+- [ ] Implement departure/destination choices, dates, adults and whole-trip USD budget with reviewed validation and no unsupported-city promises.
+- [ ] While real provider coverage is pending, identify fixture-only city choices as mock; do not publish them as confirmed live coverage.
+- [ ] Implement a frontend API boundary that submits the reviewed request and consumes the standard response/errors.
+- [ ] Render complete daily itineraries, selected offers, source/retrieval metadata, itemized expenses, missing costs and budget statuses.
+- [ ] Implement the contract-shaped mock renderer transferred from FE-01. Load fixture metadata alongside responses and show a visible MOCK/DEMO banner.
+- [ ] Cover within-budget, over-budget, partial/no-price, unknown-tax and known-minimum-over-budget fixtures, plus validation/auth/AI/timeout/rate-limit errors.
+- [ ] Add loading, duplicate-submit prevention, safe errors/retry and session-expiry handling coordinated with #8.
+- [ ] Preserve backend offer selection, totals and status; do not independently choose offers or redefine budget arithmetic.
+- [ ] Connect the real protected generation API when #8/#9 and the reviewed contract are ready.
+- [ ] Record responsive UI and integration verification with Ali and Nasrawy.
 
-**Acceptance**
+#### Acceptance Criteria
+- [ ] Forms and reusable results work against the reviewed fixture set before provider integration.
+- [ ] Unknown amounts remain unknown; all fixture output is visibly identified as artificial, including simulated live-shaped offer fields.
+- [ ] Selected IDs and arithmetic/status values are rendered faithfully.
+- [ ] Loading/error/retry behavior and prevention of duplicate generation are verified.
+- [ ] Final integration consumes the actual authenticated API with the agreed contract.
+- [ ] Ali/Nasrawy review screens incrementally and setup instructions describe mock versus online behavior.
 
-- [ ] Core screens work with agreed fixtures and then actual API; no independent budget/offer selection contradicts backend.
+#### Dependencies and Boundaries
+FE-01 (#12 / PR #14) is merged. Depend on DES-01/DES-02 (#3/#6) per screen and PLAN-02 (#11) field agreement; live integration depends on BE-02 (#8) and BE-03 (#9). Mock development can proceed against the identified candidate with review changes tracked. The final 2–3 curated offline journeys, network-disabled operation and offline packaging belong to FE-03; a mock renderer does not complete FE-03. No saved-trip, booking or payment UI.
 
-**Dependencies:** #12, #3/#6 per screen, #11; #8/#9 for live integration
+#### Deliverables
+Trip form, shared result components, fixture-driven mock development, API integration and verification notes.
 
 ### FE-03: Implement Explicit Offline Demo
 
@@ -481,4 +582,9 @@ This document is published in the repository. The canonical contract is `docs/ap
 
 On 2026-10-15, Nasrawy (Nasrawy1) explicitly approved the scope/general architecture and authorized the documentation and PLAN-01 description alignment. This is not a record of full-team acknowledgment, provider approval, completed implementation, or Project-column changes. PLAN-02 and provider evidence remain separate gates.
 
-Task proposals not explicitly applied remain proposals. Do not close #2 without evidence review or mark implementation tasks Done merely because documentation exists. F-09 migration execution remains deferred until separately prioritized and approved.
+Task proposals not explicitly applied remain proposals. Research issues #2, #4 and #5 are recorded closed. Their closure does not establish that #13 corrections or provider compatibility gates under #11 have passed. Keep implementation checklists tied to actual evidence. Optional F-09 migration remains deferred.
+
+
+**Publication record (2026-10-16):** Nasrawy approved the Phase One preparation review. Issues #1, #6, #8 and #9 were aligned; [BE-00 #15](https://github.com/Nasrawy1/TravelMate/issues/15) was created for Adel under Phase Zero, and [FE-02 #16](https://github.com/Nasrawy1/TravelMate/issues/16) for Diyar under Phase One. Phase assignment here is documented scope, not a Project-field update.
+
+**Phase One preparation:** Mock-result rendering is transferred from FE-01 to FE-02. Phase One planning publication does not approve v0.4, choose providers, mark pending tasks complete or change Project-board status. API-04, API-05, BE-04, FE-03, QA-01 and OPS-01 remain future task proposals unless separately created.
