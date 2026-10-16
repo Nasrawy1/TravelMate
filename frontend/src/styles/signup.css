@@ -1,0 +1,20 @@
+/* SignUp.dc.html additions to the shared Riviera/Login layout. */
+.signup-page .login-panel { min-height: 460px; }
+.signup-page .login-panel-copy { max-width: 460px; gap: 18px; }
+.signup-benefits { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 17px; font-weight: 500; }
+.signup-benefits li { display: flex; gap: 10px; align-items: center; }
+.signup-benefits svg { color: var(--terracotta); flex: none; }
+.signup-payment-note { position: relative; margin-top: auto; align-self: flex-start; padding: 14px 18px; background: white; border-radius: 16px; font-size: 14px; font-weight: 500; transform: rotate(-2deg); }
+.signup-form { gap: 18px; }
+.signup-submit { margin-top: 4px; }
+.signup-password-rules { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.signup-password-rules li { display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; font-size: 13px; font-weight: 700; color: var(--muted); background: var(--sand); }
+.signup-password-rules svg { width: 14px; height: 14px; flex: none; }
+.signup-password-rules .signup-rule-met { color: white; background: #2f6b4f; }
+.signup-password-rules .signup-rule-error { color: #8c1d18; background: #fce8e6; }
+.signup-page .login-error-banner a { color: inherit; font-weight: 700; }
+.signup-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+/* Keep navy benefit text readable where the sea crosses it on stacked screens. */
+@media (max-width: 959px) {
+  .signup-benefits li { width: fit-content; padding: 3px 6px; margin-left: -6px; border-radius: 8px; background: #efd9c2; }
+}

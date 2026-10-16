@@ -1,0 +1,48 @@
+/* Login geometry from Ali's Login.dc.html; colors, type and logo use Riviera's shared base. */
+.login-page { display: flex; flex-wrap: wrap; }
+.login-panel { flex: 1 1 440px; min-width: 0; position: relative; overflow: hidden; background: #efd9c2; padding: clamp(24px, 4vw, 48px); display: flex; flex-direction: column; gap: 32px; min-height: 420px; }
+.login-seascape { position: absolute; inset: 0; width: 100%; height: 100%; }
+.login-panel .welcome-logo { position: relative; align-self: flex-start; }
+.login-panel-copy { position: relative; display: flex; flex-direction: column; gap: 14px; max-width: 440px; }
+.login-panel h1 { font-size: clamp(40px, 4.6vw, 64px); line-height: 1; }
+.login-panel-copy p { font-size: 18px; line-height: 1.6; color: var(--muted); }
+.login-postcard { position: relative; margin-top: auto; align-self: flex-start; width: min(300px, 80%); padding: 22px; background: white; border-radius: 22px; box-shadow: 0 30px 60px -30px rgb(31 58 95 / 50%); transform: rotate(-4deg); display: flex; flex-direction: column; gap: 8px; }
+.login-postcard > span { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; color: var(--terracotta); }
+.login-postcard p { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 22px; line-height: 1.2; }
+.login-main { flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; padding: clamp(20px, 4vw, 48px); }
+.login-back-row { display: flex; justify-content: flex-end; }
+.login-back-link { display: inline-flex; align-items: center; gap: 6px; padding: 10px 4px; min-height: 44px; font-weight: 500; text-decoration: none; }
+.login-card-position { flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px 0; }
+.login-card { width: 100%; max-width: 440px; padding: clamp(24px, 4vw, 40px); background: white; border-radius: 28px; display: flex; flex-direction: column; gap: 26px; }
+.login-card-heading { display: flex; flex-direction: column; gap: 6px; }
+.login-card-heading h2 { font-size: 36px; letter-spacing: -0.02em; }
+.login-card-heading p { color: var(--muted); }
+.login-card-heading a { font-weight: 700; display: inline-flex; align-items: center; min-height: 44px; }
+.login-form, .login-field { display: flex; flex-direction: column; }
+.login-form { gap: 20px; }
+.login-field { gap: 8px; }
+.login-field label { font-weight: 700; font-size: 15px; }
+.login-field input { height: 54px; padding: 0 18px; font: inherit; font-size: 16px; color: var(--ink); background: white; border: 1.5px solid #8c8277; border-radius: 14px; width: 100%; }
+.login-field input::placeholder { color: #677383; opacity: 1; }
+.login-field input[aria-invalid='true'] { border-color: #b3261e; }
+.login-field-error { font-size: 14px; color: #b3261e; line-height: 1.4; }
+.login-password-label { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.login-password-label a { font-size: 14px; font-weight: 700; color: var(--terracotta); min-height: 44px; display: inline-flex; align-items: center; }
+.login-password-input { position: relative; }
+.login-password-input input { padding-right: 58px; }
+.login-password-input button { position: absolute; right: 5px; top: 5px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: transparent; border: 0; border-radius: 10px; color: var(--muted); cursor: pointer; }
+.login-submit { min-height: 56px; display: flex; align-items: center; justify-content: center; gap: 10px; font: inherit; font-size: 17px; font-weight: 700; color: white; background: var(--terracotta); border: 0; border-radius: 16px; cursor: pointer; }
+.login-submit:hover:not(:disabled) { background: #943f25; }
+.login-submit:disabled { background: #7a6e64; cursor: wait; }
+.login-page button:focus-visible, .login-page input:focus-visible { outline: 3px solid var(--terracotta); outline-offset: 2px; }
+.login-error-banner { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; background: #fce8e6; border-radius: 16px; color: #8c1d18; }
+.login-error-banner svg { flex: none; margin-top: 1px; }
+.login-error-banner p { margin-top: 2px; font-size: 14px; line-height: 1.45; }
+.login-divider { display: flex; align-items: center; gap: 14px; color: var(--muted); font-size: 14px; }
+.login-divider span { flex: 1; height: 1px; background: #eadfd1; }
+.login-demo-link { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; min-height: 54px; padding: 10px; border-radius: 16px; background: var(--sand); text-decoration: none; font-weight: 700; }
+.login-demo-link span { font-size: 12px; padding: 3px 9px; border-radius: 999px; background: #f2b98a; letter-spacing: 0.08em; }
+.login-spinner { animation: login-spin 1s linear infinite; }
+@keyframes login-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .login-spinner { animation: none; } }
+@media (max-width: 959px) { .login-panel, .login-main { flex-basis: 100%; } }
