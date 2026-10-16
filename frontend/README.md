@@ -12,7 +12,7 @@ React + Vite + TypeScript frontend owned by Diyar. The Welcome and authenticatio
 
 The auth forms call unconnected service boundaries that immediately reject with an explicit “not connected” message. They do not create accounts, establish sessions, send emails, update passwords or redirect as if authentication succeeded. Loading controls are prepared for future asynchronous integration; no artificial delay or simulated success is added. The current UI password rule is 8+ characters, including a letter and a number; it must be aligned with Adel’s configured Supabase policy before integration.
 
-Trip Planner, Results and Offline Demo are **placeholder pages**. There is no trip form, contract-shaped mock-result renderer, live itinerary, complete offline demo, FastAPI HTTP client or Supabase SDK connection. Mock-result work remains deferred until the Team Leader confirms whether it belongs to FE-01 or FE-02.
+Trip Planner, Results and Offline Demo are **placeholder pages**. There is no trip form, contract-shaped mock-result renderer, live itinerary, complete offline demo, FastAPI HTTP client or Supabase SDK connection. Contract-shaped mock-result rendering is assigned to FE-02 as follow-up work after the FE-01 foundation. FE-02 also owns the trip form and reusable results UI. Complete offline-demo journeys remain FE-03 work. Final API contract adoption still requires PLAN-02 (#11) review.
 
 ## Prerequisites
 
