@@ -8,7 +8,7 @@
 
 ## Priorities and ownership
 
-P0 unlocks work or resolves feasibility. P1 delivers the mandatory MVP. P2 is optional after core acceptance. Priorities below are proposals, not observed Project statuses. Existing issue assignees are preserved. BE-00 (#15) and FE-02 (#16) are created issues; other new task codes remain local proposals until separately created.
+P0 unlocks work or resolves feasibility. P1 delivers the mandatory MVP. P2 is optional after core acceptance. Priorities below are proposals, not observed Project statuses. Existing issue assignees are preserved. BE-00 (#15), FE-02 (#16), API-04 (#17), API-05 (#18) and BE-04 (#19) are created issues; other new task codes remain local proposals until separately created.
 
 | Owner | Account | First deliverable | Collaboration |
 |---|---|---|---|
@@ -25,6 +25,39 @@ P0 unlocks work or resolves feasibility. P1 delivers the mandatory MVP. P2 is op
 3. Ali releases approved screens one at a time. Diyar builds with fixtures; Adel implements auth/schemas/budget; Ziyad implements AI and the selected travel adapter after agreeing the boundary.
 4. Combine the protected real generation endpoint with the UI, then verify failure paths, explicit offline demo and second-computer handover.
 5. Optional F09 and API-06 start only after core acceptance and explicit prioritization.
+
+## Approved Phase One First Batch — 2026-10-16
+
+Nasrawy approved this work distribution and the creation of API-04 (#17), API-05 (#18) and BE-04 (#19). This records assignment and delivery order, not implementation completion, provider approval or v0.4 adoption. Project-board fields remain unchanged.
+
+### توزيع العمل وأول تسليم لكل شخص
+| الشخص | العمل الحالي | أول تسليم قابل للمراجعة | العمل التالي |
+|---|---|---|---|
+| علي | DES-02 #6 | تصميم فورم الرحلة مع التحقق والأخطاء؛ يراجعه ديار ونصراوي | تصميم النتائج ومصادر الأسعار والمصاريف والحالات الثلاث |
+| ديار | FE-02 #16 | فورم يعمل محلياً + عرض نتيجة Fixture بوسم MOCK واضح، بعد مراجعة الحقول | بقية حالات النتائج ثم ربط Auth مع عادل تحت #8 |
+| عادل | BE-01 #7 ثم BE-00 #15 | إعداد Auth موثّق + FastAPI يعمل وhealth يمكن استدعاؤه من الفرونت | BE-02 #8 مع ديار، ثم BE-04 وحساب المصاريف |
+| زياد | API-TEST-01 #13 | عينة مصححة: طلب → بيانات مزود منقّحة → بيانات موحّدة → رد AI قابل للتحقق | API-05 لمزود واحد ثم API-04 للـAI، مع إعادة استخدام التصحيحات |
+| نصراوي | PLAN-02 #11 ومراجعة التسليمات | سجل اتفاق ديار/عادل/زياد والقرارات المتبقية؛ قائمة الاختبار الأولي أدناه | قبول PRs الصغيرة وتنسيق اختبار التكامل |
+
+**تنظيم السعة:** هذه قائمة ترتيب، وليست تكليفاً لكل شخص بفتح عدة مهام كبيرة بالتزامن. كل شخص يركز على تسليم رئيسي واحد؛ مراجعة العقود والتنسيق تتم بالتوازي.
+
+**Phase Zero:** #7 و#15 و#11 و#13 بحسب دورها التأسيسي الحالي.  
+**Phase One:** #6 و#8 و#9 و#16 وAPI-04 وAPI-05 وBE-04.  
+التصنيف هنا خطة عمل؛ لا يغيّر حقول البورد.
+
+### بوابات البداية والتسليم
+| العمل | ما يمكن بدؤه | ما يلزم قبل اعتباره مكتملًا |
+|---|---|---|
+| تصميم الشاشات | نطاق MVP وحقول العقد المرشح | مراجعة الشاشة والحقول مع ديار ونصراوي |
+| واجهات Mock | الاتفاق على الحقول المستخدمة وتحديد v0.4 كمرشح صراحة | حالات Fixtures تعمل؛ الإغلاق النهائي لـ#16 يتطلب الربط الحقيقي أيضاً |
+| تأسيس FastAPI | اعتماد التقنية والنطاق؛ لا ينتظر أسعار السفر | تشغيل محلي موثّق واستدعاء health من الفرونت |
+| Auth #8 | إعداد #7 وأساس الفرونت والباكند | دخول فعلي وطلب محمي، ورفض التوكن غير الصحيح |
+| API-05 | عينة مزود مصححة واختيار المزود واتفاق حدوده مع عادل | أسعار حقيقية مرتبطة بالمدخلات وتوثيق التغطية والرسوم |
+| API-04 | اتفاق مخرجات AI ودليل #13؛ يمكن تطويره بمدخلات موحدة اصطناعية معلّمة | استدعاء AI حقيقي ومخرجات مطابقة، مع اختبار الأخطاء |
+| BE-04 | اتفاق قواعد التكاليف والاختيار مع عادل؛ يمكن استخدام Fixtures | حسابات حتمية ناجحة واختبارات حالات النقص والرسوم |
+| Generate #9 | هيكل وموديلات بعد #15 | العقد المعتمد + #8 + API-04/API-05 + BE-04 |
+
+الموافقة على v0.4 تبقى تحت #11. إذا كشفت عينة زياد أن أحد الحقول غير مدعوم، يُناقش التغيير هناك قبل اعتماده؛ لا يغيّر أي عضو العقد بصورة منفردة.
 
 ## Collaboration rules
 
@@ -388,61 +421,143 @@ PLAN-01 (#10). Coordinate error conventions with PLAN-02 (#11); final v0.4 adopt
 #### Deliverables
 Backend skeleton, health route, safe config examples, installation/start instructions and local verification evidence.
 
-### API-04: Implement AI Adapter
+### #17: API-04: Implement Validated AI Itinerary Adapter
 
-**Owner:** zee0x  
-**Proposed priority:** P1  
-**Start:** After evidence and adapter agreement
+**Issue:** [#17](https://github.com/Nasrawy1/TravelMate/issues/17)
 
-**Tasks**
+**Owner:** zee0x (Ziyad)  
+**Phase:** Phase One  
+**Priority:** P1
 
-- [ ] Implement real provider call with validated structured output.
-- [ ] Accept normalized trip/travel context; return complete itinerary for every date.
-- [ ] Keep keys server-side, validate output and map failure/timeout; do not auto-retry chargeable AI generation.
+#### Objective
+Implement the real AI adapter inside the FastAPI application using the reviewed internal adapter contract. Reuse the corrected prototype evidence rather than repeating provider research.
 
-**Acceptance**
+#### Entry Conditions
+- Relevant AI-output corrections and sanitized evidence from #13 are reviewed.
+- Ziyad and Adel agree the adapter inputs/outputs under PLAN-02 (#11).
+- BE-00 (#15) provides the backend integration structure.
+- v0.4 remains a candidate until adoption is recorded in #11; acceptance uses the explicitly adopted version.
 
-- [ ] Real AI produces a valid itinerary; invalid/incomplete output fails safely; no invented provider prices.
+#### Tasks
+- [ ] Confirm the provider/model and documented access/limits with Nasrawy; do not treat earlier prototype use as final integration approval.
+- [ ] Implement the agreed generate_itinerary module boundary accepting trip_request, selected_offers, travel_availability, estimation_policy, deadline_at and request_id.
+- [ ] Pass normalized trip context and only eligible selected travel offers to the real AI provider.
+- [ ] Parse and validate structured output: itinerary and ancillary_estimates on success; a typed error on failure.
+- [ ] Require nights + 1 ordered dates, valid activities and justified empty travel days according to the public schema and semantic rules.
+- [ ] Keep activity costs as estimates/unknown; food and local transport estimates require the reviewed policy and matching policy_id, otherwise return unknown.
+- [ ] Never generate authoritative flight/hotel offers, change backend-selected options or provide authoritative budget totals.
+- [ ] Map timeout, rate_limited, unavailable and invalid_output to the agreed internal error envelope; Adel owns the public HTTP mapping.
+- [ ] Respect the supplied overall deadline and configured per-attempt allowance; do not automatically retry chargeable AI generation.
+- [ ] Keep keys server-side, redact credentials from diagnostics and avoid rotating keys to bypass quotas.
+- [ ] Supply a sanitized successful real call and reproducible tests for malformed/incomplete output and controlled failure cases.
+- [ ] Submit a focused PR with model/configuration notes, setup and evidence.
 
-**Dependencies:** #2 evidence, #11, BE-00
+#### Acceptance Criteria
+- [ ] A real AI call returns a validated complete itinerary for the supplied request.
+- [ ] Invalid/incomplete output fails safely; it is not published as a successful itinerary.
+- [ ] Missing travel prices remain unavailable context, never invented provider facts.
+- [ ] Unknown ancillary costs remain unknown when no policy is approved.
+- [ ] Deadline/error handling is verified; simulated failure tests are identified as simulated.
+- [ ] Adel can consume the documented adapter result without parsing raw provider output.
+- [ ] No credentials are committed or exposed in evidence.
 
-### API-05: Implement Mandatory Live Travel Adapter
+#### Dependencies / Exclusions
+PLAN-02 (#11), relevant #13 evidence, BE-00 (#15). Implementation can use explicit normalized test context before API-05 is finished; final end-to-end integration uses the actual selected provider. No public endpoint, authoritative ledger calculation, persistence, frontend demo or new provider research is included.
 
-**Owner:** zee0x  
-**Proposed priority:** P1  
-**Start:** After selecting one feasible provider
+#### Deliverables
+AI adapter module, meaningful validation/error tests, sanitized real sample, configuration and handoff instructions.
 
-**Tasks**
+### #18: API-05: Implement Mandatory Live Travel Adapter
 
-- [ ] Implement dynamic supported searches for the chosen flight OR hotel provider.
-- [ ] Normalize USD prices, coverage/occupancy, offer IDs, source and retrieved_at.
-- [ ] Implement no-results/error mapping and bounded timeout/retry.
-- [ ] Document actual price evidence and two distinct supported searches where feasible.
+**Issue:** [#18](https://github.com/Nasrawy1/TravelMate/issues/18)
 
-**Acceptance**
+**Owner:** zee0x (Ziyad)  
+**Phase:** Phase One  
+**Priority:** P1
 
-- [ ] At least one genuine search-relevant real-priced result; mocks/sandbox fixed examples do not count; missing prices remain unavailable.
+#### Objective
+Implement one approved flight OR hotel provider behind the reviewed travel-adapter boundary, returning genuine request-matched normalized offers. A second category remains optional future work.
 
-**Dependencies:** #4/#5 provider decision, #11, BE-00
+#### Entry Conditions
+- #13 provides reviewed corrected evidence for the selected category.
+- Nasrawy, Adel and Ziyad select the mandatory category/provider and confirm supported searches under #11.
+- The agreed normalization/interface baseline and BE-00 (#15) integration structure are available.
 
-### BE-04: Implement Deterministic Budget Assessment
+#### Tasks
+- [ ] Document the actual data provider, endpoint, access conditions and limits; distinguish RapidAPI services from direct official integrations.
+- [ ] Implement canonical supported-city to provider-ID mapping; document unsupported searches and coverage limits.
+- [ ] Build searches from the requested dates and adult count; validate returned date/route/occupancy scope.
+- [ ] Normalize flights to the round trip for all adults OR hotels to all nights and verified adult occupancy, according to the chosen category.
+- [ ] Preserve usable IDs, source, retrieval timestamps, normalized prices and fee status; never count known fees twice or discard known charges.
+- [ ] Request USD where available. Convert non-USD only under the reviewed conversion policy with source/rate/time evidence; otherwise exclude those quotes and warn.
+- [ ] Return both category objects under search_travel; mark the unimplemented optional category unavailable with the agreed reason.
+- [ ] Return sanitized provenance for every offer, including coverage evidence, actual query parameters and required flight timezone information.
+- [ ] Distinguish no_results, unsupported_search, rate_limited, timeout, auth_error, invalid_response and provider errors using the agreed envelope.
+- [ ] Bound lookup time/retries by deadline_at; honor valid retry guidance within the deadline and do not rotate keys to bypass limits.
+- [ ] Verify at least one real matching priced result and attempt a second distinct supported query where feasible; document quota/coverage constraints.
+- [ ] Add normalization/failure tests and submit a PR with reproducible sanitized evidence.
 
-**Owner:** AdelbahaMattar  
-**Proposed priority:** P1  
-**Start:** Can use normalized fixtures before adapters finish
+#### Acceptance Criteria
+- [ ] At least one genuine returned price matches the supplied dates, locations and traveler/occupancy scope.
+- [ ] Currency, all-trip/group coverage and known taxes are correctly preserved.
+- [ ] Mismatched dates, unverified occupancy and unsupported conversion never masquerade as usable USD offers.
+- [ ] Multiple-adult normalization is verified with an actual sample where available; any unverified supported range remains an explicit blocker/limitation.
+- [ ] Missing/unavailable results contain no fabricated live prices or fixture substitutions.
+- [ ] Adel can consume the agreed normalized envelope and sanitized evidence.
+- [ ] No exposed credentials, quota-bypass mechanism or unbounded retries remain.
 
-**Tasks**
+#### Dependencies / Exclusions
+PLAN-02 (#11), selected-category corrections under #13, research #4/#5 and BE-00 (#15). Research issues being closed do not themselves satisfy live-price acceptance. Backend orchestration owns selected-offer choice and final budgeting; frontend owns explicit offline demo. No booking, payment, persistence or mandatory second provider.
 
-- [ ] Select one eligible comparable offer per category using the reviewed rule; expose selected IDs.
-- [ ] Compute provider and estimate subtotals once, without duplicated fees.
-- [ ] Use null for missing total and report missing categories; reliable known minimum over budget takes precedence.
-- [ ] Cover within_budget, over_budget, uncertain and no-offer cases.
+#### Deliverables
+Travel adapter, supported mappings/limits, tests, sanitized real-price evidence and configuration instructions.
 
-**Acceptance**
+### #19: BE-04: Implement Deterministic Budget Assessment
 
-- [ ] All arithmetic is backend-owned; referenced offers exist; unknown never becomes zero; whole-trip/all-adult coverage is enforced.
+**Issue:** [#19](https://github.com/Nasrawy1/TravelMate/issues/19)
 
-**Dependencies:** #11 cost/selection agreement, BE-00
+**Owner:** AdelbahaMattar (Adel)  
+**Phase:** Phase One  
+**Priority:** P1
+
+#### Objective
+Select eligible normalized offers and calculate the itemized trip budget deterministically in backend code, following the reviewed contract. AI and frontend do not determine authoritative totals or budget status.
+
+#### Entry Conditions
+- BE-00 (#15) is available.
+- Ledger, selection, estimation and currency-treatment decisions needed by this component are explicitly reviewed under PLAN-02 (#11).
+- Normalized fixtures may be used before real adapters finish; final acceptance uses the adopted contract.
+
+#### Tasks
+- [ ] Implement the reviewed fee-aware selection rule: prefer comparable known-fee totals, choose lowest base plus additional fees and tie-break by ID; use the reviewed unknown-fee fallback only when necessary and warn.
+- [ ] Select exactly one eligible offer per available category or null; expose selected IDs and reject invalid references.
+- [ ] Create one base ledger line each for flights/accommodation, with unknown when no selected offer exists.
+- [ ] Add known additional fees exactly once and preserve unknown-fee lines; included fees do not create duplicate costs.
+- [ ] Add exactly one ledger entry per itinerary activity with a valid activity_ref.
+- [ ] Normalize food and local_transport to whole-trip/all-adult entries; use unknown unless a reviewed estimate policy supports the supplied amount.
+- [ ] Use decimal-safe arithmetic; round each normalized ledger item to cents before summing.
+- [ ] Calculate provider_subtotal_usd and estimated_subtotal_usd from cost_items only.
+- [ ] Set projected_total_usd to null whenever any unknown ledger item exists; generate the unique missing_categories list.
+- [ ] Apply status precedence: reliable provider-known subtotal over budget first; otherwise complete total over budget; otherwise complete total within budget; otherwise uncertain.
+- [ ] Produce useful missing-cost/fee notes and preserve selected-offer and activity consistency.
+- [ ] Test the provided fixture scenarios and meaningful negative/boundary cases; deliver through a focused PR.
+
+#### Acceptance Criteria
+- [ ] Within-budget fixture totals: provider 950 + estimates 190 = projected 1140.
+- [ ] Same complete costs with budget 1000 produce over_budget.
+- [ ] Partial-price fixture produces provider 550, estimates 40, projected total null and uncertain.
+- [ ] Known provider subtotal 550 with budget 500 produces over_budget even when other costs are unknown.
+- [ ] Unknown taxes keep projected total null and prevent within_budget.
+- [ ] A complete total exactly equal to budget is within_budget.
+- [ ] Estimates alone do not establish a reliable minimum when other material costs are missing.
+- [ ] Duplicate fees/activity references, invalid selected IDs and invalid monetary values are rejected; unknown never becomes zero.
+- [ ] Results are deterministic and usable by BE-03 (#9), without provider access for fixture-based tests.
+
+#### Dependencies / Exclusions
+PLAN-02 (#11), BE-00 (#15); coordinate inputs with API-04/API-05 and output with BE-03 (#9). Does not call AI/providers, create API routes, persist trips or implement frontend calculations. Real adapter completion is not required to start fixture-based development once rules are agreed.
+
+#### Deliverables
+Offer selection/budget module, focused arithmetic/semantic tests and documented input/output handoff to orchestration.
 
 ### #16: FE-02: Implement Trip Form & Contract-Based Results
 
@@ -587,4 +702,4 @@ Task proposals not explicitly applied remain proposals. Research issues #2, #4 a
 
 **Publication record (2026-10-16):** Nasrawy approved the Phase One preparation review. Issues #1, #6, #8 and #9 were aligned; [BE-00 #15](https://github.com/Nasrawy1/TravelMate/issues/15) was created for Adel under Phase Zero, and [FE-02 #16](https://github.com/Nasrawy1/TravelMate/issues/16) for Diyar under Phase One. Phase assignment here is documented scope, not a Project-field update.
 
-**Phase One preparation:** Mock-result rendering is transferred from FE-01 to FE-02. Phase One planning publication does not approve v0.4, choose providers, mark pending tasks complete or change Project-board status. API-04, API-05, BE-04, FE-03, QA-01 and OPS-01 remain future task proposals unless separately created.
+**Phase One preparation:** Mock-result rendering is transferred from FE-01 to FE-02. Phase One planning publication does not approve v0.4, choose providers, mark pending tasks complete or change Project-board status. API-04 (#17), API-05 (#18) and BE-04 (#19) were subsequently created under the approved first batch. FE-03, QA-01 and OPS-01 remain future task proposals unless separately created.
