@@ -31,3 +31,34 @@ Keep API keys and elevated Supabase credentials server-side and outside Git. Nev
 
 Documentation is a review candidate, not evidence of team approval or provider feasibility. Pending: AI evidence, mandatory live provider and supported searches, estimation/conversion policy, offer selection confirmation and measured timeout tuning. See the implementation plan for ownership.
 
+## Authentication Configuration
+
+Authentication provider: Supabase Auth
+Sign-in method: Email and password
+Email confirmation: Enabled. Users must confirm their email before signing in.
+
+### Local URLs
+
+Site URL: `http://localhost:5173`
+
+Allowed redirect URLs:
+
+- `http://localhost:5173/**`
+- `http://localhost:5173/reset-password`
+- `http://127.0.0.1:5173/**`
+
+The local frontend URLs were provided by Diyar for the React development setup.
+Supabase's Site URL and allowed redirect URLs must match the frontend URLs used
+during development.
+
+### Environment Variables
+
+Examples below use placeholders only. Real values are shared through an approved
+private channel and kept in local, uncommitted `.env` files. Do not commit files
+containing real project credentials.
+
+Frontend environment example (`.env.example`):
+
+```dotenv
+VITE_SUPABASE_URL=https://<project-ref>.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=<your-supabase-publishable-key>
