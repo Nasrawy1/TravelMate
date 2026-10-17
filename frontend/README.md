@@ -1,4 +1,4 @@
-# TravelMate frontend — FE-01 (#12)
+# TravelMate frontend — FE-01 foundation and FE-02 increments
 
 React + Vite + TypeScript frontend owned by Diyar. The Welcome and authentication UI follow [Ali’s original Riviera design archive](../docs/design/travelmate-des01-welcome-auth.zip), stored at `docs/design/travelmate-des01-welcome-auth.zip` from the repository root. The unchanged ZIP contains `design/welcome-auth.md` and the original Welcome/authentication HTML sources under `travelmate-des01-welcome-auth/`. This is a frontend UI foundation, not a working authenticated travel-planning application.
 
@@ -12,7 +12,11 @@ React + Vite + TypeScript frontend owned by Diyar. The Welcome and authenticatio
 
 The auth forms call unconnected service boundaries that immediately reject with an explicit “not connected” message. They do not create accounts, establish sessions, send emails, update passwords or redirect as if authentication succeeded. Loading controls are prepared for future asynchronous integration; no artificial delay or simulated success is added. The current UI password rule is 8+ characters, including a letter and a number; it must be aligned with Adel’s configured Supabase policy before integration.
 
-Trip Planner, Results and Offline Demo are **placeholder pages**. There is no trip form, contract-shaped mock-result renderer, live itinerary, complete offline demo, FastAPI HTTP client or Supabase SDK connection. Contract-shaped mock-result rendering is assigned to FE-02 as follow-up work after the FE-01 foundation. FE-02 also owns the trip form and reusable results UI. Complete offline-demo journeys remain FE-03 work. Final API contract adoption still requires PLAN-02 (#11) review.
+**Trip Planner** implements the six-field v0.4 candidate form, UTC date/night/adult/budget validation and an honest local request preview. In development only, prepare valid details and expand **Development only · MOCK generation previews** to inspect loading and error states. Repository fixtures retain their original metadata; missing error cases are labeled frontend examples. No successful trips are fabricated, no requests are sent, and the production build excludes these preview controls/fixtures. See [the generation service boundary](src/services/README.md) for injection and validation requirements.
+
+**Results** implements reusable Riviera trip summary, selected offers, daily itinerary, warnings, budget and itemized-expense components. Direct `/results` navigation shows an honest empty state. In development, expand **Development only · Results fixture preview** and choose one of the six repository success fixtures. A sticky, non-dismissible MOCK banner remains visible; provider-shaped fixture amounts say **Sample price**, never Live. Supplied totals/status are formatted without recalculation, and unknown amounts remain unknown. The manifest and matching case metadata travel with each response; fixture imports and controls are excluded from production assets.
+
+Offline Demo remains a **placeholder page**. There is no real generated itinerary, complete offline demo, FastAPI HTTP client or Supabase SDK connection. Complete offline-demo journeys remain FE-03 work. Final API contract adoption still requires PLAN-02 (#11) review.
 
 ## Prerequisites
 
@@ -70,7 +74,7 @@ Preview also supports explicit loopback/port overrides:
 npm run preview -- --host 127.0.0.1 --port 4174
 ```
 
-Open the URL printed by Vite (http://127.0.0.1:4174 for this example). Stop with Ctrl+C. Preview is for inspecting a local production build, not a production deployment. Do not commit `dist/` or `node_modules/`. No automated test or lint script is currently configured; typecheck/build checks do not prove Auth or backend integration.
+Open the URL printed by Vite (http://127.0.0.1:4174 for this example). Stop with Ctrl+C. Preview is for inspecting a local production build, not a production deployment. Do not commit `dist/` or `node_modules/`. No npm test or lint script is configured. Run the planner/lifecycle tests directly with `node --experimental-strip-types --test tests/*.test.mjs` from `frontend/`. These checks do not prove Auth or backend integration.
 
 Verification on 2026-10-15 (Windows, Node.js 24.15.0, npm 11.12.1): a clean `npm ci` succeeded in a temporary directory containing copies of the manifest and lockfile; `npm run typecheck` and `npm run build` passed in the working frontend. Development and preview startup also passed with the documented overrides on ports 5174 and 4174. This is same-machine evidence, not a second-computer handover test.
 
@@ -83,8 +87,8 @@ Verification on 2026-10-15 (Windows, Node.js 24.15.0, npm 11.12.1): a clean `npm
 | `/signup` | Implemented Signup UI; account creation unconnected |
 | `/forgot-password` | Implemented reset-link request UI; email delivery unconnected |
 | `/reset-password` | Implemented new-password UI; recovery verification/update unconnected |
-| `/trip-planner` | Trip Planner placeholder |
-| `/results` | Results placeholder; no trip data loaded |
+| `/trip-planner` | Validated Trip Planner with local request preview; development-only MOCK lifecycle/error inspector |
+| `/results` | Empty state by default; reusable Results UI with development-only structural fixture previews |
 | `/offline-demo` | Explicitly labeled DEMO placeholder; no bundled trips loaded |
 | Any other path | Page-not-found placeholder |
 
@@ -96,22 +100,24 @@ BrowserRouter supports client navigation and direct links through Vite. A future
 
 - `src/main.tsx`: React entry point, BrowserRouter and global CSS.
 - `src/App.tsx`: route definitions.
-- `src/pages/`: implemented Welcome/auth/recovery UI plus planner/results/demo placeholders.
+- `src/pages/`: Welcome/auth/recovery, Trip Planner and Results UI; demo placeholder.
 - `src/components/welcome/`: shared Riviera logo, price badges and illustrative postcards.
 - `src/components/auth/`: reusable password input and recovery layout/error/submit components.
+- `src/components/results/`: presentation components accepting v0.4 candidate responses and explicit provenance; a separate development-only fixture selector.
 - `src/components/layout/AppLayout.tsx`: navigation and layout for the remaining placeholders and unknown routes.
 - `src/components/PlaceholderPage.tsx`: reusable page content wrapper.
 - `src/styles/`: global defaults, shared Riviera/Login styling and scoped Signup/recovery additions.
 - `src/services/`: API conventions and unconnected sign-in, signup and recovery boundaries. These make no provider/backend requests and do not log or persist credentials.
-- `src/types/`: shared TypeScript types; no speculative API models.
+- `src/types/`: shared types and v0.4 candidate request/Results presentation interfaces. Types alone do not validate HTTP responses.
 - `src/assets/`: reserved for approved local assets.
-- `src/fixtures/`: reserved for future bundled demo examples.
+- `src/fixtures/generationMocks.ts`: development-only error fixture/example adapter; not offline demo data.
+- `src/fixtures/resultsFixtures.ts`: development-only imports of the six original `docs/fixtures/` responses and manifest; not copied prototype data or a production fallback.
 - `vite.config.ts`, `tsconfig.json`: Vite React plugin and strict TypeScript configuration.
 
 ## Integration and offline boundaries
 
-Scope follows the repository’s MVP scope and architecture: one destination, 1–4 adults, 1–7 nights, whole-trip USD budget, backend-owned budget calculations, and a separate read-only demo. These trip constraints are not yet implemented as a working planner form. The API v0.4 review candidate is not implicitly adopted by this frontend; confirm the integration baseline with the team before adding response models or API handling.
+Scope follows the repository’s MVP scope and architecture: one destination, 1–4 adults, 1–7 nights, whole-trip USD budget, backend-owned budget calculations, and a separate read-only demo. The planner validates these form constraints locally. The API v0.4 review candidate is not implicitly approved by this implementation; confirm adoption and full response validation with the team before real integration.
 
-Supabase configuration, sessions, recovery-link validation, protected routes, FastAPI transport and real results are future integration work. Frontend Live-badge metadata must eventually be derived from trusted provider-sourced backend output and explicit online/demo context; a badge alone is not live-price evidence.
+Supabase configuration, sessions, recovery-link validation, protected routes, FastAPI transport and real results are future integration work. Future HTTP responses need full schema and semantic validation before passing them to the shared Results components. A trusted adapter must construct the `validated_api` provenance context; `live_evidence` must come from verified provider-sourced backend output. The public API does not carry the fixture manifest, and a badge alone is not live-price evidence. Fixture loading is isolated from the generation controller: selecting a fixture never completes a pending generation or establishes a session.
 
 The current pages use local UI assets but request Fraunces/Figtree from Google Fonts. Fallback system/serif fonts are available without that network access. No authentication or travel-provider requests run. Offline Demo is only a labeled entry placeholder, not the FE-03 implementation or a verified offline handover. Complete online/demo operation and second-computer testing remain later work.
