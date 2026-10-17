@@ -62,3 +62,17 @@ Frontend environment example (`.env.example`):
 ```dotenv
 VITE_SUPABASE_URL=https://<project-ref>.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=<your-supabase-publishable-key>
+
+### Reproducible Setup (from scratch)
+
+1. Create a Supabase project at https://supabase.com/dashboard (free tier).
+2. Go to Authentication → Providers → Email: enable it.
+3. Go to Authentication → URL Configuration:
+   - Site URL: http://localhost:5173
+   - Redirect URLs: http://localhost:5173/**, http://localhost:5173/reset-password, http://127.0.0.1:5173/**
+4. Go to Project Settings → API: copy the project URL and the publishable (anon) key.
+   - Share them via the team's private channel — never commit them.
+5. Create a local `.env` in the frontend from `.env.example` and fill in the real values.
+6. Run the frontend dev server and follow "Local Authentication Testing" above.
+7. Record results in the Setup Verification Record.
+
