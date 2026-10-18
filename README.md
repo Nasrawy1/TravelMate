@@ -2,7 +2,7 @@
 
 AI-assisted travel planning — graduation project.
 
-**Current state:** The local frontend includes the React/Vite foundation and Riviera Welcome, Login, Signup, Forgot Password and Reset Password UI. Trip Planner, Results and Offline Demo remain placeholders. The Supabase Auth development project is configured, but frontend Auth and FastAPI token verification are not integrated; no end-to-end authenticated workflow or trip generation is claimed.
+**Current state:** The local React/Vite frontend includes the Auth UI, and Diyar has connected it to Supabase for signup, login, email confirmation, password reset, and sign-out. FastAPI token verification and protected backend session handling remain BE-02 work. Trip Planner, Results and Offline Demo remain placeholders; trip generation is not connected.
 
 ## Documentation
 
@@ -76,7 +76,7 @@ Do not put access tokens, signing secrets, or service-role/secret API keys in th
 
 ## Local Authentication Testing
 
-The following PowerShell smoke test calls Supabase Auth directly, so it can verify the BE-01 project before Diyar's frontend SDK integration. Run it in a fresh PowerShell terminal. Obtain the project URL and publishable key from the project's Connect dialog; use an unused email address for a new test account and enter its password interactively. For repeat runs, use a new test address or remove the previous test account in the Dashboard. Do not paste credentials or access tokens into source files, terminal transcripts, or Git.
+Diyar has successfully tested the connected frontend Auth flow for signup, email confirmation, login, password reset, and sign-out. The following optional PowerShell smoke test calls Supabase Auth directly and can independently verify the project. Run it in a fresh PowerShell terminal. Obtain the project URL and publishable key from the project's Connect dialog; use an unused email address for a new test account and enter its password interactively. For repeat runs, use a new test address or remove the previous test account in the Dashboard. Do not paste credentials or access tokens into source files, terminal transcripts, or Git.
 
 1. Set the project values in the current terminal session and enter the test account details:
 
@@ -112,7 +112,7 @@ The following PowerShell smoke test calls Supabase Auth directly, so it can veri
    Remove-Variable signup, signupBody, signinBody, session, password, securePassword, headers, email
    ```
 
-The frontend's current auth forms are not connected to Supabase. This direct smoke test does not verify browser sessions, frontend login/logout, token refresh, or protected FastAPI requests; those are BE-02 work.
+This direct smoke test verifies Supabase Auth through its API; it does not verify FastAPI token verification or protected backend session handling. Those remain BE-02 work.
 
 ## Setup Verification Record
 
@@ -122,9 +122,9 @@ Recorded BE-01 test-account evidence (UTC; no credentials or tokens):
 - [x] Email confirmed: **2026-10-17 20:14 UTC**.
 - [x] Password sign-in succeeded: **2026-10-17 21:06 UTC**.
 - [x] Test account was visible in Supabase `auth.users`.
-- [ ] Password recovery: the initial attempt was blocked by HTTP 429 rate limiting. Diyar later tested recovery successfully; the earlier failure may have been due to the default email rate limit. Recovery behavior still needs joint BE-02 verification.
-- [ ] Sign-out: **not tested**.
-- [ ] Full frontend login/logout/session integration and FastAPI bearer-token verification: **pending BE-02**.
+- Password recovery: Initial attempt blocked by HTTP 429 rate limit (Supabase default limit is 2 emails/hour). After the rate limit reset, Diyar tested the full recovery flow successfully in the frontend. To permanently remove this limit and fix the blocker for production, the team plans to configure a custom SMTP provider once a verified sending domain is available. Backend session integration remains BE-02.
+- [x] Sign-out succeeded in Diyar's frontend test; no timestamp was recorded.
+- [ ] FastAPI bearer-token verification and protected backend session handling: **pending BE-02**.
 
-These results verify Supabase Auth setup and a direct test-account flow only. Frontend integration and backend token verification are separate BE-02 deliverables.
+Diyar's frontend Auth integration is working for signup, confirmation, login, password reset, and sign-out. FastAPI token verification and protected backend session handling are still BE-02 deliverables and are not claimed as complete.
 
