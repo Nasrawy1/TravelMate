@@ -2,7 +2,7 @@
 
 AI-assisted travel planning — graduation project.
 
-**Current state:** The local frontend includes the React/Vite foundation and Riviera Welcome, Login, Signup, Forgot Password and Reset Password UI. Trip Planner, Results and Offline Demo remain placeholders. Supabase Auth, FastAPI and live provider integrations are not connected; no working authentication or trip generation is claimed.
+**Current state:** The local frontend includes the React/Vite foundation and Riviera Welcome, Login, Signup, Forgot Password and Reset Password UI. Trip Planner, Results and Offline Demo remain placeholders. The Supabase Auth development project is configured, but frontend Auth and FastAPI token verification are not integrated; no end-to-end authenticated workflow or trip generation is claimed.
 
 ## Documentation
 
@@ -31,48 +31,100 @@ Keep API keys and elevated Supabase credentials server-side and outside Git. Nev
 
 Documentation is a review candidate, not evidence of team approval or provider feasibility. Pending: AI evidence, mandatory live provider and supported searches, estimation/conversion policy, offer selection confirmation and measured timeout tuning. See the implementation plan for ownership.
 
-## Authentication Configuration
+## Supabase Configuration and Setup
 
-Authentication provider: Supabase Auth
-Sign-in method: Email and password
-Email confirmation: Enabled. Users must confirm their email before signing in.
+BE-01 configures the dedicated TravelMate development project and documents safe handoff values. It does not implement frontend login/session behavior or backend JWT verification; those integrations are BE-02.
 
-### Local URLs
+For a fresh project, create/select the dedicated TravelMate development project in the Supabase Dashboard and enable the **Email** provider under **Authentication → Sign In / Providers**. Keep email confirmation enabled.
 
-Site URL: `http://localhost:5173`
+### Auth and local redirect settings
 
-Allowed redirect URLs:
+- Provider: Supabase Auth email/password.
+- Email confirmation: enabled; a new account must confirm its email before password sign-in.
+- Site URL: `http://localhost:5173`.
+- Allowed redirects: `http://localhost:5173/**`, `http://localhost:5173/reset-password`, and `http://127.0.0.1:5173/**`.
 
-- `http://localhost:5173/**`
-- `http://localhost:5173/reset-password`
-- `http://127.0.0.1:5173/**`
+Set these in the Supabase Dashboard under **Authentication → URL Configuration**. If Vite runs on another port, update the Site URL and allowed redirect URLs to match the local frontend origin.
 
-The local frontend URLs were provided by Diyar for the React development setup.
-Supabase's Site URL and allowed redirect URLs must match the frontend URLs used
-during development.
+### Frontend configuration for BE-02
 
-### Environment Variables
+Find the Project URL and public publishable key in the project's **Connect** dialog. The key is also listed under **Project Settings → API Keys**. Use the publishable key in browser code; never put a secret/service-role key in the frontend or a `VITE_` variable.
 
-Examples below use placeholders only. Real values are shared through an approved
-private channel and kept in local, uncommitted `.env` files. Do not commit files
-containing real project credentials.
-
-Frontend environment example (`.env.example`):
+`frontend/.env.example` uses placeholders only:
 
 ```dotenv
 VITE_SUPABASE_URL=https://<project-ref>.supabase.co
-VITE_SUPABASE_PUBLISHABLE_KEY=<your-supabase-publishable-key>
+VITE_SUPABASE_PUBLISHABLE_KEY=<publishable-key>
+```
 
-### Reproducible Setup (from scratch)
+Copy the example to a local, ignored `.env.local` and replace the placeholders for BE-02 integration. Do not commit local environment files or real project-specific values.
 
-1. Create a Supabase project at https://supabase.com/dashboard (free tier).
-2. Go to Authentication → Providers → Email: enable it.
-3. Go to Authentication → URL Configuration:
-   - Site URL: http://localhost:5173
-   - Redirect URLs: http://localhost:5173/**, http://localhost:5173/reset-password, http://127.0.0.1:5173/**
-4. Go to Project Settings → API: copy the project URL and the publishable (anon) key.
-   - Share them via the team's private channel — never commit them.
-5. Create a local `.env` in the frontend from `.env.example` and fill in the real values.
-6. Run the frontend dev server and follow "Local Authentication Testing" above.
-7. Record results in the Setup Verification Record.
+### Backend token verification settings for BE-02
+
+The backend verifies user access-token signatures and claims. These values are project configuration, not secret keys. Find the Project URL in the **Connect** dialog. Supabase Auth's JWKS URL and issuer are derived from that project URL; the signing-key controls are under **Project Settings → JWT Keys**. The expected audience for a normal signed-in user access token is `authenticated`; BE-02 should verify it against the token's `aud` claim.
+
+Placeholder-only backend example:
+
+```dotenv
+SUPABASE_URL=https://<project-ref>.supabase.co
+SUPABASE_JWKS_URL=https://<project-ref>.supabase.co/auth/v1/.well-known/jwks.json
+SUPABASE_JWT_ISSUER=https://<project-ref>.supabase.co/auth/v1
+SUPABASE_JWT_AUDIENCE=authenticated
+```
+
+Do not put access tokens, signing secrets, or service-role/secret API keys in this file or commit them. Supabase documents [publishable keys](https://supabase.com/docs/guides/getting-started/api-keys), [JWT claims](https://supabase.com/docs/guides/auth/jwt-fields), and [JWT verification/JWKS](https://supabase.com/docs/guides/auth/jwts).
+
+## Local Authentication Testing
+
+The following PowerShell smoke test calls Supabase Auth directly, so it can verify the BE-01 project before Diyar's frontend SDK integration. Run it in a fresh PowerShell terminal. Obtain the project URL and publishable key from the project's Connect dialog; use an unused email address for a new test account and enter its password interactively. For repeat runs, use a new test address or remove the previous test account in the Dashboard. Do not paste credentials or access tokens into source files, terminal transcripts, or Git.
+
+1. Set the project values in the current terminal session and enter the test account details:
+
+   ```powershell
+   $env:SUPABASE_URL = "https://<project-ref>.supabase.co"
+   $env:SUPABASE_PUBLISHABLE_KEY = "<publishable-key>"
+   $email = Read-Host "Test account email"
+   $securePassword = Read-Host "Test account password" -AsSecureString
+   $password = [System.Net.NetworkCredential]::new("", $securePassword).Password
+   $headers = @{ apikey = $env:SUPABASE_PUBLISHABLE_KEY }
+   ```
+
+2. Submit signup. This sends a confirmation email because email confirmation is enabled:
+
+   ```powershell
+   $signupBody = @{ email = $email; password = $password } | ConvertTo-Json
+   $signup = Invoke-RestMethod -Method Post -Uri "$($env:SUPABASE_URL)/auth/v1/signup" -Headers $headers -ContentType "application/json" -Body $signupBody
+   "Signup request completed; check the test inbox for the confirmation link."
+   ```
+
+3. Open the email and follow its confirmation link. In the Dashboard, check **Authentication → Users** and confirm the test account appears with a confirmed email.
+4. Sign in with the confirmed account. Keep the response in a variable and do not print or copy its access token:
+
+   ```powershell
+   $signinBody = @{ email = $email; password = $password } | ConvertTo-Json
+   $session = Invoke-RestMethod -Method Post -Uri "$($env:SUPABASE_URL)/auth/v1/token?grant_type=password" -Headers $headers -ContentType "application/json" -Body $signinBody
+   "Password sign-in succeeded."
+   ```
+
+5. In **Authentication → Users**, verify the account's last sign-in time. Remove the local variables when finished:
+
+   ```powershell
+   Remove-Variable signup, signupBody, signinBody, session, password, securePassword, headers, email
+   ```
+
+The frontend's current auth forms are not connected to Supabase. This direct smoke test does not verify browser sessions, frontend login/logout, token refresh, or protected FastAPI requests; those are BE-02 work.
+
+## Setup Verification Record
+
+Recorded BE-01 test-account evidence (UTC; no credentials or tokens):
+
+- [x] Confirmation email sent: **2026-10-17 17:14 UTC**.
+- [x] Email confirmed: **2026-10-17 20:14 UTC**.
+- [x] Password sign-in succeeded: **2026-10-17 21:06 UTC**.
+- [x] Test account was visible in Supabase `auth.users`.
+- [ ] Password recovery: the initial attempt was blocked by HTTP 429 rate limiting. Diyar later tested recovery successfully; the earlier failure may have been due to the default email rate limit. Recovery behavior still needs joint BE-02 verification.
+- [ ] Sign-out: **not tested**.
+- [ ] Full frontend login/logout/session integration and FastAPI bearer-token verification: **pending BE-02**.
+
+These results verify Supabase Auth setup and a direct test-account flow only. Frontend integration and backend token verification are separate BE-02 deliverables.
 
