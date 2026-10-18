@@ -1,4 +1,6 @@
+import logging
 import os
+from collections.abc import Callable
 
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
@@ -18,26 +20,53 @@ DEFAULT_CORS_ORIGINS = [
     "http://127.0.0.1:5173",
 ]
 
-cors_origins = [
-    origin.strip()
-    for origin in os.getenv(
-        "CORS_ORIGINS", ",".join(DEFAULT_CORS_ORIGINS)
-    ).split(",")
-    if origin.strip()
-]
 
-app = FastAPI()
+def configure_application_logging() -> None:
+    formatter = logging.Formatter(
+        "%(asctime)s %(levelname)s %(name)s %(message)s"
+    )
+    for logger_name in ("travelmate.request", "travelmate.errors"):
+        app_logger = logging.getLogger(logger_name)
+        app_logger.setLevel(logging.INFO)
+        app_logger.propagate = False
+        if not app_logger.handlers:
+            handler = logging.StreamHandler()
+            handler.setFormatter(formatter)
+            app_logger.addHandler(handler)
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=cors_origins,
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Authorization", "Content-Type"],
-)
-app.add_middleware(RequestLoggingMiddleware)
 
-app.add_exception_handler(StarletteHTTPException, http_exception_handler)
-app.add_exception_handler(RequestValidationError, validation_exception_handler)
-app.add_exception_handler(Exception, unhandled_exception_handler)
+configure_application_logging()
 
-app.include_router(health_router, prefix="/api/v1")
+
+def create_app(
+    configure_api: Callable[[FastAPI], None] | None = None,
+) -> CORSMiddleware:
+    api = FastAPI()
+
+    api.add_exception_handler(StarletteHTTPException, http_exception_handler)
+    api.add_exception_handler(RequestValidationError, validation_exception_handler)
+    api.add_exception_handler(Exception, unhandled_exception_handler)
+
+    api.include_router(health_router, prefix="/api/v1")
+
+    if configure_api is not None:
+        configure_api(api)
+
+    cors_origins = [
+        origin.strip()
+        for origin in os.getenv(
+            "CORS_ORIGINS", ",".join(DEFAULT_CORS_ORIGINS)
+        ).split(",")
+        if origin.strip()
+    ]
+
+    request_logged_api = RequestLoggingMiddleware(api)
+    return CORSMiddleware(
+        app=request_logged_api,
+        allow_origins=cors_origins,
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["Authorization", "Content-Type"],
+    )
+
+
+app = create_app()

@@ -28,7 +28,8 @@ class RequestLoggingMiddleware:
             if message["type"] == "http.response.start":
                 status_code = message["status"]
                 headers = list(message.get("headers", []))
-                headers.append((b"x-request-id", request_id.encode("ascii")))
+                if not any(name.lower() == b"x-request-id" for name, _ in headers):
+                    headers.append((b"x-request-id", request_id.encode("ascii")))
                 message["headers"] = headers
             await send(message)
 

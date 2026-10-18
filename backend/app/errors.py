@@ -76,7 +76,8 @@ async def http_exception_handler(
 async def unhandled_exception_handler(
     request: Request, exc: Exception
 ) -> JSONResponse:
-    logger.exception(
+    # Do not log exception details or tracebacks, which could contain secrets.
+    logger.error(
         "Unhandled server exception request_id=%s",
         getattr(request.state, "request_id", "unknown"),
     )
