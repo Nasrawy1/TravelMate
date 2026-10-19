@@ -88,6 +88,7 @@ def create_app(
         allow_origins=cors_origins,
         allow_methods=["GET", "POST", "OPTIONS"],
         allow_headers=["Authorization", "Content-Type"],
+        expose_headers=["X-Request-ID"],
     )
 
 
