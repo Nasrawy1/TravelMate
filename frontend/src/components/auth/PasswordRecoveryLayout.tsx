@@ -9,9 +9,10 @@ interface PasswordRecoveryLayoutProps {
   title: string
   description: string
   children: ReactNode
+  onBackToLogin?: () => void
 }
 
-export default function PasswordRecoveryLayout({ title, description, children }: PasswordRecoveryLayoutProps) {
+export default function PasswordRecoveryLayout({ title, description, children, onBackToLogin }: PasswordRecoveryLayoutProps) {
   return (
     <div className="welcome login-page recovery-page">
       <a className="skip-link" href="#recovery-content">Skip to password recovery form</a>
@@ -21,7 +22,7 @@ export default function PasswordRecoveryLayout({ title, description, children }:
       </svg>
       <header className="recovery-header welcome-container">
         <RivieraLogo />
-        <Link to="/login" className="login-back-link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" /></svg>Back to sign in</Link>
+        <Link to="/login" onClick={onBackToLogin} className="login-back-link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" /></svg>Back to sign in</Link>
       </header>
       <main id="recovery-content" className="recovery-main" tabIndex={-1}>
         <section className="recovery-card" aria-labelledby="recovery-title">

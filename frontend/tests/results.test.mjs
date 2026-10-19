@@ -143,7 +143,7 @@ test('timestamps stay in UTC independently of the local device timezone', () => 
 test('current production assets exclude Results/generation fixtures and development controls', async () => {
   const production = await build({ root, logLevel: 'silent', build: { write: false } })
   const assets = production.output.map(item => item.type === 'chunk' ? item.code : String(item.source)).join('\n')
-  for (const marker of ['fixture-provider', 'fixture-flight-1', 'within-budget.json', 'unknown-taxes.json', 'Results fixture preview', 'Inspect MOCK state', 'generation-preview-scenario', 'MOCK result scenario', '2026-10-15']) assert.ok(!assets.includes(marker), marker)
+  for (const marker of ['fixture-provider', 'fixture-flight-1', 'within-budget.json', 'unknown-taxes.json', 'Results fixture preview', 'Inspect MOCK state', 'generation-preview-scenario', 'MOCK result scenario', '2026-10-15', 'Run JWT probe', '/api/v1/auth/probe', 'dev/auth-probe']) assert.ok(!assets.includes(marker), marker)
 })
 
 test('direct production Results navigation renders an honest empty state without fixtures', async () => {
@@ -155,7 +155,8 @@ test('direct production Results navigation renders an honest empty state without
     const { default: ResultsPage } = await import(emptyPath.href)
     const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ResultsPage)))
     assert.ok(html.includes('No trip result yet'))
-    assert.ok(html.includes('Trip generation and authentication are not connected.'))
+    assert.ok(html.includes('Real trip generation is not yet connected to FastAPI.'))
+    assert.ok(!html.includes('Trip generation and authentication are not connected.'))
     assert.ok(!html.includes('MOCK result scenario'))
     assert.ok(!html.includes('fixture-provider'))
   } finally { await unlink(emptyPath).catch(error => { if (error.code !== 'ENOENT') throw error }) }

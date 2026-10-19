@@ -2,6 +2,7 @@ import { lazy, Suspense, useLayoutEffect, useRef, useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import RivieraLogo from '../components/welcome/RivieraLogo'
+import AuthNavigationLink from '../components/auth/AuthNavigationLink'
 import type { TripGenerateRequest } from '../types/trip'
 import { MOCK_CITIES, prepareTripRequest, utcToday, validateTripForm } from '../utils/tripPlanner'
 import type { TripField, TripFormErrors, TripFormValues } from '../utils/tripPlanner'
@@ -86,7 +87,7 @@ export default function TripPlannerPage() {
         <RivieraLogo />
         <nav aria-label="Main navigation" className="tp-nav">
           <Link to="/trip-planner" aria-current="page">Plan a trip</Link>
-          <Link to="/login">Sign in</Link>
+          <AuthNavigationLink />
         </nav>
       </div>
     </header>

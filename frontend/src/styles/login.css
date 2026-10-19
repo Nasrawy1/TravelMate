@@ -39,6 +39,16 @@
 .login-error-banner svg { flex: none; margin-top: 1px; }
 .login-error-banner p { margin-top: 2px; font-size: 14px; line-height: 1.45; }
 .login-divider { display: flex; align-items: center; gap: 14px; color: var(--muted); font-size: 14px; }
+.auth-session-notice:empty { display: none; }
+.auth-session-notice { padding: 14px 16px; border-radius: 16px; background: var(--sand); font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+.auth-session-notice button { font: inherit; color: inherit; cursor: pointer; }
+.auth-signed-in { display: flex; flex-direction: column; gap: 24px; }
+.auth-signed-in-icon { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 50%; color: var(--terracotta); background: var(--sand); }
+.auth-signed-in .login-card-heading p { line-height: 1.6; overflow-wrap: anywhere; }
+.welcome a.auth-planner-action { color: white; text-decoration: none; padding: 16px; }
+.auth-signout { font: inherit; font-size: 14px; font-weight: 700; min-height: 44px; border: 1px solid #eadfd1; border-radius: 14px; color: var(--ink); background: white; cursor: pointer; padding: 10px 16px; }
+.auth-signout:hover { background: var(--sand); }
+.auth-signout:disabled { cursor: wait; opacity: .65; }
 .login-divider span { flex: 1; height: 1px; background: #eadfd1; }
 .login-demo-link { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; min-height: 54px; padding: 10px; border-radius: 16px; background: var(--sand); text-decoration: none; font-weight: 700; }
 .login-demo-link span { font-size: 12px; padding: 3px 9px; border-radius: 999px; background: #f2b98a; letter-spacing: 0.08em; }
