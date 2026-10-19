@@ -21,6 +21,13 @@ DEFAULT_CORS_ORIGINS = [
 ]
 
 
+class SuppressUvicornTracebacks(logging.Filter):
+    """Drop Uvicorn error records carrying exception or traceback details."""
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        return record.exc_info is None and record.exc_text is None
+
+
 def configure_application_logging() -> None:
     formatter = logging.Formatter(
         "%(asctime)s %(levelname)s %(name)s %(message)s"
@@ -33,6 +40,17 @@ def configure_application_logging() -> None:
             handler = logging.StreamHandler()
             handler.setFormatter(formatter)
             app_logger.addHandler(handler)
+
+    uvicorn_error_logger = logging.getLogger("uvicorn.error")
+    if not any(
+        isinstance(existing_filter, SuppressUvicornTracebacks)
+        for existing_filter in uvicorn_error_logger.filters
+    ):
+        uvicorn_error_logger.addFilter(SuppressUvicornTracebacks())
+
+    # Use the sanitized request logger instead; Uvicorn's access format can
+    # include query parameters.
+    logging.getLogger("uvicorn.access").disabled = True
 
 
 configure_application_logging()

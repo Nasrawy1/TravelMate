@@ -33,7 +33,7 @@ The application does **not** load `.env` files automatically. Copy the example a
 Copy-Item .env.example .env
 $env:CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173"
 $env:PORT = "8000"
-python -m uvicorn app.main:app --host 127.0.0.1 --port $env:PORT
+python -m uvicorn app.main:app --host 127.0.0.1 --port $env:PORT --no-access-log
 ```
 
 To use a different Vite port, set `CORS_ORIGINS` to the exact frontend origin, such as `http://localhost:5174`, and set Vite's port to match. `PORT` controls the backend listening port; when changing it, use the same value in the Uvicorn command and any frontend API base URL configured later.
