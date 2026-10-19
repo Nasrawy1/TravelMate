@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import PriceBadge from '../components/welcome/PriceBadge'
 import RivieraLogo from '../components/welcome/RivieraLogo'
 import TripPostcards from '../components/welcome/TripPostcards'
+import { useAuthSession } from '../components/auth/AuthSessionProvider'
+import AuthNavigationLink from '../components/auth/AuthNavigationLink'
 import '../styles/welcome.css'
 
 const steps = [
@@ -11,6 +13,10 @@ const steps = [
 ]
 
 export default function WelcomePage() {
+  const auth = useAuthSession()
+  const signedIn = auth.status === 'authenticated'
+  const checking = auth.status === 'checking'
+  const entryPath = signedIn ? '/trip-planner' : auth.status === 'unavailable' ? '/login' : '/signup'
   return (
     <div className="welcome">
       <a className="skip-link" href="#welcome-content">Skip to content</a>
@@ -19,8 +25,8 @@ export default function WelcomePage() {
         <nav aria-label="Main" className="welcome-nav">
           <a href="#how">How it works</a>
           <a href="#demo">Demo trips</a>
-          <Link to="/login">Sign in</Link>
-          <Link to="/signup" className="welcome-button welcome-button-primary welcome-nav-cta">Get started</Link>
+          <AuthNavigationLink />
+          {checking ? <button type="button" className="welcome-button welcome-button-primary welcome-nav-cta" disabled>Checking session…</button> : <Link to={entryPath} className="welcome-button welcome-button-primary welcome-nav-cta">{signedIn ? 'Open Trip Planner' : auth.status === 'unavailable' ? 'Check session' : 'Get started'}</Link>}
         </nav>
       </header>
       <main id="welcome-content" className="welcome-main" tabIndex={-1}>
@@ -30,10 +36,10 @@ export default function WelcomePage() {
             <h1 id="welcome-title">Sun, sea and a plan that <em>fits.</em></h1>
             <p className="welcome-intro">Pick your cities, dates and budget. Get a day-by-day itinerary with real flight or hotel prices, and a straight answer on whether it all fits.</p>
             <div className="welcome-actions">
-              <Link to="/signup" className="welcome-button welcome-button-primary">Plan my trip</Link>
+              {checking ? <button type="button" className="welcome-button welcome-button-primary" disabled>Checking session…</button> : <Link to={entryPath} className="welcome-button welcome-button-primary">Plan my trip</Link>}
               <a href="#demo" className="welcome-button welcome-button-secondary">See a demo</a>
             </div>
-            <p className="welcome-account">Already have an account? <Link to="/login">Sign in</Link></p>
+            <p className="welcome-account" role="status">{checking ? 'Checking your session before you continue…' : signedIn ? <>{auth.user?.displayName ? `Welcome back, ${auth.user.displayName}.` : "You're signed in."} Ready to plan your next trip.</> : auth.status === 'unavailable' ? <>We couldn't verify your session. <Link to="/login">Check your account</Link></> : <>Already have an account? <Link to="/login">Sign in</Link></>}</p>
           </div>
           <TripPostcards />
         </section>

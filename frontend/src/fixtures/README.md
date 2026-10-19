@@ -9,4 +9,6 @@ Structural fixtures retain `data_mode=structural_mock`, `live_evidence=false`, a
 
 Both adapters are reached through DEV-gated preview components. Their controls and fixture imports are excluded from production assets, as checked by the Results tests. They never silently replace failed online responses or bypass authentication.
 
-The real generation-to-Results flow, Supabase Authentication, FastAPI transport and runtime response validation remain pending. The final FE-03 offline demo is separate future work: 2–3 curated, read-only journeys with visible DEMO/MOCK labels and no hosted sign-in or backend/provider calls.
+Supabase Auth and the reusable FastAPI transport are implemented separately from these fixture adapters. Diyar reported real JWT probe testing against backend PR #23 commit `e4fe192`, with ES256 signing: Account A and Account B each received HTTP 200 with matching identity; a missing JWT received HTTP 401 UNAUTHORIZED. See the [frontend verification record](../../README.md#be-02-auth-and-jwt-verification). This evidence does not turn fixture prices into live data or connect fixtures to the backend.
+
+The real generation-to-Results flow and full runtime generation-response validation remain pending. The final FE-03 offline demo is separate future work: 2–3 curated, read-only journeys with visible DEMO/MOCK labels and no hosted sign-in or backend/provider calls.

@@ -3,6 +3,8 @@ import type { FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import RivieraLogo from '../components/welcome/RivieraLogo'
 import PasswordInput from '../components/auth/PasswordInput'
+import AuthSessionNotice from '../components/auth/AuthSessionNotice'
+import { useAuthSession } from '../components/auth/AuthSessionProvider'
 import { signIn, SignInError } from '../services/auth'
 import '../styles/welcome.css'
 import '../styles/login.css'
@@ -13,12 +15,16 @@ function validateEmail(email: string) {
 }
 
 const errorMessages = {
-  not_configured: { title: 'Sign-in is not connected yet', message: 'Supabase Auth integration is still pending. You have not been signed in. Demo trips are coming soon.' },
+  not_configured: { title: 'Sign-in is not configured', message: 'Local Supabase configuration is missing or invalid. You have not been signed in.' },
   invalid_credentials: { title: 'Wrong email or password', message: 'Check both and try again. Passwords are case-sensitive.' },
+  email_not_confirmed: { title: 'Confirm your email first', message: 'Complete email confirmation, then return here to sign in.' },
+  weak_password: { title: 'Unable to sign in', message: 'Check your password and try again.' },
+  rate_limited: { title: 'Please wait before trying again', message: 'Too many authentication requests. Try again later.' },
   unavailable: { title: 'Unable to sign in', message: 'Sign-in is unavailable right now. Please try again later.' },
 }
 
 export default function LoginPage() {
+  const auth = useAuthSession()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [submitted, setSubmitted] = useState(false)
@@ -43,7 +49,8 @@ export default function LoginPage() {
     setLoading(true)
     try {
       await signIn({ email: email.trim(), password })
-      // Session handling and navigation must be added with real Auth integration.
+      setPassword('')
+      await auth.refresh()
     } catch (cause) {
       setError(cause instanceof SignInError ? cause.code : 'unavailable')
     } finally {
@@ -75,12 +82,13 @@ export default function LoginPage() {
         <div className="login-back-row"><Link to="/" className="login-back-link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" /></svg>Back to home</Link></div>
         <div className="login-card-position">
           <section className="login-card" aria-labelledby="login-title">
-            <div className="login-card-heading"><h2 id="login-title">Sign in</h2><p>New here? <Link to="/signup">Create an account</Link></p></div>
-            {error && <div className="login-error-banner" role="alert">
+            {auth.status !== 'authenticated' && <div className="login-card-heading"><h2 id="login-title">{auth.status === 'checking' ? 'Checking your session' : 'Sign in'}</h2>{auth.status !== 'checking' && <p>New here? <Link to="/signup">Create an account</Link></p>}</div>}
+            <AuthSessionNotice headingId="login-title" />
+            {error && auth.status !== 'authenticated' && <div className="login-error-banner" role="alert">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5v.5" /></svg>
               <div><strong>{errorMessages[error].title}</strong><p>{errorMessages[error].message}</p></div>
             </div>}
-            <form onSubmit={handleSubmit} noValidate className="login-form" aria-busy={loading}>
+            {auth.status !== 'authenticated' && auth.status !== 'checking' && <form onSubmit={handleSubmit} noValidate className="login-form" aria-busy={loading}>
               <div className="login-field">
                 <label htmlFor="login-email">Email</label>
                 <input ref={emailInput} id="login-email" name="email" type="email" autoComplete="email" placeholder="name@example.com" required disabled={loading} value={email} onChange={(event) => { setEmail(event.target.value); setError(null) }} aria-invalid={Boolean(emailError) || wrongCredentials} aria-describedby={emailError ? 'login-email-error' : undefined} />
@@ -95,7 +103,7 @@ export default function LoginPage() {
                 {loading && <svg className="login-spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9" /></svg>}
                 <span aria-live="polite">{loading ? 'Signing in…' : 'Sign in'}</span>
               </button>
-            </form>
+            </form>}
             <div className="login-divider"><span />or<span /></div>
             <Link to="/offline-demo" className="login-demo-link"><span>DEMO</span>Demo trips are coming soon.</Link>
           </section>
