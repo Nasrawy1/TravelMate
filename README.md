@@ -2,7 +2,7 @@
 
 AI-assisted travel planning — graduation project.
 
-**Current state:** The local React/Vite frontend includes the Auth UI, and Diyar has connected it to Supabase for signup, login, email confirmation, password reset, and sign-out. FastAPI token verification and protected backend session handling remain BE-02 work. Trip Planner, Results and Offline Demo remain placeholders; trip generation is not connected.
+**Current state:** The React/Vite frontend includes the Auth UI. Diyar reports successful Supabase signup, login, email confirmation, password recovery, and sign-out tests on his separate frontend branch. That branch has not yet been merged into `main`; these results do not describe an integrated frontend running on `main`. FastAPI token verification and protected backend session handling remain BE-02 work. Trip Planner, Results and Offline Demo remain placeholders; trip generation is not connected.
 
 ## Documentation
 
@@ -55,7 +55,10 @@ Find the Project URL and public publishable key in the project's **Connect** dia
 ```dotenv
 VITE_SUPABASE_URL=https://<project-ref>.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=<publishable-key>
+VITE_APP_URL=http://localhost:5173
 ```
+
+The `.env.example` uses the confirmed variable names from Diyar's frontend code.
 
 Copy the example to a local, ignored `.env.local` and replace the placeholders for BE-02 integration. Do not commit local environment files or real project-specific values.
 
@@ -76,7 +79,7 @@ Do not put access tokens, signing secrets, or service-role/secret API keys in th
 
 ## Local Authentication Testing
 
-Diyar has successfully tested the connected frontend Auth flow for signup, email confirmation, login, password reset, and sign-out. The following optional PowerShell smoke test calls Supabase Auth directly and can independently verify the project. Run it in a fresh PowerShell terminal. Obtain the project URL and publishable key from the project's Connect dialog; use an unused email address for a new test account and enter its password interactively. For repeat runs, use a new test address or remove the previous test account in the Dashboard. Do not paste credentials or access tokens into source files, terminal transcripts, or Git.
+Diyar reports successfully testing signup, email confirmation, login, password recovery, and sign-out on his separate frontend branch, which has not yet been merged into `main`. The following optional PowerShell smoke test calls Supabase Auth directly and can independently verify the project. Supabase’s default SMTP only sends confirmation emails to authorized team members of the Supabase project; an arbitrary new email address may not receive one. For a new test account, use an authorized team member’s email address. For repeat runs, remove the previous test account in the Dashboard or use another authorized email. Do not paste credentials or access tokens into source files, terminal transcripts, or Git.
 
 1. Set the project values in the current terminal session and enter the test account details:
 
@@ -122,9 +125,9 @@ Recorded BE-01 test-account evidence (UTC; no credentials or tokens):
 - [x] Email confirmed: **2026-10-17 20:14 UTC**.
 - [x] Password sign-in succeeded: **2026-10-17 21:06 UTC**.
 - [x] Test account was visible in Supabase `auth.users`.
-- Password recovery: Initial attempt blocked by HTTP 429 rate limit (Supabase default limit is 2 emails/hour). After the rate limit reset, Diyar tested the full recovery flow successfully in the frontend. To permanently remove this limit and fix the blocker for production, the team plans to configure a custom SMTP provider once a verified sending domain is available. Backend session integration remains BE-02.
+- Password recovery: Initial attempt blocked by HTTP 429 rate limit (Supabase default limit is 2 emails/hour). After the rate limit reset, Diyar tested the full recovery flow successfully in the frontend. To address email delivery limits for production, the team plans to configure a custom SMTP provider once a verified sending domain is available. Custom SMTP lets the project configure sending limits; it does not remove limits entirely. SMTP setup is not required for BE-01 and is a separate future task.
 - [x] Sign-out succeeded in Diyar's frontend test; no timestamp was recorded.
 - [ ] FastAPI bearer-token verification and protected backend session handling: **pending BE-02**.
 
-Diyar's frontend Auth integration is working for signup, confirmation, login, password reset, and sign-out. FastAPI token verification and protected backend session handling are still BE-02 deliverables and are not claimed as complete.
+Diyar’s successful frontend Auth tests were performed on his separate frontend branch, which has not yet been merged into `main`. They cover signup, confirmation, login, password recovery, and sign-out. FastAPI JWT verification and protected backend session handling remain BE-02 deliverables and are not claimed as complete.
 
