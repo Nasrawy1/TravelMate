@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api.routes.health import router as health_router
+from app.api.routes.auth_probe import router as auth_probe_router
 from app.errors import (
     http_exception_handler,
     unhandled_exception_handler,
@@ -67,6 +68,9 @@ def create_app(
 
     api.include_router(health_router, prefix="/api/v1")
 
+    if os.getenv("ENABLE_AUTH_PROBE", "false").strip().lower() == "true":
+        api.include_router(auth_probe_router, prefix="/api/v1")
+
     if configure_api is not None:
         configure_api(api)
 
@@ -84,6 +88,7 @@ def create_app(
         allow_origins=cors_origins,
         allow_methods=["GET", "POST", "OPTIONS"],
         allow_headers=["Authorization", "Content-Type"],
+        expose_headers=["X-Request-ID"],
     )
 
 

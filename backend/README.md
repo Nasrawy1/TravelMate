@@ -1,6 +1,6 @@
 # TravelMate backend
 
-FastAPI foundation for local development. The current application exposes only `GET /api/v1/health`; authentication, generation, providers and persistence are not implemented.
+FastAPI foundation for local development. The application exposes `GET /api/v1/health` and a locally gated BE-02 authentication probe. The probe is disabled by default. Generation, providers and persistence are not implemented.
 
 ## Prerequisites and dependencies
 
@@ -22,10 +22,12 @@ Exact installed dependency versions for the tested environment:
 - Starlette: `1.8.0`
 - Uvicorn: `0.54.0`
 - Pydantic: `2.14.1`
+- PyJWT: `2.15.1`
+- Cryptography (PyJWT crypto extra): `50.0.2`
 
 ## Configure and run
 
-Copy `.env.example` to `.env` and set values for your local environment. The example contains placeholders only. The current health-only foundation does not use the Supabase settings. `CORS_ORIGINS` is a comma-separated list; by default it allows `http://localhost:5173` and `http://127.0.0.1:5173`, matching Vite's default development port.
+Copy `.env.example` to `.env` and set values for your local environment. The example contains placeholders only. The application does not load `.env` automatically. `CORS_ORIGINS` is a comma-separated list; by default it allows `http://localhost:5173` and `http://127.0.0.1:5173`, matching Vite's default development port. BE-02 verifies Supabase access tokens with the configured JWKS URL, issuer, and audience (`authenticated`). The project must use an asymmetric signing key (ES256 or RS256); do not put signing secrets in backend or frontend environment files.
 
 The application does **not** load `.env` files automatically. Copy the example and set variables in the shell before starting. From `backend/` in PowerShell:
 
@@ -33,12 +35,20 @@ The application does **not** load `.env` files automatically. Copy the example a
 Copy-Item .env.example .env
 $env:CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173"
 $env:PORT = "8000"
+$env:SUPABASE_JWKS_URL = "https://<project-ref>.supabase.co/auth/v1/.well-known/jwks.json"
+$env:SUPABASE_JWT_ISSUER = "https://<project-ref>.supabase.co/auth/v1"
+$env:SUPABASE_JWT_AUDIENCE = "authenticated"
+$env:ENABLE_AUTH_PROBE = "false"
 python -m uvicorn app.main:app --host 127.0.0.1 --port $env:PORT --no-access-log
 ```
 
 To use a different Vite port, set `CORS_ORIGINS` to the exact frontend origin, such as `http://localhost:5174`, and set Vite's port to match. `PORT` controls the backend listening port; when changing it, use the same value in the Uvicorn command and any frontend API base URL configured later.
 
 Open `http://127.0.0.1:8000/api/v1/health`; the expected response is `{"status":"ok","service":"travelmate-api"}`. This endpoint reports local backend health only. The frontend currently does not call the backend.
+
+## BE-02 authentication probe
+
+`GET /api/v1/auth/probe` verifies a Supabase bearer token and returns its verified `sub` as `user_id`. This isolated integration probe is disabled by default and is not a product endpoint. To enable it for local verification only, set `$env:ENABLE_AUTH_PROBE = "true"` before starting the server, then restart Uvicorn. Send `Authorization: Bearer <access-token>` from a local test session; never paste tokens into source files, logs, or committed documentation. Set the flag back to `false` (or omit it) after testing. Missing, malformed, expired, invalid-signature, wrong-issuer, and wrong-audience tokens receive the standard 401 error envelope and request ID.
 
 ## Tests
 
