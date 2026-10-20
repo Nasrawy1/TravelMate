@@ -5,15 +5,18 @@
 
 ## 1. Setup
 
+Run every command from the `prototypes/travel-adapter/` folder:
+
 ```bash
+cd prototypes/travel-adapter
 pip install -r requirements.txt          # requests, groq, python-dotenv
 cp .env.example .env                     # then fill in your own keys (never commit .env)
 python test_travelmate_adapters.py       # offline tests, no API quota used
 ```
 
 - All credentials come from environment variables (see `.env.example`). Nothing is hardcoded.
-- **The keys that were previously hardcoded in the script must be revoked and replaced** in the RapidAPI and Groq dashboards before any upload.
-- `.gitignore` excludes `.env`, `travelmate_cache.json`, `travelmate_raw_data.json`, `travelmate_final_report.json` and the legacy scripts (`check.py`, `test.py`, `traval*.py`, `travalmate1.py`, `travalmate2.py`), which still contain old hardcoded keys.
+- **The keys that were previously hardcoded in the script must be revoked and replaced** in the RapidAPI and Groq dashboards.
+- The repository `.gitignore` excludes `.env` files and the local `travelmate_cache.json`, `travelmate_cache.json.lock`, `travelmate_raw_data.json` and `travelmate_final_report.json` files, so they are never committed.
 
 ---
 
