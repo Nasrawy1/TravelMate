@@ -1,0 +1,838 @@
+{
+  "status": "error",
+  "request_id": "tm-20261019233725-6f31e191",
+  "message": "The mandatory hotels search did not succeed.",
+  "error": {
+    "code": "rate_limited",
+    "message": "The provider rate limit was reached. Please try again later.",
+    "category": "hotels",
+    "retryable": true,
+    "retry_after_seconds": null,
+    "details": {
+      "reason": "http_429",
+      "provider_message": "You have exceeded the MONTHLY quota for requests on your current plan, BASIC. Upgrade your plan at https://rapidapi.com/DataCrawler/api/booking-com15",
+      "http_status": 429,
+      "rate_limit": {
+        "x-ratelimit-requests-limit": "20",
+        "x-ratelimit-requests-remaining": "0",
+        "x-ratelimit-requests-reset": "2208214",
+        "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+        "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499980",
+        "x-ratelimit-rapid-free-plans-hard-limit-reset": "2208214",
+        "x-ratelimit-premium-limit": "50",
+        "x-ratelimit-premium-remaining": "50",
+        "x-ratelimit-premium-reset": "2208214"
+      },
+      "service": "Hotel Search"
+    }
+  },
+  "warnings": [],
+  "generated_at": "2026-10-19T23:37:38Z",
+  "data_mode": "live",
+  "search_parameters": {
+    "trip_type": "round_trip",
+    "trip_type_label": "Round-Trip (2-Way)",
+    "origin": "IST",
+    "destination_city": "Cairo",
+    "check_in_date": "2026-11-19",
+    "check_out_date": "2026-11-22",
+    "nights": 3,
+    "adults": 2,
+    "budget_usd": 1500.0,
+    "currency": "USD"
+  },
+  "travel_availability": {
+    "mandatory_category": "hotels",
+    "flights": {
+      "status": "no_results",
+      "reason": "no_exact_date_quote",
+      "price_authority": "indicative",
+      "error": {
+        "code": "no_results",
+        "message": "No outbound / return flight quote exists for the exact requested date. Alternative dates are listed separately and are not eligible.",
+        "category": "flights",
+        "retryable": false,
+        "retry_after_seconds": null,
+        "details": {
+          "directions": [
+            "outbound",
+            "return"
+          ]
+        }
+      }
+    },
+    "hotels": {
+      "status": "error",
+      "reason": "http_429",
+      "price_authority": "live_provider_quote",
+      "error": {
+        "code": "rate_limited",
+        "message": "The provider rate limit was reached. Please try again later.",
+        "category": "hotels",
+        "retryable": true,
+        "retry_after_seconds": null,
+        "details": {
+          "reason": "http_429",
+          "provider_message": "You have exceeded the MONTHLY quota for requests on your current plan, BASIC. Upgrade your plan at https://rapidapi.com/DataCrawler/api/booking-com15",
+          "http_status": 429,
+          "rate_limit": {
+            "x-ratelimit-requests-limit": "20",
+            "x-ratelimit-requests-remaining": "0",
+            "x-ratelimit-requests-reset": "2208214",
+            "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+            "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499980",
+            "x-ratelimit-rapid-free-plans-hard-limit-reset": "2208214",
+            "x-ratelimit-premium-limit": "50",
+            "x-ratelimit-premium-remaining": "50",
+            "x-ratelimit-premium-reset": "2208214"
+          },
+          "service": "Hotel Search"
+        }
+      }
+    }
+  },
+  "flights_data": {
+    "outbound_flights": [],
+    "return_flights": [],
+    "alternative_date_flights": {
+      "outbound": [
+        {
+          "offer_id": "{bl}:202610191915*D*IST*CAI*20261125*ctuk*SM",
+          "direction": "outbound",
+          "airline": "Air Cairo",
+          "carrier_codes": [
+            "SM"
+          ],
+          "origin_airport": "IST",
+          "destination_airport": "CAI",
+          "origin_timezone": "Europe/Istanbul",
+          "destination_timezone": "Africa/Cairo",
+          "flight_date": "2026-11-25",
+          "flight_date_basis": "local departure date at origin_timezone",
+          "departure_time_local": null,
+          "arrival_time_local": null,
+          "requested_date": "2026-11-19",
+          "days_from_requested_date": 6,
+          "is_direct": true,
+          "stops": 0,
+          "transit_airports": [],
+          "stops_label": "Direct",
+          "price_per_adult_usd": 130.61,
+          "adults": 2,
+          "group_total_usd": 261.22,
+          "price_basis": "single_adult_one_way_quote",
+          "group_price_verified": false,
+          "price_authority": "indicative",
+          "original_price": 98.0,
+          "original_currency": "GBP",
+          "booking_link": "https://www.skyscanner.net/transport/flights/IST/CAI/20261125?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610191915%2AD%2AIST%2ACAI%2A20261125%2Actuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=98",
+          "eligibility": {
+            "eligible": false,
+            "reason": "date_mismatch",
+            "checks": {
+              "route_match": true,
+              "date_match": false,
+              "adult_occupancy_verified": false
+            }
+          },
+          "provenance": {
+            "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /v1/skyscanner/route",
+            "retrieved_at": "2026-10-19T23:37:28Z",
+            "cache_status": "refresh",
+            "provider_offer_id": "{bl}:202610191915*D*IST*CAI*20261125*ctuk*SM",
+            "quoted_at": "2026-10-19T19:15Z",
+            "currency_conversion": {
+              "status": "converted",
+              "original_amount": 98.0,
+              "original_currency": "GBP",
+              "rate_per_usd": 0.750306,
+              "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+              "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+              "rate_retrieved_at": "2026-10-19T23:37:29Z"
+            }
+          }
+        },
+        {
+          "offer_id": "{bl}:202610191059*I*IST*CAI*20261130*s1uk*TK",
+          "direction": "outbound",
+          "airline": "Turkish Airlines",
+          "carrier_codes": [
+            "TK"
+          ],
+          "origin_airport": "IST",
+          "destination_airport": "CAI",
+          "origin_timezone": "Europe/Istanbul",
+          "destination_timezone": "Africa/Cairo",
+          "flight_date": "2026-11-30",
+          "flight_date_basis": "local departure date at origin_timezone",
+          "departure_time_local": null,
+          "arrival_time_local": null,
+          "requested_date": "2026-11-19",
+          "days_from_requested_date": 11,
+          "is_direct": false,
+          "stops": null,
+          "transit_airports": [],
+          "stops_label": "With stops (count and transit airports not provided by provider)",
+          "price_per_adult_usd": 118.62,
+          "adults": 2,
+          "group_total_usd": 237.24,
+          "price_basis": "single_adult_one_way_quote",
+          "group_price_verified": false,
+          "price_authority": "indicative",
+          "original_price": 89.0,
+          "original_currency": "GBP",
+          "booking_link": "https://www.skyscanner.net/transport/flights/IST/CAI/20261130?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610191059%2AI%2AIST%2ACAI%2A20261130%2As1uk%2ATK&pq_prevCurrency=GBP&pq_prevPrice=89",
+          "eligibility": {
+            "eligible": false,
+            "reason": "date_mismatch",
+            "checks": {
+              "route_match": true,
+              "date_match": false,
+              "adult_occupancy_verified": false
+            }
+          },
+          "provenance": {
+            "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /v1/skyscanner/route",
+            "retrieved_at": "2026-10-19T23:37:28Z",
+            "cache_status": "refresh",
+            "provider_offer_id": "{bl}:202610191059*I*IST*CAI*20261130*s1uk*TK",
+            "quoted_at": "2026-10-19T10:59Z",
+            "currency_conversion": {
+              "status": "converted",
+              "original_amount": 89.0,
+              "original_currency": "GBP",
+              "rate_per_usd": 0.750306,
+              "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+              "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+              "rate_retrieved_at": "2026-10-19T23:37:29Z"
+            }
+          }
+        },
+        {
+          "offer_id": "{bl}:202610182020*I*IST*CAI*20261029*bcuk*SM",
+          "direction": "outbound",
+          "airline": "Air Cairo",
+          "carrier_codes": [
+            "SM"
+          ],
+          "origin_airport": "IST",
+          "destination_airport": "CAI",
+          "origin_timezone": "Europe/Istanbul",
+          "destination_timezone": "Africa/Cairo",
+          "flight_date": "2026-10-29",
+          "flight_date_basis": "local departure date at origin_timezone",
+          "departure_time_local": null,
+          "arrival_time_local": null,
+          "requested_date": "2026-11-19",
+          "days_from_requested_date": 21,
+          "is_direct": false,
+          "stops": null,
+          "transit_airports": [],
+          "stops_label": "With stops (count and transit airports not provided by provider)",
+          "price_per_adult_usd": 125.28,
+          "adults": 2,
+          "group_total_usd": 250.56,
+          "price_basis": "single_adult_one_way_quote",
+          "group_price_verified": false,
+          "price_authority": "indicative",
+          "original_price": 94.0,
+          "original_currency": "GBP",
+          "booking_link": "https://www.skyscanner.net/transport/flights/IST/CAI/20261029?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610182020%2AI%2AIST%2ACAI%2A20261029%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=94",
+          "eligibility": {
+            "eligible": false,
+            "reason": "date_mismatch",
+            "checks": {
+              "route_match": true,
+              "date_match": false,
+              "adult_occupancy_verified": false
+            }
+          },
+          "provenance": {
+            "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /v1/skyscanner/route",
+            "retrieved_at": "2026-10-19T23:37:28Z",
+            "cache_status": "refresh",
+            "provider_offer_id": "{bl}:202610182020*I*IST*CAI*20261029*bcuk*SM",
+            "quoted_at": "2026-10-18T20:20Z",
+            "currency_conversion": {
+              "status": "converted",
+              "original_amount": 94.0,
+              "original_currency": "GBP",
+              "rate_per_usd": 0.750306,
+              "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+              "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+              "rate_retrieved_at": "2026-10-19T23:37:29Z"
+            }
+          }
+        },
+        {
+          "offer_id": "{bl}:202610190914*D*IST*CAI*20261210*ctuk*SM",
+          "direction": "outbound",
+          "airline": "Air Cairo",
+          "carrier_codes": [
+            "SM"
+          ],
+          "origin_airport": "IST",
+          "destination_airport": "CAI",
+          "origin_timezone": "Europe/Istanbul",
+          "destination_timezone": "Africa/Cairo",
+          "flight_date": "2026-12-10",
+          "flight_date_basis": "local departure date at origin_timezone",
+          "departure_time_local": null,
+          "arrival_time_local": null,
+          "requested_date": "2026-11-19",
+          "days_from_requested_date": 21,
+          "is_direct": true,
+          "stops": 0,
+          "transit_airports": [],
+          "stops_label": "Direct",
+          "price_per_adult_usd": 129.28,
+          "adults": 2,
+          "group_total_usd": 258.56,
+          "price_basis": "single_adult_one_way_quote",
+          "group_price_verified": false,
+          "price_authority": "indicative",
+          "original_price": 97.0,
+          "original_currency": "GBP",
+          "booking_link": "https://www.skyscanner.net/transport/flights/IST/CAI/20261210?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610190914%2AD%2AIST%2ACAI%2A20261210%2Actuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=97",
+          "eligibility": {
+            "eligible": false,
+            "reason": "date_mismatch",
+            "checks": {
+              "route_match": true,
+              "date_match": false,
+              "adult_occupancy_verified": false
+            }
+          },
+          "provenance": {
+            "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /v1/skyscanner/route",
+            "retrieved_at": "2026-10-19T23:37:28Z",
+            "cache_status": "refresh",
+            "provider_offer_id": "{bl}:202610190914*D*IST*CAI*20261210*ctuk*SM",
+            "quoted_at": "2026-10-19T09:14Z",
+            "currency_conversion": {
+              "status": "converted",
+              "original_amount": 97.0,
+              "original_currency": "GBP",
+              "rate_per_usd": 0.750306,
+              "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+              "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+              "rate_retrieved_at": "2026-10-19T23:37:29Z"
+            }
+          }
+        },
+        {
+          "offer_id": "{bl}:202610191935*D*IST*CAI*20261028*ctuk*TK",
+          "direction": "outbound",
+          "airline": "Turkish Airlines",
+          "carrier_codes": [
+            "TK"
+          ],
+          "origin_airport": "IST",
+          "destination_airport": "CAI",
+          "origin_timezone": "Europe/Istanbul",
+          "destination_timezone": "Africa/Cairo",
+          "flight_date": "2026-10-28",
+          "flight_date_basis": "local departure date at origin_timezone",
+          "departure_time_local": null,
+          "arrival_time_local": null,
+          "requested_date": "2026-11-19",
+          "days_from_requested_date": 22,
+          "is_direct": true,
+          "stops": 0,
+          "transit_airports": [],
+          "stops_label": "Direct",
+          "price_per_adult_usd": 143.94,
+          "adults": 2,
+          "group_total_usd": 287.88,
+          "price_basis": "single_adult_one_way_quote",
+          "group_price_verified": false,
+          "price_authority": "indicative",
+          "original_price": 108.0,
+          "original_currency": "GBP",
+          "booking_link": "https://www.skyscanner.net/transport/flights/IST/CAI/20261028?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610191935%2AD%2AIST%2ACAI%2A20261028%2Actuk%2ATK&pq_prevCurrency=GBP&pq_prevPrice=108",
+          "eligibility": {
+            "eligible": false,
+            "reason": "date_mismatch",
+            "checks": {
+              "route_match": true,
+              "date_match": false,
+              "adult_occupancy_verified": false
+            }
+          },
+          "provenance": {
+            "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /v1/skyscanner/route",
+            "retrieved_at": "2026-10-19T23:37:28Z",
+            "cache_status": "refresh",
+            "provider_offer_id": "{bl}:202610191935*D*IST*CAI*20261028*ctuk*TK",
+            "quoted_at": "2026-10-19T19:35Z",
+            "currency_conversion": {
+              "status": "converted",
+              "original_amount": 108.0,
+              "original_currency": "GBP",
+              "rate_per_usd": 0.750306,
+              "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+              "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+              "rate_retrieved_at": "2026-10-19T23:37:29Z"
+            }
+          }
+        }
+      ],
+      "return": [
+        {
+          "offer_id": "{bl}:202610160814*D*CAI*IST*20261111*bcuk*SM",
+          "direction": "return",
+          "airline": "Air Cairo",
+          "carrier_codes": [
+            "SM"
+          ],
+          "origin_airport": "CAI",
+          "destination_airport": "IST",
+          "origin_timezone": "Africa/Cairo",
+          "destination_timezone": "Europe/Istanbul",
+          "flight_date": "2026-11-11",
+          "flight_date_basis": "local departure date at origin_timezone",
+          "departure_time_local": null,
+          "arrival_time_local": null,
+          "requested_date": "2026-11-22",
+          "days_from_requested_date": 11,
+          "is_direct": true,
+          "stops": 0,
+          "transit_airports": [],
+          "stops_label": "Direct",
+          "price_per_adult_usd": 74.64,
+          "adults": 2,
+          "group_total_usd": 149.28,
+          "price_basis": "single_adult_one_way_quote",
+          "group_price_verified": false,
+          "price_authority": "indicative",
+          "original_price": 56.0,
+          "original_currency": "GBP",
+          "booking_link": "https://www.skyscanner.net/transport/flights/CAI/IST/20261111?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610160814%2AD%2ACAI%2AIST%2A20261111%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=56",
+          "eligibility": {
+            "eligible": false,
+            "reason": "date_mismatch",
+            "checks": {
+              "route_match": true,
+              "date_match": false,
+              "adult_occupancy_verified": false
+            }
+          },
+          "provenance": {
+            "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /v1/skyscanner/route",
+            "retrieved_at": "2026-10-19T23:37:37Z",
+            "cache_status": "refresh",
+            "provider_offer_id": "{bl}:202610160814*D*CAI*IST*20261111*bcuk*SM",
+            "quoted_at": "2026-10-16T08:14Z",
+            "currency_conversion": {
+              "status": "converted",
+              "original_amount": 56.0,
+              "original_currency": "GBP",
+              "rate_per_usd": 0.750306,
+              "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+              "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+              "rate_retrieved_at": "2026-10-19T23:37:29Z"
+            }
+          }
+        },
+        {
+          "offer_id": "{bl}:202610170907*D*CAI*IST*20261206*bcuk*SM",
+          "direction": "return",
+          "airline": "Air Cairo",
+          "carrier_codes": [
+            "SM"
+          ],
+          "origin_airport": "CAI",
+          "destination_airport": "IST",
+          "origin_timezone": "Africa/Cairo",
+          "destination_timezone": "Europe/Istanbul",
+          "flight_date": "2026-12-06",
+          "flight_date_basis": "local departure date at origin_timezone",
+          "departure_time_local": null,
+          "arrival_time_local": null,
+          "requested_date": "2026-11-22",
+          "days_from_requested_date": 14,
+          "is_direct": true,
+          "stops": 0,
+          "transit_airports": [],
+          "stops_label": "Direct",
+          "price_per_adult_usd": 81.3,
+          "adults": 2,
+          "group_total_usd": 162.6,
+          "price_basis": "single_adult_one_way_quote",
+          "group_price_verified": false,
+          "price_authority": "indicative",
+          "original_price": 61.0,
+          "original_currency": "GBP",
+          "booking_link": "https://www.skyscanner.net/transport/flights/CAI/IST/20261206?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610170907%2AD%2ACAI%2AIST%2A20261206%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=61",
+          "eligibility": {
+            "eligible": false,
+            "reason": "date_mismatch",
+            "checks": {
+              "route_match": true,
+              "date_match": false,
+              "adult_occupancy_verified": false
+            }
+          },
+          "provenance": {
+            "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /v1/skyscanner/route",
+            "retrieved_at": "2026-10-19T23:37:37Z",
+            "cache_status": "refresh",
+            "provider_offer_id": "{bl}:202610170907*D*CAI*IST*20261206*bcuk*SM",
+            "quoted_at": "2026-10-17T09:07Z",
+            "currency_conversion": {
+              "status": "converted",
+              "original_amount": 61.0,
+              "original_currency": "GBP",
+              "rate_per_usd": 0.750306,
+              "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+              "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+              "rate_retrieved_at": "2026-10-19T23:37:29Z"
+            }
+          }
+        },
+        {
+          "offer_id": "{bl}:202610181620*D*CAI*IST*20261023*bcuk*SM",
+          "direction": "return",
+          "airline": "Air Cairo",
+          "carrier_codes": [
+            "SM"
+          ],
+          "origin_airport": "CAI",
+          "destination_airport": "IST",
+          "origin_timezone": "Africa/Cairo",
+          "destination_timezone": "Europe/Istanbul",
+          "flight_date": "2026-10-23",
+          "flight_date_basis": "local departure date at origin_timezone",
+          "departure_time_local": null,
+          "arrival_time_local": null,
+          "requested_date": "2026-11-22",
+          "days_from_requested_date": 30,
+          "is_direct": true,
+          "stops": 0,
+          "transit_airports": [],
+          "stops_label": "Direct",
+          "price_per_adult_usd": 90.63,
+          "adults": 2,
+          "group_total_usd": 181.26,
+          "price_basis": "single_adult_one_way_quote",
+          "group_price_verified": false,
+          "price_authority": "indicative",
+          "original_price": 68.0,
+          "original_currency": "GBP",
+          "booking_link": "https://www.skyscanner.net/transport/flights/CAI/IST/20261023?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610181620%2AD%2ACAI%2AIST%2A20261023%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=68",
+          "eligibility": {
+            "eligible": false,
+            "reason": "date_mismatch",
+            "checks": {
+              "route_match": true,
+              "date_match": false,
+              "adult_occupancy_verified": false
+            }
+          },
+          "provenance": {
+            "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /v1/skyscanner/route",
+            "retrieved_at": "2026-10-19T23:37:37Z",
+            "cache_status": "refresh",
+            "provider_offer_id": "{bl}:202610181620*D*CAI*IST*20261023*bcuk*SM",
+            "quoted_at": "2026-10-18T16:20Z",
+            "currency_conversion": {
+              "status": "converted",
+              "original_amount": 68.0,
+              "original_currency": "GBP",
+              "rate_per_usd": 0.750306,
+              "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+              "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+              "rate_retrieved_at": "2026-10-19T23:37:29Z"
+            }
+          }
+        },
+        {
+          "offer_id": "{bl}:202610171917*D*CAI*IST*20270109*bcuk*SM",
+          "direction": "return",
+          "airline": "Air Cairo",
+          "carrier_codes": [
+            "SM"
+          ],
+          "origin_airport": "CAI",
+          "destination_airport": "IST",
+          "origin_timezone": "Africa/Cairo",
+          "destination_timezone": "Europe/Istanbul",
+          "flight_date": "2027-01-09",
+          "flight_date_basis": "local departure date at origin_timezone",
+          "departure_time_local": null,
+          "arrival_time_local": null,
+          "requested_date": "2026-11-22",
+          "days_from_requested_date": 48,
+          "is_direct": true,
+          "stops": 0,
+          "transit_airports": [],
+          "stops_label": "Direct",
+          "price_per_adult_usd": 118.62,
+          "adults": 2,
+          "group_total_usd": 237.24,
+          "price_basis": "single_adult_one_way_quote",
+          "group_price_verified": false,
+          "price_authority": "indicative",
+          "original_price": 89.0,
+          "original_currency": "GBP",
+          "booking_link": "https://www.skyscanner.net/transport/flights/CAI/IST/20270109?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610171917%2AD%2ACAI%2AIST%2A20270109%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=89",
+          "eligibility": {
+            "eligible": false,
+            "reason": "date_mismatch",
+            "checks": {
+              "route_match": true,
+              "date_match": false,
+              "adult_occupancy_verified": false
+            }
+          },
+          "provenance": {
+            "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /v1/skyscanner/route",
+            "retrieved_at": "2026-10-19T23:37:37Z",
+            "cache_status": "refresh",
+            "provider_offer_id": "{bl}:202610171917*D*CAI*IST*20270109*bcuk*SM",
+            "quoted_at": "2026-10-17T19:17Z",
+            "currency_conversion": {
+              "status": "converted",
+              "original_amount": 89.0,
+              "original_currency": "GBP",
+              "rate_per_usd": 0.750306,
+              "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+              "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+              "rate_retrieved_at": "2026-10-19T23:37:29Z"
+            }
+          }
+        },
+        {
+          "offer_id": "{bl}:202610191231*D*CAI*IST*20270218*bcuk*SM",
+          "direction": "return",
+          "airline": "Air Cairo",
+          "carrier_codes": [
+            "SM"
+          ],
+          "origin_airport": "CAI",
+          "destination_airport": "IST",
+          "origin_timezone": "Africa/Cairo",
+          "destination_timezone": "Europe/Istanbul",
+          "flight_date": "2027-02-18",
+          "flight_date_basis": "local departure date at origin_timezone",
+          "departure_time_local": null,
+          "arrival_time_local": null,
+          "requested_date": "2026-11-22",
+          "days_from_requested_date": 88,
+          "is_direct": true,
+          "stops": 0,
+          "transit_airports": [],
+          "stops_label": "Direct",
+          "price_per_adult_usd": 118.62,
+          "adults": 2,
+          "group_total_usd": 237.24,
+          "price_basis": "single_adult_one_way_quote",
+          "group_price_verified": false,
+          "price_authority": "indicative",
+          "original_price": 89.0,
+          "original_currency": "GBP",
+          "booking_link": "https://www.skyscanner.net/transport/flights/CAI/IST/20270218?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610191231%2AD%2ACAI%2AIST%2A20270218%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=89",
+          "eligibility": {
+            "eligible": false,
+            "reason": "date_mismatch",
+            "checks": {
+              "route_match": true,
+              "date_match": false,
+              "adult_occupancy_verified": false
+            }
+          },
+          "provenance": {
+            "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /v1/skyscanner/route",
+            "retrieved_at": "2026-10-19T23:37:37Z",
+            "cache_status": "refresh",
+            "provider_offer_id": "{bl}:202610191231*D*CAI*IST*20270218*bcuk*SM",
+            "quoted_at": "2026-10-19T12:31Z",
+            "currency_conversion": {
+              "status": "converted",
+              "original_amount": 89.0,
+              "original_currency": "GBP",
+              "rate_per_usd": 0.750306,
+              "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+              "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+              "rate_retrieved_at": "2026-10-19T23:37:29Z"
+            }
+          }
+        }
+      ]
+    },
+    "capabilities": {
+      "supports_requested_date": false,
+      "supports_adult_count": false,
+      "supports_currency_parameter": false,
+      "data_type": "cached_route_quotes",
+      "price_basis": "single_adult_one_way_quote",
+      "group_total_method": "price_per_adult_usd x adults (unverified for adults > 1)",
+      "departure_times_available": false,
+      "price_authority": "indicative"
+    },
+    "limitations": [
+      "Cached quotes: the provider does not perform a live search for the requested date.",
+      "Group totals multiply a single-adult quote by the adult count (unverified for adults > 1).",
+      "No departure/arrival times are provided; only local departure dates.",
+      "Adopting an alternative date requires a NEW request with fresh hotel search and calculations."
+    ],
+    "coverage": {
+      "outbound": {
+        "deals_returned": 16,
+        "eligible_exact_date": 0,
+        "alternative_dates": 16,
+        "excluded": {
+          "route_mismatch": 0,
+          "invalid_price": 0,
+          "unconvertible_currency": 0,
+          "malformed": 0
+        },
+        "requested_date": "2026-11-19",
+        "returned_date_range": [
+          "2026-10-28",
+          "2027-08-09"
+        ],
+        "date_parameter_honored": false,
+        "requested_currency": "USD",
+        "returned_currency": "GBP",
+        "currency_parameter_honored": false,
+        "provider_usage_note": "Fares are Skyscanner's cached quotes for this pair, not a live search: each deal states `quoted_at` on every leg, and `deep_link_path` names the exact airports and date the quote belongs to. There is no pagination -- the page returns its whole set in one response, 13-16 deals measured across seven city pairs. `origin.sky_code` and `destination.sky_code`, and every `nearby_airports[].sky_code`, are"
+      },
+      "return": {
+        "deals_returned": 13,
+        "eligible_exact_date": 0,
+        "alternative_dates": 13,
+        "excluded": {
+          "route_mismatch": 0,
+          "invalid_price": 0,
+          "unconvertible_currency": 0,
+          "malformed": 0
+        },
+        "requested_date": "2026-11-22",
+        "returned_date_range": [
+          "2026-10-23",
+          "2027-10-10"
+        ],
+        "date_parameter_honored": false,
+        "requested_currency": "USD",
+        "returned_currency": "GBP",
+        "currency_parameter_honored": false,
+        "provider_usage_note": "Fares are Skyscanner's cached quotes for this pair, not a live search: each deal states `quoted_at` on every leg, and `deep_link_path` names the exact airports and date the quote belongs to. There is no pagination -- the page returns its whole set in one response, 13-16 deals measured across seven city pairs. `origin.sky_code` and `destination.sky_code`, and every `nearby_airports[].sky_code`, are"
+      }
+    }
+  },
+  "hotels_data": [],
+  "hotels_coverage": {},
+  "budget_summary": {},
+  "budget_tiers_within_limit": [],
+  "budget_tiers_excluded": [],
+  "selected_offers": {},
+  "ai_itinerary": {
+    "status": "not_run",
+    "itinerary": null,
+    "ancillary_estimates": null,
+    "error": null,
+    "provenance": null
+  },
+  "ai_recommendation_report": "",
+  "provenance": {
+    "flights": {
+      "outbound": {
+        "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+        "integration_type": "rapidapi_third_party",
+        "upstream_source": "skyscanner.net route pages (cached fare quotes, not a live fare search)",
+        "endpoint": "GET /v1/skyscanner/route",
+        "query_parameters": {
+          "origin": "ist",
+          "destination": "cai",
+          "date": "2026-11-19",
+          "adults": "2",
+          "currency": "USD",
+          "market": "US",
+          "locale": "en-US"
+        },
+        "retrieved_at": "2026-10-19T23:37:28Z",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "key_slot": 1,
+        "attempts": 1,
+        "rate_limit": {
+          "x-ratelimit-requests-limit": "20",
+          "x-ratelimit-requests-remaining": "4",
+          "x-ratelimit-requests-reset": "2213888",
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499984",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2213888"
+        }
+      },
+      "return": {
+        "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+        "integration_type": "rapidapi_third_party",
+        "upstream_source": "skyscanner.net route pages (cached fare quotes, not a live fare search)",
+        "endpoint": "GET /v1/skyscanner/route",
+        "query_parameters": {
+          "origin": "cai",
+          "destination": "ist",
+          "date": "2026-11-22",
+          "adults": "2",
+          "currency": "USD",
+          "market": "US",
+          "locale": "en-US"
+        },
+        "retrieved_at": "2026-10-19T23:37:37Z",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "key_slot": 1,
+        "attempts": 1,
+        "rate_limit": {
+          "x-ratelimit-requests-limit": "20",
+          "x-ratelimit-requests-remaining": "3",
+          "x-ratelimit-requests-reset": "2213879",
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499983",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2213879"
+        }
+      }
+    },
+    "hotels": {},
+    "hotel_destination_mapping": {
+      "dest_id": "-290692",
+      "search_type": "CITY",
+      "source": "pinned_mapping"
+    },
+    "exchange_rates": {
+      "available": true,
+      "source": "ExchangeRate-API open access (open.er-api.com)",
+      "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+      "retrieved_at": "2026-10-19T23:37:29Z",
+      "provenance": {
+        "provider": "ExchangeRate-API open access (open.er-api.com)",
+        "integration_type": "direct_public_api",
+        "endpoint": "GET /v6/latest/USD",
+        "query_parameters": {},
+        "retrieved_at": "2026-10-19T23:37:29Z",
+        "cache_status": "refresh"
+      }
+    }
+  }
+}

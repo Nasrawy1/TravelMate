@@ -1,0 +1,841 @@
+{
+ "data": {
+  "requested_origin": "cai",
+  "requested_destination": "ist",
+  "url": "https://www.skyscanner.net/routes/cai/ist",
+  "origin": {
+   "sky_code": "CAIR",
+   "entity_id": "27539681",
+   "name": "Cairo",
+   "country_name": "Egypt",
+   "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+  },
+  "destination": {
+   "sky_code": "ISTA",
+   "entity_id": "27542903",
+   "name": "Istanbul",
+   "country_name": null,
+   "image_url": null
+  },
+  "title": "Cheap Flights from Cairo (CAI) to Istanbul (IST) | Skyscanner",
+  "cheapest_price": 56,
+  "currency": "GBP",
+  "offer_name": "Cheap Flights from Cairo to Istanbul",
+  "deals": [
+   {
+    "id": "{bl}:202610111311*D*CAI*IST*20261108*bcuk*SM",
+    "price": 56,
+    "formatted_price": "£56",
+    "direct": true,
+    "cabin_class": null,
+    "origin": {
+     "sky_code": "CAIR",
+     "entity_id": "27539681",
+     "name": "Cairo",
+     "country_name": "Egypt",
+     "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+    },
+    "destination": {
+     "sky_code": "ISTA",
+     "entity_id": "27542903",
+     "name": "Istanbul",
+     "country_name": null,
+     "image_url": null
+    },
+    "legs": [
+     {
+      "date": "2026-11-08",
+      "formatted_date": "Sun, 8 Nov",
+      "quoted_at": "2026-10-11T13:11Z",
+      "origin": {
+       "sky_code": "CAI",
+       "entity_id": "104120222",
+       "name": "Cairo",
+       "country_name": null,
+       "image_url": null
+      },
+      "destination": {
+       "sky_code": "IST",
+       "entity_id": "95673323",
+       "name": "Istanbul",
+       "country_name": null,
+       "image_url": null
+      },
+      "carrier_name": "Air Cairo",
+      "carrier_code": "SM"
+     }
+    ],
+    "deep_link_path": "/transport/flights/CAI/IST/20261108?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610111311%2AD%2ACAI%2AIST%2A20261108%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=56"
+   },
+   {
+    "id": "{bl}:202610160854*D*CAI*IST*20261028*bcuk*SM",
+    "price": 61,
+    "formatted_price": "£61",
+    "direct": true,
+    "cabin_class": null,
+    "origin": {
+     "sky_code": "CAIR",
+     "entity_id": "27539681",
+     "name": "Cairo",
+     "country_name": "Egypt",
+     "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+    },
+    "destination": {
+     "sky_code": "ISTA",
+     "entity_id": "27542903",
+     "name": "Istanbul",
+     "country_name": null,
+     "image_url": null
+    },
+    "legs": [
+     {
+      "date": "2026-10-28",
+      "formatted_date": "Wed, 28 Oct",
+      "quoted_at": "2026-10-16T08:54Z",
+      "origin": {
+       "sky_code": "CAI",
+       "entity_id": "104120222",
+       "name": "Cairo",
+       "country_name": null,
+       "image_url": null
+      },
+      "destination": {
+       "sky_code": "IST",
+       "entity_id": "95673323",
+       "name": "Istanbul",
+       "country_name": null,
+       "image_url": null
+      },
+      "carrier_name": "Air Cairo",
+      "carrier_code": "SM"
+     }
+    ],
+    "deep_link_path": "/transport/flights/CAI/IST/20261028?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610160854%2AD%2ACAI%2AIST%2A20261028%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=61"
+   },
+   {
+    "id": "{bl}:202610170907*D*CAI*IST*20261206*bcuk*SM",
+    "price": 61,
+    "formatted_price": "£61",
+    "direct": true,
+    "cabin_class": null,
+    "origin": {
+     "sky_code": "CAIR",
+     "entity_id": "27539681",
+     "name": "Cairo",
+     "country_name": "Egypt",
+     "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+    },
+    "destination": {
+     "sky_code": "ISTA",
+     "entity_id": "27542903",
+     "name": "Istanbul",
+     "country_name": null,
+     "image_url": null
+    },
+    "legs": [
+     {
+      "date": "2026-12-06",
+      "formatted_date": "Sun, 6 Dec",
+      "quoted_at": "2026-10-17T09:07Z",
+      "origin": {
+       "sky_code": "CAI",
+       "entity_id": "104120222",
+       "name": "Cairo",
+       "country_name": null,
+       "image_url": null
+      },
+      "destination": {
+       "sky_code": "IST",
+       "entity_id": "95673323",
+       "name": "Istanbul",
+       "country_name": null,
+       "image_url": null
+      },
+      "carrier_name": "Air Cairo",
+      "carrier_code": "SM"
+     }
+    ],
+    "deep_link_path": "/transport/flights/CAI/IST/20261206?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610170907%2AD%2ACAI%2AIST%2A20261206%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=61"
+   },
+   {
+    "id": "{bl}:202610061329*D*CAI*IST*20270210*bcuk*SM",
+    "price": 89,
+    "formatted_price": "£89",
+    "direct": true,
+    "cabin_class": null,
+    "origin": {
+     "sky_code": "CAIR",
+     "entity_id": "27539681",
+     "name": "Cairo",
+     "country_name": "Egypt",
+     "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+    },
+    "destination": {
+     "sky_code": "ISTA",
+     "entity_id": "27542903",
+     "name": "Istanbul",
+     "country_name": null,
+     "image_url": null
+    },
+    "legs": [
+     {
+      "date": "2027-02-10",
+      "formatted_date": "Wed, 10 Feb",
+      "quoted_at": "2026-10-06T13:29Z",
+      "origin": {
+       "sky_code": "CAI",
+       "entity_id": "104120222",
+       "name": "Cairo",
+       "country_name": null,
+       "image_url": null
+      },
+      "destination": {
+       "sky_code": "IST",
+       "entity_id": "95673323",
+       "name": "Istanbul",
+       "country_name": null,
+       "image_url": null
+      },
+      "carrier_name": "Air Cairo",
+      "carrier_code": "SM"
+     }
+    ],
+    "deep_link_path": "/transport/flights/CAI/IST/20270210?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610061329%2AD%2ACAI%2AIST%2A20270210%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=89"
+   },
+   {
+    "id": "{bl}:202610061901*D*CAI*IST*20270107*bcuk*SM",
+    "price": 89,
+    "formatted_price": "£89",
+    "direct": true,
+    "cabin_class": null,
+    "origin": {
+     "sky_code": "CAIR",
+     "entity_id": "27539681",
+     "name": "Cairo",
+     "country_name": "Egypt",
+     "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+    },
+    "destination": {
+     "sky_code": "ISTA",
+     "entity_id": "27542903",
+     "name": "Istanbul",
+     "country_name": null,
+     "image_url": null
+    },
+    "legs": [
+     {
+      "date": "2027-01-07",
+      "formatted_date": "Thu, 7 Jan",
+      "quoted_at": "2026-10-06T19:01Z",
+      "origin": {
+       "sky_code": "CAI",
+       "entity_id": "104120222",
+       "name": "Cairo",
+       "country_name": null,
+       "image_url": null
+      },
+      "destination": {
+       "sky_code": "IST",
+       "entity_id": "95673323",
+       "name": "Istanbul",
+       "country_name": null,
+       "image_url": null
+      },
+      "carrier_name": "Air Cairo",
+      "carrier_code": "SM"
+     }
+    ],
+    "deep_link_path": "/transport/flights/CAI/IST/20270107?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610061901%2AD%2ACAI%2AIST%2A20270107%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=89"
+   },
+   {
+    "id": "{bl}:202610052145*D*CAI*IST*20270410*bcuk*SM",
+    "price": 89,
+    "formatted_price": "£89",
+    "direct": true,
+    "cabin_class": null,
+    "origin": {
+     "sky_code": "CAIR",
+     "entity_id": "27539681",
+     "name": "Cairo",
+     "country_name": "Egypt",
+     "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+    },
+    "destination": {
+     "sky_code": "ISTA",
+     "entity_id": "27542903",
+     "name": "Istanbul",
+     "country_name": null,
+     "image_url": null
+    },
+    "legs": [
+     {
+      "date": "2027-04-10",
+      "formatted_date": "Sat, 10 Apr",
+      "quoted_at": "2026-10-05T21:45Z",
+      "origin": {
+       "sky_code": "CAI",
+       "entity_id": "104120222",
+       "name": "Cairo",
+       "country_name": null,
+       "image_url": null
+      },
+      "destination": {
+       "sky_code": "IST",
+       "entity_id": "95673323",
+       "name": "Istanbul",
+       "country_name": null,
+       "image_url": null
+      },
+      "carrier_name": "Air Cairo",
+      "carrier_code": "SM"
+     }
+    ],
+    "deep_link_path": "/transport/flights/CAI/IST/20270410?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610052145%2AD%2ACAI%2AIST%2A20270410%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=89"
+   },
+   {
+    "id": "{bl}:202610170853*D*CAI*IST*20270310*acai*SM",
+    "price": 91,
+    "formatted_price": "£91",
+    "direct": true,
+    "cabin_class": null,
+    "origin": {
+     "sky_code": "CAIR",
+     "entity_id": "27539681",
+     "name": "Cairo",
+     "country_name": "Egypt",
+     "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+    },
+    "destination": {
+     "sky_code": "ISTA",
+     "entity_id": "27542903",
+     "name": "Istanbul",
+     "country_name": null,
+     "image_url": null
+    },
+    "legs": [
+     {
+      "date": "2027-03-10",
+      "formatted_date": "Wed, 10 Mar",
+      "quoted_at": "2026-10-17T08:53Z",
+      "origin": {
+       "sky_code": "CAI",
+       "entity_id": "104120222",
+       "name": "Cairo",
+       "country_name": null,
+       "image_url": null
+      },
+      "destination": {
+       "sky_code": "IST",
+       "entity_id": "95673323",
+       "name": "Istanbul",
+       "country_name": null,
+       "image_url": null
+      },
+      "carrier_name": "Air Cairo",
+      "carrier_code": "SM"
+     }
+    ],
+    "deep_link_path": "/transport/flights/CAI/IST/20270310?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610170853%2AD%2ACAI%2AIST%2A20270310%2Aacai%2ASM&pq_prevCurrency=GBP&pq_prevPrice=91"
+   },
+   {
+    "id": "{bl}:202610162010*D*CAI*IST*20270523*acai*SM",
+    "price": 91,
+    "formatted_price": "£91",
+    "direct": true,
+    "cabin_class": null,
+    "origin": {
+     "sky_code": "CAIR",
+     "entity_id": "27539681",
+     "name": "Cairo",
+     "country_name": "Egypt",
+     "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+    },
+    "destination": {
+     "sky_code": "ISTA",
+     "entity_id": "27542903",
+     "name": "Istanbul",
+     "country_name": null,
+     "image_url": null
+    },
+    "legs": [
+     {
+      "date": "2027-05-23",
+      "formatted_date": "Sun, 23 May",
+      "quoted_at": "2026-10-16T20:10Z",
+      "origin": {
+       "sky_code": "CAI",
+       "entity_id": "104120222",
+       "name": "Cairo",
+       "country_name": null,
+       "image_url": null
+      },
+      "destination": {
+       "sky_code": "IST",
+       "entity_id": "95673323",
+       "name": "Istanbul",
+       "country_name": null,
+       "image_url": null
+      },
+      "carrier_name": "Air Cairo",
+      "carrier_code": "SM"
+     }
+    ],
+    "deep_link_path": "/transport/flights/CAI/IST/20270523?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610162010%2AD%2ACAI%2AIST%2A20270523%2Aacai%2ASM&pq_prevCurrency=GBP&pq_prevPrice=91"
+   },
+   {
+    "id": "{bl}:202610171735*D*CAI*IST*20270706*acai*SM",
+    "price": 91,
+    "formatted_price": "£91",
+    "direct": true,
+    "cabin_class": null,
+    "origin": {
+     "sky_code": "CAIR",
+     "entity_id": "27539681",
+     "name": "Cairo",
+     "country_name": "Egypt",
+     "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+    },
+    "destination": {
+     "sky_code": "ISTA",
+     "entity_id": "27542903",
+     "name": "Istanbul",
+     "country_name": null,
+     "image_url": null
+    },
+    "legs": [
+     {
+      "date": "2027-07-06",
+      "formatted_date": "Tue, 6 Jul",
+      "quoted_at": "2026-10-17T17:35Z",
+      "origin": {
+       "sky_code": "CAI",
+       "entity_id": "104120222",
+       "name": "Cairo",
+       "country_name": null,
+       "image_url": null
+      },
+      "destination": {
+       "sky_code": "IST",
+       "entity_id": "95673323",
+       "name": "Istanbul",
+       "country_name": null,
+       "image_url": null
+      },
+      "carrier_name": "Air Cairo",
+      "carrier_code": "SM"
+     }
+    ],
+    "deep_link_path": "/transport/flights/CAI/IST/20270706?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610171735%2AD%2ACAI%2AIST%2A20270706%2Aacai%2ASM&pq_prevCurrency=GBP&pq_prevPrice=91"
+   },
+   {
+    "id": "{bl}:202610151906*D*CAI*IST*20270607*acai*SM",
+    "price": 92,
+    "formatted_price": "£92",
+    "direct": true,
+    "cabin_class": null,
+    "origin": {
+     "sky_code": "CAIR",
+     "entity_id": "27539681",
+     "name": "Cairo",
+     "country_name": "Egypt",
+     "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+    },
+    "destination": {
+     "sky_code": "ISTA",
+     "entity_id": "27542903",
+     "name": "Istanbul",
+     "country_name": null,
+     "image_url": null
+    },
+    "legs": [
+     {
+      "date": "2027-06-07",
+      "formatted_date": "Mon, 7 Jun",
+      "quoted_at": "2026-10-15T19:06Z",
+      "origin": {
+       "sky_code": "CAI",
+       "entity_id": "104120222",
+       "name": "Cairo",
+       "country_name": null,
+       "image_url": null
+      },
+      "destination": {
+       "sky_code": "IST",
+       "entity_id": "95673323",
+       "name": "Istanbul",
+       "country_name": null,
+       "image_url": null
+      },
+      "carrier_name": "Air Cairo",
+      "carrier_code": "SM"
+     }
+    ],
+    "deep_link_path": "/transport/flights/CAI/IST/20270607?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610151906%2AD%2ACAI%2AIST%2A20270607%2Aacai%2ASM&pq_prevCurrency=GBP&pq_prevPrice=92"
+   },
+   {
+    "id": "{bl}:202610161311*D*CAI*IST*20270801*acai*SM",
+    "price": 92,
+    "formatted_price": "£92",
+    "direct": true,
+    "cabin_class": null,
+    "origin": {
+     "sky_code": "CAIR",
+     "entity_id": "27539681",
+     "name": "Cairo",
+     "country_name": "Egypt",
+     "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+    },
+    "destination": {
+     "sky_code": "ISTA",
+     "entity_id": "27542903",
+     "name": "Istanbul",
+     "country_name": null,
+     "image_url": null
+    },
+    "legs": [
+     {
+      "date": "2027-08-01",
+      "formatted_date": "Sun, 1 Aug",
+      "quoted_at": "2026-10-16T13:11Z",
+      "origin": {
+       "sky_code": "CAI",
+       "entity_id": "104120222",
+       "name": "Cairo",
+       "country_name": null,
+       "image_url": null
+      },
+      "destination": {
+       "sky_code": "IST",
+       "entity_id": "95673323",
+       "name": "Istanbul",
+       "country_name": null,
+       "image_url": null
+      },
+      "carrier_name": "Air Cairo",
+      "carrier_code": "SM"
+     }
+    ],
+    "deep_link_path": "/transport/flights/CAI/IST/20270801?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610161311%2AD%2ACAI%2AIST%2A20270801%2Aacai%2ASM&pq_prevCurrency=GBP&pq_prevPrice=92"
+   },
+   {
+    "id": "{bl}:202610141717*D*CAI*IST*20270904*acai*SM",
+    "price": 103,
+    "formatted_price": "£103",
+    "direct": true,
+    "cabin_class": null,
+    "origin": {
+     "sky_code": "CAIR",
+     "entity_id": "27539681",
+     "name": "Cairo",
+     "country_name": "Egypt",
+     "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+    },
+    "destination": {
+     "sky_code": "ISTA",
+     "entity_id": "27542903",
+     "name": "Istanbul",
+     "country_name": null,
+     "image_url": null
+    },
+    "legs": [
+     {
+      "date": "2027-09-04",
+      "formatted_date": "Sat, 4 Sep",
+      "quoted_at": "2026-10-14T17:17Z",
+      "origin": {
+       "sky_code": "CAI",
+       "entity_id": "104120222",
+       "name": "Cairo",
+       "country_name": null,
+       "image_url": null
+      },
+      "destination": {
+       "sky_code": "IST",
+       "entity_id": "95673323",
+       "name": "Istanbul",
+       "country_name": null,
+       "image_url": null
+      },
+      "carrier_name": "Air Cairo",
+      "carrier_code": "SM"
+     }
+    ],
+    "deep_link_path": "/transport/flights/CAI/IST/20270904?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610141717%2AD%2ACAI%2AIST%2A20270904%2Aacai%2ASM&pq_prevCurrency=GBP&pq_prevPrice=103"
+   },
+   {
+    "id": "{bl}:202610171719*D*CAI*IST*20271010*bcuk*MS",
+    "price": 133,
+    "formatted_price": "£133",
+    "direct": true,
+    "cabin_class": null,
+    "origin": {
+     "sky_code": "CAIR",
+     "entity_id": "27539681",
+     "name": "Cairo",
+     "country_name": "Egypt",
+     "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+    },
+    "destination": {
+     "sky_code": "ISTA",
+     "entity_id": "27542903",
+     "name": "Istanbul",
+     "country_name": null,
+     "image_url": null
+    },
+    "legs": [
+     {
+      "date": "2027-10-10",
+      "formatted_date": "Sun, 10 Oct",
+      "quoted_at": "2026-10-17T17:19Z",
+      "origin": {
+       "sky_code": "CAI",
+       "entity_id": "104120222",
+       "name": "Cairo",
+       "country_name": null,
+       "image_url": null
+      },
+      "destination": {
+       "sky_code": "IST",
+       "entity_id": "95673323",
+       "name": "Istanbul",
+       "country_name": null,
+       "image_url": null
+      },
+      "carrier_name": "EgyptAir",
+      "carrier_code": "MS"
+     }
+    ],
+    "deep_link_path": "/transport/flights/CAI/IST/20271010?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610171719%2AD%2ACAI%2AIST%2A20271010%2Abcuk%2AMS&pq_prevCurrency=GBP&pq_prevPrice=133"
+   }
+  ],
+  "deals_count": 13,
+  "cheapest_by_month": [
+   {
+    "month": "2026-10",
+    "month_name": "October",
+    "price": 61,
+    "formatted_price": "£61"
+   },
+   {
+    "month": "2026-11",
+    "month_name": "November",
+    "price": 56,
+    "formatted_price": "£56"
+   },
+   {
+    "month": "2026-12",
+    "month_name": "December",
+    "price": 61,
+    "formatted_price": "£61"
+   },
+   {
+    "month": "2027-01",
+    "month_name": "January",
+    "price": 89,
+    "formatted_price": "£89"
+   },
+   {
+    "month": "2027-02",
+    "month_name": "February",
+    "price": 89,
+    "formatted_price": "£89"
+   },
+   {
+    "month": "2027-03",
+    "month_name": "March",
+    "price": 91,
+    "formatted_price": "£91"
+   },
+   {
+    "month": "2027-04",
+    "month_name": "April",
+    "price": 89,
+    "formatted_price": "£89"
+   },
+   {
+    "month": "2027-05",
+    "month_name": "May",
+    "price": 91,
+    "formatted_price": "£91"
+   },
+   {
+    "month": "2027-06",
+    "month_name": "June",
+    "price": 92,
+    "formatted_price": "£92"
+   },
+   {
+    "month": "2027-07",
+    "month_name": "July",
+    "price": 91,
+    "formatted_price": "£91"
+   },
+   {
+    "month": "2027-08",
+    "month_name": "August",
+    "price": 92,
+    "formatted_price": "£92"
+   },
+   {
+    "month": "2027-09",
+    "month_name": "September",
+    "price": 103,
+    "formatted_price": "£103"
+   }
+  ],
+  "nearby_airports": [
+   {
+    "airport_name": "Istanbul Sabiha",
+    "sky_code": "SAW",
+    "distance": 19,
+    "formatted_price": "£55",
+    "carrier_name": "Air Arabia Egypt",
+    "is_cheapest": true,
+    "is_closest": true
+   },
+   {
+    "airport_name": "Istanbul",
+    "sky_code": "IST",
+    "distance": 21,
+    "formatted_price": "£56",
+    "carrier_name": "Air Cairo",
+    "is_cheapest": false,
+    "is_closest": false
+   }
+  ],
+  "airlines_direct": [
+   {
+    "name": "Air Cairo",
+    "code": "MC",
+    "logo_url": "https://logos.skyscnr.com/images/airlines/MC.png"
+   },
+   {
+    "name": "Air Serbia",
+    "code": "JU",
+    "logo_url": "https://logos.skyscnr.com/images/airlines/JU.png"
+   },
+   {
+    "name": "EgyptAir",
+    "code": "MS",
+    "logo_url": "https://logos.skyscnr.com/images/airlines/MS.png"
+   },
+   {
+    "name": "Ethiopian Airlines",
+    "code": "ET",
+    "logo_url": "https://logos.skyscnr.com/images/airlines/ET.png"
+   },
+   {
+    "name": "LOT",
+    "code": "LO",
+    "logo_url": "https://logos.skyscnr.com/images/airlines/LO.png"
+   },
+   {
+    "name": "Singapore Airlines",
+    "code": "SQ",
+    "logo_url": "https://logos.skyscnr.com/images/airlines/SQ.png"
+   },
+   {
+    "name": "Thai Airways",
+    "code": "TG",
+    "logo_url": "https://logos.skyscnr.com/images/airlines/TG.png"
+   },
+   {
+    "name": "Turkish Airlines",
+    "code": "TK",
+    "logo_url": "https://logos.skyscnr.com/images/airlines/TK.png"
+   }
+  ],
+  "popular_airlines": [
+   {
+    "name": "Turkish Airlines",
+    "code": "TK",
+    "logo_url": "https://logos.skyscnr.com/images/airlines/TK.png"
+   },
+   {
+    "name": "EgyptAir",
+    "code": "MS",
+    "logo_url": "https://logos.skyscnr.com/images/airlines/MS.png"
+   },
+   {
+    "name": "Ethiopian Airlines",
+    "code": "ET",
+    "logo_url": "https://logos.skyscnr.com/images/airlines/ET.png"
+   },
+   {
+    "name": "Singapore Airlines",
+    "code": "SQ",
+    "logo_url": "https://logos.skyscnr.com/images/airlines/SQ.png"
+   },
+   {
+    "name": "Air Serbia",
+    "code": "JU",
+    "logo_url": "https://logos.skyscnr.com/images/airlines/JU.png"
+   },
+   {
+    "name": "Thai Airways",
+    "code": "TG",
+    "logo_url": "https://logos.skyscnr.com/images/airlines/TG.png"
+   }
+  ],
+  "faqs": [
+   {
+    "question": "How much are return flights from Cairo to Istanbul?",
+    "answer": "The best price we found for a return flight from Cairo to Istanbul is £110. This is an estimate based on information collected from different airlines and travel providers over the last 4 days and is subject to change and availability."
+   },
+   {
+    "question": "How long does it take to fly from Cairo to Istanbul?",
+    "answer": "2 hours and 26 minutes is the average flight time from Cairo to Istanbul."
+   },
+   {
+    "question": "Which airlines fly direct from Cairo to Istanbul?",
+    "answer": "Turkish Airlines, EgyptAir and Ethiopian Airlines fly direct from Cairo to Istanbul."
+   },
+   {
+    "question": "How many flights are there a week from Cairo to Istanbul?",
+    "answer": "As of October 2026, there are 195 flights per week flying from Cairo to Istanbul."
+   },
+   {
+    "question": "When is the cheapest time to fly from Cairo to Istanbul?",
+    "answer": "The cheapest month to fly from Cairo to Istanbul is usually December."
+   },
+   {
+    "question": "Which upcoming date is cheapest to fly from Cairo Airport to Istanbul Airport on?",
+    "answer": "After crunching the numbers on our flight calendar, we found that it's currently cheapest to fly from Cairo Airport to Istanbul Airport on Wednesday, 9 December 2026 ."
+   },
+   {
+    "question": "Can I get a direct flight from Cairo Airport to Istanbul Airport?",
+    "answer": "Yes – the average flight time is 2 hours and 26 minutes."
+   },
+   {
+    "question": "How can I find the best flight deal to Istanbul?",
+    "answer": "We show every price from over 1,200 airlines and travel agents, comparing them all so you don’t have to. If you know you want to fly to Istanbul but you’re not ready to book, set up a Price Alert. We’ll track prices for you, and let you know when they rise or fall."
+   },
+   {
+    "question": "When is the best time to book flights to Istanbul?",
+    "answer": null
+   },
+   {
+    "question": "Which is the cheapest airline to fly from Cairo Airport to Istanbul with?",
+    "answer": "Currently, Air Cairo offers the cheapest flight tickets to Istanbul."
+   }
+  ],
+  "facts": {
+   "cheapest_month": "December",
+   "most_expensive_month": "September",
+   "cheapest_origin_airport": "Cairo",
+   "cheapest_destination_airport": "Istanbul",
+   "cheapest_airline": "Air Cairo",
+   "most_popular_airline": "Turkish Airlines",
+   "average_flight_time": "2 hours and 26 minutes",
+   "cheapest_outbound_date": "Wednesday, 9 December 2026",
+   "formatted_one_way_price": "£56",
+   "formatted_return_price": "£110",
+   "formatted_annual_average_price": "£110",
+   "warmest_month": null,
+   "coldest_month": null,
+   "wettest_month": null,
+   "driest_month": null
+  },
+  "usage_note": "Fares are Skyscanner's cached quotes for this pair, not a live search: each deal states `quoted_at` on every leg, and `deep_link_path` names the exact airports and date the quote belongs to. There is no pagination -- the page returns its whole set in one response, 13-16 deals measured across seven city pairs. `origin.sky_code` and `destination.sky_code`, and every `nearby_airports[].sky_code`, are valid inputs to this same endpoint, which is how a caller walks the graph without a place lookup."
+ }
+}
