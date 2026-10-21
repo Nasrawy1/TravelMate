@@ -1,9 +1,14 @@
 """BE-04 deterministic budget calculator.
 
-Selection and invalid-reference rejection are owned by Ziyad's travel adapter /
-BE-03. BE-04 is a pure calculator: the same inputs produce the same outputs,
-with no side effects, I/O or external calls. The current input has one selected
-outbound flight, return flight and hotel.
+The adapter provides raw quotes, including their date information. BE-03
+selects candidate offers. BE-04 is the authoritative calculator: it excludes
+ineligible offers such as date mismatches, computes the ledger deterministically,
+and returns the contract-conforming budget object. It is pure: the same inputs
+produce the same outputs, with no side effects, I/O or external calls. The
+current preselected-offer input has one outbound flight, return flight and hotel.
+
+``select_offer`` is available for BE-03 to call. When BE-04 is used standalone
+with preselected offers, it does not perform selection.
 
 TODO(BE-03): If the adapter later supplies candidate offers, prefer comparable
 known-fee totals; choose lowest base plus additional fees; tie-break
@@ -34,13 +39,16 @@ def select_offer(
 
     known_total_candidates = [
         candidate for candidate in candidates
-        if candidate.additional_fees_usd is not None
+        if candidate.included_in_base or candidate.additional_fees_usd is not None
     ]
     if known_total_candidates:
         selected = min(
             known_total_candidates,
             key=lambda candidate: (
-                candidate.base_usd + candidate.additional_fees_usd,
+                candidate.base_usd + (
+                    Decimal("0.00") if candidate.included_in_base
+                    else candidate.additional_fees_usd
+                ),
                 candidate.id,
             ),
         )
@@ -90,7 +98,9 @@ def calculate_budget(data: BudgetInput) -> BudgetOutput:
             amount_usd=cents(selected_flight_candidate.base_usd), kind="provider",
             basis="Selected normalized flight candidate base price.", source_offer_id=flight_id,
         ))
-        if selected_flight_candidate.additional_fees_usd is None:
+        if selected_flight_candidate.included_in_base:
+            pass
+        elif selected_flight_candidate.additional_fees_usd is None:
             items.append(CostItem(
                 id="flight-taxes-fees", category="taxes_fees", label="Selected flight taxes and fees",
                 amount_usd=None, kind="unknown",
@@ -108,17 +118,27 @@ def calculate_budget(data: BudgetInput) -> BudgetOutput:
             f"{outbound.destination_airport}__{returning.airline}-{returning.flight_date}-"
             f"{returning.origin_airport}-{returning.destination_airport}"
         )
-        items.append(CostItem(
-            id="flights", category="flights", label="Selected round-trip flights",
-            amount_usd=cents(outbound.total_price_usd + returning.total_price_usd),
-            kind="provider", basis="Sum of selected normalized outbound and return totals; each already covers all travelers.",
-            source_offer_id=flight_id,
-        ))
         for leg_name, flight in (("Outbound", outbound), ("Return", returning)):
             if not flight.date_matches_request:
                 notes.append(
                     f"{leg_name} flight date {flight.flight_date} differs from requested {flight.requested_date}."
                 )
+        if outbound.date_matches_request and returning.date_matches_request:
+            items.append(CostItem(
+                id="flights", category="flights", label="Selected round-trip flights",
+                amount_usd=cents(outbound.total_price_usd + returning.total_price_usd),
+                kind="provider", basis="Sum of selected normalized outbound and return totals; each already covers all travelers.",
+                source_offer_id=flight_id,
+            ))
+        else:
+            items.append(CostItem(
+                id="flights", category="flights", label="Selected round-trip flights",
+                amount_usd=None, kind="unknown",
+                basis="Selected flights did not match the requested dates and were excluded from the authoritative ledger.",
+            ))
+            notes.append(
+                "Selected flights did not match the requested dates and were excluded from the authoritative ledger."
+            )
     else:
         flight_id = None
         items.append(CostItem(
@@ -128,25 +148,25 @@ def calculate_budget(data: BudgetInput) -> BudgetOutput:
 
     hotel = data.selected_hotel
     if selected_hotel_candidate is not None:
-        hotel_id = None
+        hotel_id = selected_hotel_candidate.id
         items.append(CostItem(
             id="accommodation", category="accommodation", label="Selected hotel base price",
             amount_usd=cents(selected_hotel_candidate.base_usd), kind="provider",
             basis="Selected normalized hotel candidate base price.",
-            source_offer_id=selected_hotel_candidate.id,
+            source_offer_id=hotel_id,
         ))
         if selected_hotel_candidate.additional_fees_usd is None:
             items.append(CostItem(
                 id="hotel-taxes-fees", category="taxes_fees", label="Selected hotel taxes and fees",
                 amount_usd=None, kind="unknown", basis="Selected hotel candidate has unknown additional fees.",
-                source_offer_id=selected_hotel_candidate.id,
+                source_offer_id=hotel_id,
             ))
         elif selected_hotel_candidate.additional_fees_usd > 0:
             items.append(CostItem(
                 id="hotel-taxes-fees", category="taxes_fees", label="Selected hotel taxes and fees",
                 amount_usd=cents(selected_hotel_candidate.additional_fees_usd), kind="provider",
                 basis="Selected hotel candidate additional fees, counted once.",
-                source_offer_id=selected_hotel_candidate.id,
+                source_offer_id=hotel_id,
             ))
     elif hotel is None:
         items.append(CostItem(
@@ -159,26 +179,26 @@ def calculate_budget(data: BudgetInput) -> BudgetOutput:
         ))
         hotel_id = None
     else:
-        hotel_id = hotel.hotel_id
+        hotel_id = str(hotel.hotel_id)
         items.append(CostItem(
             id="accommodation", category="accommodation", label=f"{hotel.name} base price",
             amount_usd=cents(hotel.base_price_usd), kind="provider",
             basis="Selected hotel base price for the entire stay; the hotel total already includes taxes and fees.",
-            source_offer_id=hotel.hotel_id,
+            source_offer_id=hotel_id,
         ))
         if hotel.taxes_and_fees_usd is None:
             items.append(CostItem(
                 id="hotel-taxes-fees", category="taxes_fees", label=f"{hotel.name} taxes and fees",
                 amount_usd=None, kind="unknown",
                 basis="Hotel taxes_and_fees_usd is unknown; total_price_usd is not treated as a fee breakdown.",
-                source_offer_id=hotel.hotel_id,
+                source_offer_id=hotel_id,
             ))
         elif hotel.taxes_and_fees_usd > 0:
             items.append(CostItem(
                 id="hotel-taxes-fees", category="taxes_fees", label=f"{hotel.name} taxes and fees",
                 amount_usd=cents(hotel.taxes_and_fees_usd), kind="provider",
                 basis="Selected hotel taxes_and_fees_usd, counted once; not added again to the already inclusive total.",
-                source_offer_id=hotel.hotel_id,
+                source_offer_id=hotel_id,
             ))
 
     for index, activity in enumerate(data.activities, start=1):
@@ -231,9 +251,6 @@ def calculate_budget(data: BudgetInput) -> BudgetOutput:
         budget_usd=data.budget_usd,
         selected_flight_offer_id=flight_id,
         selected_hotel_offer_id=hotel_id,
-        selected_hotel_candidate_id=(
-            None if selected_hotel_candidate is None else selected_hotel_candidate.id
-        ),
         provider_subtotal_usd=provider,
         estimated_subtotal_usd=estimated,
         projected_total_usd=projected,

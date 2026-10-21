@@ -98,7 +98,7 @@ class ActivityRef(StrictModel):
 
 class ActivityItem(StrictModel):
     label: str
-    kind: CostKind
+    kind: Literal["estimate", "unknown"]
     amount_usd: Money | None
     activity_ref: ActivityRef
     basis: str
@@ -196,8 +196,7 @@ class CostItem(StrictModel):
 class BudgetOutput(StrictModel):
     budget_usd: Money
     selected_flight_offer_id: str | None
-    selected_hotel_offer_id: int | None
-    selected_hotel_candidate_id: str | None = None
+    selected_hotel_offer_id: str | None
     provider_subtotal_usd: Money
     estimated_subtotal_usd: Money
     projected_total_usd: Money | None
