@@ -1,0 +1,157 @@
+{
+  "available": true,
+  "report_slice_valid": true,
+  "budget_output": {
+    "budget_usd": "1500.00",
+    "selected_flight_offer_id": null,
+    "selected_hotel_offer_id": "17410709",
+    "provider_subtotal_usd": "65.75",
+    "estimated_subtotal_usd": "0.00",
+    "projected_total_usd": null,
+    "status": "uncertain",
+    "missing_categories": [
+      "flights",
+      "activities",
+      "food",
+      "local_transport"
+    ],
+    "notes": [
+      "Flight offer ID is synthetic: outbound-airline-date-origin-destination__return-airline-date-origin-destination.",
+      "provider_subtotal_usd and estimated_subtotal_usd include only categories with priced entries; unknown categories are excluded and listed in missing_categories. These subtotals are not the complete trip cost or remaining balance.",
+      "Flight selection mode: caller-provided selected flight legs.",
+      "Hotel selection mode: caller-provided selected hotel.",
+      "flights includes unknown costs; projected total is incomplete.",
+      "activities includes unknown costs; projected total is incomplete.",
+      "food includes unknown costs; projected total is incomplete.",
+      "local_transport includes unknown costs; projected total is incomplete."
+    ],
+    "cost_items": [
+      {
+        "id": "flights",
+        "category": "flights",
+        "label": "Selected round-trip flights",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "Both selected flight legs are required for a priced round trip.",
+        "source_offer_id": null,
+        "activity_ref": null
+      },
+      {
+        "id": "accommodation",
+        "category": "accommodation",
+        "label": "Cairo Nile HK Hotel base price",
+        "amount_usd": "61.75",
+        "kind": "provider",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "Selected hotel base price for the entire stay; the hotel total already includes taxes and fees.",
+        "source_offer_id": "17410709",
+        "activity_ref": null
+      },
+      {
+        "id": "hotel-taxes-fees",
+        "category": "taxes_fees",
+        "label": "Cairo Nile HK Hotel taxes and fees",
+        "amount_usd": "4.00",
+        "kind": "provider",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "Selected hotel taxes_and_fees_usd, counted once; not added again to the already inclusive total.",
+        "source_offer_id": "17410709",
+        "activity_ref": null
+      },
+      {
+        "id": "activity-2026-11-21-1",
+        "category": "activities",
+        "label": "Visit the Egyptian Museum",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "AI could not estimate this cost.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-21",
+          "order": 1
+        }
+      },
+      {
+        "id": "activity-2026-11-21-2",
+        "category": "activities",
+        "label": "Stroll along the Nile Corniche",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "AI could not estimate this cost.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-21",
+          "order": 2
+        }
+      },
+      {
+        "id": "activity-2026-11-21-3",
+        "category": "activities",
+        "label": "Shop at Khan El Khalili Bazaar",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "AI could not estimate this cost.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-21",
+          "order": 3
+        }
+      },
+      {
+        "id": "activity-2026-11-22-1",
+        "category": "activities",
+        "label": "Visit the Giza Pyramid Complex",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "AI could not estimate this cost.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-22",
+          "order": 1
+        }
+      },
+      {
+        "id": "activity-2026-11-22-2",
+        "category": "activities",
+        "label": "Relax at Al-Azhar Park",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "AI could not estimate this cost.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-22",
+          "order": 2
+        }
+      },
+      {
+        "id": "food",
+        "category": "food",
+        "label": "Food",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "No structured whole-trip cost was supplied.",
+        "source_offer_id": null,
+        "activity_ref": null
+      },
+      {
+        "id": "local_transport",
+        "category": "local_transport",
+        "label": "Local Transport",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "No structured whole-trip cost was supplied.",
+        "source_offer_id": null,
+        "activity_ref": null
+      }
+    ]
+  },
+  "error": null
+}

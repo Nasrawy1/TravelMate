@@ -1,0 +1,139 @@
+{
+  "status": "error",
+  "request_id": "tm-20261021165616-43271ce8",
+  "generated_at": "2026-10-21T16:57:16Z",
+  "error": {
+    "code": "timeout",
+    "message": "The request did not finish before the deadline."
+  },
+  "diagnostics": {
+    "reason": "not_enough_time_for_ai",
+    "seconds_left": -0.3
+  },
+  "warnings": [
+    {
+      "code": "TRAVEL_TIMEOUT",
+      "message": "Flight search failed (timeout)."
+    },
+    {
+      "code": "TRAVEL_TIMEOUT",
+      "message": "Hotel search failed (timeout)."
+    },
+    {
+      "code": "AI_UNAVAILABLE",
+      "message": "Itinerary generation failed (timeout)."
+    }
+  ],
+  "trip_request": {
+    "departure_city": "Istanbul",
+    "destination_city": "Cairo",
+    "start_date": "2026-11-20",
+    "return_date": "2026-11-23",
+    "adults": 2,
+    "budget_usd": 1500.0
+  },
+  "live_integration_status": "no_price",
+  "travel": {
+    "request_id": "tm-20261021165616-43271ce8",
+    "status": "ok",
+    "trip_request": {
+      "departure_city": "Istanbul",
+      "destination_city": "Cairo",
+      "start_date": "2026-11-20",
+      "return_date": "2026-11-23",
+      "adults": 2,
+      "budget_usd": 1500.0
+    },
+    "flights": {
+      "status": "unavailable",
+      "reason_code": "timeout",
+      "price_authority": "live_provider_quote",
+      "selected_outbound_flight": null,
+      "selected_return_flight": null,
+      "offers": {
+        "outbound": [],
+        "return": []
+      },
+      "alternative_date_offers": {
+        "outbound": [],
+        "return": []
+      },
+      "round_trip_offers": [],
+      "selected_offer": null,
+      "coverage": {}
+    },
+    "hotels": {
+      "status": "unavailable",
+      "reason_code": "timeout",
+      "offers": [],
+      "public_offers": [],
+      "coverage": {},
+      "destination_mapping": {
+        "dest_id": "-290692",
+        "search_type": "CITY",
+        "source": "pinned_mapping"
+      }
+    },
+    "report_slice": {
+      "flights_data": {
+        "selected_outbound_flight": null,
+        "selected_return_flight": null
+      },
+      "hotels_data": []
+    },
+    "flight_candidates": [],
+    "hotel_candidates": [],
+    "warnings": [
+      {
+        "code": "TRAVEL_TIMEOUT",
+        "message": "Flight search failed (timeout)."
+      },
+      {
+        "code": "TRAVEL_TIMEOUT",
+        "message": "Hotel search failed (timeout)."
+      }
+    ],
+    "provenance": [],
+    "data_mode": "live"
+  },
+  "selected_offers": {
+    "selected_flight_offer_id": null,
+    "selected_hotel_offer_id": null,
+    "selection_basis": "prototype default (BE-03 owns the final selection)"
+  },
+  "ai_itinerary": {
+    "request_id": "tm-20261021165616-43271ce8",
+    "status": "error",
+    "error": {
+      "code": "timeout",
+      "message": "The request did not finish before the deadline."
+    },
+    "diagnostics": {
+      "reason": "not_enough_time_for_ai",
+      "seconds_left": -0.3
+    },
+    "warnings": [],
+    "provenance": {
+      "provider": "Groq",
+      "integration_type": "direct_official_api",
+      "model": "openai/gpt-oss-120b",
+      "temperature": 0.1,
+      "response_format": "json_object",
+      "automatic_retries": 0,
+      "requested_at": null,
+      "completed_at": null,
+      "latency_ms": null,
+      "rate_limit": {},
+      "usage": null
+    }
+  },
+  "report_slice": {
+    "flights_data": {
+      "selected_outbound_flight": null,
+      "selected_return_flight": null
+    },
+    "hotels_data": [],
+    "ai_recommendation_report": ""
+  },
+  "be04_budget_input": null
+}

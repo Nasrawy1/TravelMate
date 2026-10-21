@@ -6,12 +6,15 @@ import sys
 import math
 import time
 import uuid
+import shutil
 import hashlib
 import logging
 import tempfile
 import threading
+from concurrent.futures import ThreadPoolExecutor
 from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
 from datetime import datetime, date, timedelta, timezone
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import groq
 
@@ -30,8 +33,9 @@ logger.addHandler(logging.NullHandler())
 # ==========================================
 # Files are stored next to this script so the paths work no matter where it is called from
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ENV_FILE = os.path.join(BASE_DIR, ".env")
 if load_dotenv:
-    load_dotenv(os.path.join(BASE_DIR, ".env"))
+    load_dotenv(ENV_FILE)
 
 def _env_flag(name, default=False):
     value = os.getenv(name)
@@ -54,29 +58,40 @@ AI_TEMPERATURE = 0.1
 CACHE_FILE = os.path.join(BASE_DIR, "travelmate_cache.json")
 REPORT_FILE = os.path.join(BASE_DIR, "travelmate_final_report.json")
 CACHE_TTL_HOURS = _env_number("TRAVELMATE_CACHE_TTL_HOURS", 12)  # Fresh-cache lifetime for provider responses
-CACHE_MAX_AGE_HOURS = 168           # Entries older than this are deleted (also the stale-fallback limit)
+CACHE_MAX_AGE_HOURS = 168           # Entries older than this are deleted from the cache file
 DESTINATION_ID_TTL_HOURS = 720      # Verified city -> provider ID lookups change rarely
 FX_CACHE_TTL_HOURS = 12
 FX_MAX_RATE_AGE_HOURS = 48          # Conversion policy: rates older than this are not used
 
-MANDATORY_CATEGORY = os.getenv("TRAVELMATE_MANDATORY_CATEGORY", "hotels").strip().lower()
-FLIGHTS_ENABLED = _env_flag("TRAVELMATE_FLIGHTS_ENABLED", True)
-# Issue #18 forbids rotating keys to bypass limits, so quota rotation is OFF unless explicitly enabled
-KEY_ROTATION_ON_QUOTA = _env_flag("TRAVELMATE_KEY_ROTATION_ON_QUOTA", False)
-ALLOW_STALE_CACHE_FALLBACK = _env_flag("TRAVELMATE_ALLOW_STALE_CACHE_FALLBACK", False)
+# Flight mode (see INTEGRATION_GUIDE.md section 2):
+#   "disabled"   -> flights category is "unavailable" / "not_configured"; no flight provider calls (default).
+#   "live"       -> Google Flights live round-trip search: real dates, all-adult totals, real departure times.
+#   "indicative" -> Skyscanner cached quotes; ONLY exact-date quotes are selectable, labeled indicative.
+FLIGHT_MODE = os.getenv("TRAVELMATE_FLIGHT_MODE", "disabled").strip().lower()
+GOOGLE_FLIGHTS_HOST = "google-flights2.p.rapidapi.com"
+GOOGLE_FLIGHTS_TIMEOUT_SECONDS = 20   # One-way searchFlights measured 2.4-3 s (worst seen ~25 s); timeouts not retried
+GOOGLE_FLIGHTS_RETURN_OPTIONS = 3     # Public round-trip offers (cheapest combinations of the per-leg results)
+# Local maintenance: remove a key from the local .env after quota exhaustion or an auth error (never mid-request)
+PRUNE_DEAD_KEYS = _env_flag("TRAVELMATE_PRUNE_DEAD_KEYS", False)
+# LOCAL DEVELOPMENT ONLY: move a dead key to .env.exhausted and continue with the next key in the SAME request.
+# Must stay false in shared / deployed environments: issue #18 forbids rotating keys to bypass provider limits.
+LOCAL_KEY_ROTATION = _env_flag("TRAVELMATE_LOCAL_KEY_ROTATION", False)
+EXHAUSTED_KEYS_FILE = os.path.join(BASE_DIR, ".env.exhausted")
 
-DEFAULT_DEADLINE_SECONDS = _env_number("TRAVELMATE_DEFAULT_DEADLINE_SECONDS", 90)
-PER_ATTEMPT_TIMEOUT_SECONDS = 20
-MAX_TRANSIENT_RETRIES = 1           # Extra attempts per key for timeouts / connection errors / HTTP 5xx
+# Contract defaults (docs/api-contracts.md section 5)
+DEFAULT_DEADLINE_SECONDS = _env_number("TRAVELMATE_DEFAULT_DEADLINE_SECONDS", 60)
+PER_ATTEMPT_TIMEOUT_SECONDS = 10    # Travel lookup timeout per request
+MAX_TRAVEL_RETRIES = 1              # At most ONE retry per idempotent travel lookup (transient failure or Retry-After)
 RETRY_BACKOFF_SECONDS = 1.0
 MAX_RETRY_AFTER_SECONDS = 10        # Provider Retry-After guidance is honored only up to this value
-AI_TIMEOUT_SECONDS = 60
+AI_TIMEOUT_SECONDS = 35             # AI timeout per attempt
 AI_MIN_SECONDS_REQUIRED = 5         # The AI call is skipped (timeout) if less time than this is left
+AI_RESERVED_SECONDS = 25            # Engine: travel searches must finish this long before deadline_at
 AI_MAX_COMPLETION_TOKENS = 8192
 
-MAX_ADULTS = 30   # Booking.com search limit
-MAX_ROOMS = 30    # Booking.com search limit
-MAX_NIGHTS = 30   # Keeps the AI itinerary bounded
+MIN_ADULTS, MAX_ADULTS = 1, 4       # Public contract range
+MIN_NIGHTS, MAX_NIGHTS = 1, 7       # Public contract range
+DEFAULT_ROOMS = 1                   # Adapter-internal (rooms are not a public request field)
 HOTEL_COVERAGE_RADIUS_KM = 60
 
 PROVIDER_INFO = {
@@ -88,6 +103,17 @@ PROVIDER_INFO = {
         "host": SKYSCANNER_HOST,
         "path": "/v1/skyscanner/route",
         "key_env_prefix": "SKYSCANNER"
+    },
+    "google_flights_search": {
+        "label": "Google Flights Search",
+        "provider": "Google Flights (google-flights2, RapidAPI marketplace)",
+        "integration_type": "rapidapi_third_party",
+        "upstream_source": "google.com/travel/flights live one-way search (one call per direction)",
+        "host": GOOGLE_FLIGHTS_HOST,
+        "path": "/api/v1/searchFlights",
+        "key_env_prefix": "GOOGLE_FLIGHTS",
+        "timeout_seconds": GOOGLE_FLIGHTS_TIMEOUT_SECONDS,
+        "retry_on_timeout": False  # A slow search is not retried: it would double the user's waiting time
     },
     "booking_destination": {
         "label": "Hotel Destination Lookup",
@@ -108,12 +134,15 @@ PROVIDER_INFO = {
         "key_env_prefix": "BOOKING"
     }
 }
+HOTEL_SOURCE_LABEL = "Booking COM booking-com15 (RapidAPI)"
+FLIGHT_SOURCE_LABEL = "Skyscanner Scraper API (RapidAPI, cached route quotes)"
+GOOGLE_FLIGHTS_SOURCE_LABEL = "Google Flights (google-flights2, RapidAPI)"
 
 def load_key_pool(key_env_prefix):
     """
     Reads the keys of one service from the environment. Supported forms (merged, duplicates removed):
       <PREFIX>_RAPIDAPI_KEYS = "key1,key2"      and/or      <PREFIX>_RAPIDAPI_KEY_1 ... <PREFIX>_RAPIDAPI_KEY_10
-    One key = single-key mode. Placeholder values from .env.example are ignored.
+    Only the FIRST key is used for requests. Placeholder values from .env.example are ignored.
     """
     candidates = os.getenv(f"{key_env_prefix}_RAPIDAPI_KEYS", "").split(",")
     candidates += [os.getenv(f"{key_env_prefix}_RAPIDAPI_KEY_{i}", "") for i in range(1, 11)]
@@ -128,7 +157,7 @@ def load_key_pool(key_env_prefix):
 # ==========================================
 REDACTED = "***REDACTED***"
 SECRET_PATTERNS = [
-    re.compile(r"gsk_[A-Za-z0-9]{20,}"),                       # Groq keys
+    re.compile(r"gsk_[A-Za-z0-9]{20,}"),                              # Groq keys
     re.compile(r"\b[0-9a-f]{10}msh[0-9a-f]{10,}jsn[0-9a-f]{8,}\b"),  # RapidAPI keys
 ]
 SECRET_ASSIGNMENT_PATTERN = re.compile(
@@ -159,6 +188,9 @@ def sanitize(value):
         return redact(value)
     return value
 
+def mask_key(key):
+    return f"...{key[-4:]}" if key and len(key) > 8 else "***"
+
 class RedactingFilter(logging.Filter):
     """Makes sure no credential ever reaches a log handler, including exception tracebacks."""
     def filter(self, record):
@@ -174,52 +206,50 @@ class RedactingFilter(logging.Filter):
 logger.addFilter(RedactingFilter())
 
 # ==========================================
-# 3. STANDARDIZED ERROR ENVELOPE
+# 3. ERROR ENVELOPE & WARNINGS
 # ==========================================
-# code: (retryable, user-safe default message)
-ERROR_CODES = {
-    "invalid_input": (False, "The request is invalid. Please check the highlighted fields."),
-    "no_results": (False, "No offers matching the requested dates, destination and travelers were found."),
-    "unsupported_search": (False, "This search is outside the supported provider coverage."),
-    "rate_limited": (True, "The provider rate limit was reached. Please try again later."),
-    "timeout": (True, "The search did not finish before the deadline."),
-    "auth_error": (False, "The provider rejected the configured credentials."),
-    "invalid_response": (True, "The provider returned an unexpected response."),
-    "provider_failure": (True, "The provider is currently failing. Please try again later."),
-    "unavailable": (True, "This service is currently unavailable."),
-    "invalid_output": (False, "The AI output failed validation and was not published."),
-    "internal_error": (False, "An internal error occurred. Please try again later.")
+# Internal error codes. Travel codes match adapter-contracts.md reason_code values; AI codes match the
+# AI adapter failure codes (timeout, rate_limited, unavailable, invalid_output).
+ERROR_MESSAGES = {
+    "invalid_input": "The request is invalid. Please check the highlighted fields.",
+    "unsupported_search": "This search is outside the supported provider coverage.",
+    "not_configured": "This travel category is not configured for live prices.",
+    "no_results": "No offers matching the requested dates, destination and travelers were found.",
+    "rate_limited": "The provider rate limit was reached. Please try again later.",
+    "timeout": "The request did not finish before the deadline.",
+    "auth_error": "The provider rejected the configured credentials.",
+    "invalid_response": "The provider returned an unexpected response.",
+    "provider_error": "The provider is currently failing. Please try again later.",
+    "unavailable": "This service is currently unavailable.",
+    "invalid_output": "The AI output failed validation and was not published.",
+    "internal_error": "An internal error occurred. Please try again later."
 }
+AI_ERROR_CODES = {"timeout", "rate_limited", "unavailable", "invalid_output"}
 
 class TravelMateError(Exception):
     """Typed adapter error. Its message and details are always user-safe (never raw exception text)."""
-    def __init__(self, code, message=None, details=None, retryable=None, retry_after_seconds=None,
-                 transient=False, quota_exhausted=False):
-        if code not in ERROR_CODES:
-            code = "internal_error"
-        default_retryable, default_message = ERROR_CODES[code]
-        super().__init__(message or default_message)
+    def __init__(self, code, message=None, details=None, retry_after_seconds=None, transient=False,
+                 quota_exhausted=False):
+        code = code if code in ERROR_MESSAGES else "internal_error"
+        super().__init__(message or ERROR_MESSAGES[code])
         self.code = code
-        self.message = message or default_message
+        self.message = message or ERROR_MESSAGES[code]
         self.details = details or {}
-        self.retryable = default_retryable if retryable is None else retryable
         self.retry_after_seconds = retry_after_seconds
         self.transient = transient
         self.quota_exhausted = quota_exhausted
 
-    def to_envelope(self, category=None):
-        return build_error(self.code, self.message, self.details, category, self.retryable, self.retry_after_seconds)
+    def to_envelope(self):
+        return build_error(self.code, self.message)
 
-def build_error(code, message=None, details=None, category=None, retryable=None, retry_after_seconds=None):
-    default_retryable, default_message = ERROR_CODES.get(code, ERROR_CODES["internal_error"])
-    return {
-        "code": code if code in ERROR_CODES else "internal_error",
-        "message": redact(message or default_message),
-        "category": category,
-        "retryable": default_retryable if retryable is None else retryable,
-        "retry_after_seconds": retry_after_seconds,
-        "details": sanitize(details or {})
-    }
+def build_error(code, message=None):
+    """Contract error shape: {code, message}. Diagnostics are returned separately and sanitized."""
+    code = code if code in ERROR_MESSAGES else "internal_error"
+    return {"code": code, "message": redact(message or ERROR_MESSAGES[code])}
+
+def build_warning(code, message):
+    """Contract warning shape: {code, message} (docs/api-contracts.md section 5)."""
+    return {"code": code, "message": redact(message)}
 
 # ==========================================
 # 4. DEADLINE & NUMBER HELPERS
@@ -229,6 +259,10 @@ def utc_now():
 
 def utc_now_iso():
     return utc_now().isoformat(timespec="seconds").replace("+00:00", "Z")
+
+def _today_utc():
+    """Contract validation reference: today's UTC calendar date (separate function so tests can freeze it)."""
+    return utc_now().date()
 
 def resolve_deadline(deadline_at=None):
     """Accepts None (default budget), an aware/naive datetime or an ISO-8601 string. Naive values are treated as UTC."""
@@ -272,9 +306,15 @@ def parse_iso_date(value):
     except (TypeError, ValueError):
         return None
 
-def _today():
-    """Server-local current date (separate function so tests can freeze it)."""
-    return date.today()
+def normalize_utc_timestamp(value):
+    """Returns 'YYYY-MM-DDTHH:MM:SSZ' for provider timestamps such as '2026-10-08T04:50Z', else None."""
+    try:
+        parsed = datetime.fromisoformat(str(value).strip().replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
 def new_request_id():
     return f"tm-{utc_now().strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:8]}"
@@ -284,7 +324,7 @@ def new_request_id():
 # ==========================================
 _cache_thread_lock = threading.RLock()
 
-class _CacheFileLock:
+class _FileLock:
     """Cross-process lock based on an exclusive lock file (works on Windows and Linux)."""
     def __init__(self, path, timeout=5.0, stale_after=30.0):
         self.path = path
@@ -307,7 +347,7 @@ class _CacheFileLock:
                 except OSError:
                     pass
                 if time.monotonic() - start > self.timeout:
-                    raise TimeoutError("Cache lock timeout")
+                    raise TimeoutError("File lock timeout")
                 time.sleep(0.05)
 
     def __exit__(self, exc_type, exc, tb):
@@ -318,14 +358,14 @@ class _CacheFileLock:
         except OSError:
             pass
 
-def atomic_write_json(path, data):
-    """Writes JSON to a temp file in the same folder, then atomically replaces the target file."""
+def atomic_write_text(path, text):
+    """Writes text to a temp file in the same folder, then atomically replaces the target file."""
     folder = os.path.dirname(os.path.abspath(path))
     os.makedirs(folder, exist_ok=True)
-    fd, temp_path = tempfile.mkstemp(dir=folder, prefix=".tmp_", suffix=".json")
+    fd, temp_path = tempfile.mkstemp(dir=folder, prefix=".tmp_")
     try:
-        with os.fdopen(fd, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
+        with os.fdopen(fd, "w", encoding="utf-8", newline="") as f:
+            f.write(text)
         for attempt in range(5):
             try:
                 os.replace(temp_path, path)
@@ -336,6 +376,9 @@ def atomic_write_json(path, data):
     finally:
         if os.path.exists(temp_path):
             os.remove(temp_path)
+
+def atomic_write_json(path, data):
+    atomic_write_text(path, json.dumps(data, indent=2, ensure_ascii=False))
 
 def _read_cache_unlocked():
     if not os.path.exists(CACHE_FILE):
@@ -365,29 +408,23 @@ def build_cache_key(url, querystring):
     raw_key = json.dumps({"url": url, "params": querystring}, sort_keys=True)
     return hashlib.sha256(raw_key.encode("utf-8")).hexdigest()
 
-def cache_get(cache_key, ttl_hours, allow_stale=False):
-    """Returns (entry, freshness) where freshness is "fresh", "stale" or None (not found / unusable)."""
+def cache_get(cache_key, ttl_hours):
+    """Returns a fresh cache entry or None. Expired entries are never served."""
     try:
-        with _cache_thread_lock, _CacheFileLock(CACHE_FILE + ".lock"):
+        with _cache_thread_lock, _FileLock(CACHE_FILE + ".lock"):
             entry = _read_cache_unlocked().get(cache_key)
     except TimeoutError:
         logger.warning("[!] Cache is locked by another process. Skipping cache read...")
-        return None, None
+        return None
     if not isinstance(entry, dict) or "response" not in entry:
-        return None, None
+        return None
     age = _entry_age_hours(entry)
-    if age is None:
-        return None, None
-    if age <= ttl_hours:
-        return entry, "fresh"
-    if allow_stale and age <= CACHE_MAX_AGE_HOURS:
-        return entry, "stale"
-    return None, None
+    return entry if age is not None and age <= ttl_hours else None
 
 def cache_put(cache_key, service_name, response):
     """Read-merge-write under a thread lock + process lock, with an atomic file replace (never a half-written file)."""
     try:
-        with _cache_thread_lock, _CacheFileLock(CACHE_FILE + ".lock"):
+        with _cache_thread_lock, _FileLock(CACHE_FILE + ".lock"):
             cache = _read_cache_unlocked()
             # Drop entries older than the maximum age so the cache file does not grow forever
             cache = {k: v for k, v in cache.items()
@@ -398,7 +435,87 @@ def cache_put(cache_key, service_name, response):
         logger.warning(f"[!] Could not write cache file ({type(e).__name__}). Continuing without caching...")
 
 # ==========================================
-# 6. PROVIDER REQUEST HANDLER (CLASSIFIED ERRORS & BOUNDED RETRIES)
+# 6. LOCAL .ENV DEAD-KEY PRUNING (NO RUNTIME KEY ROTATION)
+# ==========================================
+# Each request uses ONLY the first configured key. If that key fails with an exhausted quota or an auth error,
+# the request fails with that error (no retry with another key). When TRAVELMATE_PRUNE_DEAD_KEYS is enabled,
+# the dead key is removed from the local .env (a .env.bak backup is written first), so the next key becomes the
+# primary key for LATER requests. Deployments without a local .env file are never modified.
+_env_lock = threading.Lock()
+ENV_LINE_PATTERN = re.compile(r"^(\s*)([A-Z0-9_]+)(\s*=\s*)(.*?)(\s*)$")
+
+def _archive_dead_key(key_env_prefix, dead_key, reason, reset_at):
+    """Appends the dead key to .env.exhausted (copy-paste ready, so it can be restored after the quota resets)."""
+    header = "# Keys moved out of .env by TravelMate (local only, never commit). Move a key back after its quota resets.\n"
+    entry = (f"# {utc_now_iso()} | {key_env_prefix} | {reason}"
+             + (f" | quota resets around {reset_at}" if reset_at else "") + "\n"
+             + f"{key_env_prefix}_RAPIDAPI_KEYS={dead_key}\n")
+    existing = ""
+    if os.path.exists(EXHAUSTED_KEYS_FILE):
+        with open(EXHAUSTED_KEYS_FILE, "r", encoding="utf-8") as f:
+            existing = f.read()
+    atomic_write_text(EXHAUSTED_KEYS_FILE, (existing or header) + entry)
+
+def prune_dead_key(key_env_prefix, dead_key, reason, env_path=None, reset_at=None):
+    """
+    Removes dead_key from <PREFIX>_RAPIDAPI_KEYS / <PREFIX>_RAPIDAPI_KEY_n in the local .env (backup: .env.bak) and
+    archives it in .env.exhausted with the reason and the expected quota reset time. Returns True if pruned.
+    """
+    env_path = env_path or ENV_FILE
+    if not dead_key or not os.path.exists(env_path):
+        return False
+    list_name = f"{key_env_prefix}_RAPIDAPI_KEYS"
+    indexed = re.compile(rf"^{key_env_prefix}_RAPIDAPI_KEY_\d+$")
+    try:
+        with _env_lock, _FileLock(env_path + ".lock"):
+            with open(env_path, "r", encoding="utf-8") as f:
+                lines = f.read().splitlines()
+            new_lines, changed = [], False
+            for line in lines:
+                match = ENV_LINE_PATTERN.match(line)
+                if match and not line.lstrip().startswith("#"):
+                    name, value = match.group(2), match.group(4)
+                    if name == list_name:
+                        keys = [k.strip() for k in value.split(",") if k.strip()]
+                        if dead_key in keys:
+                            keys.remove(dead_key)
+                            line = f"{match.group(1)}{name}{match.group(3)}{','.join(keys)}"
+                            changed = True
+                    elif indexed.match(name) and value.strip() == dead_key:
+                        changed = True
+                        continue  # Drop the dead indexed key line
+                new_lines.append(line)
+            if not changed:
+                return False
+            shutil.copyfile(env_path, env_path + ".bak")
+            atomic_write_text(env_path, "\n".join(new_lines) + "\n")
+            _archive_dead_key(key_env_prefix, dead_key, reason, reset_at)
+    except (OSError, TimeoutError) as e:
+        logger.error(f"[-] Could not prune the dead key from .env ({type(e).__name__}).")
+        return False
+
+    # Keep the running process consistent with the file for LATER requests (the current request already failed)
+    current = [k.strip() for k in os.getenv(list_name, "").split(",") if k.strip() and k.strip() != dead_key]
+    os.environ[list_name] = ",".join(current)
+    for i in range(1, 11):
+        if os.getenv(f"{key_env_prefix}_RAPIDAPI_KEY_{i}", "").strip() == dead_key:
+            os.environ.pop(f"{key_env_prefix}_RAPIDAPI_KEY_{i}", None)
+    remaining = load_key_pool(key_env_prefix)
+    logger.warning(f"[!] {key_env_prefix} key {mask_key(dead_key)} pruned from .env ({reason}). "
+                   f"{len(remaining)} key(s) left; next primary: {mask_key(remaining[0]) if remaining else 'none'}. "
+                   "Moved to .env.exhausted (backup: .env.bak).")
+    return True
+
+def _quota_reset_at(error):
+    """Expected quota reset time from RapidAPI's x-ratelimit-requests-reset header (seconds), if present."""
+    try:
+        seconds = float((error.details.get("rate_limit") or {}).get("x-ratelimit-requests-reset"))
+        return (utc_now() + timedelta(seconds=seconds)).isoformat(timespec="minutes").replace("+00:00", "Z")
+    except (TypeError, ValueError):
+        return None
+
+# ==========================================
+# 7. PROVIDER REQUEST HANDLER (CLASSIFIED ERRORS & ONE BOUNDED RETRY)
 # ==========================================
 def _record_provider_call(evidence, service_key, provenance, payload):
     if isinstance(evidence, dict):
@@ -430,7 +547,7 @@ def _classify_provider_message(message):
         return "rate_limited"
     if any(word in text for word in ["not subscribed", "invalid api key", "unauthorized", "forbidden"]):
         return "auth_error"
-    return "provider_failure"
+    return "provider_error"
 
 def _is_quota_exhausted(message):
     text = str(message or "").lower()
@@ -443,9 +560,9 @@ def _parse_retry_after(response):
     except (TypeError, ValueError):
         return None
 
-def _attempt_request(url, host, api_key, params, deadline):
+def _attempt_request(url, host, api_key, params, deadline, per_attempt_timeout=None):
     """One HTTP attempt. Returns (payload, meta) or raises a classified TravelMateError."""
-    timeout = min(PER_ATTEMPT_TIMEOUT_SECONDS, seconds_left(deadline))
+    timeout = min(per_attempt_timeout or PER_ATTEMPT_TIMEOUT_SECONDS, seconds_left(deadline))
     if timeout <= 0.5:
         raise TravelMateError("timeout", details={"reason": "deadline_reached"})
     headers = {"x-rapidapi-host": host, "x-rapidapi-key": api_key, "accept": "application/json"}
@@ -454,7 +571,7 @@ def _attempt_request(url, host, api_key, params, deadline):
     except requests.Timeout:
         raise TravelMateError("timeout", details={"reason": "provider_timeout"}, transient=True)
     except requests.RequestException:
-        raise TravelMateError("provider_failure", details={"reason": "connection_error"}, transient=True)
+        raise TravelMateError("provider_error", details={"reason": "connection_error"}, transient=True)
 
     meta = {"http_status": response.status_code, "rate_limit": _rate_limit_headers(response)}
     status = response.status_code
@@ -467,9 +584,9 @@ def _attempt_request(url, host, api_key, params, deadline):
         if isinstance(payload, dict) and payload.get("status") is False:
             # Hidden provider error inside a 200 OK response
             message = payload.get("message")
-            code = _classify_provider_message(message)
-            raise TravelMateError(code, details={"reason": "provider_status_false",
-                                                 "provider_message": _safe_provider_message(message), **meta},
+            raise TravelMateError(_classify_provider_message(message),
+                                  details={"reason": "provider_status_false",
+                                           "provider_message": _safe_provider_message(message), **meta},
                                   quota_exhausted=_is_quota_exhausted(message))
         if not isinstance(payload, (dict, list)):
             raise TravelMateError("invalid_response", details={"reason": "unexpected_body_type", **meta})
@@ -489,17 +606,16 @@ def _attempt_request(url, host, api_key, params, deadline):
         raise TravelMateError("unsupported_search", "The provider rejected these search parameters.",
                               details={"reason": f"http_{status}", **details})
     if status >= 500:
-        raise TravelMateError("provider_failure", details={"reason": f"http_{status}", **details}, transient=True)
+        raise TravelMateError("provider_error", details={"reason": f"http_{status}", **details}, transient=True)
     raise TravelMateError("invalid_response", details={"reason": f"unexpected_http_{status}", **details})
 
 def provider_get(service_key, params, deadline, cache_ttl_hours=None, cache_mode="default", evidence=None):
     """
     Sends a GET request to a RapidAPI provider and returns (payload, provenance).
       1. Local cache first (cache_mode "default"). "refresh" skips the read but stores the result, "off" does neither.
-      2. Explicit error classification: rate_limited / auth_error / timeout / provider_failure / invalid_response ...
-      3. Bounded retries inside deadline_at: 1 retry for transient failures, Retry-After honored up to 10 s.
-      4. Next key only after auth_error (misconfigured key) or, if explicitly enabled, an exhausted quota.
-      5. Optional, explicitly labeled stale-cache fallback when every allowed attempt failed.
+      2. Single key: only the first configured key is used. No key rotation inside a request.
+      3. At most ONE retry, only for transient failures or a Retry-After (<= 10 s) that fits deadline_at.
+      4. Quota exhaustion / auth errors fail the request and (optionally) prune the dead key from the local .env.
     """
     info = PROVIDER_INFO[service_key]
     url = f"https://{info['host']}{info['path']}"
@@ -514,14 +630,13 @@ def provider_get(service_key, params, deadline, cache_ttl_hours=None, cache_mode
         "retrieved_at": None,
         "cache_status": "miss",
         "http_status": None,
-        "key_slot": None,
         "attempts": 0,
         "rate_limit": {}
     }
 
     if cache_mode == "default":
-        entry, freshness = cache_get(cache_key, ttl)
-        if freshness == "fresh":
+        entry = cache_get(cache_key, ttl)
+        if entry:
             provenance.update(retrieved_at=entry["saved_at"], cache_status="hit")
             logger.info(f"[+] {info['label']} loaded from local cache (no API quota used).")
             _record_provider_call(evidence, service_key, provenance, entry["response"])
@@ -531,88 +646,80 @@ def provider_get(service_key, params, deadline, cache_ttl_hours=None, cache_mode
     if not keys:
         raise TravelMateError("auth_error", f"No API key is configured for {info['label']}.",
                               {"reason": "missing_credentials", "env_variable": f"{info['key_env_prefix']}_RAPIDAPI_KEYS"})
-
+    # Default: only the first key. LOCAL_KEY_ROTATION (local development only) walks the remaining keys.
+    key_pool = keys if LOCAL_KEY_ROTATION else keys[:1]
     last_error = None
-    for slot, api_key in enumerate(keys, start=1):
-        transient_retries = 0
-        retry_after_honored = False
+    for slot, api_key in enumerate(key_pool, start=1):
+        retries_used = 0
         while True:
             provenance["attempts"] += 1
             try:
-                payload, meta = _attempt_request(url, info["host"], api_key, params, deadline)
-                provenance.update(meta, key_slot=slot, retrieved_at=utc_now_iso(),
-                                  cache_status="refresh" if cache_mode == "refresh" else "miss")
-                logger.info(f"[+] {info['label']} fetched successfully using key slot #{slot} (200 OK).")
-                if cache_mode != "off":
-                    cache_put(cache_key, service_key, payload)
-                _record_provider_call(evidence, service_key, provenance, payload)
-                return payload, provenance
+                payload, meta = _attempt_request(url, info["host"], api_key, params, deadline,
+                                                 info.get("timeout_seconds"))
             except TravelMateError as error:
                 last_error = error
                 provenance["http_status"] = error.details.get("http_status")
                 provenance["rate_limit"] = error.details.get("rate_limit", {})
-                wait = RETRY_BACKOFF_SECONDS * (transient_retries + 1)
-                if error.transient and transient_retries < MAX_TRANSIENT_RETRIES and _has_time_for(deadline, wait + 1):
-                    transient_retries += 1
-                    logger.warning(f"[!] {info['label']} transient {error.code} on key slot #{slot}. Retrying in {wait:.0f}s...")
-                    _sleep(wait)
-                    continue
-                if (error.code == "rate_limited" and not error.quota_exhausted and not retry_after_honored
-                        and error.retry_after_seconds is not None
-                        and error.retry_after_seconds <= MAX_RETRY_AFTER_SECONDS
-                        and _has_time_for(deadline, error.retry_after_seconds + 1)):
-                    retry_after_honored = True
-                    logger.warning(f"[!] {info['label']} rate limited. Honoring Retry-After ({error.retry_after_seconds:.0f}s)...")
-                    _sleep(error.retry_after_seconds)
-                    continue
-                break
+                no_timeout_retry = error.code == "timeout" and info.get("retry_on_timeout") is False
+                if retries_used < MAX_TRAVEL_RETRIES and not no_timeout_retry:
+                    wait = None
+                    if error.transient:
+                        wait = RETRY_BACKOFF_SECONDS
+                    elif (error.code == "rate_limited" and not error.quota_exhausted
+                          and error.retry_after_seconds is not None and error.retry_after_seconds <= MAX_RETRY_AFTER_SECONDS):
+                        wait = error.retry_after_seconds
+                    if wait is not None and _has_time_for(deadline, wait + 1):
+                        retries_used += 1
+                        logger.warning(f"[!] {info['label']} {error.code}. Single retry in {wait:.0f}s...")
+                        _sleep(wait)
+                        continue
+                break  # This key failed; decide below whether another key may be tried
 
-        if slot < len(keys) and last_error.code == "auth_error":
-            logger.warning(f"[!] {info['label']} key slot #{slot} was rejected (auth_error). Trying the next configured key...")
-            continue
-        if slot < len(keys) and last_error.code == "rate_limited" and last_error.quota_exhausted and KEY_ROTATION_ON_QUOTA:
-            logger.warning(f"[!] {info['label']} key slot #{slot} quota exhausted. Key rotation is enabled; trying the next key...")
+            provenance.update(meta, retrieved_at=utc_now_iso(), key_slot=slot,
+                              cache_status="refresh" if cache_mode == "refresh" else "miss")
+            logger.info(f"[+] {info['label']} fetched successfully (200 OK, key slot #{slot}, attempt {provenance['attempts']}).")
+            if cache_mode != "off":
+                cache_put(cache_key, service_key, payload)
+            _record_provider_call(evidence, service_key, provenance, payload)
+            return payload, provenance
+
+        dead_key = last_error.quota_exhausted or (last_error.code == "auth_error"
+                                                  and last_error.details.get("reason") != "missing_credentials")
+        if dead_key and (PRUNE_DEAD_KEYS or LOCAL_KEY_ROTATION):
+            prune_dead_key(info["key_env_prefix"], api_key,
+                           "quota_exhausted" if last_error.quota_exhausted else "auth_error",
+                           reset_at=_quota_reset_at(last_error))
+        if dead_key and slot < len(key_pool) and _has_time_for(deadline, 1):
+            logger.warning(f"[!] LOCAL KEY ROTATION: {info['label']} key slot #{slot} is dead ({last_error.code}). "
+                           f"Continuing with key slot #{slot + 1}...")
             continue
         break
-
-    if ALLOW_STALE_CACHE_FALLBACK and cache_mode != "off" and last_error.code in ("rate_limited", "timeout", "provider_failure"):
-        entry, freshness = cache_get(cache_key, ttl, allow_stale=True)
-        if entry:
-            provenance.update(retrieved_at=entry["saved_at"], cache_status="stale_fallback",
-                              stale_fallback_reason=last_error.code)
-            logger.warning(f"[!] {info['label']} failed ({last_error.code}). Serving a STALE cached response (labeled).")
-            _record_provider_call(evidence, service_key, provenance, entry["response"])
-            return entry["response"], provenance
 
     logger.error(f"[-] {info['label']} failed: {last_error.code} ({last_error.details.get('reason')}).")
     last_error.details.setdefault("service", info["label"])
     raise last_error
 
 # ==========================================
-# 7. CURRENCY CONVERSION POLICY (EVERYTHING TO USD)
+# 8. CURRENCY CONVERSION POLICY (EVERYTHING TO USD)
 # ==========================================
 # Policy: USD amounts are used as-is. Other currencies are converted ONLY with live rates from
 # open.er-api.com that are at most FX_MAX_RATE_AGE_HOURS old; every conversion records rate, source and time.
 # If no valid rate exists, the quote is excluded and a warning is returned. There are no hardcoded fallback rates.
+FX_SOURCE = "ExchangeRate-API open access (open.er-api.com)"
+
 def fetch_usd_exchange_rates(deadline, cache_mode="default", evidence=None):
     cache_key = build_cache_key(EXCHANGE_RATE_URL, {})
-    provenance = {
-        "provider": "ExchangeRate-API open access (open.er-api.com)",
-        "integration_type": "direct_public_api",
-        "endpoint": "GET /v6/latest/USD",
-        "query_parameters": {},
-        "retrieved_at": None,
-        "cache_status": "miss"
-    }
+    provenance = {"provider": FX_SOURCE, "integration_type": "direct_public_api", "endpoint": "GET /v6/latest/USD",
+                  "query_parameters": {}, "retrieved_at": None, "cache_status": "miss"}
     payload = None
     if cache_mode == "default":
-        entry, freshness = cache_get(cache_key, FX_CACHE_TTL_HOURS)
-        if freshness == "fresh":
+        entry = cache_get(cache_key, FX_CACHE_TTL_HOURS)
+        if entry:
             payload = entry["response"]
             provenance.update(retrieved_at=entry["saved_at"], cache_status="hit")
 
     if payload is None:
-        timeout = min(10, seconds_left(deadline))
+        timeout = min(PER_ATTEMPT_TIMEOUT_SECONDS, seconds_left(deadline))
         if timeout <= 0.5:
             return {"available": False, "reason": "deadline_reached", "provenance": provenance}
         try:
@@ -634,14 +741,8 @@ def fetch_usd_exchange_rates(deadline, cache_mode="default", evidence=None):
     updated_unix = payload.get("time_last_update_unix")
     if not isinstance(updated_unix, (int, float)) or time.time() - updated_unix > FX_MAX_RATE_AGE_HOURS * 3600:
         return {"available": False, "reason": "rates_too_old", "provenance": provenance}
-    return {
-        "available": True,
-        "rates": rates,
-        "source": provenance["provider"],
-        "rate_timestamp": payload.get("time_last_update_utc"),
-        "retrieved_at": provenance["retrieved_at"],
-        "provenance": provenance
-    }
+    return {"available": True, "rates": rates, "rate_timestamp": payload.get("time_last_update_utc"),
+            "retrieved_at": provenance["retrieved_at"], "provenance": provenance}
 
 class LazyExchangeRates:
     """Fetches exchange rates only when a non-USD amount actually needs converting."""
@@ -657,78 +758,76 @@ class LazyExchangeRates:
         return self.policy
 
 def convert_to_usd(amount, currency, fx):
-    """Returns (usd_amount, conversion_record). usd_amount is None when the conversion policy does not allow it."""
+    """
+    Returns (usd_amount, conversion). conversion follows adapter-contracts.md: null for USD, otherwise
+    {source, rate_to_usd, converted_at, ...}. usd_amount is None when the policy does not allow the conversion.
+    """
     currency = str(currency or "").strip().upper()
     if not currency:
         return None, {"status": "unknown_currency"}
     if currency == "USD":
-        return round_money(amount), {"status": "not_required", "original_currency": "USD"}
+        return round_money(amount), None
     policy = fx()
     if not policy.get("available"):
         return None, {"status": "rates_unavailable", "original_currency": currency, "reason": policy.get("reason")}
-    rate = policy["rates"].get(currency)
-    if valid_amount(rate) is None:
+    rate_per_usd = policy["rates"].get(currency)
+    if valid_amount(rate_per_usd) is None:
         return None, {"status": "unsupported_currency", "original_currency": currency}
-    return round_money(amount / rate), {
-        "status": "converted",
-        "original_amount": amount,
-        "original_currency": currency,
-        "rate_per_usd": rate,
-        "rate_source": policy["source"],
-        "rate_timestamp": policy["rate_timestamp"],
-        "rate_retrieved_at": policy["retrieved_at"]
+    return round_money(amount / rate_per_usd), {
+        "source": FX_SOURCE,
+        "rate_to_usd": round(1 / rate_per_usd, 8),  # USD per 1 unit of the original currency
+        "converted_at": policy["retrieved_at"],
+        "rate_timestamp": policy["rate_timestamp"]
     }
 
 # ==========================================
-# 8. SUPPORTED CITIES, AIRPORTS & COVERAGE LIMITS
+# 9. SUPPORTED CITIES, AIRPORTS & COVERAGE LIMITS
 # ==========================================
-# Canonical city records. "booking_dest_id" is either pinned (verified value) or resolved once through
-# Booking.com searchDestination, verified (type = city, same country code and name) and cached.
-# Cities that are not listed here return "unsupported_search".
+# Canonical city labels (public request values). "booking_dest_id" is either pinned (verified value) or resolved once
+# through Booking.com searchDestination, verified (type = city, same country code and name) and cached.
+# Cities that are not listed here are unsupported searches.
 SUPPORTED_CITIES = {
-    "istanbul": {"name": "Istanbul", "country_code": "tr", "airports": ["IST", "SAW"], "timezone": "Europe/Istanbul",
+    "Istanbul": {"country_code": "tr", "airports": ["IST", "SAW"], "timezone": "Europe/Istanbul",
                  "center": (41.0082, 28.9784), "booking_dest_id": None, "aliases": []},
-    "cairo": {"name": "Cairo", "country_code": "eg", "airports": ["CAI"], "timezone": "Africa/Cairo",
+    "Cairo": {"country_code": "eg", "airports": ["CAI"], "timezone": "Africa/Cairo",
               "center": (30.0444, 31.2357), "booking_dest_id": "-290692", "aliases": []},  # Verified 2026-10-17
-    "riyadh": {"name": "Riyadh", "country_code": "sa", "airports": ["RUH"], "timezone": "Asia/Riyadh",
+    "Rome": {"country_code": "it", "airports": ["FCO", "CIA"], "timezone": "Europe/Rome",
+             "center": (41.9028, 12.4964), "booking_dest_id": None, "aliases": ["roma"]},
+    "Riyadh": {"country_code": "sa", "airports": ["RUH"], "timezone": "Asia/Riyadh",
                "center": (24.7136, 46.6753), "booking_dest_id": None, "aliases": ["ar riyadh", "al riyadh"]},
-    "jeddah": {"name": "Jeddah", "country_code": "sa", "airports": ["JED"], "timezone": "Asia/Riyadh",
+    "Jeddah": {"country_code": "sa", "airports": ["JED"], "timezone": "Asia/Riyadh",
                "center": (21.4858, 39.1925), "booking_dest_id": None, "aliases": ["jedda", "jiddah"]},
-    "dubai": {"name": "Dubai", "country_code": "ae", "airports": ["DXB", "DWC"], "timezone": "Asia/Dubai",
+    "Dubai": {"country_code": "ae", "airports": ["DXB", "DWC"], "timezone": "Asia/Dubai",
               "center": (25.2048, 55.2708), "booking_dest_id": None, "aliases": []},
-    "doha": {"name": "Doha", "country_code": "qa", "airports": ["DOH"], "timezone": "Asia/Qatar",
+    "Doha": {"country_code": "qa", "airports": ["DOH"], "timezone": "Asia/Qatar",
              "center": (25.2854, 51.5310), "booking_dest_id": None, "aliases": []},
-    "amman": {"name": "Amman", "country_code": "jo", "airports": ["AMM"], "timezone": "Asia/Amman",
+    "Amman": {"country_code": "jo", "airports": ["AMM"], "timezone": "Asia/Amman",
               "center": (31.9539, 35.9106), "booking_dest_id": None, "aliases": []},
-    "baghdad": {"name": "Baghdad", "country_code": "iq", "airports": ["BGW"], "timezone": "Asia/Baghdad",
+    "Baghdad": {"country_code": "iq", "airports": ["BGW"], "timezone": "Asia/Baghdad",
                 "center": (33.3152, 44.3661), "booking_dest_id": None, "aliases": []},
-    "erbil": {"name": "Erbil", "country_code": "iq", "airports": ["EBL"], "timezone": "Asia/Baghdad",
+    "Erbil": {"country_code": "iq", "airports": ["EBL"], "timezone": "Asia/Baghdad",
               "center": (36.1911, 44.0092), "booking_dest_id": None, "aliases": ["arbil", "hawler"]},
-    "london": {"name": "London", "country_code": "gb", "airports": ["LHR", "LGW", "STN", "LTN", "LCY"],
-               "timezone": "Europe/London", "center": (51.5074, -0.1278), "booking_dest_id": None, "aliases": []},
-    "paris": {"name": "Paris", "country_code": "fr", "airports": ["CDG", "ORY"], "timezone": "Europe/Paris",
+    "London": {"country_code": "gb", "airports": ["LHR", "LGW", "STN", "LTN", "LCY"], "timezone": "Europe/London",
+               "center": (51.5074, -0.1278), "booking_dest_id": None, "aliases": []},
+    "Paris": {"country_code": "fr", "airports": ["CDG", "ORY"], "timezone": "Europe/Paris",
               "center": (48.8566, 2.3522), "booking_dest_id": None, "aliases": []}
 }
+AIRPORT_CODE_PATTERN = re.compile(r"^[A-Z]{3}$")
+# Every configured airport code must be exactly three letters
+assert all(AIRPORT_CODE_PATTERN.match(a) for c in SUPPORTED_CITIES.values() for a in c["airports"])
 
-# IANA time zones for flight dates (the flight provider returns local dates only, no departure times)
+# IANA time zones used to verify that flight dates are local departure dates
 AIRPORT_TIMEZONES = {airport: city["timezone"] for city in SUPPORTED_CITIES.values() for airport in city["airports"]}
-AIRPORT_TIMEZONES.update({
-    "DMM": "Asia/Riyadh", "MED": "Asia/Riyadh", "BSR": "Asia/Baghdad", "NJF": "Asia/Baghdad", "ISU": "Asia/Baghdad",
-    "KWI": "Asia/Kuwait", "BAH": "Asia/Bahrain", "MCT": "Asia/Muscat", "AUH": "Asia/Dubai", "SHJ": "Asia/Dubai",
-    "BEY": "Asia/Beirut", "HRG": "Africa/Cairo", "SSH": "Africa/Cairo", "CMN": "Africa/Casablanca",
-    "AYT": "Europe/Istanbul", "ADB": "Europe/Istanbul", "ESB": "Europe/Istanbul", "FRA": "Europe/Berlin",
-    "MUC": "Europe/Berlin", "AMS": "Europe/Amsterdam", "FCO": "Europe/Rome", "MAD": "Europe/Madrid",
-    "JFK": "America/New_York", "KUL": "Asia/Kuala_Lumpur"
-})
 
 def _normalize_city_text(text):
     return re.sub(r"\s+", " ", str(text or "").strip().lower())
 
 def resolve_supported_city(city_name):
+    """Returns (canonical_label, city_record) or (None, None)."""
     normalized = _normalize_city_text(city_name)
-    for city_id, city in SUPPORTED_CITIES.items():
-        if normalized == city_id or normalized == city["name"].lower() or normalized in city["aliases"]:
-            return city_id, city
+    for label, city in SUPPORTED_CITIES.items():
+        if normalized == label.lower() or normalized in city["aliases"]:
+            return label, city
     return None, None
 
 def haversine_km(lat1, lon1, lat2, lon2):
@@ -737,66 +836,44 @@ def haversine_km(lat1, lon1, lat2, lon2):
     return 6371.0 * 2 * math.asin(math.sqrt(a))
 
 # ==========================================
-# 9. INPUT VALIDATION (SHARED BY CLI & BACKEND)
+# 10. INPUT VALIDATION (PUBLIC REQUEST, docs/api-contracts.md section 3)
 # ==========================================
-# Public request fields. "destination_airport" and "rooms" are OPTIONAL adapter-internal inputs:
-# they are not part of the public contract until approved under PLAN-02 (#11).
-PUBLIC_REQUEST_FIELDS = ["trip_type", "origin", "destination_city", "check_in_date", "check_out_date", "adults", "budget_usd"]
-ADAPTER_OPTIONAL_FIELDS = ["destination_airport", "rooms"]
+PUBLIC_REQUEST_FIELDS = ["departure_city", "destination_city", "start_date", "return_date", "adults", "budget_usd",
+                         "trip_type"]
+# "trip_type" is OPTIONAL ("round_trip" default = current v0.4 contract). "one_way" is a proposed contract extension
+# (v0.4 has "no one-way switch"): it searches only the outbound flight; return_date stays the end of the stay.
+TRIP_TYPES = ("round_trip", "one_way")
 
 # Every validator returns (clean_value, error_message). error_message is None when the value is valid.
-def validate_trip_type(value):
-    normalized = str(value or "").strip().lower().replace("-", "_").replace(" ", "_")
-    if normalized in ["1", "one_way", "oneway"]:
-        return "one_way", None
-    if normalized in ["2", "round_trip", "roundtrip", "two_way"]:
-        return "round_trip", None
-    return None, "trip_type must be 'one_way' or 'round_trip'."
-
-def validate_airport_code(value, field_label):
-    code = str(value or "").strip() if isinstance(value, str) else ""
-    if not re.fullmatch(r"[A-Za-z]{3}", code):
-        return None, f"{field_label} must be exactly 3 letters (IATA code, e.g., IST)."
-    return code.upper(), None
-
-def validate_city_name(value, field_label="destination_city"):
+def validate_city_name(value, field_label):
     city = re.sub(r"\s+", " ", value.strip()) if isinstance(value, str) else ""
     if not (2 <= len(city) <= 80) or not re.fullmatch(r"[^\W\d_]+(?:[ \-'.][^\W\d_]+)*\.?", city):
         return None, f"{field_label} must be a city name made of letters (e.g., Cairo)."
     return city, None
 
-def validate_date(value, field_label, min_date=None):
+def validate_date(value, field_label):
     text = value.strip() if isinstance(value, str) else ""
     parsed = parse_iso_date(text) if re.fullmatch(r"\d{4}-\d{2}-\d{2}", text) else None
     if parsed is None:
-        return None, f"{field_label} must be a valid date in YYYY-MM-DD format (e.g., 2026-11-01)."
-    if min_date and parsed < min_date:
-        return None, f"{field_label} must be on or after {min_date.isoformat()}."
+        return None, f"{field_label} must be a valid date in YYYY-MM-DD format (e.g., 2026-11-10)."
     return parsed, None
 
-def validate_positive_int(value, field_label, max_value=None):
-    if isinstance(value, bool):
-        return None, f"{field_label} must be a positive whole number."
-    if isinstance(value, float) and value.is_integer():
-        value = int(value)
-    if isinstance(value, str) and re.fullmatch(r"\s*\d+\s*", value):
-        value = int(value)
-    if not isinstance(value, int):
-        return None, f"{field_label} must be a positive whole number."
-    if value <= 0:
-        return None, f"{field_label} must be greater than 0."
-    if max_value and value > max_value:
-        return None, f"{field_label} cannot be more than {max_value}."
+def validate_adults(value):
+    """Contract: integer 1-4; reject booleans, fractions and numeric strings."""
+    if isinstance(value, bool) or not isinstance(value, int):
+        return None, "adults must be a whole number (not text, boolean or fraction)."
+    if not MIN_ADULTS <= value <= MAX_ADULTS:
+        return None, f"adults must be between {MIN_ADULTS} and {MAX_ADULTS}."
     return value, None
 
 def validate_budget(value, field_label="budget_usd"):
-    """The budget must stay strictly positive after rounding to cents."""
-    if isinstance(value, bool) or not isinstance(value, (int, float, str)):
-        return None, f"{field_label} must be a positive number."
+    """The budget must be a number that stays strictly positive after rounding to cents."""
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None, f"{field_label} must be a number."
     try:
-        amount = Decimal(str(value).strip().replace(",", ""))
+        amount = Decimal(str(value))
     except InvalidOperation:
-        return None, f"{field_label} must be a positive number."
+        return None, f"{field_label} must be a number."
     if not amount.is_finite():
         return None, f"{field_label} must be a finite number."
     amount = amount.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
@@ -804,11 +881,19 @@ def validate_budget(value, field_label="budget_usd"):
         return None, f"{field_label} must be greater than 0.00 after rounding to cents."
     return float(amount), None
 
-def validate_request(request_data):
+def validate_airport_code(value, field_label):
+    """Adapter-internal override check: exactly three letters."""
+    code = value.strip().upper() if isinstance(value, str) else ""
+    if not AIRPORT_CODE_PATTERN.match(code):
+        return None, f"{field_label} must be exactly 3 letters (IATA code, e.g., IST)."
+    return code, None
+
+def validate_request(request_data, require_budget=True, rooms=None, origin_airport=None, destination_airport=None):
     """
-    Validates the request BEFORE any external call. Returns a clean trip dict or raises:
+    Validates the public request BEFORE any external call. Returns a clean trip dict or raises:
       invalid_input       -> one entry per invalid field in details["fields"]
-      unsupported_search  -> valid input, but the destination is outside the supported coverage
+      unsupported_search  -> valid input, but a city is outside the supported coverage
+    rooms / origin_airport / destination_airport are adapter-internal options, NOT public request fields.
     """
     if not isinstance(request_data, dict):
         raise TravelMateError("invalid_input", "Request data must be a JSON object.",
@@ -822,105 +907,109 @@ def validate_request(request_data):
             field_errors.append({"field": field, "message": error})
         return value
 
-    today = _today()
-    trip_type = check("trip_type", validate_trip_type(request_data.get("trip_type")))
-    origin = check("origin", validate_airport_code(request_data.get("origin"), "origin"))
-    destination_city = check("destination_city", validate_city_name(request_data.get("destination_city")))
-    check_in = check("check_in_date", validate_date(request_data.get("check_in_date"), "check_in_date", min_date=today))
-    check_out = check("check_out_date", validate_date(request_data.get("check_out_date"), "check_out_date"))
-    adults = check("adults", validate_positive_int(request_data.get("adults"), "adults", MAX_ADULTS))
-    budget_usd = check("budget_usd", validate_budget(request_data.get("budget_usd")))
+    unknown = sorted(set(request_data) - set(PUBLIC_REQUEST_FIELDS))
+    for field in unknown:
+        field_errors.append({"field": field, "message": "Unknown field (not part of the public request)."})
+    departure_city = check("departure_city", validate_city_name(request_data.get("departure_city"), "departure_city"))
+    destination_city = check("destination_city", validate_city_name(request_data.get("destination_city"), "destination_city"))
+    start = check("start_date", validate_date(request_data.get("start_date"), "start_date"))
+    end = check("return_date", validate_date(request_data.get("return_date"), "return_date"))
+    adults = check("adults", validate_adults(request_data.get("adults")))
+    trip_type = request_data.get("trip_type", "round_trip")
+    if trip_type not in TRIP_TYPES:
+        field_errors.append({"field": "trip_type", "message": "trip_type must be 'round_trip' or 'one_way'."})
+    budget_usd = None
+    if require_budget or "budget_usd" in request_data:
+        budget_usd = check("budget_usd", validate_budget(request_data.get("budget_usd")))
+    if rooms is None:
+        rooms = DEFAULT_ROOMS
+    elif isinstance(rooms, bool) or not isinstance(rooms, int) or rooms < 1:
+        field_errors.append({"field": "rooms", "message": "rooms must be a positive whole number."})
 
-    destination_airport = None
-    if request_data.get("destination_airport") not in (None, ""):
-        destination_airport = check("destination_airport",
-                                    validate_airport_code(request_data.get("destination_airport"), "destination_airport"))
-    rooms = 1
-    if request_data.get("rooms") not in (None, ""):
-        rooms = check("rooms", validate_positive_int(request_data.get("rooms"), "rooms", MAX_ROOMS))
-
-    # Cross-field checks
-    if check_in and check_out:
-        if check_out <= check_in:
-            field_errors.append({"field": "check_out_date", "message": "check_out_date must be after check_in_date."})
-        elif (check_out - check_in).days > MAX_NIGHTS:
-            field_errors.append({"field": "check_out_date", "message": f"The stay cannot be longer than {MAX_NIGHTS} nights."})
-    if adults and rooms and rooms > adults:
+    # Cross-field date rules (contract: start_date strictly after today's UTC date, 1-7 nights)
+    if start and start <= _today_utc():
+        field_errors.append({"field": "start_date", "message": f"start_date must be after {_today_utc().isoformat()} (UTC)."})
+    if start and end:
+        nights = (end - start).days
+        if nights < MIN_NIGHTS:
+            field_errors.append({"field": "return_date", "message": "return_date must be after start_date."})
+        elif nights > MAX_NIGHTS:
+            field_errors.append({"field": "return_date", "message": f"The trip cannot be longer than {MAX_NIGHTS} nights."})
+    if isinstance(rooms, int) and adults and rooms > adults:
         field_errors.append({"field": "rooms", "message": "rooms cannot be more than adults."})
 
     if field_errors:
         raise TravelMateError("invalid_input", details={"fields": field_errors})
 
-    city_id, city = resolve_supported_city(destination_city)
-    if city is None:
-        raise TravelMateError("unsupported_search", f"'{destination_city}' is not a supported destination yet.",
-                              {"reason": "city_not_in_coverage",
-                               "supported_cities": sorted(c["name"] for c in SUPPORTED_CITIES.values())})
-    if destination_airport is None:
-        destination_airport = city["airports"][0]
-    elif destination_airport not in city["airports"]:
+    origin_label, origin_city = resolve_supported_city(departure_city)
+    destination_label, destination_record = resolve_supported_city(destination_city)
+    unsupported = [name for name, city in ((departure_city, origin_city), (destination_city, destination_record)) if city is None]
+    if unsupported:
+        raise TravelMateError("unsupported_search", f"Unsupported city: {', '.join(unsupported)}.",
+                              {"reason": "city_not_in_coverage", "supported_cities": sorted(SUPPORTED_CITIES)})
+    if origin_label == destination_label:
         raise TravelMateError("invalid_input", details={"fields": [{
-            "field": "destination_airport",
-            "message": f"destination_airport must be one of {', '.join(city['airports'])} for {city['name']}."}]})
-    if origin == destination_airport or origin in city["airports"]:
-        raise TravelMateError("invalid_input", details={"fields": [{
-            "field": "origin", "message": "origin must be different from the destination city airports."}]})
+            "field": "destination_city", "message": "destination_city must be different from departure_city."}]})
+
+    airports = {}
+    for field, override, city in (("origin_airport", origin_airport, origin_city),
+                                  ("destination_airport", destination_airport, destination_record)):
+        if override is None:
+            airports[field] = city["airports"][0]
+            continue
+        code, error = validate_airport_code(override, field)
+        if error or code not in city["airports"]:
+            raise TravelMateError("invalid_input", details={"fields": [{
+                "field": field, "message": error or f"{field} must be one of {', '.join(city['airports'])}."}]})
+        airports[field] = code
 
     return {
-        "trip_type": trip_type,
-        "trip_type_label": "Round-Trip (2-Way)" if trip_type == "round_trip" else "One-Way",
-        "origin": origin,
-        "destination_city": city["name"],
-        "check_in_date": check_in.isoformat(),
-        "check_out_date": check_out.isoformat(),
-        "nights": (check_out - check_in).days,
+        "departure_city": origin_label,
+        "destination_city": destination_label,
+        "start_date": start.isoformat(),
+        "return_date": end.isoformat(),
+        "nights": (end - start).days,
         "adults": adults,
         "budget_usd": budget_usd,
-        "currency": "USD",
-        # Adapter-internal values (kept separate from the public fields above)
-        "adapter": {
-            "city_id": city_id,
-            "destination_airport": destination_airport,
-            "rooms": rooms,
-            "rooms_source": "request" if request_data.get("rooms") not in (None, "") else "default_1"
-        }
+        "trip_type": trip_type,
+        # Adapter-internal values (never part of the public request)
+        "adapter": {"origin_airport": airports["origin_airport"], "destination_airport": airports["destination_airport"],
+                    "rooms": rooms, "rooms_source": "default" if rooms == DEFAULT_ROOMS else "adapter_option"}
     }
 
-def public_search_parameters(trip):
-    """Returns only the public fields (safe to store and display)."""
-    return {k: v for k, v in trip.items() if k != "adapter"}
+def public_trip_request(trip):
+    """Returns the public request fields exactly (safe to store and display)."""
+    return {k: trip[k] for k in PUBLIC_REQUEST_FIELDS if trip.get(k) is not None}
 
 # ==========================================
-# 10. FLIGHT PROVIDER (SKYSCANNER ROUTE QUOTES - INDICATIVE ONLY)
+# 11. FLIGHT PROVIDER (SKYSCANNER ROUTE QUOTES - INDICATIVE ONLY)
 # ==========================================
-# Documented provider behavior (verified with live responses on 2026-10-17):
+# Documented provider behavior (verified with live responses on 2026-10-17 and 2026-10-19):
 #   - The /route endpoint returns Skyscanner's CACHED quotes for a city pair ("not a live search" per its usage_note).
 #   - "date", "adults" and "currency" query parameters are NOT honored: dates spread over ~12 months, GBP prices.
-#   - Deep links contain no adult count, so each quote is treated as a SINGLE-ADULT one-way fare.
-# Therefore: only exact-date quotes are eligible, group totals are "single adult quote x adults" (unverified)
-# and every flight price is labeled "indicative". Flight prices are never authoritative trip costs.
-FLIGHT_PROVIDER_CAPABILITIES = {
-    "supports_requested_date": False,
-    "supports_adult_count": False,
-    "supports_currency_parameter": False,
-    "data_type": "cached_route_quotes",
-    "price_basis": "single_adult_one_way_quote",
-    "group_total_method": "price_per_adult_usd x adults (unverified for adults > 1)",
-    "departure_times_available": False,
-    "price_authority": "indicative"
-}
+#   - Deep links contain no adult count, so each quote is a SINGLE-ADULT one-way fare.
+#   - No departure times are returned; only local departure dates.
+# Therefore flights are "not_configured" by default. In "indicative" mode, ONLY exact-date quotes are selectable;
+# total_price_usd = single-adult quote x travelers (unverified) and every flight price stays indicative.
+SELECTED_FLIGHT_FIELDS = ["airline", "carrier_codes", "origin_airport", "destination_airport", "flight_date",
+                          "requested_date", "date_matches_request", "days_from_requested_date", "is_direct",
+                          "stops_label", "price_per_person_usd", "travelers", "total_price_usd", "quoted_at",
+                          "booking_link"]
+FLIGHT_FEE_EVIDENCE = ("Skyscanner displays fares inclusive of taxes and carrier-imposed charges (provider convention); "
+                       "baggage and optional extras are not included.")
+
+def flight_leg_id(leg):
+    """Same synthetic format BE-04 builds: airline-date-origin-destination."""
+    return f"{leg['airline']}-{leg['flight_date']}-{leg['origin_airport']}-{leg['destination_airport']}"
+
+def round_trip_offer_id(outbound, returning):
+    """Matches BE-04's synthetic round-trip flight ID (and therefore CostItem.source_offer_id)."""
+    return f"{flight_leg_id(outbound)}__{flight_leg_id(returning)}"
 
 def fetch_flight_quotes(origin, destination, travel_date, adults, deadline, label, cache_mode="default", evidence=None):
     # The requested scope is sent to the provider, then validated against what it actually returns
-    params = {
-        "origin": origin.lower(),
-        "destination": destination.lower(),
-        "date": travel_date,
-        "adults": str(adults),
-        "currency": "USD",
-        "market": "US",
-        "locale": "en-US"  # Request English airline and city names
-    }
+    params = {"origin": origin.lower(), "destination": destination.lower(), "date": travel_date,
+              "adults": str(adults), "currency": "USD", "market": "US", "locale": "en-US"}
     logger.info(f"[*] Fetching {label} quotes {origin} -> {destination} for {travel_date} ({adults} adult(s))...")
     return provider_get("skyscanner_route", params, deadline, cache_mode=cache_mode, evidence=evidence)
 
@@ -934,11 +1023,12 @@ def _build_stops_label(is_direct, stops, transit_airports):
         label += f" via {', '.join(transit_airports)}"
     return label
 
-def normalize_flight_quotes(payload, direction, origin, destination, requested_date, adults, fx, provenance,
+def normalize_flight_quotes(payload, direction, origin, destination, requested_date, travelers, fx, provenance,
                             max_results=5):
     """
-    Returns (eligible_offers, alternative_date_offers, coverage).
-    Eligible = exact route AND exact requested date. Different dates go to the alternatives list only.
+    Returns (exact_date_legs, alternative_date_legs, provenance_entries, coverage).
+    Legs use the exact BE-04 SelectedFlight fields. date_matches_request is ALWAYS computed as
+    flight_date == requested_date; alternative-date legs are never selectable.
     """
     section = payload.get("data") if isinstance(payload, dict) else None
     if not isinstance(section, dict) or not isinstance(section.get("deals"), list):
@@ -949,7 +1039,7 @@ def normalize_flight_quotes(payload, direction, origin, destination, requested_d
     target_date = parse_iso_date(requested_date)
     excluded = {"route_mismatch": 0, "invalid_price": 0, "unconvertible_currency": 0, "malformed": 0}
     returned_dates = set()
-    eligible, alternatives = [], []
+    exact, alternatives = [], []
 
     for d in deals:
         legs = [leg for leg in (d.get("legs") or []) if isinstance(leg, dict)] if isinstance(d, dict) else []
@@ -963,7 +1053,9 @@ def normalize_flight_quotes(payload, direction, origin, destination, requested_d
             excluded["route_mismatch"] += 1
             continue
         flight_date = parse_iso_date(first_leg.get("date"))
-        if flight_date is None:
+        quoted_at = normalize_utc_timestamp(first_leg.get("quoted_at"))
+        deep_link = d.get("deep_link_path")
+        if flight_date is None or quoted_at is None or not deep_link:
             excluded["malformed"] += 1
             continue
         returned_dates.add(flight_date.isoformat())
@@ -987,74 +1079,353 @@ def normalize_flight_quotes(payload, direction, origin, destination, requested_d
                             if (leg.get("destination") or {}).get("sky_code")]
         is_direct = bool(d.get("direct"))
         stops = 0 if is_direct else (len(legs) - 1 if len(legs) > 1 else None)
-        date_match = flight_date == target_date
-        deep_link = d.get("deep_link_path")
 
-        offer = {
-            "offer_id": d.get("id"),
-            "direction": direction,
+        leg_view = {
             "airline": " + ".join(airline_names) or "Unknown Airline",
             "carrier_codes": carrier_codes,
             "origin_airport": leg_origin,
             "destination_airport": leg_destination,
-            "origin_timezone": AIRPORT_TIMEZONES.get(leg_origin, "unknown"),
-            "destination_timezone": AIRPORT_TIMEZONES.get(leg_destination, "unknown"),
             "flight_date": flight_date.isoformat(),
-            "flight_date_basis": "local departure date at origin_timezone",
-            "departure_time_local": None,
-            "arrival_time_local": None,
             "requested_date": requested_date,
-            "days_from_requested_date": abs((flight_date - target_date).days),
+            "date_matches_request": flight_date == target_date,        # Strictly derived, never set by hand
+            "days_from_requested_date": (flight_date - target_date).days,  # Signed: + later / - earlier
             "is_direct": is_direct,
-            "stops": stops,
-            "transit_airports": transit_airports,
             "stops_label": _build_stops_label(is_direct, stops, transit_airports),
-            "price_per_adult_usd": price_usd,
-            "adults": adults,
-            "group_total_usd": round_money(price_usd * adults),
-            "price_basis": FLIGHT_PROVIDER_CAPABILITIES["price_basis"],
-            "group_price_verified": False,
-            "price_authority": "indicative",
-            "original_price": price,
-            "original_currency": currency,
-            "booking_link": f"https://www.skyscanner.net{deep_link}" if deep_link else None,
-            "eligibility": {
-                "eligible": date_match,
-                "reason": None if date_match else "date_mismatch",
-                "checks": {"route_match": True, "date_match": date_match, "adult_occupancy_verified": False}
-            },
-            "provenance": {
-                "provider": provenance["provider"],
-                "integration_type": provenance["integration_type"],
-                "endpoint": provenance["endpoint"],
-                "retrieved_at": provenance["retrieved_at"],
-                "cache_status": provenance["cache_status"],
-                "provider_offer_id": d.get("id"),
-                "quoted_at": first_leg.get("quoted_at"),
-                "currency_conversion": conversion
-            }
+            "price_per_person_usd": price_usd,
+            "travelers": travelers,
+            "total_price_usd": round_money(price_usd * travelers),
+            "quoted_at": quoted_at,
+            "booking_link": f"https://www.skyscanner.net{deep_link}"
         }
-        (eligible if date_match else alternatives).append(offer)
+        leg_provenance = {
+            "offer_id": flight_leg_id(leg_view),
+            "category": "flights",
+            "direction": direction,
+            "source": FLIGHT_SOURCE_LABEL,
+            "provider_offer_id": d.get("id"),
+            "retrieved_at": provenance["retrieved_at"],
+            "cache_status": provenance["cache_status"],
+            "original_currency": currency,
+            "original_amount": price,
+            "quote_timestamp": quoted_at,
+            "conversion": conversion,
+            "provider_query": provenance["query_parameters"],
+            "coverage_evidence": (
+                f"Cached single-adult one-way quote ({direction}); total_price_usd = price_per_person_usd x {travelers} "
+                f"(unverified group price). Provider ignores date/adults/currency parameters. {FLIGHT_FEE_EVIDENCE}"),
+            "fees": {"included_in_base": True, "additional_fees_usd": None},
+            "price_authority": "indicative",
+            "transit_airports": transit_airports,
+            "airport_timezones": {"departure": AIRPORT_TIMEZONES.get(leg_origin, "unknown"),
+                                  "destination": AIRPORT_TIMEZONES.get(leg_destination, "unknown")}
+        }
+        (exact if leg_view["date_matches_request"] else alternatives).append((leg_view, leg_provenance))
 
-    eligible.sort(key=lambda f: f["group_total_usd"])
-    alternatives.sort(key=lambda f: (f["days_from_requested_date"], f["group_total_usd"]))
+    exact.sort(key=lambda item: (item[0]["total_price_usd"], flight_leg_id(item[0])))
+    alternatives.sort(key=lambda item: (abs(item[0]["days_from_requested_date"]), item[0]["total_price_usd"]))
+    exact, alternatives = exact[:max_results], alternatives[:max_results]
     coverage = {
         "deals_returned": len(deals),
-        "eligible_exact_date": len(eligible),
-        "alternative_dates": len(alternatives),
+        "exact_date_quotes": len(exact),
+        "alternative_date_quotes": len(alternatives),
         "excluded": excluded,
         "requested_date": requested_date,
         "returned_date_range": [min(returned_dates), max(returned_dates)] if returned_dates else None,
         "date_parameter_honored": bool(returned_dates) and returned_dates == {requested_date},
-        "requested_currency": "USD",
         "returned_currency": currency,
         "currency_parameter_honored": str(currency).upper() == "USD",
         "provider_usage_note": str(section.get("usage_note") or "")[:400] or None
     }
-    return eligible[:max_results], alternatives[:max_results], coverage
+    return ([v for v, _ in exact], [v for v, _ in alternatives],
+            [p for _, p in exact] + [p for _, p in alternatives], coverage)
 
 # ==========================================
-# 11. HOTEL PROVIDER (BOOKING.COM - LIVE, VERIFIED PER OFFER)
+# 11.1 FLIGHT PROVIDER (GOOGLE FLIGHTS - LIVE ROUND TRIP)
+# ==========================================
+# Documented provider behavior (verified with live responses on 2026-10-21):
+#   - searchFlights honors the requested date and adults: every result departs on the requested local date.
+#   - Without return_date it is a ONE-WAY search; "price" is then the provider's one-way total for ALL adults
+#     (1 adult $248 vs 2 adults $495 on the round-trip search; another flight $617 vs $1,556: priced by the provider,
+#     never multiplied by us). One-way IST-CAI $272 + CAI-IST $223 = $495, the same as the round-trip fare.
+#   - Round trips = two one-way searches run in parallel (~2.4-3 s each), so each leg has its own real total and
+#     nothing is split. The slower getNextFlights round-trip flow (23 s+) is not used.
+#   - currency=USD is honored (the same search with currency=EUR returned prices ~0.89x, the market rate).
+#   - Segment times are LOCAL airport times, sometimes unpadded ("2026-11-1 09:35"); they are normalized and
+#     converted to UTC with IANA zones.
+#   - The same flight can appear several times with different fares / tokens; only the cheapest is kept.
+#   - The provider "stops" field is unreliable (always 0, even with a layover); stops are counted from segments.
+#   - No tax field: Google Flights shows totals including required taxes and fees (provider convention).
+GOOGLE_FEE_EVIDENCE = ("Google Flights shows total fares including required taxes and fees (provider convention); "
+                       "checked bags and optional extras are not included.")
+
+def local_to_utc(local_text, airport_code):
+    """'2026-11-20 12:15' at airport_code -> ('2026-11-20T09:15:00Z', date(2026, 11, 20)), or (None, None)."""
+    zone = AIRPORT_TIMEZONES.get(airport_code)
+    try:
+        local = datetime.strptime(str(local_text).strip(), "%Y-%m-%d %H:%M")
+        aware = local.replace(tzinfo=ZoneInfo(zone))
+    except (TypeError, ValueError, ZoneInfoNotFoundError):
+        return None, None
+    return aware.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"), local.date()
+
+def utc_to_local_date(utc_text, airport_code):
+    """Inverse check used to verify that a UTC departure is on the requested LOCAL date at that airport."""
+    zone = AIRPORT_TIMEZONES.get(airport_code)
+    try:
+        moment = datetime.fromisoformat(str(utc_text).replace("Z", "+00:00"))
+        return moment.astimezone(ZoneInfo(zone)).date().isoformat()
+    except (TypeError, ValueError, ZoneInfoNotFoundError):
+        return None
+
+def _local_clock(local_text):
+    """'2026-11-1 9:35' -> '09:35' (provider times are not always zero-padded)."""
+    return datetime.strptime(str(local_text).strip(), "%Y-%m-%d %H:%M").strftime("%H:%M")
+
+def _google_options(payload, stage):
+    itineraries = ((payload or {}).get("data") or {}).get("itineraries") if isinstance(payload, dict) else None
+    if not isinstance(itineraries, dict):
+        raise TravelMateError("invalid_response", details={"reason": "missing_itineraries", "stage": stage})
+    options = (itineraries.get("topFlights") or []) + (itineraries.get("otherFlights") or [])
+    return [o for o in options if isinstance(o, dict)]
+
+def summarize_google_option(option, origin_airports, destination_airports, travel_date):
+    """
+    Validates one Google Flights option (route by city airports, local departure date, segments, time zones) and
+    returns (summary, problem). problem is None when the option is eligible.
+    """
+    segments = option.get("flights")
+    if not isinstance(segments, list) or not segments or not all(isinstance(s, dict) for s in segments):
+        return None, "malformed"
+    departure = segments[0].get("departure_airport") or {}
+    arrival = segments[-1].get("arrival_airport") or {}
+    departure_code = str(departure.get("airport_code") or "").upper()
+    arrival_code = str(arrival.get("airport_code") or "").upper()
+    if departure_code not in origin_airports or arrival_code not in destination_airports:
+        return None, "route_mismatch"
+    if option.get("self_transfer"):
+        return None, "self_transfer"  # Separate tickets are not one bookable round trip
+    departure_utc, departure_date = local_to_utc(departure.get("time"), departure_code)
+    arrival_utc, arrival_date = local_to_utc(arrival.get("time"), arrival_code)
+    if departure_utc is None or arrival_utc is None:
+        return None, "unknown_timezone"
+    if departure_date.isoformat() != travel_date:
+        return None, "date_mismatch"
+    airlines, flight_numbers = [], []
+    for segment in segments:
+        if segment.get("airline") and segment["airline"] not in airlines:
+            airlines.append(segment["airline"])
+        if segment.get("flight_number"):
+            flight_numbers.append(str(segment["flight_number"]))
+    transit = [str((s.get("arrival_airport") or {}).get("airport_code") or "") for s in segments[:-1]]
+    stops = len(segments) - 1  # The provider "stops" field is not reliable
+    return {
+        "airline": " + ".join(airlines) or "Unknown Airline",
+        "flight_numbers": flight_numbers,
+        "departure_airport": departure_code,
+        "arrival_airport": arrival_code,
+        "departure_date": departure_date.isoformat(),
+        "departure_local": f"{departure_date.isoformat()} {_local_clock(departure.get('time'))}",
+        "arrival_local": f"{arrival_date.isoformat()} {_local_clock(arrival.get('time'))}",
+        "departure_utc": departure_utc,
+        "arrival_utc": arrival_utc,
+        "stops": stops,
+        "transit_airports": [t for t in transit if t],
+        "stops_label": _build_stops_label(stops == 0, stops, [t for t in transit if t]),
+        "duration_minutes": (option.get("duration") or {}).get("raw"),
+        "checked_bags_included": (option.get("bags") or {}).get("checked")
+    }, None
+
+def _provider_timestamp(payload):
+    stamp = payload.get("timestamp") if isinstance(payload, dict) else None
+    if isinstance(stamp, (int, float)) and not isinstance(stamp, bool):
+        return datetime.fromtimestamp(stamp / 1000, tz=timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+    return None
+
+def _carrier_code(flight_number):
+    match = re.match(r"^\s*([A-Z0-9]{2})\s*\d", str(flight_number or ""))
+    return match.group(1) if match else None
+
+def _google_search_link(origin, destination, travel_date):
+    """Public Google Flights search link for the leg (the provider booking_token is not a URL)."""
+    return (f"https://www.google.com/travel/flights?q=Flights%20from%20{origin}%20to%20{destination}"
+            f"%20on%20{travel_date}%20one%20way")
+
+def _google_leg_search(direction, origin, destination, travel_date, adults, deadline, cache_mode, evidence):
+    """One ONE-WAY search (no return_date): its price is the provider total for ALL adults for that leg."""
+    params = {"departure_id": origin, "arrival_id": destination, "outbound_date": travel_date,
+              "travel_class": "ECONOMY", "adults": str(adults), "show_hidden": "1", "currency": "USD",
+              "language_code": "en-US", "country_code": "US", "search_type": "best"}
+    logger.info(f"[*] Google Flights: one-way {direction} {origin} -> {destination} on {travel_date} ({adults} adult(s))...")
+    payload, provenance = provider_get("google_flights_search", params, deadline, cache_mode=cache_mode, evidence=evidence)
+    return payload, provenance, params
+
+def normalize_google_legs(payload, provenance, direction, origin_airports, destination_airports, requested_date,
+                          adults, max_results=3):
+    """
+    Returns (legs, schedules, coverage). legs use the exact BE-04 SelectedFlight fields with the REAL provider leg
+    total; duplicates of the same flight (different fares / tokens) keep only the cheapest.
+    """
+    options = _google_options(payload, direction)
+    excluded = {"route_mismatch": 0, "date_mismatch": 0, "invalid_price": 0, "self_transfer": 0,
+                "unknown_timezone": 0, "malformed": 0, "duplicate": 0}
+    quoted_at = _provider_timestamp(payload) or normalize_utc_timestamp(provenance["retrieved_at"]) or utc_now_iso()
+    best_by_flight = {}
+    for option in options:
+        summary, problem = summarize_google_option(option, origin_airports, destination_airports, requested_date)
+        price = valid_amount(option.get("price"))
+        if problem:
+            excluded[problem] += 1
+            continue
+        if price is None:
+            excluded["invalid_price"] += 1
+            continue
+        flight_key = "+".join(summary["flight_numbers"]) or summary["airline"]
+        if flight_key in best_by_flight:
+            excluded["duplicate"] += 1
+            if best_by_flight[flight_key][0] <= price:
+                continue
+        best_by_flight[flight_key] = (price, summary, option.get("booking_token"))
+
+    ranked = sorted(best_by_flight.values(), key=lambda item: (item[0], item[1]["flight_numbers"]))
+    legs, schedules = [], []
+    for price, summary, booking_token in ranked[:max_results]:
+        total = round_money(price)
+        flight_date = parse_iso_date(summary["departure_date"])  # Parsed from the provider local time
+        leg = {
+            "airline": summary["airline"],
+            "carrier_codes": sorted({c for c in (_carrier_code(n) for n in summary["flight_numbers"]) if c}),
+            "origin_airport": summary["departure_airport"],
+            "destination_airport": summary["arrival_airport"],
+            "flight_date": flight_date.isoformat(),
+            "requested_date": requested_date,
+            "date_matches_request": flight_date.isoformat() == requested_date,
+            "days_from_requested_date": (flight_date - parse_iso_date(requested_date)).days,
+            "is_direct": summary["stops"] == 0,
+            "stops_label": summary["stops_label"],
+            "price_per_person_usd": round_money(total / adults),  # Average of the provider group total (informative)
+            "travelers": adults,
+            "total_price_usd": total,                              # Provider one-way total for ALL adults
+            "quoted_at": quoted_at,
+            "booking_link": _google_search_link(summary["departure_airport"], summary["arrival_airport"], requested_date)
+        }
+        legs.append(leg)
+        schedules.append({
+            "leg_id": flight_leg_id(leg),
+            "direction": direction,
+            "flight_numbers": summary["flight_numbers"],
+            "departure_local": summary["departure_local"],
+            "arrival_local": summary["arrival_local"],
+            "departure_utc": summary["departure_utc"],
+            "arrival_utc": summary["arrival_utc"],
+            "stops": summary["stops"],
+            "transit_airports": summary["transit_airports"],
+            "duration_minutes": summary["duration_minutes"],
+            "checked_bags_included": summary["checked_bags_included"],
+            "booking_token_sha256": hashlib.sha256(str(booking_token).encode("utf-8")).hexdigest()[:16] if booking_token else None,
+            "query_parameters": provenance["query_parameters"],
+            "retrieved_at": provenance["retrieved_at"],
+            "cache_status": provenance["cache_status"],
+            "original_amount": price
+        })
+    coverage = {"options_returned": len(options), "eligible_flights": len(best_by_flight), "excluded": excluded,
+                "requested_date": requested_date, "requested_currency": "USD",
+                "currency_evidence": "currency parameter verified 2026-10-21 (EUR comparison); response has no currency field"}
+    return legs, schedules, coverage
+
+def _public_flight_offer(trip, outbound, returning, schedule_by_leg):
+    """v0.4 public flight offer. For round trips the adapter combines two valid one-way quotes (allowed by the contract)."""
+    total = round_money(outbound["total_price_usd"] + (returning["total_price_usd"] if returning else 0))
+    offer_id = round_trip_offer_id(outbound, returning) if returning else flight_leg_id(outbound)
+    out_schedule = schedule_by_leg[flight_leg_id(outbound)]
+    ret_schedule = schedule_by_leg[flight_leg_id(returning)] if returning else None
+    airline = outbound["airline"] if not returning or outbound["airline"] == returning["airline"] \
+        else f"{outbound['airline']} / {returning['airline']}"
+    return {
+        "id": offer_id,
+        "source": GOOGLE_FLIGHTS_SOURCE_LABEL,
+        "retrieved_at": normalize_utc_timestamp((ret_schedule or out_schedule)["retrieved_at"]) or utc_now_iso(),
+        "price": {"amount_usd": total, "kind": "provider", "coverage": "entire_trip_all_travelers"},
+        "taxes": {"status": "included", "additional_amount_usd": 0.0},
+        "airline": airline,
+        "departure_airport_code": outbound["origin_airport"],
+        "arrival_airport_code": outbound["destination_airport"],
+        "outbound_departure_at": out_schedule["departure_utc"],
+        # One-way trips have no return departure: this needs a contract change (v0.4 requires a round trip)
+        "return_departure_at": ret_schedule["departure_utc"] if ret_schedule else None,
+        "adults": trip["adults"]
+    }, total
+
+def search_google_flights(trip, deadline, cache_mode="default", evidence=None):
+    """
+    Live flights: one ONE-WAY search per direction, run in parallel (1 call for one-way trips, 2 for round trips).
+    Each leg keeps its own REAL provider total, so BE-04 can price the legs directly (nothing is split or invented).
+    Returns (outbound_legs, return_legs, public_offers, candidates, provenance_entries, schedules, coverage).
+    """
+    adapter = trip["adapter"]
+    origin_city, destination_city = SUPPORTED_CITIES[trip["departure_city"]], SUPPORTED_CITIES[trip["destination_city"]]
+    directions = [("outbound", adapter["origin_airport"], adapter["destination_airport"], trip["start_date"],
+                   origin_city["airports"], destination_city["airports"])]
+    if trip["trip_type"] == "round_trip":
+        directions.append(("return", adapter["destination_airport"], adapter["origin_airport"], trip["return_date"],
+                           destination_city["airports"], origin_city["airports"]))
+
+    with ThreadPoolExecutor(max_workers=len(directions), thread_name_prefix="flight-leg") as pool:
+        futures = {d[0]: pool.submit(_google_leg_search, d[0], d[1], d[2], d[3], trip["adults"], deadline,
+                                     cache_mode, evidence) for d in directions}
+        searched = {direction: future.result() for direction, future in futures.items()}  # A failed leg fails all
+
+    legs, schedules, coverage = {"outbound": [], "return": []}, [], {"provider_calls": len(directions)}
+    for direction, _, _, travel_date, from_airports, to_airports in directions:
+        payload, provenance, _ = searched[direction]
+        legs[direction], leg_schedules, coverage[direction] = normalize_google_legs(
+            payload, provenance, direction, from_airports, to_airports, travel_date, trip["adults"])
+        schedules += leg_schedules
+    schedule_by_leg = {s["leg_id"]: s for s in schedules}
+
+    offers = {}
+    if legs["outbound"] and (trip["trip_type"] == "one_way" or legs["return"]):
+        returns = legs["return"] if trip["trip_type"] == "round_trip" else [None]
+        for outbound in legs["outbound"]:
+            for returning in returns:
+                offer, total = _public_flight_offer(trip, outbound, returning, schedule_by_leg)
+                if offer["id"] not in offers or offers[offer["id"]][1] > total:
+                    offers[offer["id"]] = (offer, total, outbound, returning)
+    ranked = sorted(offers.values(), key=lambda item: (item[1], item[0]["id"]))[:GOOGLE_FLIGHTS_RETURN_OPTIONS]
+
+    public_offers, candidates, provenance_entries = [], [], []
+    for offer, total, outbound, returning in ranked:
+        public_offers.append(offer)
+        candidates.append({"id": offer["id"], "base_usd": total, "additional_fees_usd": None, "included_in_base": True})
+        leg_schedules = [schedule_by_leg[flight_leg_id(outbound)]] + \
+            ([schedule_by_leg[flight_leg_id(returning)]] if returning else [])
+        provenance_entries.append({
+            "offer_id": offer["id"],
+            "category": "flights",
+            "source": GOOGLE_FLIGHTS_SOURCE_LABEL,
+            "provider_offer_id": [s["booking_token_sha256"] for s in leg_schedules],
+            "retrieved_at": offer["retrieved_at"],
+            "cache_status": {s["direction"]: s["cache_status"] for s in leg_schedules},
+            "original_currency": "USD",
+            "original_amount": round_money(sum(s["original_amount"] for s in leg_schedules)),
+            "quote_timestamp": outbound["quoted_at"],
+            "conversion": None,
+            "provider_query": {s["direction"]: s["query_parameters"] for s in leg_schedules},
+            "coverage_evidence": (
+                f"{'Sum of two' if returning else 'One'} provider one-way total(s) for {trip['adults']} adult(s), "
+                "each priced by the provider (not multiplied or split by the adapter): "
+                + "; ".join(f"{s['direction']} {' + '.join(s['flight_numbers'])} {s['departure_local']} local "
+                            f"= ${s['original_amount']}" for s in leg_schedules)
+                + ". Two one-way tickets can cost more than one round-trip ticket. " + GOOGLE_FEE_EVIDENCE),
+            "fees": {"status": "included", "included_in_base": True, "additional_fees_usd": None},
+            "price_authority": "live_provider_quote",
+            "itinerary": {s["direction"]: s for s in leg_schedules},
+            "airport_timezones": {"departure": AIRPORT_TIMEZONES.get(outbound["origin_airport"]),
+                                  "destination": AIRPORT_TIMEZONES.get(outbound["destination_airport"])}
+        })
+    return legs["outbound"], legs["return"], public_offers, candidates, provenance_entries, schedule_by_leg, coverage
+
+# ==========================================
+# 12. HOTEL PROVIDER (BOOKING.COM - LIVE, VERIFIED PER OFFER)
 # ==========================================
 OCCUPANCY_PATTERN = re.compile(r"Price for (\d+) nights?, (\d+) adults?", re.IGNORECASE)
 # Unit configuration line, e.g. " 1 private suite • 1 hotel room : 2 beds." or " Hotel room : 4 beds."
@@ -1062,6 +1433,11 @@ UNIT_LINE_PATTERN = re.compile(r"^\s*([^\n:]+?)\s*:\s*\d+\s*beds?\b", re.IGNOREC
 UNIT_COUNT_PATTERN = re.compile(
     r"(\d+)\s+(?:[^\W\d_]+\s+)?(?:rooms?|suites?|apartments?|studios?|villas?|units?|bungalows?|chalets?)\b",
     re.IGNORECASE)
+DISTANCE_PATTERN = re.compile(r"(\d+(?:[.,]\d+)?)\s*(km|m)\b\s*from", re.IGNORECASE)
+AREA_PATTERN = re.compile(r"^\s*[‎‏]?([^\n••]+?)[‬]?\s*[••]\s*[‎]?\d+(?:[.,]\d+)?\s*(?:km|m)\s+from",
+                          re.IGNORECASE | re.MULTILINE)
+HOTEL_OFFER_FIELDS = ["hotel_id", "name", "star_rating", "review_score", "nights", "base_price_usd",
+                      "taxes_and_fees_usd", "total_price_usd", "price_per_night_usd", "fits_budget"]
 
 def _parse_booked_units(label):
     """Returns (unit_count, evidence_text) from the unit configuration line, or (None, None) if it is not stated."""
@@ -1071,7 +1447,6 @@ def _parse_booked_units(label):
     segment = line.group(1).strip()
     counts = [int(n) for n in UNIT_COUNT_PATTERN.findall(segment)]
     return (sum(counts) if counts else 1), segment  # No number means a single unit ("Hotel room", "Entire studio")
-DISTANCE_PATTERN = re.compile(r"(\d+(?:[.,]\d+)?)\s*(km|m)\b\s*from", re.IGNORECASE)
 
 def _parse_distance_km(text):
     match = DISTANCE_PATTERN.search(text or "")
@@ -1080,13 +1455,21 @@ def _parse_distance_km(text):
     value = float(match.group(1).replace(",", "."))
     return round(value / 1000, 2) if match.group(2).lower() == "m" else round(value, 2)
 
-def resolve_booking_destination(city, deadline, cache_mode="default", evidence=None):
+def _parse_area(text):
+    """Booking labels sometimes state a district before the distance, e.g. 'Nasr City • 11.1 km from downtown'."""
+    match = AREA_PATTERN.search(text or "")
+    if not match:
+        return None
+    area = re.sub(r"[‎‏‪-‮]", "", match.group(1)).strip(" .")
+    return area or None
+
+def resolve_booking_destination(label, city, deadline, cache_mode="default", evidence=None):
     """Canonical city -> Booking.com destination ID (pinned, or looked up once and verified)."""
     if city.get("booking_dest_id"):
         return {"dest_id": city["booking_dest_id"], "search_type": "CITY", "source": "pinned_mapping"}
 
-    params = {"query": city["name"], "languagecode": "en-us"}  # Request English destination names
-    logger.info(f"[*] Resolving Booking.com destination ID for: {city['name']}...")
+    params = {"query": label, "languagecode": "en-us"}  # Request English destination names
+    logger.info(f"[*] Resolving Booking.com destination ID for: {label}...")
     payload, _ = provider_get("booking_destination", params, deadline, cache_ttl_hours=DESTINATION_ID_TTL_HOURS,
                               cache_mode=cache_mode, evidence=evidence)
     results = payload.get("data") if isinstance(payload, dict) else None
@@ -1095,61 +1478,71 @@ def resolve_booking_destination(city, deadline, cache_mode="default", evidence=N
     for item in results:
         if (isinstance(item, dict) and str(item.get("dest_type", "")).lower() == "city"
                 and str(item.get("cc1", "")).lower() == city["country_code"]
-                and _normalize_city_text(item.get("name") or item.get("city_name")) == city["name"].lower()
+                and _normalize_city_text(item.get("name") or item.get("city_name")) == label.lower()
                 and item.get("dest_id")):
             logger.info(f"[+] Verified destination ID: {item['dest_id']} ({item.get('label')})")
-            return {"dest_id": str(item["dest_id"]), "search_type": "CITY", "source": "verified_lookup",
-                    "label": item.get("label")}
-    raise TravelMateError("unsupported_search", f"Booking.com did not return a verified city match for {city['name']}.",
+            return {"dest_id": str(item["dest_id"]), "search_type": "CITY", "source": "verified_lookup"}
+    raise TravelMateError("unsupported_search", f"Booking.com did not return a verified city match for {label}.",
                           {"reason": "destination_not_verified"})
 
 def fetch_hotel_offers(dest_id, search_type, trip, deadline, cache_mode="default", evidence=None):
-    adapter = trip["adapter"]
     params = {
         "dest_id": dest_id,
         "search_type": search_type,
-        "arrival_date": trip["check_in_date"],
-        "departure_date": trip["check_out_date"],
+        "arrival_date": trip["start_date"],
+        "departure_date": trip["return_date"],
         "adults": str(trip["adults"]),
-        "room_qty": str(adapter["rooms"]),
+        "room_qty": str(trip["adapter"]["rooms"]),
         "page_number": "1",
         "units": "metric",
         "temperature_unit": "c",
         "languagecode": "en-us",  # Request English hotel names and labels
         "currency_code": "USD"
     }
-    logger.info(f"[*] Fetching hotels {trip['check_in_date']} -> {trip['check_out_date']} "
-                f"({trip['adults']} adult(s), {adapter['rooms']} room(s))...")
+    logger.info(f"[*] Fetching hotels {trip['start_date']} -> {trip['return_date']} "
+                f"({trip['adults']} adult(s), {trip['adapter']['rooms']} room(s))...")
     return provider_get("booking_hotels", params, deadline, cache_mode=cache_mode, evidence=evidence)
 
 def normalize_hotel_offers(payload, trip, city, fx, provenance):
     """
-    Returns (eligible_offers, coverage). A hotel is eligible only if its dates, adult count (and room count when
-    stated) and location match the request. Final price = grossPrice + excludedPrice; unknown taxes stay "unknown".
+    Returns (hotel_offers, public_offers, candidates, provenance_entries, coverage).
+      hotel_offers  -> exact BE-04 HotelOffer fields (hotel_id is an int; offer ID = str(hotel_id))
+      public_offers -> v0.4 public hotel schema (docs/contracts/api-v0.4.schema.json)
+      candidates    -> BE-04 OfferCandidate {id, base_usd, additional_fees_usd, included_in_base}
+    A hotel is eligible only if its dates, adult count (and unit count when stated) and location match the request.
+    Final price = grossPrice + excludedPrice; missing or unconvertible taxes stay unknown (never 0).
     """
     section = payload.get("data") if isinstance(payload, dict) else None
     hotel_list = section.get("hotels") if isinstance(section, dict) else None
     if not isinstance(hotel_list, list):
         raise TravelMateError("invalid_response", details={"reason": "missing_hotels_list"})
 
-    adapter = trip["adapter"]
+    rooms = trip["adapter"]["rooms"]
     excluded = {"date_mismatch": 0, "occupancy_mismatch": 0, "occupancy_unverified": 0, "destination_mismatch": 0,
-                "destination_unverified": 0, "invalid_price": 0, "unconvertible_currency": 0, "malformed": 0}
-    offers = []
+                "destination_unverified": 0, "invalid_price": 0, "unconvertible_currency": 0, "malformed": 0,
+                "duplicate": 0}
+    hotel_offers, public_offers, candidates, provenance_entries, seen_ids = [], [], [], [], set()
 
     for h in hotel_list:
         prop = h.get("property") if isinstance(h, dict) else None
         if not isinstance(prop, dict):
             excluded["malformed"] += 1
             continue
+        raw_id = h.get("hotel_id") or prop.get("id")
+        if isinstance(raw_id, bool) or not isinstance(raw_id, int) or raw_id <= 0 or not prop.get("name"):
+            excluded["malformed"] += 1
+            continue
+        if raw_id in seen_ids:
+            excluded["duplicate"] += 1
+            continue
         label = str(h.get("accessibilityLabel") or "")
 
         # 1. Dates must match exactly
-        if prop.get("checkinDate") != trip["check_in_date"] or prop.get("checkoutDate") != trip["check_out_date"]:
+        if prop.get("checkinDate") != trip["start_date"] or prop.get("checkoutDate") != trip["return_date"]:
             excluded["date_mismatch"] += 1
             continue
 
-        # 2. Adult occupancy must be stated and match; room count must match when the provider states it
+        # 2. Adult occupancy must be stated and match; unit count must match when the provider states it
         occupancy = OCCUPANCY_PATTERN.search(label)
         if not occupancy:
             excluded["occupancy_unverified"] += 1
@@ -1161,10 +1554,9 @@ def normalize_hotel_offers(payload, trip, city, fx, provenance):
             excluded["occupancy_mismatch"] += 1
             continue
         booked_units, units_evidence = _parse_booked_units(label)
-        if booked_units is not None and booked_units != adapter["rooms"]:
+        if booked_units is not None and booked_units != rooms:
             excluded["occupancy_mismatch"] += 1
             continue
-        rooms_verified = True if booked_units is not None else None  # None = provider did not state the unit count
 
         # 3. Location must be inside the canonical city coverage radius (or the city name must match)
         latitude, longitude = prop.get("latitude"), prop.get("longitude")
@@ -1172,11 +1564,10 @@ def normalize_hotel_offers(payload, trip, city, fx, provenance):
             excluded["destination_mismatch"] += 1
             continue
         if isinstance(latitude, (int, float)) and isinstance(longitude, (int, float)):
-            distance_to_city = haversine_km(latitude, longitude, *city["center"])
-            if distance_to_city > HOTEL_COVERAGE_RADIUS_KM:
+            if haversine_km(latitude, longitude, *city["center"]) > HOTEL_COVERAGE_RADIUS_KM:
                 excluded["destination_mismatch"] += 1
                 continue
-        elif _normalize_city_text(prop.get("wishlistName")) != city["name"].lower():
+        elif _normalize_city_text(prop.get("wishlistName")) != trip["destination_city"].lower():
             excluded["destination_unverified"] += 1
             continue
 
@@ -1187,13 +1578,13 @@ def normalize_hotel_offers(payload, trip, city, fx, provenance):
         if base_price is None:
             excluded["invalid_price"] += 1
             continue
-        base_price_usd, base_conversion = convert_to_usd(base_price, gross.get("currency"), fx)
-        if base_price_usd is None:
+        base_usd, base_conversion = convert_to_usd(base_price, gross.get("currency"), fx)
+        if base_usd is None:
             excluded["unconvertible_currency"] += 1
             continue
 
         excluded_charges = breakdown.get("excludedPrice")
-        taxes_usd, taxes_status, taxes_conversion = None, "unknown", None
+        taxes_usd, taxes_conversion = None, None
         if isinstance(excluded_charges, dict) and "value" in excluded_charges:
             taxes_value = valid_amount(excluded_charges.get("value"), allow_zero=True)
             if taxes_value is None:
@@ -1201,411 +1592,420 @@ def normalize_hotel_offers(payload, trip, city, fx, provenance):
                 continue
             taxes_usd, taxes_conversion = convert_to_usd(
                 taxes_value, excluded_charges.get("currency") or gross.get("currency"), fx)
-            taxes_status = "known" if taxes_usd is not None else "unknown"
-
-        total_price_usd = round_money(base_price_usd + taxes_usd) if taxes_status == "known" else None
-        if prop.get("accuratePropertyClass") or prop.get("propertyClass"):
-            star_rating, star_source = prop.get("accuratePropertyClass") or prop.get("propertyClass"), "official_star_rating"
-        elif prop.get("qualityClass"):
-            star_rating, star_source = prop["qualityClass"], "booking_quality_rating"
+        # Fee status: included (0 extra), additional_known (> 0 extra) or unknown (missing / unconvertible)
+        if taxes_usd is None:
+            fee_status, included_in_base = "unknown", False
+        elif taxes_usd == 0:
+            fee_status, included_in_base = "included", True
         else:
-            star_rating, star_source = None, None
-        hotel_id = h.get("hotel_id") or prop.get("id")
-        photo_urls = prop.get("photoUrls") or []
+            fee_status, included_in_base = "additional_known", False
+        total_usd = round_money(base_usd + taxes_usd) if taxes_usd is not None else None
 
-        offers.append({
-            "offer_id": f"booking:{hotel_id}:{trip['check_in_date']}:{trip['check_out_date']}:{trip['adults']}a{adapter['rooms']}r",
-            "hotel_id": hotel_id,
-            "name": prop.get("name") or "Unknown Hotel",
+        star = prop.get("accuratePropertyClass") or prop.get("propertyClass") or prop.get("qualityClass")
+        star_rating = int(star) if isinstance(star, (int, float)) and not isinstance(star, bool) and star > 0 else None
+        # Booking reports reviewScore 0 for properties without reviews: that is "no rating", not a 0/10 rating
+        review = prop.get("reviewScore")
+        review_score = float(review) if isinstance(review, (int, float)) and not isinstance(review, bool) \
+            and 0 < review <= 10 and prop.get("reviewCount") != 0 else None
+        offer_id = str(raw_id)
+        retrieved_at = normalize_utc_timestamp(provenance["retrieved_at"]) or utc_now_iso()
+        seen_ids.add(raw_id)
+
+        hotel_offers.append({
+            "hotel_id": raw_id,
+            "name": prop["name"],
             "star_rating": star_rating,
-            "star_rating_source": star_source,
-            "review_score": prop.get("reviewScore") or None,
-            "review_word": prop.get("reviewScoreWord") or "",
-            "review_count": prop.get("reviewCount") or 0,
-            "distance_from_center_km": _parse_distance_km(label),
-            "check_in_date": prop.get("checkinDate"),
-            "check_out_date": prop.get("checkoutDate"),
+            "review_score": review_score,
             "nights": trip["nights"],
-            "adults": trip["adults"],
-            "rooms": adapter["rooms"],
-            "base_price_usd": base_price_usd,
+            "base_price_usd": base_usd,
             "taxes_and_fees_usd": taxes_usd,
-            "taxes_status": taxes_status,
-            "total_price_usd": total_price_usd,
-            "price_per_night_usd": round_money(total_price_usd / trip["nights"]) if total_price_usd is not None else None,
-            "price_scope": "whole stay, all adults, all rooms",
+            "total_price_usd": total_usd,
+            "price_per_night_usd": round_money(total_usd / trip["nights"]) if total_usd is not None else None,
+            "fits_budget": None  # Budget fit is decided by BE-04, not by the adapter
+        })
+        public_offers.append({
+            "id": offer_id,
+            "source": HOTEL_SOURCE_LABEL,
+            "retrieved_at": retrieved_at,
+            "price": {"amount_usd": base_usd, "kind": "provider", "coverage": "entire_trip_all_travelers"},
+            "taxes": {"status": fee_status,
+                      "additional_amount_usd": 0.0 if fee_status == "included" else
+                      (taxes_usd if fee_status == "additional_known" else None)},
+            "name": prop["name"],
+            "area": _parse_area(label),
+            "check_in": prop["checkinDate"],
+            "check_out": prop["checkoutDate"],
+            "occupancy_adults": trip["adults"],
+            "room_qty": booked_units
+        })
+        candidates.append({"id": offer_id, "base_usd": base_usd,
+                           "additional_fees_usd": taxes_usd if fee_status == "additional_known" else None,
+                           "included_in_base": included_in_base})
+        provenance_entries.append({
+            "offer_id": offer_id,
+            "category": "hotels",
+            "source": HOTEL_SOURCE_LABEL,
+            "provider_offer_id": raw_id,
+            "retrieved_at": retrieved_at,
+            "cache_status": provenance["cache_status"],
+            "original_currency": str(gross.get("currency") or "").upper(),
+            "original_amount": base_price,
+            "quote_timestamp": None,
+            "conversion": base_conversion,
+            "taxes_conversion": taxes_conversion,
+            "provider_query": provenance["query_parameters"],
+            "coverage_evidence": (
+                f"Provider label '{occupancy.group(0)}'"
+                + (f" and '{units_evidence}'" if units_evidence else " (unit count not stated)")
+                + f"; check-in {prop['checkinDate']} / check-out {prop['checkoutDate']}; "
+                + {"included": "excludedPrice is 0, so the base price includes all known fees.",
+                   "additional_known": "excludedPrice reported as additional taxes and fees, counted once.",
+                   "unknown": "excludedPrice missing or not convertible; fees unknown."}[fee_status]),
+            "fees": {"status": fee_status, "included_in_base": included_in_base,
+                     "additional_fees_usd": taxes_usd if fee_status == "additional_known" else None},
             "price_authority": "live_provider_quote",
-            "photo_url": photo_urls[0] if photo_urls else None,
-            "latitude": latitude,
-            "longitude": longitude,
-            "eligibility": {
-                "eligible": True,
-                "reason": None,
-                "checks": {"dates_match": True, "adults_verified": True, "rooms_verified": rooms_verified,
-                           "destination_verified": True}
-            },
-            "provenance": {
-                "provider": provenance["provider"],
-                "integration_type": provenance["integration_type"],
-                "endpoint": provenance["endpoint"],
-                "retrieved_at": provenance["retrieved_at"],
-                "cache_status": provenance["cache_status"],
-                "provider_offer_id": hotel_id,
-                "block_ids": prop.get("blockIds") or [],
-                "occupancy_evidence": occupancy.group(0),
-                "rooms_evidence": units_evidence,
-                "currency_conversion": {"base": base_conversion, "taxes": taxes_conversion}
-            }
+            "distance_from_center_km": _parse_distance_km(label),
+            "airport_timezones": None
         })
 
-    coverage = {"hotels_returned": len(hotel_list), "eligible": len(offers), "excluded": excluded,
+    coverage = {"hotels_returned": len(hotel_list), "eligible": len(hotel_offers), "excluded": excluded,
                 "page_number": 1, "coverage_radius_km": HOTEL_COVERAGE_RADIUS_KM}
-    return offers, coverage
+    return hotel_offers, public_offers, candidates, provenance_entries, coverage
 
 # ==========================================
-# 12. LIVE TRAVEL ADAPTER BOUNDARY (search_travel)
+# 13. LIVE TRAVEL ADAPTER BOUNDARY (search_travel)
 # ==========================================
-def _category_result(category, status, reason=None, error=None, **extra):
-    return {"category": category, "status": status, "reason": reason, "error": error, **extra}
+def _search_flights(trip, deadline, fx, cache_mode, evidence, warnings, provenance_out):
+    flights = {"status": "unavailable", "reason_code": "not_configured", "price_authority": None,
+               "selected_outbound_flight": None, "selected_return_flight": None,
+               "offers": {"outbound": [], "return": []}, "alternative_date_offers": {"outbound": [], "return": []},
+               "round_trip_offers": [], "selected_offer": None, "schedule": None, "coverage": {}}
+    if FLIGHT_MODE == "live":
+        return _search_live_flights(trip, deadline, cache_mode, evidence, warnings, provenance_out, flights)
+    if FLIGHT_MODE != "indicative":
+        warnings.append(build_warning("FLIGHTS_UNAVAILABLE", "Flight prices are not configured for live search; "
+                                      "the flight provider cannot return round-trip prices for all travelers."))
+        return flights, []
 
-def _search_flights(trip, deadline, fx, cache_mode, evidence, warnings):
-    if not FLIGHTS_ENABLED:
-        return _category_result("flights", "unavailable", "Optional category not enabled in this deployment.",
-                                build_error("unavailable", "Flight search is not enabled.", category="flights"),
-                                outbound_flights=[], return_flights=[],
-                                alternative_date_flights={"outbound": [], "return": []})
-
+    flights["price_authority"] = "indicative"
     adapter = trip["adapter"]
-    directions = [("outbound", trip["origin"], adapter["destination_airport"], trip["check_in_date"])]
+    directions = [("outbound", adapter["origin_airport"], adapter["destination_airport"], trip["start_date"])]
     if trip["trip_type"] == "round_trip":
-        directions.append(("return", adapter["destination_airport"], trip["origin"], trip["check_out_date"]))
-
-    result = _category_result("flights", "available", price_authority="indicative",
-                              capabilities=FLIGHT_PROVIDER_CAPABILITIES, outbound_flights=[], return_flights=[],
-                              alternative_date_flights={"outbound": [], "return": []}, coverage={}, provenance={},
-                              limitations=[
-                                  "Cached quotes: the provider does not perform a live search for the requested date.",
-                                  "Group totals multiply a single-adult quote by the adult count (unverified for adults > 1).",
-                                  "No departure/arrival times are provided; only local departure dates.",
-                                  "Adopting an alternative date requires a NEW request with fresh hotel search and calculations."
-                              ])
+        directions.append(("return", adapter["destination_airport"], adapter["origin_airport"], trip["return_date"]))
     try:
         for direction, origin, destination, travel_date in directions:
             payload, provenance = fetch_flight_quotes(origin, destination, travel_date, trip["adults"], deadline,
                                                       f"{direction.title()} Flight", cache_mode, evidence)
-            eligible, alternatives, coverage = normalize_flight_quotes(
+            exact, alternatives, entries, coverage = normalize_flight_quotes(
                 payload, direction, origin, destination, travel_date, trip["adults"], fx, provenance)
-            result[f"{direction}_flights"] = eligible
-            result["alternative_date_flights"][direction] = alternatives
-            result["coverage"][direction] = coverage
-            result["provenance"][direction] = provenance
+            flights["offers"][direction] = exact
+            flights["alternative_date_offers"][direction] = alternatives
+            flights["coverage"][direction] = coverage
+            provenance_out.extend(entries)
             if coverage["excluded"]["unconvertible_currency"]:
-                warnings.append(f"{coverage['excluded']['unconvertible_currency']} {direction} flight quote(s) were "
-                                f"excluded because {coverage['returned_currency']} could not be converted to USD.")
+                warnings.append(build_warning("CURRENCY_UNAVAILABLE",
+                                              f"{coverage['excluded']['unconvertible_currency']} {direction} flight quote(s) "
+                                              f"in {coverage['returned_currency']} could not be converted to USD."))
     except TravelMateError as error:
-        result.update(status="error", reason=error.details.get("reason"), error=error.to_envelope("flights"))
-        return result
+        flights["reason_code"] = error.code
+        warnings.append(build_warning("TRAVEL_RATE_LIMITED" if error.code == "rate_limited" else
+                                      "TRAVEL_TIMEOUT" if error.code == "timeout" else "FLIGHTS_UNAVAILABLE",
+                                      f"Flight search failed ({error.code})."))
+        return flights, []
 
-    missing = [d for d, *_ in directions if not result[f"{d}_flights"]]
-    if missing:
-        result.update(status="no_results", reason="no_exact_date_quote",
-                      error=build_error("no_results", f"No {' / '.join(missing)} flight quote exists for the exact "
-                                        "requested date. Alternative dates are listed separately and are not eligible.",
-                                        {"directions": missing}, "flights"))
-    return result
+    outbound, returning = flights["offers"]["outbound"], flights["offers"]["return"]
+    one_way = trip["trip_type"] == "one_way"
+    if not outbound or (not returning and not one_way):
+        flights["reason_code"] = "no_results"
+        alternatives = sum(len(v) for v in flights["alternative_date_offers"].values())
+        warnings.append(build_warning("FLIGHTS_UNAVAILABLE", "No flight quote exists for the exact requested dates. "
+                                      f"{alternatives} alternative-date quote(s) are listed separately; adopting a "
+                                      "different date requires a new request and a fresh hotel search."))
+        return flights, []
 
-def _search_hotels(trip, deadline, fx, cache_mode, evidence, warnings):
-    city = SUPPORTED_CITIES[trip["adapter"]["city_id"]]
-    result = _category_result("hotels", "available", price_authority="live_provider_quote", offers=[],
-                              coverage={}, provenance={}, destination_mapping=None)
+    flights.update(status="available", reason_code=None,
+                   selected_outbound_flight=outbound[0], selected_return_flight=None if one_way else returning[0])
+    warnings.append(build_warning("FLIGHT_PRICES_INDICATIVE", "Flight prices are cached single-adult quotes multiplied "
+                                  "by the number of travelers; they are indicative, not bookable totals."))
+    candidates = [{"id": flight_leg_id(o), "base_usd": o["total_price_usd"], "additional_fees_usd": None,
+                   "included_in_base": True} for o in outbound] if one_way else         [{"id": round_trip_offer_id(o, r), "base_usd": round_money(o["total_price_usd"] + r["total_price_usd"]),
+          "additional_fees_usd": None, "included_in_base": True} for o in outbound for r in returning]
+    return flights, sorted(candidates, key=lambda c: (c["base_usd"], c["id"]))
+
+def _search_live_flights(trip, deadline, cache_mode, evidence, warnings, provenance_out, flights):
+    """Google Flights live mode: real per-leg one-way quotes, v0.4 public offers and BE-04 candidates."""
+    flights["price_authority"] = "live_provider_quote"
     try:
-        destination = resolve_booking_destination(city, deadline, cache_mode, evidence)
-        result["destination_mapping"] = destination
+        outbound, returning, offers, candidates, entries, schedules, coverage = search_google_flights(
+            trip, deadline, cache_mode, evidence)
+    except TravelMateError as error:
+        flights["reason_code"] = error.code
+        warnings.append(build_warning("TRAVEL_RATE_LIMITED" if error.code == "rate_limited" else
+                                      "TRAVEL_TIMEOUT" if error.code == "timeout" else "FLIGHTS_UNAVAILABLE",
+                                      f"Flight search failed ({error.code})."))
+        return flights, []
+    flights["coverage"] = coverage
+    flights["offers"] = {"outbound": outbound, "return": returning}
+    if not offers:
+        flights["reason_code"] = "no_results"
+        warnings.append(build_warning("FLIGHTS_UNAVAILABLE", "No flight matched the requested dates, route and "
+                                      "travelers for every requested direction."))
+        return flights, []
+    provenance_out.extend(entries)
+    # Each leg carries its own REAL provider total (one-way searches), so BE-04 prices the legs directly
+    selected_outbound = outbound[0]
+    selected_return = returning[0] if trip["trip_type"] == "round_trip" else None
+    selected_id = round_trip_offer_id(selected_outbound, selected_return) if selected_return \
+        else flight_leg_id(selected_outbound)
+    flights.update(status="available", reason_code=None, round_trip_offers=offers,
+                   selected_outbound_flight=selected_outbound, selected_return_flight=selected_return,
+                   selected_offer=next(o for o in offers if o["id"] == selected_id),
+                   schedule={"outbound": schedules[flight_leg_id(selected_outbound)],
+                             "return": schedules[flight_leg_id(selected_return)] if selected_return else None})
+    return flights, candidates
+
+def _search_hotels(trip, deadline, fx, cache_mode, evidence, warnings, provenance_out):
+    hotels = {"status": "unavailable", "reason_code": None, "offers": [], "public_offers": [], "coverage": {},
+              "destination_mapping": None}
+    label = trip["destination_city"]
+    try:
+        destination = resolve_booking_destination(label, SUPPORTED_CITIES[label], deadline, cache_mode, evidence)
+        hotels["destination_mapping"] = destination
         payload, provenance = fetch_hotel_offers(destination["dest_id"], destination["search_type"], trip, deadline,
                                                  cache_mode, evidence)
-        offers, coverage = normalize_hotel_offers(payload, trip, city, fx, provenance)
-        result.update(offers=offers, coverage=coverage, provenance=provenance)
+        offers, public_offers, candidates, entries, coverage = normalize_hotel_offers(
+            payload, trip, SUPPORTED_CITIES[label], fx, provenance)
     except TravelMateError as error:
-        result.update(status="error", reason=error.details.get("reason"), error=error.to_envelope("hotels"))
-        return result
+        hotels["reason_code"] = error.code
+        warnings.append(build_warning("TRAVEL_RATE_LIMITED" if error.code == "rate_limited" else
+                                      "TRAVEL_TIMEOUT" if error.code == "timeout" else "HOTELS_UNAVAILABLE",
+                                      f"Hotel search failed ({error.code})."))
+        return hotels, []
 
-    unknown_taxes = sum(1 for o in offers if o["taxes_status"] == "unknown")
-    if unknown_taxes:
-        warnings.append(f"{unknown_taxes} hotel(s) have unknown taxes/fees; their total price is reported as unknown.")
+    hotels.update(offers=offers, public_offers=public_offers, coverage=coverage)
+    provenance_out.extend(entries)
     if coverage["excluded"]["unconvertible_currency"]:
-        warnings.append(f"{coverage['excluded']['unconvertible_currency']} hotel offer(s) were excluded because "
-                        "their currency could not be converted to USD.")
+        warnings.append(build_warning("CURRENCY_UNAVAILABLE", f"{coverage['excluded']['unconvertible_currency']} hotel "
+                                      "offer(s) were excluded because their currency could not be converted to USD."))
+    unknown_fees = sum(1 for o in public_offers if o["taxes"]["status"] == "unknown")
+    if unknown_fees:
+        warnings.append(build_warning("TAXES_UNKNOWN", f"{unknown_fees} hotel offer(s) have unknown taxes and fees."))
     if not offers:
-        result.update(status="no_results", reason="no_verified_offers",
-                      error=build_error("no_results", details={"excluded": coverage["excluded"]}, category="hotels"))
-    return result
+        hotels["reason_code"] = "no_results"
+        warnings.append(build_warning("HOTELS_UNAVAILABLE", "No hotel matched the requested dates, travelers and city."))
+        return hotels, []
+    hotels.update(status="available", reason_code=None)
+    return hotels, candidates
 
-def _data_mode(flights_provenance, hotels_provenance):
-    """Summarizes where the data came from: live, includes_cached or stale_cache_fallback."""
-    statuses = [p.get("cache_status") for p in (flights_provenance or {}).values() if isinstance(p, dict)]
-    if isinstance(hotels_provenance, dict) and hotels_provenance.get("cache_status"):
-        statuses.append(hotels_provenance["cache_status"])
-    if "stale_fallback" in statuses:
-        return "stale_cache_fallback"
-    if "hit" in statuses:
-        return "includes_cached"
-    return "live"
+def _data_mode(provenance_entries):
+    statuses = set()
+    for entry in provenance_entries:
+        status = entry.get("cache_status")
+        statuses.update(status.values() if isinstance(status, dict) else [status])  # Live flights: per-call statuses
+    return "includes_cached" if "hit" in statuses else "live"
 
-def _search_travel_validated(trip, deadline, request_id, cache_mode="default", evidence=None):
-    warnings = []
+def _search_travel_validated(trip, deadline, request_id, categories=("flights", "hotels"), cache_mode="default",
+                             evidence=None):
     fx = LazyExchangeRates(deadline, cache_mode, evidence)
-    flights = _search_flights(trip, deadline, fx, cache_mode, evidence, warnings)
-    hotels = _search_hotels(trip, deadline, fx, cache_mode, evidence, warnings)
-    fx_policy = fx.policy
-    if fx_policy and not fx_policy.get("available"):
-        warnings.append(f"Exchange rates unavailable ({fx_policy.get('reason')}); non-USD quotes were excluded.")
-
-    mandatory = hotels if MANDATORY_CATEGORY == "hotels" else flights
+    flight_warnings, flight_provenance, hotel_warnings, hotel_provenance = [], [], [], []
+    # Flights and hotels are independent: they run in parallel so a slow provider never consumes the other's time
+    with ThreadPoolExecutor(max_workers=2, thread_name_prefix="travel") as pool:
+        flight_future = pool.submit(_search_flights, trip, deadline, fx, cache_mode, evidence, flight_warnings,
+                                    flight_provenance) if "flights" in categories else None
+        hotel_future = pool.submit(_search_hotels, trip, deadline, fx, cache_mode, evidence, hotel_warnings,
+                                   hotel_provenance) if "hotels" in categories else None
+        flights, flight_candidates = flight_future.result() if flight_future else (None, [])
+        hotels, hotel_candidates = hotel_future.result() if hotel_future else (None, [])
+    warnings, provenance = flight_warnings + hotel_warnings, flight_provenance + hotel_provenance
+    if fx.policy and not fx.policy.get("available"):
+        warnings.append(build_warning("CURRENCY_UNAVAILABLE", f"Exchange rates unavailable ({fx.policy.get('reason')}); "
+                                      "non-USD quotes were excluded."))
     return {
         "request_id": request_id,
-        "status": "success" if mandatory["status"] == "available" else "error",
-        "error": None if mandatory["status"] == "available" else mandatory["error"],
-        "mandatory_category": MANDATORY_CATEGORY,
-        "search_parameters": public_search_parameters(trip),
+        "status": "ok",
+        "trip_request": public_trip_request(trip),
         "flights": flights,
         "hotels": hotels,
-        "exchange_rates": None if fx_policy is None else {k: v for k, v in fx_policy.items() if k != "rates"},
-        "data_mode": _data_mode(flights.get("provenance"), hotels.get("provenance")),
-        "warnings": warnings
+        # Exact BE-04 ZiyadReportSlice travel fields (ai_recommendation_report is added by the engine / BE-03)
+        "report_slice": {
+            "flights_data": {"selected_outbound_flight": (flights or {}).get("selected_outbound_flight"),
+                             "selected_return_flight": (flights or {}).get("selected_return_flight")},
+            "hotels_data": (hotels or {}).get("offers", [])
+        },
+        # BE-04 OfferCandidate lists (string IDs + included_in_base) for fee-aware selection by BE-03
+        "flight_candidates": flight_candidates,
+        "hotel_candidates": hotel_candidates,
+        "warnings": warnings,
+        "provenance": provenance,
+        "data_mode": _data_mode(provenance)
     }
 
-def search_travel(trip_request, deadline_at=None, request_id=None, cache_mode="default", evidence=None):
+def search_travel(trip_request, categories=("flights", "hotels"), deadline_at=None, request_id=None, rooms=None,
+                  cache_mode="default", evidence=None):
     """
-    Live travel adapter boundary. Returns BOTH category objects ("flights" and "hotels"), each with
-    status available | no_results | unavailable | error, normalized offers, coverage and sanitized provenance.
-    Never raises: invalid input and unexpected errors are returned in the error envelope.
+    Live travel adapter boundary (adapter-contracts.md). Returns both category objects with
+    status available | unavailable and reason_code, BE-04-ready report_slice and candidates, warnings and provenance.
+    Never raises: invalid input, unsupported cities and unexpected errors are returned as {"status": "error", ...}.
     """
     request_id = request_id or new_request_id()
     try:
-        trip = validate_request(trip_request)
+        trip = validate_request(trip_request, require_budget=False, rooms=rooms)
         deadline = resolve_deadline(deadline_at)
-        return _search_travel_validated(trip, deadline, request_id, cache_mode, evidence)
+        return _search_travel_validated(trip, deadline, request_id, tuple(categories), cache_mode, evidence)
     except TravelMateError as error:
-        return {"request_id": request_id, "status": "error", "error": error.to_envelope("request"),
-                "flights": None, "hotels": None, "warnings": []}
+        return {"request_id": request_id, "status": "error", "error": error.to_envelope(),
+                "diagnostics": sanitize(error.details)}
     except Exception:
         logger.exception(f"[-] Unexpected search_travel error (request_id={request_id}).")
-        return {"request_id": request_id, "status": "error", "error": build_error("internal_error", category="request"),
-                "flights": None, "hotels": None, "warnings": []}
+        return {"request_id": request_id, "status": "error", "error": build_error("internal_error"), "diagnostics": {}}
 
-# ==========================================
-# 13. HOTEL TIERS & FLIGHT-PLUS-HOTEL SUBTOTALS (PROTOTYPE)
-# ==========================================
-# Adel owns the authoritative trip budget under BE-04 (#19). These values are ONLY a flight-plus-hotel
-# subtotal and the balance remaining after those two categories - not the complete trip cost.
-HOTEL_TIERS = [
-    {"code": "D", "name": "Class D - Economy (Best Value)"},
-    {"code": "C", "name": "Class C - Comfort"},
-    {"code": "B", "name": "Class B - Premium"},
-    {"code": "A", "name": "Class A - Luxury"}
-]
-SUBTOTAL_SCOPE_NOTE = ("Flight-plus-hotel subtotal only. Excludes food, activities, local transport and every other "
-                       "expense. The authoritative trip budget is calculated by the backend (BE-04 #19).")
-
-def assign_hotel_tiers(hotels):
+def select_default_hotel(hotel_offers, candidates):
     """
-    Tiers are based on PRICE ORDERING only: hotels are sorted by total price (base price when taxes are unknown)
-    and split into 4 equal bands: Class D (cheapest) -> C -> B -> A (most expensive).
+    Prototype selection mirroring BE-04 select_offer: prefer known totals (included or known fees), lowest
+    base + fees, tie-break by ID; fall back to the lowest base only if every fee is unknown. BE-03 owns the final choice.
     """
-    hotels.sort(key=lambda h: h["total_price_usd"] if h["total_price_usd"] is not None else h["base_price_usd"])
-    count = len(hotels)
-    for index, hotel in enumerate(hotels):
-        band = min(index * len(HOTEL_TIERS) // count, len(HOTEL_TIERS) - 1)
-        hotel.update(tier_code=HOTEL_TIERS[band]["code"], tier_name=HOTEL_TIERS[band]["name"], tier_basis="price_ordering")
-    return hotels
-
-def pick_tier_representative(tier_code, candidates):
-    """Chooses the best hotel inside a tier according to what that tier is meant to offer."""
-    if tier_code == "D":
-        # Best value = highest guest rating per dollar
-        return max(candidates, key=lambda h: (h["review_score"] or 0) / max(h["total_price_usd"], 1))
-    if tier_code == "A":
-        # Luxury = highest star rating, then highest guest rating
-        return max(candidates, key=lambda h: (h["star_rating"] or 0, h["review_score"] or 0))
-    # Comfort / Premium = highest guest rating, then most reviews
-    return max(candidates, key=lambda h: (h["review_score"] or 0, h["review_count"] or 0))
-
-def build_flight_hotel_subtotals(hotels, outbound_flight, return_flight, trip):
-    """
-    Returns (budget_summary, tiers_within_limit, tiers_excluded).
-    When no eligible exact-date flight exists, the flight part is null and only the hotel is checked against the budget.
-    """
-    budget = trip["budget_usd"]
-    flights_known = outbound_flight is not None and (trip["trip_type"] == "one_way" or return_flight is not None)
-    flight_subtotal = None
-    if flights_known:
-        flight_subtotal = round_money(outbound_flight["group_total_usd"] +
-                                      (return_flight["group_total_usd"] if trip["trip_type"] == "round_trip" else 0))
-    hotel_allowance = round_money(budget - flight_subtotal) if flights_known else budget
-    basis = "flight_plus_hotel" if flights_known else "hotel_only_flight_price_unavailable"
-
-    for hotel in hotels:
-        hotel["fits_budget"] = (hotel["total_price_usd"] <= hotel_allowance) if hotel["total_price_usd"] is not None else None
-
-    tiers_within_limit, tiers_excluded = [], []
-    for tier in HOTEL_TIERS:
-        tier_hotels = [h for h in hotels if h.get("tier_code") == tier["code"]]
-        known = [h for h in tier_hotels if h["total_price_usd"] is not None]
-        affordable = [h for h in known if h["fits_budget"]]
-        if not tier_hotels or not known:
-            tiers_excluded.append({"tier_code": tier["code"], "tier_name": tier["name"],
-                                   "reason": "no_hotels_in_tier" if not tier_hotels else "only_unknown_tax_hotels"})
-            continue
-        if not affordable:
-            cheapest = min(known, key=lambda h: h["total_price_usd"])
-            cheapest_subtotal = round_money((flight_subtotal or 0) + cheapest["total_price_usd"])
-            tiers_excluded.append({"tier_code": tier["code"], "tier_name": tier["name"], "reason": "exceeds_budget",
-                                   "cheapest_subtotal_usd": cheapest_subtotal,
-                                   "over_budget_by_usd": round_money(cheapest_subtotal - budget)})
-            continue
-
-        chosen = pick_tier_representative(tier["code"], affordable)
-        subtotal = round_money(flight_subtotal + chosen["total_price_usd"]) if flights_known else None
-        tiers_within_limit.append({
-            "tier_code": tier["code"],
-            "tier_name": tier["name"],
-            "tier_basis": "price_ordering",
-            "hotel_offer_id": chosen["offer_id"],
-            "hotel_id": chosen["hotel_id"],
-            "hotel_name": chosen["name"],
-            "star_rating": chosen["star_rating"],
-            "review_score": chosen["review_score"],
-            "distance_from_center_km": chosen["distance_from_center_km"],
-            "outbound_flight_offer_id": outbound_flight["offer_id"] if flights_known else None,
-            "return_flight_offer_id": return_flight["offer_id"] if flights_known and return_flight else None,
-            "flight_subtotal_usd": flight_subtotal,
-            "hotel_total_usd": chosen["total_price_usd"],
-            "flight_hotel_subtotal_usd": subtotal,
-            "budget_usd": budget,
-            "remaining_after_flight_hotel_usd": round_money(budget - subtotal) if flights_known else None,
-            "remaining_after_hotel_only_usd": None if flights_known else round_money(budget - chosen["total_price_usd"]),
-            "subtotal_basis": basis,
-            "subtotal_is_indicative": flights_known,  # Flight prices are indicative cached quotes
-            "affordable_hotels_in_tier": len(affordable)
-        })
-
-    budget_summary = {
-        "basis": basis,
-        "budget_usd": budget,
-        "flight_subtotal_usd": flight_subtotal,
-        "flight_price_authority": "indicative" if flights_known else "unavailable",
-        "hotel_price_authority": "live_provider_quote",
-        "scope_note": SUBTOTAL_SCOPE_NOTE,
-        "recalculation_note": "Changing the selected flight or hotel requires the backend to recalculate these subtotals."
-    }
-    return budget_summary, tiers_within_limit, tiers_excluded
-
-def select_default_offers(travel, tiers_within_limit, hotels):
-    """
-    Prototype default selection (backend orchestration owns the final choice):
-    cheapest eligible flight per direction + the within-budget tier hotel with the best guest rating.
-    """
-    flights = travel["flights"] or {}
-    hotel = None
-    if tiers_within_limit:
-        best_tier = max(tiers_within_limit, key=lambda t: (t["review_score"] or 0, -(t["hotel_total_usd"] or 0)))
-        hotel = next((h for h in hotels if h["offer_id"] == best_tier["hotel_offer_id"]), None)
-    return {
-        "outbound_flight": (flights.get("outbound_flights") or [None])[0],
-        "return_flight": (flights.get("return_flights") or [None])[0],
-        "hotel": hotel,
-        "selection_basis": "prototype_default (backend owns final selection)"
-    }
+    if not candidates:
+        return None, None
+    known = [c for c in candidates if c["included_in_base"] or c["additional_fees_usd"] is not None]
+    pool = known or candidates
+    chosen = min(pool, key=lambda c: (round_money(c["base_usd"] + (c["additional_fees_usd"] or 0)), c["id"]))
+    hotel = next(h for h in hotel_offers if str(h["hotel_id"]) == chosen["id"])
+    return hotel, chosen["id"]
 
 # ==========================================
 # 14. STRUCTURED AI ITINERARY ADAPTER (generate_itinerary)
 # ==========================================
-ALLOWED_TIMES_OF_DAY = {"morning", "afternoon", "evening", "night"}
+ALLOWED_ACTIVITY_KINDS = {"estimate", "unknown"}  # "provider" is never allowed for AI activities
+MEAL_PATTERN = re.compile(r"\b(breakfast|brunch|lunch|dinner|supper|meal|restaurant|street food|food tour|dining)\b",
+                          re.IGNORECASE)
 
 def _approved_policy_ids():
     return {p.strip() for p in os.getenv("TRAVELMATE_APPROVED_POLICY_IDS", "").split(",") if p.strip()}
 
 def validate_estimation_policy(policy):
-    """Returns the policy if it is well-formed AND its policy_id is in the reviewed list, else None."""
-    if not isinstance(policy, dict):
+    """
+    Contract shape {id, food, local_transport}: id is a reviewed policy identifier, food / local_transport are
+    methodology descriptions (or null). Returns the policy only if its id is in TRAVELMATE_APPROVED_POLICY_IDS.
+    """
+    if not isinstance(policy, dict) or not isinstance(policy.get("id"), str) or not policy["id"].strip():
         return None
-    policy_id = policy.get("policy_id")
-    if not isinstance(policy_id, str) or policy_id.strip() not in _approved_policy_ids():
+    if policy["id"].strip() not in _approved_policy_ids():
         return None
-    return policy
+    return {"id": policy["id"].strip(),
+            "food": policy.get("food") if isinstance(policy.get("food"), str) and policy["food"].strip() else None,
+            "local_transport": policy.get("local_transport")
+            if isinstance(policy.get("local_transport"), str) and policy["local_transport"].strip() else None}
 
-def compute_ancillary_estimates(trip, policy, itinerary):
-    """Deterministic ancillary estimates. Food / local transport need an approved policy; otherwise "unknown"."""
-    days = trip["nights"] + 1
-    adults = trip["adults"]
+def unknown_estimate(basis):
+    return {"amount_usd": None, "kind": "unknown", "basis": basis, "policy_id": None}
 
-    def policy_estimate(rate_key, label):
-        rate = valid_amount(policy.get(rate_key), allow_zero=True) if policy else None
-        if rate is None:
-            reason = "no_approved_estimation_policy" if not policy else f"policy_has_no_{rate_key}"
-            return {"status": "unknown", "amount_usd": None, "policy_id": policy.get("policy_id") if policy else None,
-                    "reason": reason}
-        return {"status": "estimate", "amount_usd": round_money(rate * adults * days), "policy_id": policy["policy_id"],
-                "basis": f"{rate} USD per person per day x {adults} adult(s) x {days} day(s) ({label})"}
+def _flight_offer_is_eligible(leg, trip, expected_date):
+    """A selected flight leg must be an exact-date leg whose date flag is consistent with its dates."""
+    if not isinstance(leg, dict):
+        return False
+    flight_date, requested = parse_iso_date(leg.get("flight_date")), parse_iso_date(leg.get("requested_date"))
+    return (flight_date is not None and leg.get("date_matches_request") is True and flight_date == requested
+            and leg.get("requested_date") == expected_date and leg.get("travelers") == trip["adults"])
 
-    activity_costs = [a["estimated_cost_usd_per_person"] for day in itinerary for a in day["activities"]
-                      if a["cost_status"] == "estimate"]
-    unknown_activities = sum(1 for day in itinerary for a in day["activities"] if a["cost_status"] == "unknown")
-    activities = {"status": "unknown", "amount_usd": None, "reason": "no_activity_cost_estimates"}
-    if activity_costs:
-        activities = {"status": "estimate", "amount_usd": round_money(sum(activity_costs) * adults),
-                      "basis": f"Sum of AI per-person activity estimates x {adults} adult(s)",
-                      "includes_unknown_items": unknown_activities > 0, "unknown_items": unknown_activities}
-
-    return {
-        "activities": activities,
-        "food": policy_estimate("food_usd_per_person_per_day", "food"),
-        "local_transport": policy_estimate("local_transport_usd_per_person_per_day", "local transport"),
-        "authority": "estimate_only (never part of authoritative totals)"
-    }
+def _round_trip_offer_is_eligible(offer, trip):
+    """A round-trip offer must depart on the requested LOCAL dates, cover all adults and carry a provider price."""
+    price = offer.get("price") or {}
+    return_ok = offer.get("return_departure_at") is None if trip["trip_type"] == "one_way" else         utc_to_local_date(offer.get("return_departure_at"), offer.get("arrival_airport_code")) == trip["return_date"]
+    return (utc_to_local_date(offer.get("outbound_departure_at"), offer.get("departure_airport_code")) == trip["start_date"]
+            and return_ok
+            and offer.get("adults") == trip["adults"] and price.get("kind") == "provider"
+            and price.get("coverage") == "entire_trip_all_travelers")
 
 def _eligible_selected_offers(trip, selected_offers, warnings):
-    """Drops any selected offer that is not an eligible, request-matched offer."""
+    """
+    Accepts {flight: {selected_outbound_flight, selected_return_flight} | null, hotel: HotelOffer | public offer | null}.
+    Ineligible offers (alternative dates, inconsistent flags, wrong nights) are dropped before the AI call.
+    """
     selected_offers = selected_offers if isinstance(selected_offers, dict) else {}
-    clean = {}
-    expected_dates = {"outbound_flight": trip["check_in_date"], "return_flight": trip["check_out_date"]}
-    for key in ["outbound_flight", "return_flight"]:
-        offer = selected_offers.get(key)
-        ok = (isinstance(offer, dict) and (offer.get("eligibility") or {}).get("eligible") is True
-              and offer.get("flight_date") == expected_dates[key])
-        if offer is not None and not ok:
-            warnings.append(f"Selected {key} was not an eligible request-matched offer and was not sent to the AI.")
-        clean[key] = offer if ok else None
+    flight = selected_offers.get("flight") if isinstance(selected_offers.get("flight"), dict) else None
+    outbound = (flight or {}).get("selected_outbound_flight")
+    returning = (flight or {}).get("selected_return_flight")
+    clean_flight = None
+    if flight is not None and "outbound_departure_at" in flight:  # v0.4 round-trip offer (live mode)
+        if _round_trip_offer_is_eligible(flight, trip):
+            clean_flight = flight
+        else:
+            warnings.append(build_warning("FLIGHT_DATE_MISMATCH_EXCLUDED", "Selected round-trip flight does not match "
+                                          "the requested local dates or travelers and was not sent to the AI."))
+    elif outbound is not None or returning is not None:
+        one_way = trip["trip_type"] == "one_way"
+        if (_flight_offer_is_eligible(outbound, trip, trip["start_date"])
+                and (returning is None if one_way else _flight_offer_is_eligible(returning, trip, trip["return_date"]))):
+            clean_flight = {"selected_outbound_flight": outbound, "selected_return_flight": returning,
+                            "schedule": flight.get("schedule")}
+        else:
+            warnings.append(build_warning("FLIGHT_DATE_MISMATCH_EXCLUDED", "Selected flights were not exact-date "
+                                          "request-matched offers and were not sent to the AI."))
     hotel = selected_offers.get("hotel")
-    hotel_ok = (isinstance(hotel, dict) and (hotel.get("eligibility") or {}).get("eligible") is True
-                and hotel.get("check_in_date") == trip["check_in_date"]
-                and hotel.get("check_out_date") == trip["check_out_date"] and hotel.get("adults") == trip["adults"])
-    if hotel is not None and not hotel_ok:
-        warnings.append("Selected hotel was not an eligible request-matched offer and was not sent to the AI.")
-    clean["hotel"] = hotel if hotel_ok else None
-    return clean
+    clean_hotel = None
+    if isinstance(hotel, dict):
+        nights_ok = hotel.get("nights") == trip["nights"] if "nights" in hotel else \
+            (hotel.get("check_in") == trip["start_date"] and hotel.get("check_out") == trip["return_date"])
+        if nights_ok:
+            clean_hotel = hotel
+        else:
+            warnings.append(build_warning("HOTEL_MISMATCH_EXCLUDED", "Selected hotel did not match the requested stay "
+                                          "and was not sent to the AI."))
+    return clean_flight, clean_hotel
 
-def build_ai_context(trip, offers, travel_availability, budget_summary):
-    def flight_view(f):
-        return None if f is None else {k: f.get(k) for k in [
+def build_ai_context(trip, flight, hotel, travel_availability):
+    def leg_view(leg):
+        return None if leg is None else {k: leg.get(k) for k in [
             "airline", "flight_date", "origin_airport", "destination_airport", "stops_label",
-            "price_per_adult_usd", "group_total_usd", "price_authority"]}
+            "price_per_person_usd", "total_price_usd"]}
 
-    hotel = offers.get("hotel")
+    hotel_view = None
+    if hotel is not None:
+        hotel_view = {k: hotel.get(k) for k in ["name", "star_rating", "review_score", "nights", "base_price_usd",
+                                                 "taxes_and_fees_usd", "total_price_usd"] if k in hotel}
+        if "price" in hotel:  # Public v0.4 hotel offer
+            hotel_view.update(name=hotel.get("name"), area=hotel.get("area"),
+                              base_price_usd=hotel["price"].get("amount_usd"), taxes=hotel.get("taxes"))
+    if flight is not None and "outbound_departure_at" in flight:  # Live round-trip offer
+        def local_time(utc_text, airport):
+            try:
+                moment = datetime.fromisoformat(utc_text.replace("Z", "+00:00")).astimezone(ZoneInfo(AIRPORT_TIMEZONES[airport]))
+                return moment.strftime("%Y-%m-%d %H:%M") + f" local ({airport})"
+            except (KeyError, ValueError, ZoneInfoNotFoundError):
+                return None
+        flights_view = {"airline": flight.get("airline"),
+                        "outbound_departure_local": local_time(flight["outbound_departure_at"], flight["departure_airport_code"]),
+                        "return_departure_local": local_time(flight["return_departure_at"], flight["arrival_airport_code"]),
+                        "round_trip_total_usd": (flight.get("price") or {}).get("amount_usd"),
+                        "price_note": "Live provider round-trip total for all travelers, taxes included."}
+    elif flight is not None:
+        schedule = flight.get("schedule") or {}
+        flights_view = {"outbound": leg_view(flight["selected_outbound_flight"]),
+                        "return": leg_view(flight["selected_return_flight"]),
+                        "outbound_departure_local": (schedule.get("outbound") or {}).get("departure_local"),
+                        "return_departure_local": (schedule.get("return") or {}).get("departure_local"),
+                        "price_note": "Live provider totals for all travelers, taxes included." if schedule
+                        else "Indicative cached quotes."}
+    else:
+        flights_view = None
     return {
-        "trip": public_search_parameters(trip),
-        "selected_outbound_flight": flight_view(offers.get("outbound_flight")),
-        "selected_return_flight": flight_view(offers.get("return_flight")) if trip["trip_type"] == "round_trip" else "not_applicable",
-        "selected_hotel": None if hotel is None else {k: hotel.get(k) for k in [
-            "name", "star_rating", "review_score", "distance_from_center_km", "check_in_date", "check_out_date",
-            "base_price_usd", "taxes_and_fees_usd", "taxes_status", "total_price_usd"]},
-        "travel_availability": travel_availability,
-        "flight_hotel_budget": budget_summary
+        "trip": public_trip_request(trip) | {"nights": trip["nights"]},
+        "selected_flights": flights_view,
+        "selected_hotel": hotel_view,
+        "travel_availability": travel_availability
     }
 
-def build_itinerary_messages(trip, context):
-    expected_dates = [(parse_iso_date(trip["check_in_date"]) + timedelta(days=i)).isoformat()
+def build_itinerary_messages(trip, context, policy):
+    expected_dates = [(parse_iso_date(trip["start_date"]) + timedelta(days=i)).isoformat()
                       for i in range(trip["nights"] + 1)]
+    if policy:
+        ancillary_rule = (f'8. Return "ancillary_estimates" with "food" and "local_transport" objects '
+                          f'{{"amount_usd": number, "basis": string}} for the WHOLE trip and ALL {trip["adults"]} '
+                          f'traveler(s), following this reviewed policy (id "{policy["id"]}"): '
+                          f'food: {policy["food"] or "not covered (return null)"}; '
+                          f'local_transport: {policy["local_transport"] or "not covered (return null)"}.')
+    else:
+        ancillary_rule = '8. Do NOT estimate food or local transport. Return "ancillary_estimates": null.'
     system_message = ("You are the TravelMate itinerary planner. You return ONLY one valid JSON object. "
                       "All prices in the context were calculated by the TravelMate backend and are authoritative.")
     user_message = f"""
@@ -1614,15 +2014,17 @@ TRIP CONTEXT (authoritative):
 
 RULES:
 1. "itinerary" must contain exactly {len(expected_dates)} day objects, one per date, in this exact order: {", ".join(expected_dates)}.
-2. day_type must be "arrival" for the first date, "departure" for the last date and "full_day" for every other date.
-3. Every "full_day" must have 1-4 activities. "arrival" and "departure" days may have 0-3 activities; if a day has 0 activities, "empty_day_reason" must explain why (for example travel time). Otherwise empty_day_reason is null.
-4. Each activity: {{"time_of_day": "morning|afternoon|evening|night", "title": string, "description": string (max 300 chars), "location": string, "cost_status": "estimate" or "unknown", "estimated_cost_usd_per_person": number or null}}. Use "unknown" with null whenever you are not confident about the cost.
-5. Never include flight or hotel prices inside activities. Never change, recalculate or invent any flight, hotel or budget number. If a flight or hotel is null or unavailable, do not assume its time, price or name.
-6. "price_explanation": 3-6 English sentences explaining the selected flight and hotel costs and the flight-plus-hotel budget using ONLY numbers that appear in TRIP CONTEXT, written exactly as given with a $ sign. Say clearly that flight prices are indicative and that the subtotal is not the complete trip cost. If a value is null, say it is unavailable.
-7. Write everything in English.
+2. Every day between the first and the last must have 1-4 activities. The first and last day may have 0 activities ONLY if "empty_day_reason" explains the travel reason; otherwise "empty_day_reason" is null.
+3. Each activity: {{"order": 1, "name": string, "area": string, "description": string (max 300 chars), "category": "sightseeing" | "culture" | "nature" | "shopping" | "leisure" | "meal" | "other", "cost": {{"amount_usd": number or null, "kind": "estimate" or "unknown"}}}}. "order" starts at 1 in every day and is contiguous. cost.kind must NEVER be "provider".
+4. cost.amount_usd is the estimated cost for ALL {trip["adults"]} traveler(s) together. "estimate" ALWAYS needs a number; if you have no number, use {{"amount_usd": null, "kind": "unknown"}}. Use 0 only for activities that are genuinely free.
+5. Meals belong to the food category, never to activities: do not create meal-only activities; if you include one, set "category": "meal" and cost {{"amount_usd": 0, "kind": "estimate"}}.
+6. Never include flight or hotel prices in activities. Never change, recalculate or invent any flight, hotel or budget number. If a flight or hotel is null or unavailable, plan the days anyway without assuming its time, price or name.
+7. "price_explanation": 2-5 English sentences describing the selected flight and hotel prices using ONLY numbers that appear in TRIP CONTEXT, written exactly as given with a $ sign. If travel prices are unavailable, say so. Do not compute totals or remaining budget.
+{ancillary_rule}
+9. Write everything in English.
 
 OUTPUT FORMAT (JSON only):
-{{"itinerary": [{{"date": "YYYY-MM-DD", "day_type": "arrival", "activities": [], "empty_day_reason": "..."}}], "price_explanation": "..."}}
+{{"itinerary": [{{"date": "YYYY-MM-DD", "activities": [], "empty_day_reason": "..."}}], "ancillary_estimates": null, "price_explanation": "..."}}
 """
     return [{"role": "system", "content": system_message}, {"role": "user", "content": user_message.strip()}], expected_dates
 
@@ -1639,8 +2041,15 @@ def _parse_ai_json(content):
         raise TravelMateError("invalid_output", details={"problems": ["AI output must be a JSON object."]})
     return parsed
 
-def validate_itinerary_output(parsed, expected_dates):
-    """Strict schema + semantic validation. Returns the normalized itinerary or raises invalid_output."""
+def _is_meal_activity(activity):
+    text = f"{activity.get('name') or ''} {activity.get('category') or ''}"
+    return activity.get("category") == "meal" or bool(MEAL_PATTERN.search(text))
+
+def validate_itinerary_output(parsed, expected_dates, warnings):
+    """
+    Strict schema + semantic validation (v0.4 day / activity schema). Returns the normalized itinerary or raises
+    invalid_output. Meal costs are reassigned to the food category (amount 0) so they are never counted twice.
+    """
     problems = []
     days = parsed.get("itinerary")
     if not isinstance(days, list):
@@ -1648,7 +2057,7 @@ def validate_itinerary_output(parsed, expected_dates):
     if len(days) != len(expected_dates):
         problems.append(f"Expected {len(expected_dates)} days (nights + 1), got {len(days)}.")
 
-    normalized = []
+    normalized, meals_reassigned, blank_items_removed = [], 0, [0, 0]  # [blank items, empty estimates]
     for index, (day, expected_date) in enumerate(zip(days, expected_dates)):
         where = f"Day {index + 1}"
         if not isinstance(day, dict):
@@ -1656,18 +2065,21 @@ def validate_itinerary_output(parsed, expected_dates):
             continue
         if day.get("date") != expected_date:
             problems.append(f"{where} date must be {expected_date}, got {day.get('date')!r}.")
-        expected_type = "arrival" if index == 0 else ("departure" if index == len(expected_dates) - 1 else "full_day")
-        if day.get("day_type") != expected_type:
-            problems.append(f"{where} day_type must be '{expected_type}'.")
+        is_travel_day = index in (0, len(expected_dates) - 1)
         activities = day.get("activities")
         if not isinstance(activities, list):
             problems.append(f"{where} activities must be a list.")
             activities = []
-        max_activities = 4 if expected_type == "full_day" else 3
-        if len(activities) > max_activities:
-            problems.append(f"{where} has more than {max_activities} activities.")
-        if expected_type == "full_day" and not activities:
-            problems.append(f"{where} is a full day and must contain at least one activity.")
+        # JSON-mode artifact seen live (2026-10-21): empty strings between activity objects. Only blank strings are
+        # dropped; every other non-object item still fails validation.
+        blank_items = sum(1 for a in activities if isinstance(a, str) and not a.strip())
+        if blank_items:
+            activities = [a for a in activities if not (isinstance(a, str) and not a.strip())]
+            blank_items_removed[0] += blank_items
+        if len(activities) > 4:
+            problems.append(f"{where} has more than 4 activities.")
+        if not activities and not is_travel_day:
+            problems.append(f"{where} is not a travel day and must contain at least one activity.")
         reason = day.get("empty_day_reason")
         if not activities and not (isinstance(reason, str) and reason.strip()):
             problems.append(f"{where} has no activities and no empty_day_reason.")
@@ -1678,37 +2090,92 @@ def validate_itinerary_output(parsed, expected_dates):
             if not isinstance(activity, dict):
                 problems.append(f"{a_where} must be an object.")
                 continue
-            title, description = activity.get("title"), activity.get("description")
-            if not isinstance(title, str) or not (1 <= len(title.strip()) <= 120):
-                problems.append(f"{a_where} needs a title (1-120 characters).")
-            if not isinstance(description, str) or len(description) > 400:
-                problems.append(f"{a_where} needs a description (max 400 characters).")
-            if activity.get("time_of_day") not in ALLOWED_TIMES_OF_DAY:
-                problems.append(f"{a_where} time_of_day must be one of {sorted(ALLOWED_TIMES_OF_DAY)}.")
-            cost_status, cost = activity.get("cost_status"), activity.get("estimated_cost_usd_per_person")
-            if cost_status == "estimate":
-                if valid_amount(cost, allow_zero=True) is None:
-                    problems.append(f"{a_where} estimate needs a non-negative finite cost.")
-            elif cost_status == "unknown":
-                if cost is not None:
-                    problems.append(f"{a_where} with cost_status 'unknown' must have a null cost.")
+            if activity.get("order") != a_index or isinstance(activity.get("order"), bool):
+                problems.append(f"{a_where} order must be {a_index} (contiguous from 1).")
+            for field, limit in (("name", 120), ("area", 120), ("description", 400)):
+                value = activity.get(field)
+                if not isinstance(value, str) or not (1 <= len(value.strip()) <= limit):
+                    problems.append(f"{a_where} needs a non-empty {field} (max {limit} characters).")
+            cost = activity.get("cost") if isinstance(activity.get("cost"), dict) else {}
+            kind, amount = cost.get("kind"), cost.get("amount_usd")
+            if kind == "estimate" and amount is None:
+                # Seen live (2026-10-21): an "estimate" without any number means the cost is unknown. Downgrading
+                # never invents a value; the reverse ("unknown" with an amount) and invalid numbers still fail.
+                kind = "unknown"
+                blank_items_removed[1] += 1
+            if kind not in ALLOWED_ACTIVITY_KINDS:
+                problems.append(f"{a_where} cost.kind must be 'estimate' or 'unknown' (got {kind!r}).")
+            elif kind == "estimate" and valid_amount(amount, allow_zero=True) is None:
+                problems.append(f"{a_where} estimate needs a non-negative finite amount_usd.")
+            elif kind == "unknown" and amount is not None:
+                problems.append(f"{a_where} with kind 'unknown' must have a null amount_usd.")
+
+            if _is_meal_activity(activity) and kind in ALLOWED_ACTIVITY_KINDS:
+                if not (kind == "estimate" and amount == 0):
+                    meals_reassigned += 1
+                public_cost = {"amount_usd": 0.0, "kind": "estimate", "coverage": "all_travelers"}
+                basis = "Meal cost is covered by the food category (not counted as an activity)."
+            elif kind == "estimate" and valid_amount(amount, allow_zero=True) is not None:
+                public_cost = {"amount_usd": round_money(amount), "kind": "estimate", "coverage": "all_travelers"}
+                basis = "AI estimate for all travelers (not a provider price)."
             else:
-                problems.append(f"{a_where} cost_status must be 'estimate' or 'unknown'.")
+                public_cost = {"amount_usd": None, "kind": "unknown", "coverage": None}
+                basis = "AI could not estimate this cost."
             clean_activities.append({
-                "time_of_day": activity.get("time_of_day"),
-                "title": str(title or "").strip(),
-                "description": str(description or "").strip(),
-                "location": str(activity.get("location") or "").strip() or None,
-                "cost_status": cost_status,
-                "estimated_cost_usd_per_person": round_money(cost) if cost_status == "estimate" and valid_amount(cost, True) is not None else None
+                "order": a_index,
+                "name": str(activity.get("name") or "").strip(),
+                "area": str(activity.get("area") or "").strip(),
+                "description": str(activity.get("description") or "").strip(),
+                "cost": public_cost,
+                "_budget_basis": basis
             })
-        normalized.append({"day_number": index + 1, "date": day.get("date"), "day_type": day.get("day_type"),
-                           "activities": clean_activities,
+        normalized.append({"date": day.get("date"), "activities": clean_activities,
                            "empty_day_reason": reason.strip() if not activities and isinstance(reason, str) else None})
 
     if problems:
         raise TravelMateError("invalid_output", details={"problems": problems[:25]})
+    if blank_items_removed[0]:
+        warnings.append(build_warning("AI_OUTPUT_NORMALIZED", f"{blank_items_removed[0]} blank item(s) between AI "
+                                      "activities were removed before validation."))
+    if blank_items_removed[1]:
+        warnings.append(build_warning("AI_OUTPUT_NORMALIZED", f"{blank_items_removed[1]} activity cost(s) marked "
+                                      "'estimate' without an amount were treated as unknown."))
+    if meals_reassigned:
+        warnings.append(build_warning("MEAL_COST_REASSIGNED", f"{meals_reassigned} meal activity cost(s) were moved to "
+                                      "the food category to avoid double counting."))
     return normalized
+
+def build_budget_activities(itinerary):
+    """BE-04 ActivityItem list: {label, kind (estimate|unknown), amount_usd, activity_ref {date, order}, basis}."""
+    return [{"label": a["name"], "kind": a["cost"]["kind"], "amount_usd": a["cost"]["amount_usd"],
+             "activity_ref": {"date": day["date"], "order": a["order"]}, "basis": a["_budget_basis"]}
+            for day in itinerary for a in day["activities"]]
+
+def strip_internal_fields(itinerary):
+    return [{"date": d["date"], "empty_day_reason": d["empty_day_reason"],
+             "activities": [{k: v for k, v in a.items() if not k.startswith("_")} for a in d["activities"]]}
+            for d in itinerary]
+
+def build_ancillary_estimates(parsed, policy, warnings):
+    """Food / local transport estimate objects (adapter-contracts.md). Unknown unless an approved policy applies."""
+    if not policy:
+        return {"food": unknown_estimate("No approved estimation policy."),
+                "local_transport": unknown_estimate("No approved estimation policy.")}
+    raw = parsed.get("ancillary_estimates") if isinstance(parsed.get("ancillary_estimates"), dict) else {}
+    result = {}
+    for key in ("food", "local_transport"):
+        item = raw.get(key) if isinstance(raw.get(key), dict) else {}
+        amount = valid_amount(item.get("amount_usd"), allow_zero=True)
+        basis = item.get("basis")
+        if policy[key] is None:
+            result[key] = unknown_estimate(f"Policy {policy['id']} does not cover {key}.")
+        elif amount is None or not isinstance(basis, str) or not basis.strip():
+            result[key] = unknown_estimate(f"AI did not return a valid {key} estimate under policy {policy['id']}.")
+            warnings.append(build_warning("ESTIMATE_UNAVAILABLE", f"{key} estimate missing or invalid; kept unknown."))
+        else:
+            result[key] = {"amount_usd": round_money(amount), "kind": "estimate", "basis": basis.strip()[:300],
+                           "policy_id": policy["id"]}
+    return result
 
 def _collect_numbers(value, found):
     if isinstance(value, bool):
@@ -1748,33 +2215,35 @@ def _get_groq_client(timeout):
     return groq.Groq(api_key=api_key, max_retries=0, timeout=timeout)
 
 def _map_groq_error(error):
+    """Maps provider errors to the four AI adapter codes: timeout, rate_limited, unavailable, invalid_output."""
     if isinstance(error, groq.APITimeoutError):
         return TravelMateError("timeout", details={"reason": "ai_timeout"})
     if isinstance(error, groq.RateLimitError):
         return TravelMateError("rate_limited", details={"reason": "ai_rate_limited"})
-    if isinstance(error, (groq.AuthenticationError, groq.PermissionDeniedError)):
-        return TravelMateError("auth_error", details={"reason": "ai_auth_rejected"})
     if isinstance(error, groq.BadRequestError) and "json_validate_failed" in str(error):
         return TravelMateError("invalid_output", details={"problems": ["Provider JSON mode validation failed."]})
-    if isinstance(error, (groq.APIConnectionError, groq.InternalServerError)):
-        return TravelMateError("unavailable", details={"reason": "ai_provider_unreachable"})
+    if isinstance(error, (groq.AuthenticationError, groq.PermissionDeniedError)):
+        return TravelMateError("unavailable", details={"reason": "ai_auth_rejected"})
     return TravelMateError("unavailable", details={"reason": f"ai_provider_error_{type(error).__name__}"})
 
 def _generate_itinerary_validated(trip, selected_offers, travel_availability, estimation_policy, deadline,
-                                  request_id, budget_summary=None, evidence=None):
+                                  request_id, evidence=None):
     warnings = []
     provenance = {"provider": "Groq", "integration_type": "direct_official_api", "model": GROQ_MODEL,
                   "temperature": AI_TEMPERATURE, "response_format": "json_object", "automatic_retries": 0,
                   "requested_at": None, "completed_at": None, "latency_ms": None, "rate_limit": {}, "usage": None}
 
     def failure(error):
-        return {"request_id": request_id, "status": "error", "itinerary": None, "ancillary_estimates": None,
-                "price_explanation": None, "error": error.to_envelope("ai"), "warnings": warnings,
-                "provenance": provenance}
+        return {"request_id": request_id, "status": "error", "error": error.to_envelope(),
+                "diagnostics": sanitize(error.details), "warnings": warnings, "provenance": provenance}
 
-    offers = _eligible_selected_offers(trip, selected_offers, warnings)
-    context = build_ai_context(trip, offers, travel_availability, budget_summary)
-    messages, expected_dates = build_itinerary_messages(trip, context)
+    policy = validate_estimation_policy(estimation_policy)
+    if estimation_policy is not None and policy is None and (estimation_policy or {}).get("id") is not None:
+        warnings.append(build_warning("POLICY_NOT_APPROVED", "estimation_policy is not an approved policy; food and "
+                                      "local transport stay unknown."))
+    flight, hotel = _eligible_selected_offers(trip, selected_offers, warnings)
+    context = build_ai_context(trip, flight, hotel, travel_availability or {})
+    messages, expected_dates = build_itinerary_messages(trip, context, policy)
     if isinstance(evidence, dict):
         evidence["ai_input"] = {"model": GROQ_MODEL, "temperature": AI_TEMPERATURE, "messages": messages}
 
@@ -1815,25 +2284,22 @@ def _generate_itinerary_validated(trip, selected_offers, travel_availability, es
         evidence["ai_raw_output"] = content
     try:
         parsed = _parse_ai_json(content)
-        itinerary = validate_itinerary_output(parsed, expected_dates)
+        itinerary = validate_itinerary_output(parsed, expected_dates, warnings)
     except TravelMateError as error:
         logger.error(f"[-] AI output rejected: {error.details.get('problems', [])[:3]}")
         return failure(error)
 
-    policy = validate_estimation_policy(estimation_policy)
-    if estimation_policy is not None and policy is None:
-        warnings.append("estimation_policy is not an approved policy; food and local transport stay unknown.")
     explanation, rejected = check_price_explanation(parsed.get("price_explanation"), context)
     if rejected:
-        warnings.append(f"AI price explanation was dropped because it contained numbers not in the backend data: {rejected[:5]}")
-
+        warnings.append(build_warning("PRICE_EXPLANATION_DROPPED", "The AI price explanation contained numbers that "
+                                      f"are not in the backend data and was dropped: {rejected[:5]}"))
     return {
         "request_id": request_id,
-        "status": "success",
-        "itinerary": itinerary,
-        "ancillary_estimates": compute_ancillary_estimates(trip, policy, itinerary),
+        "status": "ok",
+        "itinerary": strip_internal_fields(itinerary),
+        "ancillary_estimates": build_ancillary_estimates(parsed, policy, warnings),
+        "budget_activities": build_budget_activities(itinerary),  # Ready for BE-04 BudgetInput.activities
         "price_explanation": explanation,
-        "error": None,
         "warnings": warnings,
         "provenance": provenance
     }
@@ -1841,83 +2307,28 @@ def _generate_itinerary_validated(trip, selected_offers, travel_availability, es
 def generate_itinerary(trip_request, selected_offers, travel_availability, estimation_policy=None, deadline_at=None,
                        request_id=None, evidence=None):
     """
-    AI itinerary adapter boundary. Returns {"status": "success", "itinerary", "ancillary_estimates", ...}
-    or {"status": "error", "error": {...}} with code invalid_input | timeout | rate_limited | auth_error |
-    unavailable | invalid_output | internal_error. The AI call is made at most once (no automatic retry).
+    AI itinerary adapter boundary (adapter-contracts.md). Success: {"status": "ok", "itinerary", "ancillary_estimates",
+    "budget_activities", "price_explanation", ...}. Failure: {"status": "error", "error": {code, message}} with code
+    timeout | rate_limited | unavailable | invalid_output (or invalid_input / internal_error at the boundary).
+    The AI call is made at most once. Works without any flight or hotel offer (both may be null).
     """
     request_id = request_id or new_request_id()
     try:
-        trip = validate_request(trip_request)
+        trip = validate_request(trip_request, require_budget=False)
         deadline = resolve_deadline(deadline_at)
         return _generate_itinerary_validated(trip, selected_offers, travel_availability, estimation_policy, deadline,
-                                             request_id, evidence=evidence)
+                                             request_id, evidence)
     except TravelMateError as error:
-        return {"request_id": request_id, "status": "error", "itinerary": None, "ancillary_estimates": None,
-                "price_explanation": None, "error": error.to_envelope("ai"), "warnings": [], "provenance": None}
+        return {"request_id": request_id, "status": "error", "error": error.to_envelope(),
+                "diagnostics": sanitize(error.details), "warnings": [], "provenance": None}
     except Exception:
         logger.exception(f"[-] Unexpected generate_itinerary error (request_id={request_id}).")
-        return {"request_id": request_id, "status": "error", "itinerary": None, "ancillary_estimates": None,
-                "price_explanation": None, "error": build_error("internal_error", category="ai"), "warnings": [],
-                "provenance": None}
+        return {"request_id": request_id, "status": "error", "error": build_error("internal_error"),
+                "diagnostics": {}, "warnings": [], "provenance": None}
 
 # ==========================================
-# 15. MAIN ENGINE (CALLABLE FROM BACKEND / WEBSITE)
+# 15. PROTOTYPE ORCHESTRATION (BE-03 ROLE, LOCAL TESTING & EVIDENCE ONLY)
 # ==========================================
-def build_engine_response(status, request_id, message="", error=None, warnings=None, data_mode=None,
-                          search_parameters=None, travel=None, hotels_data=None, budget_summary=None,
-                          tiers_within_limit=None, tiers_excluded=None, selected_offers=None, ai_result=None):
-    """Builds the structured JSON output. Every key is always present so the UI and database never break."""
-    travel = travel or {}
-    flights = travel.get("flights") or {}
-    hotels = travel.get("hotels") or {}
-
-    def availability(category):
-        if not category:
-            return None
-        return {k: category.get(k) for k in ["status", "reason", "price_authority", "error"]}
-
-    ai_result = ai_result or {}
-    return {
-        "status": status,
-        "request_id": request_id,
-        "message": message,
-        "error": error,
-        "warnings": warnings or [],
-        "generated_at": utc_now_iso(),
-        "data_mode": data_mode,
-        "search_parameters": search_parameters or {},
-        "travel_availability": {"mandatory_category": MANDATORY_CATEGORY,
-                                "flights": availability(flights), "hotels": availability(hotels)},
-        "flights_data": {
-            "outbound_flights": flights.get("outbound_flights", []),
-            "return_flights": flights.get("return_flights", []),
-            "alternative_date_flights": flights.get("alternative_date_flights", {"outbound": [], "return": []}),
-            "capabilities": flights.get("capabilities"),
-            "limitations": flights.get("limitations", []),
-            "coverage": flights.get("coverage", {})
-        },
-        "hotels_data": hotels_data or [],
-        "hotels_coverage": hotels.get("coverage", {}),
-        "budget_summary": budget_summary or {},
-        "budget_tiers_within_limit": tiers_within_limit or [],
-        "budget_tiers_excluded": tiers_excluded or [],
-        "selected_offers": selected_offers or {},
-        "ai_itinerary": {
-            "status": ai_result.get("status", "not_run"),
-            "itinerary": ai_result.get("itinerary"),
-            "ancillary_estimates": ai_result.get("ancillary_estimates"),
-            "error": ai_result.get("error"),
-            "provenance": ai_result.get("provenance")
-        },
-        "ai_recommendation_report": ai_result.get("price_explanation") or "",
-        "provenance": {
-            "flights": flights.get("provenance", {}),
-            "hotels": hotels.get("provenance", {}),
-            "hotel_destination_mapping": hotels.get("destination_mapping"),
-            "exchange_rates": travel.get("exchange_rates")
-        }
-    }
-
 def save_final_report(result, file_path=None):
     file_path = file_path or REPORT_FILE
     try:
@@ -1926,81 +2337,104 @@ def save_final_report(result, file_path=None):
     except OSError as e:
         logger.error(f"[-] Could not save final report ({type(e).__name__}).")
 
+def _empty_engine_response(request_id, error, diagnostics=None, trip_request=None):
+    return {"status": "error", "request_id": request_id, "generated_at": utc_now_iso(), "error": error,
+            "diagnostics": sanitize(diagnostics or {}), "warnings": [], "trip_request": trip_request or {},
+            "live_integration_status": "no_price", "travel": None, "selected_offers": None, "ai_itinerary": None,
+            "report_slice": None, "be04_budget_input": None}
+
 def _run_engine_steps(request_data, deadline_at, request_id, estimation_policy, cache_mode, evidence):
-    # Step 1: Validate and clean the user input (before any external call)
+    # Step 1: Validate the public request (before any external call)
     try:
         trip = validate_request(request_data)
         deadline = resolve_deadline(deadline_at)
     except TravelMateError as error:
-        return build_engine_response("error", request_id, "Invalid or unsupported request.", error.to_envelope("request"))
+        return _empty_engine_response(request_id, error.to_envelope(), error.details)
     if isinstance(evidence, dict):
         evidence["inputs"] = {"request_data": request_data, "validated_trip": trip, "deadline_at": deadline.isoformat(),
-                              "estimation_policy": estimation_policy}
+                              "estimation_policy": estimation_policy, "flight_mode": FLIGHT_MODE}
+    logger.info(f"[!] Processing request {request_id}: {trip['departure_city']} -> {trip['destination_city']}...")
 
-    logger.info(f"[!] Processing {trip['trip_type_label']} request {request_id}...")
+    # Step 2: Live travel adapter (flights + hotels in parallel). Travel failures never stop generation.
+    # The travel phase gets its own earlier deadline so time is always left for the AI itinerary.
+    travel_deadline = deadline - timedelta(seconds=AI_RESERVED_SECONDS) \
+        if seconds_left(deadline) > AI_RESERVED_SECONDS + PER_ATTEMPT_TIMEOUT_SECONDS else deadline
+    travel = _search_travel_validated(trip, travel_deadline, request_id, cache_mode=cache_mode, evidence=evidence)
 
-    # Step 2: Live travel adapter (flights + hotels, verified and normalized)
-    travel = _search_travel_validated(trip, deadline, request_id, cache_mode, evidence)
-    warnings = list(travel["warnings"])
-    hotels = travel["hotels"]["offers"] if travel["hotels"] else []
-    search_parameters = public_search_parameters(trip)
-
-    if travel["status"] != "success":
-        return build_engine_response("error", request_id, f"The mandatory {MANDATORY_CATEGORY} search did not succeed.",
-                                     travel["error"], warnings, travel["data_mode"], search_parameters, travel, hotels)
-
-    # Step 3: Hotel tiers and flight-plus-hotel subtotals (prototype, not the authoritative budget)
-    flights = travel["flights"]
-    outbound = (flights.get("outbound_flights") or [None])[0]
-    return_flight = (flights.get("return_flights") or [None])[0]
-    assign_hotel_tiers(hotels)
-    budget_summary, tiers_within_limit, tiers_excluded = build_flight_hotel_subtotals(hotels, outbound, return_flight, trip)
-    if flights["status"] != "available":
-        warnings.append("No eligible exact-date flight quote: budget tiers were checked against the hotel price only.")
-    if not tiers_within_limit:
-        warnings.append("No hotel tier fits the budget.")
-    selected_offers = select_default_offers(travel, tiers_within_limit, hotels)
+    # Step 3: Prototype selection (BE-03 owns the final choice): exact-date flights + fee-aware hotel
+    flights_data = travel["report_slice"]["flights_data"]
+    selected_hotel, selected_hotel_offer_id = select_default_hotel(travel["hotels"]["offers"], travel["hotel_candidates"])
+    outbound_leg, return_leg = flights_data["selected_outbound_flight"], flights_data["selected_return_flight"]
+    one_way = trip["trip_type"] == "one_way"
+    if outbound_leg and (return_leg or one_way):
+        selected_flight_offer_id = round_trip_offer_id(outbound_leg, return_leg) if return_leg             else flight_leg_id(outbound_leg)
+        # Legs (real per-leg totals) + local schedule so the AI can plan around real departure times
+        selected_flight = {**flights_data, "schedule": travel["flights"].get("schedule")}
+    else:
+        selected_flight_offer_id, selected_flight = None, None
     if isinstance(evidence, dict):
-        evidence["normalized_context"] = {"search_travel": travel, "budget_summary": budget_summary,
-                                          "budget_tiers_within_limit": tiers_within_limit,
-                                          "budget_tiers_excluded": tiers_excluded, "selected_offers": selected_offers}
+        evidence["normalized_context"] = {"search_travel": travel, "selected_hotel_offer_id": selected_hotel_offer_id,
+                                          "selected_flight_offer_id": selected_flight_offer_id}
 
-    # Step 4: Structured AI itinerary (single attempt, validated)
-    availability = {"flights": {k: flights.get(k) for k in ["status", "reason", "price_authority"]},
-                    "hotels": {k: travel["hotels"].get(k) for k in ["status", "reason", "price_authority"]}}
-    # The AI receives the pre-calculated subtotal of the selected hotel so it never has to add numbers itself
-    selected_hotel = selected_offers["hotel"]
-    selected_tier = next((t for t in tiers_within_limit
-                          if selected_hotel and t["hotel_offer_id"] == selected_hotel["offer_id"]), None)
-    budget_for_ai = dict(budget_summary, selected_tier_subtotal=None if selected_tier is None else {
-        k: selected_tier[k] for k in ["tier_name", "flight_subtotal_usd", "hotel_total_usd", "flight_hotel_subtotal_usd",
-                                      "remaining_after_flight_hotel_usd", "remaining_after_hotel_only_usd", "subtotal_basis"]})
-    ai_result = _generate_itinerary_validated(trip, selected_offers, availability, estimation_policy, deadline,
-                                              request_id, budget_for_ai, evidence)
-    warnings += ai_result["warnings"]
-    if ai_result["status"] != "success":
-        warnings.append(f"AI itinerary unavailable ({ai_result['error']['code']}); travel data is still valid.")
+    # Step 4: Structured AI itinerary (single attempt). Always runs, even without any travel offer.
+    availability = {"flights": "live" if travel["flights"]["status"] == "available" else "unavailable",
+                    "hotels": "live" if travel["hotels"]["status"] == "available" else "unavailable"}
+    ai = _generate_itinerary_validated(trip, {"flight": selected_flight, "hotel": selected_hotel},
+                                       availability, estimation_policy, deadline, request_id, evidence)
     if isinstance(evidence, dict):
-        evidence["ai_validated_output"] = {k: ai_result.get(k) for k in
-                                           ["status", "itinerary", "ancillary_estimates", "price_explanation", "error"]}
+        evidence["ai_validated_output"] = {k: ai.get(k) for k in
+                                           ["status", "itinerary", "ancillary_estimates", "budget_activities",
+                                            "price_explanation", "error"]}
 
-    return build_engine_response("success", request_id, "Trip plan generated.", None, warnings, travel["data_mode"],
-                                 search_parameters, travel, hotels, budget_summary, tiers_within_limit,
-                                 tiers_excluded, selected_offers, ai_result)
+    warnings = travel["warnings"] + ai["warnings"]
+    ancillary = ai.get("ancillary_estimates") or {}
+    report_slice = {"flights_data": flights_data, "hotels_data": travel["report_slice"]["hotels_data"],
+                    "ai_recommendation_report": ai.get("price_explanation") or ""}
+    be04_input = None
+    if ai["status"] == "ok":
+        be04_input = {"budget_usd": trip["budget_usd"], "flights_data": flights_data, "selected_hotel": selected_hotel,
+                      "activities": ai["budget_activities"],
+                      "food": (ancillary.get("food") or {}).get("amount_usd"),
+                      "local_transport": (ancillary.get("local_transport") or {}).get("amount_usd")}
+        if one_way and selected_flight_offer_id:
+            # BE-04's legs path needs both legs; a one-way trip is priced through candidate mode instead
+            be04_input["flights_data"] = {"selected_outbound_flight": None, "selected_return_flight": None}
+            be04_input["flight_candidates"] = [c for c in travel["flight_candidates"] if c["id"] == selected_flight_offer_id]
+    else:
+        warnings.append(build_warning("AI_UNAVAILABLE", f"Itinerary generation failed ({ai['error']['code']})."))
+
+    priced = travel["hotels"]["status"] == "available" or travel["flights"]["status"] == "available"
+    return {
+        "status": "success" if ai["status"] == "ok" else "error",
+        "request_id": request_id,
+        "generated_at": utc_now_iso(),
+        "error": None if ai["status"] == "ok" else ai["error"],
+        "diagnostics": ai.get("diagnostics", {}),
+        "warnings": warnings,
+        "trip_request": public_trip_request(trip),
+        "live_integration_status": "price_received" if priced else "no_price",
+        "travel": travel,
+        "selected_offers": {"selected_flight_offer_id": selected_flight_offer_id,
+                            "selected_hotel_offer_id": selected_hotel_offer_id,
+                            "selection_basis": "prototype default (BE-03 owns the final selection)"},
+        "ai_itinerary": ai,
+        "report_slice": report_slice,
+        "be04_budget_input": be04_input
+    }
 
 def run_travelmate_engine(request_data: dict, save_report: bool = False, deadline_at=None, request_id=None,
                           estimation_policy=None, cache_mode="default", evidence=None) -> dict:
     """
-    Main entry point for the website backend. Receives the request as a dict (JSON) and returns the structured
-    result as a dict (JSON). Never raises. save_report=True writes travelmate_final_report.json; it does NOT
-    affect the local provider cache (use cache_mode "off" to disable cache reads and writes).
+    Prototype end-to-end pipeline for local testing and evidence (BE-03 owns the real orchestration).
+    Never raises. save_report=True writes travelmate_final_report.json; it does NOT affect the provider cache
+    (use cache_mode "off" to disable cache reads and writes).
     """
     request_id = request_id or new_request_id()
     try:
         result = _run_engine_steps(request_data, deadline_at, request_id, estimation_policy, cache_mode, evidence)
     except Exception:
         logger.exception(f"[-] Unexpected engine error (request_id={request_id}).")
-        result = build_engine_response("error", request_id, "Unexpected engine error.", build_error("internal_error"))
+        result = _empty_engine_response(request_id, build_error("internal_error"))
     if save_report:
         save_final_report(result)
     return result
@@ -2015,10 +2449,7 @@ RTL_SCRIPT_PATTERN = re.compile(r"[֐-ࣿיִ-﷿ﹰ-﻿]+(?:\s+[֐-ࣿיִ-﷿ﹰ
 BIDI_CONTROL_PATTERN = re.compile(r"[‎‏‪-‮⁦-⁩]")
 
 def to_console_name(text, fallback="(Non-Latin name)"):
-    """
-    Removes right-to-left script (e.g., Arabic) and direction marks from a single-line value,
-    so it renders left-to-right in Windows CMD without breaking table alignment.
-    """
+    """Removes right-to-left script and direction marks so text renders left-to-right in Windows CMD."""
     if text is None:
         return fallback
     cleaned = BIDI_CONTROL_PATTERN.sub("", str(text))
@@ -2058,101 +2489,86 @@ def print_table(headers, rows):
     for row in rows:
         print("  " + " | ".join(fit_cell(cell, width) for cell, (_, width) in zip(row, headers)))
 
-def print_flight_table(title, flights):
-    print(f"\n  >> {title}")
-    headers = [("#", 2), ("Airline", 20), ("Date", 10), ("Route", 9), ("Stops / Transit", 24),
-               ("Per Adult", 10), ("Group Total", 11), ("Authority", 10)]
-    rows = [[i, to_console_name(f["airline"]), f["flight_date"], f"{f['origin_airport']}-{f['destination_airport']}",
-             f["stops_label"], format_money(f["price_per_adult_usd"]), format_money(f["group_total_usd"]),
-             f["price_authority"]] for i, f in enumerate(flights, start=1)]
-    print_table(headers, rows)
-
 def print_engine_result(result, show_full_json=False):
     """Prints the structured engine response in clearly separated, readable sections."""
     print_section(f"TRAVELMATE RESULT  |  STATUS: {result['status'].upper()}  |  {result['request_id']}")
-    print(f"  {result['message']}  (data mode: {result['data_mode']})")
     if result["error"]:
         print(f"  [-] {result['error']['code']}: {result['error']['message']}")
-        for field in result["error"]["details"].get("fields", []):
+        for field in (result.get("diagnostics") or {}).get("fields", []):
             print(f"      - {field['field']}: {field['message']}")
     for warning in result["warnings"]:
-        print(f"  [!] {to_console_name(warning)}")
+        print(f"  [!] {warning['code']}: {to_console_name(warning['message'])}")
+    if not result.get("travel"):
+        return
 
-    print_section("1. SEARCH PARAMETERS & AVAILABILITY")
-    print(json.dumps(sanitize_for_console(result["search_parameters"]), indent=4, ensure_ascii=False))
-    for category in ["flights", "hotels"]:
-        info = result["travel_availability"].get(category)
-        if info:
-            print(f"  {category.title():8}: {info['status']} (reason: {info['reason']}, prices: {info['price_authority']})")
+    print_section("1. TRIP REQUEST & AVAILABILITY")
+    print(json.dumps(result["trip_request"], indent=4))
+    travel = result["travel"]
+    print(f"  live_integration_status: {result['live_integration_status']}")
+    for category in ("flights", "hotels"):
+        print(f"  {category:8}: {travel[category]['status']} (reason_code: {travel[category]['reason_code']})")
 
-    flights_data = result["flights_data"]
-    print_section("2. FLIGHTS  (flights_data) - indicative cached quotes")
-    print_flight_table("Outbound (exact requested date - eligible)", flights_data["outbound_flights"])
-    if result["search_parameters"].get("trip_type") == "round_trip":
-        print_flight_table("Return (exact requested date - eligible)", flights_data["return_flights"])
-    for direction, offers in flights_data["alternative_date_flights"].items():
-        if offers:
-            print_flight_table(f"{direction.title()} ALTERNATIVE DATES (NOT eligible, needs a new search)", offers)
-
-    print_section("3. HOTELS  (hotels_data) - verified dates & occupancy, prices include known taxes")
-    headers = [("#", 2), ("Hotel", 30), ("Tier", 4), ("Stars", 5), ("Rating", 6), ("Km", 5),
-               ("Base", 10), ("Taxes", 9), ("Total", 10), ("In Budget", 9)]
-    rows = [[i, to_console_name(h["name"], fallback=f"Hotel #{h['hotel_id']}"), h.get("tier_code", "-"),
-             h["star_rating"] or "-", h["review_score"] or "-", h["distance_from_center_km"] or "-",
-             format_money(h["base_price_usd"]), format_money(h["taxes_and_fees_usd"]),
-             format_money(h["total_price_usd"]), {True: "Yes", False: "No"}.get(h.get("fits_budget"), "unknown")]
-            for i, h in enumerate(result["hotels_data"], start=1)]
+    flights = travel["flights"]
+    flights_data = result["report_slice"]["flights_data"]
+    schedule = flights.get("schedule") or {}
+    print_section(f"2. FLIGHTS  (report_slice.flights_data)  |  prices: {flights.get('price_authority') or 'n/a'}")
+    headers = [("Leg", 8), ("Airline", 20), ("Flight", 13), ("Departs (local)", 16), ("Exact", 5), ("Stops", 14),
+               ("Total (all)", 11)]
+    rows = []
+    for leg_name, key, leg in (("Outbound", "outbound", flights_data["selected_outbound_flight"]),
+                               ("Return", "return", flights_data["selected_return_flight"])):
+        if leg:
+            leg_schedule = schedule.get(key) or {}
+            rows.append([leg_name, to_console_name(leg["airline"]), " + ".join(leg_schedule.get("flight_numbers", [])) or "-",
+                         leg_schedule.get("departure_local") or leg["flight_date"],
+                         "Yes" if leg["date_matches_request"] else "No", leg["stops_label"],
+                         format_money(leg["total_price_usd"])])
     print_table(headers, rows)
+    if rows:
+        total = sum(l["total_price_usd"] for l in (flights_data["selected_outbound_flight"],
+                                                    flights_data["selected_return_flight"]) if l)
+        print(f"  Flight total for {result['trip_request']['adults']} traveler(s): {format_money(round_money(total))} "
+              f"(sum of the legs, each priced by the provider)")
+    others = [o for o in flights.get("round_trip_offers") or [] if o["id"] != result["selected_offers"]["selected_flight_offer_id"]]
+    if others:
+        print("  Other cheapest combinations: " + " | ".join(
+            f"{to_console_name(o['airline'])} {format_money(o['price']['amount_usd'])}" for o in others))
+    alternatives = travel["flights"]["alternative_date_offers"]
+    count = len(alternatives["outbound"]) + len(alternatives["return"])
+    if count:
+        print(f"  ({count} alternative-date quote(s) excluded from selection; a new search is required to adopt them)")
 
-    print_section("4. FLIGHT + HOTEL SUBTOTALS WITHIN BUDGET  (budget_tiers_within_limit)")
-    summary = result["budget_summary"]
-    if summary:
-        print(f"  Basis: {summary['basis']} | Flights: {format_money(summary['flight_subtotal_usd'])} "
-              f"({summary['flight_price_authority']}) | Budget: {format_money(summary['budget_usd'])}")
-        print(f"  Note: {summary['scope_note']}")
-    headers = [("Tier", 30), ("Hotel", 26), ("Flights", 10), ("Hotel", 10), ("Subtotal", 10), ("Remaining", 10)]
-    rows = [[t["tier_name"], to_console_name(t["hotel_name"], fallback=f"Hotel #{t['hotel_id']}"),
-             format_money(t["flight_subtotal_usd"]), format_money(t["hotel_total_usd"]),
-             format_money(t["flight_hotel_subtotal_usd"]),
-             format_money(t["remaining_after_flight_hotel_usd"] if t["remaining_after_flight_hotel_usd"] is not None
-                          else t["remaining_after_hotel_only_usd"])]
-            for t in result["budget_tiers_within_limit"]]
+    print_section("3. HOTELS  (report_slice.hotels_data) - verified dates & occupancy")
+    selected_id = result["selected_offers"]["selected_hotel_offer_id"]
+    headers = [("Sel", 3), ("Hotel", 32), ("Stars", 5), ("Rating", 6), ("Base", 10), ("Taxes", 9), ("Total", 10)]
+    rows = [["*" if str(h["hotel_id"]) == selected_id else "", to_console_name(h["name"], fallback=f"Hotel #{h['hotel_id']}"),
+             h["star_rating"] or "-", h["review_score"] or "-", format_money(h["base_price_usd"]),
+             format_money(h["taxes_and_fees_usd"]), format_money(h["total_price_usd"])]
+            for h in result["report_slice"]["hotels_data"]]
     print_table(headers, rows)
-    for tier in result["budget_tiers_excluded"]:
-        extra = f" (over by {format_money(tier['over_budget_by_usd'])})" if "over_budget_by_usd" in tier else ""
-        print(f"  [x] Excluded: {tier['tier_name']} - {tier['reason']}{extra}")
 
     ai = result["ai_itinerary"]
-    print_section(f"5. AI ITINERARY  (ai_itinerary)  |  STATUS: {ai['status'].upper()}")
-    if ai["error"]:
+    print_section(f"4. AI ITINERARY  |  STATUS: {ai['status'].upper()}")
+    if ai["status"] != "ok":
         print(f"  [-] {ai['error']['code']}: {ai['error']['message']}")
-        for problem in ai["error"]["details"].get("problems", [])[:10]:
+        for problem in (ai.get("diagnostics") or {}).get("problems", [])[:10]:
             print(f"      - {problem}")
-    for day in ai["itinerary"] or []:
-        print(f"\n  Day {day['day_number']} | {day['date']} | {day['day_type']}")
+    for day in ai.get("itinerary") or []:
+        print(f"\n  {day['date']}")
         if not day["activities"]:
             print(f"    (no activities: {to_console_name(day['empty_day_reason'])})")
-        for activity in day["activities"]:
-            cost = format_money(activity["estimated_cost_usd_per_person"]) + " pp (estimate)" \
-                if activity["cost_status"] == "estimate" else "cost unknown"
-            print(f"    - [{activity['time_of_day']:9}] {to_console_name(activity['title'])} | {cost}")
-    if ai["ancillary_estimates"]:
-        print("\n  Ancillary estimates (never authoritative):")
-        for key in ["activities", "food", "local_transport"]:
-            item = ai["ancillary_estimates"][key]
-            print(f"    {key:16}: {item['status']:8} {format_money(item['amount_usd'])}  {item.get('reason') or item.get('basis', '')}")
-
-    print_section("6. AI PRICE EXPLANATION  (ai_recommendation_report)")
-    print("  " + (to_console_name(result["ai_recommendation_report"]) or "[-] Not available."))
+        for a in day["activities"]:
+            cost = format_money(a["cost"]["amount_usd"]) + " (estimate)" if a["cost"]["kind"] == "estimate" else "cost unknown"
+            print(f"    {a['order']}. {to_console_name(a['name'])} [{to_console_name(a['area'])}] | {cost}")
+    for key, item in (ai.get("ancillary_estimates") or {}).items():
+        print(f"  {key:16}: {item['kind']:8} {format_money(item['amount_usd'])}  {item['basis']}")
+    print(f"\n  Price explanation: {to_console_name(result['report_slice']['ai_recommendation_report']) or '(none)'}")
 
     if show_full_json:
         print_section("FULL STRUCTURED JSON RESPONSE (console-safe copy)")
         print(json.dumps(sanitize_for_console(result), indent=4, ensure_ascii=False))
-
     print("\n" + "=" * CONSOLE_WIDTH)
     print(f"  [+] Full report saved to '{REPORT_FILE}'")
-    if not show_full_json:
-        print("  [i] Run with --json to also print the full structured JSON response.")
     print("=" * CONSOLE_WIDTH)
 
 # ==========================================
@@ -2175,44 +2591,29 @@ if __name__ == "__main__":
                 return value
             print(f"[-] {error}")
 
+    def parse_int_text(text):
+        return validate_adults(int(text)) if re.fullmatch(r"\s*\d+\s*", text) else (None, "Enter a whole number 1-4.")
+
+    def parse_number_text(text):
+        try:
+            return validate_budget(float(text.replace(",", "")))
+        except ValueError:
+            return None, "Enter a number, e.g. 1500."
+
     print("\n--- Welcome to TravelMate (Flight & Hotel Assistant) ---")
-    print(f"Supported destinations: {', '.join(sorted(c['name'] for c in SUPPORTED_CITIES.values()))}")
-
-    trip_type = prompt_until_valid(
-        "Select trip type - Enter '1' for One-Way or '2' for Two-Way (Round-Trip): ", validate_trip_type)
-    is_round_trip = (trip_type == "round_trip")
-
-    origin = prompt_until_valid(
-        "Enter origin airport code (e.g., IST): ", lambda v: validate_airport_code(v, "origin"))
-    destination_city = prompt_until_valid(
-        "Enter destination city (e.g., Cairo): ", validate_city_name)
-    destination_airport = input("Enter destination airport code (press Enter for the city's main airport): ").strip()
-
-    arrival_date = prompt_until_valid(
-        "Enter departure / hotel check-in date (YYYY-MM-DD): ",
-        lambda v: validate_date(v, "check_in_date", min_date=date.today()))
-    checkout_prompt = "Enter return flight / hotel check-out date (YYYY-MM-DD): " if is_round_trip \
-        else "Enter hotel check-out date (YYYY-MM-DD): "
-    departure_date = prompt_until_valid(
-        checkout_prompt, lambda v: validate_date(v, "check_out_date", min_date=arrival_date + timedelta(days=1)))
-
-    adults = prompt_until_valid(
-        "Enter number of adult travelers: ", lambda v: validate_positive_int(v, "adults", MAX_ADULTS))
-    rooms_text = input("Enter number of rooms (press Enter for 1): ").strip()
-    budget_usd = prompt_until_valid(
-        "Enter your total budget in USD (e.g., 2500): ", validate_budget)
-
+    print(f"Supported cities: {', '.join(sorted(SUPPORTED_CITIES))}  |  Flight mode: {FLIGHT_MODE}")
     request_data = {
-        "trip_type": trip_type,
-        "origin": origin,
-        "destination_city": destination_city,
-        "check_in_date": arrival_date.isoformat(),
-        "check_out_date": departure_date.isoformat(),
-        "adults": adults,
-        "budget_usd": budget_usd,
-        "destination_airport": destination_airport or None,
-        "rooms": rooms_text or None
+        "departure_city": prompt_until_valid("Departure city (e.g., Istanbul): ", lambda v: validate_city_name(v, "departure_city")),
+        "destination_city": prompt_until_valid("Destination city (e.g., Cairo): ", lambda v: validate_city_name(v, "destination_city")),
+        "start_date": prompt_until_valid("Start date (YYYY-MM-DD): ", lambda v: validate_date(v, "start_date")).isoformat(),
+        "return_date": prompt_until_valid("Return date (YYYY-MM-DD): ", lambda v: validate_date(v, "return_date")).isoformat()
     }
+    request_data["trip_type"] = prompt_until_valid(
+        "Trip type - '1' One-Way or '2' Round-Trip (Enter = Round-Trip): ",
+        lambda v: ({"": "round_trip", "2": "round_trip", "1": "one_way"}.get(v.strip()), None)
+        if v.strip() in ("", "1", "2") else (None, "Enter 1, 2 or press Enter."))
+    request_data["adults"] = prompt_until_valid("Adults (1-4): ", parse_int_text)
+    request_data["budget_usd"] = prompt_until_valid("Total budget in USD (e.g., 1500): ", parse_number_text)
 
     print_section("PROCESSING REQUEST")
     result = run_travelmate_engine(request_data, save_report=True)
