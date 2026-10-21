@@ -22,7 +22,7 @@ def flight(**overrides) -> SelectedFlight:
         "carrier_codes": ["TK"],
         "origin_airport": "IST",
         "destination_airport": "CAI",
-        "flight_date": date(2026, 11, 4),
+        "flight_date": date(2026, 11, 1),
         "requested_date": date(2026, 11, 1),
         "date_matches_request": True,
         "days_from_requested_date": 3,
@@ -44,7 +44,7 @@ def return_flight(**overrides) -> SelectedFlight:
         "carrier_codes": ["SM"],
         "origin_airport": "CAI",
         "destination_airport": "IST",
-        "flight_date": date(2026, 11, 8),
+        "flight_date": date(2026, 11, 5),
         "requested_date": date(2026, 11, 5),
         "date_matches_request": True,
         "days_from_requested_date": 3,
@@ -96,7 +96,7 @@ def test_selected_normalized_flights_are_summed_once_and_id_is_synthetic() -> No
     result = calculate_budget(budget_input())
 
     assert result.selected_flight_offer_id == (
-        "Turkish Airlines-2026-11-04-IST-CAI__Air Cairo-2026-11-08-CAI-IST"
+        "Turkish Airlines-2026-11-01-IST-CAI__Air Cairo-2026-11-05-CAI-IST"
     )
     flight_line = next(item for item in result.cost_items if item.category == "flights")
     assert flight_line.amount_usd == Decimal("383.56")
@@ -105,8 +105,12 @@ def test_selected_normalized_flights_are_summed_once_and_id_is_synthetic() -> No
 
 def test_date_mismatch_is_excluded_and_reported_in_notes() -> None:
     result = calculate_budget(budget_input(flights_data=FlightsData(
-        selected_outbound_flight=flight(date_matches_request=False),
-        selected_return_flight=return_flight(date_matches_request=False),
+        selected_outbound_flight=flight(
+            date_matches_request=False, flight_date=date(2026, 11, 4)
+        ),
+        selected_return_flight=return_flight(
+            date_matches_request=False, flight_date=date(2026, 11, 8)
+        ),
     )))
 
     assert next(item for item in result.cost_items if item.category == "flights").amount_usd is None
@@ -114,10 +118,26 @@ def test_date_mismatch_is_excluded_and_reported_in_notes() -> None:
     assert any("Return flight date 2026-11-08 differs from requested 2026-11-05" in note for note in result.notes)
 
 
+@pytest.mark.parametrize(
+    ("flag", "actual_date"),
+    [
+        (True, date(2026, 11, 4)),
+        (False, date(2026, 11, 1)),
+    ],
+)
+def test_flight_date_match_flag_must_agree_with_dates(flag: bool, actual_date: date) -> None:
+    with pytest.raises(ValidationError, match="date_matches_request must agree"):
+        flight(date_matches_request=flag, flight_date=actual_date)
+
+
 def test_mismatched_flights_are_excluded_from_ledger() -> None:
     result = calculate_budget(budget_input(flights_data=FlightsData(
-        selected_outbound_flight=flight(date_matches_request=False),
-        selected_return_flight=return_flight(date_matches_request=False),
+        selected_outbound_flight=flight(
+            date_matches_request=False, flight_date=date(2026, 11, 4)
+        ),
+        selected_return_flight=return_flight(
+            date_matches_request=False, flight_date=date(2026, 11, 8)
+        ),
     )))
 
     flight_line = next(item for item in result.cost_items if item.category == "flights")
@@ -125,6 +145,7 @@ def test_mismatched_flights_are_excluded_from_ledger() -> None:
     assert flight_line.amount_usd is None
     assert result.provider_subtotal_usd == Decimal("193.20")
     assert "flights" in result.missing_categories
+    assert result.selected_flight_offer_id is None
 
 
 def test_matching_flights_are_included() -> None:
@@ -282,8 +303,12 @@ def test_ziyad_fixture_slice_and_unknown_activity_path() -> None:
         food=None,
         local_transport=None,
         flights_data=FlightsData(
-            selected_outbound_flight=flight(date_matches_request=False),
-            selected_return_flight=return_flight(date_matches_request=False),
+            selected_outbound_flight=flight(
+                date_matches_request=False, flight_date=date(2026, 11, 4)
+            ),
+            selected_return_flight=return_flight(
+                date_matches_request=False, flight_date=date(2026, 11, 8)
+            ),
         ),
         activities=[ActivityItem(
             label="Unpriced activity", kind="unknown", amount_usd=None,
@@ -378,6 +403,26 @@ def test_included_in_base_is_known_total_and_has_no_unknown_fee_line() -> None:
     assert result.selected_flight_offer_id == "included-100"
     assert not any(
         item.id == "flight-taxes-fees" and item.kind == "unknown"
+        for item in result.cost_items
+    )
+
+
+def test_included_in_base_hotel_has_no_unknown_fee_line() -> None:
+    included_hotel = OfferCandidate(
+        id="included-hotel-100", base_usd=Decimal("100"),
+        additional_fees_usd=None, included_in_base=True,
+    )
+    known_fee_hotel = OfferCandidate(
+        id="known-hotel-100-plus-30", base_usd=Decimal("100"),
+        additional_fees_usd=Decimal("30"),
+    )
+    result = calculate_budget(budget_input(
+        selected_hotel=None, hotel_candidates=[included_hotel, known_fee_hotel],
+    ))
+
+    assert result.selected_hotel_offer_id == "included-hotel-100"
+    assert not any(
+        item.category == "taxes_fees" and item.source_offer_id == "included-hotel-100"
         for item in result.cost_items
     )
 
@@ -506,6 +551,33 @@ def test_partial_price_provider_550_estimates_40_null_uncertain() -> None:
     assert result.status == "over_budget"
 
 
+def test_partial_price_provider_550_estimates_40_null_uncertain_with_higher_budget() -> None:
+    data = budget_input(
+        budget_usd=Decimal("10000"),
+        flights_data=FlightsData(),
+        flight_candidates=[OfferCandidate(
+            id="provider-flight", base_usd=Decimal("550"),
+            additional_fees_usd=Decimal("0"),
+        )],
+        selected_hotel=hotel(
+            base_price_usd=Decimal("0"), taxes_and_fees_usd=Decimal("0"),
+            total_price_usd=Decimal("0"), price_per_night_usd=Decimal("0"),
+        ),
+        activities=[ActivityItem(
+            label="Trip activities", kind="estimate", amount_usd=Decimal("40"),
+            activity_ref=ActivityRef(date=date(2026, 11, 5), order=1), basis="Fixture estimate.",
+        )],
+        food=None,
+        local_transport=Decimal("0"),
+    )
+    result = calculate_budget(data)
+
+    assert result.provider_subtotal_usd == Decimal("550.00")
+    assert result.estimated_subtotal_usd == Decimal("40.00")
+    assert result.projected_total_usd is None
+    assert result.status == "uncertain"
+
+
 def test_ledger_items_are_rounded_to_cents_before_summing() -> None:
     """Decimal quantize uses the default ROUND_HALF_EVEN mode: 10.005 rounds to 10.00."""
     data = budget_input(
@@ -527,11 +599,12 @@ def test_ledger_items_are_rounded_to_cents_before_summing() -> None:
     ]
 
 
-def test_unknown_flight_id_is_not_silently_accepted() -> None:
+def test_synthetic_flight_id_format() -> None:
+    """Invalid-reference rejection belongs to BE-03; this checks the ID format only."""
     result = calculate_budget(budget_input())
 
     assert result.selected_flight_offer_id == (
-        "Turkish Airlines-2026-11-04-IST-CAI__Air Cairo-2026-11-08-CAI-IST"
+        "Turkish Airlines-2026-11-01-IST-CAI__Air Cairo-2026-11-05-CAI-IST"
     )
 
 

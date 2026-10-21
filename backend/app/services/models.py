@@ -55,6 +55,13 @@ class SelectedFlight(StrictModel):
     quoted_at: datetime
     booking_link: str
 
+    @model_validator(mode="after")
+    def date_match_flag_is_consistent(self) -> "SelectedFlight":
+        dates_match = self.flight_date == self.requested_date
+        if self.date_matches_request != dates_match:
+            raise ValueError("date_matches_request must agree with flight_date and requested_date")
+        return self
+
 
 class FlightsData(StrictModel):
     selected_outbound_flight: SelectedFlight | None = None

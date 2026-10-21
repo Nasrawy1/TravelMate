@@ -131,6 +131,7 @@ def calculate_budget(data: BudgetInput) -> BudgetOutput:
                 source_offer_id=flight_id,
             ))
         else:
+            flight_id = None
             items.append(CostItem(
                 id="flights", category="flights", label="Selected round-trip flights",
                 amount_usd=None, kind="unknown",
@@ -155,7 +156,9 @@ def calculate_budget(data: BudgetInput) -> BudgetOutput:
             basis="Selected normalized hotel candidate base price.",
             source_offer_id=hotel_id,
         ))
-        if selected_hotel_candidate.additional_fees_usd is None:
+        if selected_hotel_candidate.included_in_base:
+            pass
+        elif selected_hotel_candidate.additional_fees_usd is None:
             items.append(CostItem(
                 id="hotel-taxes-fees", category="taxes_fees", label="Selected hotel taxes and fees",
                 amount_usd=None, kind="unknown", basis="Selected hotel candidate has unknown additional fees.",
