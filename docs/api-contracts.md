@@ -82,7 +82,7 @@ The JSON Schema defines every field. Both categories always return status live o
 - Hotel area and room_qty may be null if the provider does not expose them. Null room_qty does not waive verified all-adult occupancy; exclude any quote whose occupancy cannot be established.
 - IDs are unique across all offers in a response. They identify options, not stored database records.
 - Offer price.kind is provider; amount_usd is nonnegative; coverage is entire_trip_all_travelers. Flight quotes cover the round trip for all adults. Hotel quotes cover all requested nights/adults; never multiply an already totalled quote again.
-- The adapter may combine two valid one-way quotes internally; the public shape still describes one complete round trip.
+- Approved on 2026-10-22: the Google Flights adapter uses two separate direction/date searches and combines their actual provider prices into one complete round-trip offer. Do not invent per-leg prices by splitting an aggregate fare. The public scope remains round trip.
 - source identifies the actual data service; retrieved_at is the UTC retrieval time, not a guarantee of booking availability. Preserve any older supplier quotation timestamp internally.
 - Only offers matching the request's dates, route and passenger/occupancy scope qualify. Arbitrary route-page deals are not eligible.
 - Request USD upstream when possible. Non-USD amounts require a documented conversion source/rate/time retained internally before normalization. Without an approved conversion method, exclude the offer from USD-priced results and warn; never relabel GBP as USD.
@@ -174,7 +174,7 @@ Initial configuration defaults, pending measured tests:
 - Overall generation: 60 seconds including all lookups, AI and validation.
 - Frontend transport allowance: 70 seconds.
 - At most one retry for an idempotent travel lookup on transient failure, only within the overall deadline. Honor Retry-After when it fits.
-- No automatic retry of chargeable AI generation; no auth/validation/unsupported-input retries. Prevent duplicate submits.
+- No automatic retry of chargeable AI generation or validation/unsupported-input retries. The team-lead-approved configured-key rotation policy below is an exception to the earlier blanket prohibition on credential failover; it does not authorize duplicate chargeable AI generation. Prevent duplicate submits.
 - If generation reaches its overall deadline, return 504.
 - Never expose provider secrets, tokens or raw debug responses.
 
@@ -218,3 +218,12 @@ Still pending:
 - [ ] Record team-lead integration approval after the above reviews.
 
 Provider-independent scaffolding and mock UI may proceed. This document does not claim a live provider has passed acceptance or that team review is complete.
+
+## Team-lead decisions — 2026-10-22
+
+Nasrawy approved the following limited decisions:
+- Google Flights through the third-party `google-flights2` RapidAPI service is approved as the flight provider. This is not a direct official Google API.
+- Retain two separate provider searches, one for the requested outbound direction/date and one for the return direction/date. Preserve each direction's actual provider price and sum them for the round-trip total; do not split an aggregate fare into invented per-leg amounts.
+- Retain configured API-key rotation in the project, including switching to another configured key after quota exhaustion. This supersedes earlier project instructions requiring removal of that mechanism. Existing secret-handling, deadline and bounded-execution requirements remain applicable.
+- These searches implement the existing round-trip scope. A public `one_way` option or `trip_type` field is not approved by this decision.
+- Provider adoption does not certify passenger coverage, currency or mandatory-fee completeness. Their evidence, exclusion of indicative prices from authoritative budgeting, adapter handoff and integration tests remain required. This is not blanket approval of v0.4 or completion of #17/#18.
