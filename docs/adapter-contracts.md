@@ -39,7 +39,7 @@ Rules:
 - No fixture substitution. Provider failures become unavailable; no-results is not a reason to rotate keys.
 - Currency conversion requires the reviewed policy. All flight/hotel prices are normalized before returning; uncertain occupancy or mismatched dates excludes the offer.
 - Known base quotes with unknown taxes may be returned only with taxes.status unknown.
-- Apply configured timeout bounded by deadline_at; at most one permitted travel retry.
+- Apply configured timeout bounded by deadline_at; at most one permitted transient/Retry-After travel retry. Configured-key failover is permitted under the 2026-10-22 team-lead decision below; execution remains bounded by the configured key pool and deadline.
 - An unexpected adapter programming failure is caught by orchestration, logged safely and converted to a category warning, subject to successful AI generation.
 
 ## AI adapter: generate_itinerary
@@ -80,3 +80,12 @@ Frontend receives the completed public result, never the raw internal adapter en
 - [ ] Ziyad supplies actual provider provenance, supported mapping and limitations.
 - [ ] Diyar confirms the public result matches display needs.
 - [ ] Team lead records agreement and provider/estimate decisions under PLAN-02.
+
+## Team-lead decisions — 2026-10-22
+
+Nasrawy approved the following limited decisions:
+- Google Flights through the third-party `google-flights2` RapidAPI service is approved as the flight provider. This is not a direct official Google API.
+- Retain two separate provider searches, one for the requested outbound direction/date and one for the return direction/date. Preserve each direction's actual provider price and sum them for the round-trip total; do not split an aggregate fare into invented per-leg amounts.
+- Retain configured API-key rotation in the project, including switching to another configured key after quota exhaustion. This supersedes earlier project instructions requiring removal of that mechanism. Existing secret-handling, deadline and bounded-execution requirements remain applicable.
+- These searches implement the existing round-trip scope. A public `one_way` option or `trip_type` field is not approved by this decision.
+- Provider adoption does not certify passenger coverage, currency or mandatory-fee completeness. Their evidence, exclusion of indicative prices from authoritative budgeting, adapter handoff and integration tests remain required. This is not blanket approval of v0.4 or completion of #17/#18.
