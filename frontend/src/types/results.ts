@@ -89,6 +89,9 @@ export type ResultsContext = {
   manifest: ResultsFixtureManifest
   fixtureCase: ResultsFixtureCase
 } | {
+  data_mode: 'offline_demo'
+  live_evidence: false
+} | {
   data_mode: 'validated_api'
   live_evidence: boolean
 }

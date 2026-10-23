@@ -6,7 +6,9 @@ The development-only `ResultsFixturePreview` loads `src/fixtures/resultsFixtures
 
 Selected IDs, totals, status, missing categories, notes and warnings belong to the backend. Presentation only orders selected offers first and formats amounts/dates; it never chooses a cheapest offer, sums costs, calculates an overage or changes status. Machine-like fixture expense labels get readable names; custom backend labels are preserved. Timestamp displays explicitly use UTC. No fixture amount is labeled Live, even when payload fields say `kind=provider` or `status=live`.
 
-Before real integration: approve v0.4, supply full schema/semantic response validation at the generation boundary, pass the validated response to this route, and construct trusted API provenance. Do not pass unchecked `fetch().json()` values or router state directly to these components. No authenticated route guard, transport, persistence or offline-demo implementation is included here.
+`OfflineDemoPage` also uses these components with `data_mode=offline_demo` and `live_evidence=false`. It supplies a permanent DEMO banner; provider-shaped amounts become Demo price, source timestamps are marked sample, and the summary offers an explicit exit to Signup. The bundled production samples are separate from DEV-only Results fixtures. No amounts, selections or statuses are recalculated. Diyar reported successful Wi-Fi-disconnected production preview operation for all three demo journeys. See the [frontend evidence record](../../../README.md#manual-offline-evidence-reported-by-diyar) for the separate manual and automated results, favicon 404 and remaining review items; second-computer testing remains unverified.
+
+Before real integration: approve v0.4, supply full schema/semantic response validation at the generation boundary, pass the validated response to this route, and construct trusted API provenance. Do not pass unchecked `fetch().json()` values or router state directly to these components. No authenticated route guard, transport or persistence is implemented by these presentation components.
 
 Run from `frontend/`:
 

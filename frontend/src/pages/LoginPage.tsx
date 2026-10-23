@@ -105,7 +105,7 @@ export default function LoginPage() {
               </button>
             </form>}
             <div className="login-divider"><span />or<span /></div>
-            <Link to="/offline-demo" className="login-demo-link"><span>DEMO</span>Demo trips are coming soon.</Link>
+            <Link to="/offline-demo" className="login-demo-link"><span>DEMO</span>Explore a demo trip</Link>
           </section>
         </div>
       </main>

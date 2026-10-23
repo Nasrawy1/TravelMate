@@ -93,6 +93,19 @@ test('anonymous Welcome retains signup entry and signin links', () => {
   assert.ok(html.includes('Already have an account?')); assert.ok(html.includes('>Sign in</a>'))
 })
 
+test('Welcome demo cards target each bundled trip and anonymous Auth pages offer the working demo', () => {
+  const html = render('WelcomePage', 'anonymous')
+  for (const id of ['rome', 'paris', 'barcelona']) assert.ok(html.includes(`href="/offline-demo?trip=${id}"`))
+  assert.ok(html.includes('Istanbul → Rome'))
+  assert.ok(!html.includes('[City A'))
+  assert.ok(!html.includes('demo placeholder'))
+  for (const page of ['LoginPage', 'SignupPage']) {
+    const auth = render(page, 'anonymous')
+    assert.match(auth, /href="\/offline-demo"[^>]*>.*?Explore a demo trip/)
+    assert.ok(!auth.includes('coming soon'))
+  }
+})
+
 test('session initialization exposes no planning route or form that could misdirect a restored user', () => {
   const html = render('WelcomePage', 'checking')
   assert.match(html, /<button[^>]*disabled=""[^>]*>Checking session/)

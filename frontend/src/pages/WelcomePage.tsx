@@ -4,6 +4,8 @@ import RivieraLogo from '../components/welcome/RivieraLogo'
 import TripPostcards from '../components/welcome/TripPostcards'
 import { useAuthSession } from '../components/auth/AuthSessionProvider'
 import AuthNavigationLink from '../components/auth/AuthNavigationLink'
+import { OFFLINE_DEMO_IDS, getOfflineDemoTrip } from '../data/offlineDemo'
+import { formatMoney } from '../utils/results'
 import '../styles/welcome.css'
 
 const steps = [
@@ -37,7 +39,7 @@ export default function WelcomePage() {
             <p className="welcome-intro">Pick your cities, dates and budget. Get a day-by-day itinerary with real flight or hotel prices, and a straight answer on whether it all fits.</p>
             <div className="welcome-actions">
               {checking ? <button type="button" className="welcome-button welcome-button-primary" disabled>Checking session…</button> : <Link to={entryPath} className="welcome-button welcome-button-primary">Plan my trip</Link>}
-              <a href="#demo" className="welcome-button welcome-button-secondary">See a demo</a>
+              <Link to="/offline-demo" className="welcome-button welcome-button-secondary">See a demo</Link>
             </div>
             <p className="welcome-account" role="status">{checking ? 'Checking your session before you continue…' : signedIn ? <>{auth.user?.displayName ? `Welcome back, ${auth.user.displayName}.` : "You're signed in."} Ready to plan your next trip.</> : auth.status === 'unavailable' ? <>We couldn't verify your session. <Link to="/login">Check your account</Link></> : <>Already have an account? <Link to="/login">Sign in</Link></>}</p>
           </div>
@@ -78,17 +80,20 @@ export default function WelcomePage() {
             <div className="welcome-demo-heading">
               <span className="welcome-demo-badge">DEMO</span>
               <h2 id="demo-title">Try it without an account</h2>
-              <p>Ready-made sample trips will work offline, use no live prices, and save nothing. Demo trips are being prepared; these cards open the demo placeholder.</p>
+              <p>Explore three read-only sample trips without an account. Prices are examples, not live, and nothing is sent or saved.</p>
             </div>
             <div className="welcome-demo-grid">
-              {[1, 2, 3].map((number) => (
-                <Link to="/offline-demo" className="welcome-demo-card" key={number} aria-label={`Demo trip ${number} — open demo placeholder`}>
-                  <span className="welcome-demo-card-label">DEMO TRIP {number}</span>
-                  <span className="welcome-demo-card-title">[City A → City B]</span>
-                  <span className="welcome-demo-card-details">[Nights] · [Adults] · [Budget]</span>
-                  <span className="welcome-demo-card-link">Open demo <span aria-hidden="true">→</span></span>
-                </Link>
-              ))}
+              {OFFLINE_DEMO_IDS.map((id, index) => {
+                const sample = getOfflineDemoTrip(id)!
+                return (
+                  <Link to={`/offline-demo?trip=${id}`} className="welcome-demo-card" key={id} aria-label={`Open ${sample.label} demo trip`}>
+                    <span className="welcome-demo-card-label">DEMO TRIP {index + 1}</span>
+                    <span className="welcome-demo-card-title">{sample.label}</span>
+                    <span className="welcome-demo-card-details">{sample.response.trip.nights} nights · {sample.response.trip.adults} adult{sample.response.trip.adults === 1 ? '' : 's'} · {formatMoney(sample.response.budget.budget_usd)}</span>
+                    <span className="welcome-demo-card-link">Open demo <span aria-hidden="true">→</span></span>
+                  </Link>
+                )
+              })}
             </div>
           </div>
         </section>

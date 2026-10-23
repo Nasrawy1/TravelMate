@@ -16,7 +16,7 @@ Signup and Login call the shared Supabase client when configured. Signup sends `
 
 **Results** implements reusable Riviera trip summary, selected offers, daily itinerary, warnings, budget and itemized-expense components. Direct `/results` navigation shows an honest empty state. In development, expand **Development only · Results fixture preview** and choose one of the six repository success fixtures. A sticky, non-dismissible MOCK banner remains visible; provider-shaped fixture amounts say **Sample price**, never Live. Supplied totals/status are formatted without recalculation, and unknown amounts remain unknown. The manifest and matching case metadata travel with each response; fixture imports and controls are excluded from production assets.
 
-Offline Demo remains a **placeholder page**. There is no real generated itinerary or complete offline demo. Supabase Auth and a reusable FastAPI HTTP client are implemented; the development-only JWT probe uses that client, while product trip-generation flows remain unconnected. The Supabase SDK connects only when valid local configuration is supplied. Complete offline-demo journeys remain FE-03 work. Final API contract adoption still requires PLAN-02 (#11) review.
+**Offline Demo** at `/offline-demo` displays three bundled read-only journeys using shared Results components: Rome (within budget), Paris (over budget) and Barcelona (uncertain with missing hotel/tax costs). Native trip buttons support keyboard selection, `?trip=rome|paris|barcelona` supports direct links and browser history, and a permanent DEMO ribbon explains that prices are samples. Offers say **Demo price**, sources/timestamps are explicitly sample metadata, and unknown costs remain unknown. No signup, generation or saving is involved. Diyar reported a successful Wi-Fi-disconnected production preview test; see the FE-03 evidence record below. Supabase Auth and a reusable FastAPI HTTP client are implemented; the development-only JWT probe uses that client, while product trip-generation flows remain unconnected. The Supabase SDK connects only when valid local configuration is supplied. See [the offline sample-data documentation](src/data/offlineDemo/README.md) for provenance and validation. Final API contract adoption still requires PLAN-02 (#11) review.
 
 ## Prerequisites
 
@@ -100,7 +100,7 @@ Verification on 2026-10-15 (Windows, Node.js 24.15.0, npm 11.12.1): a clean `npm
 | `/auth/callback` | Optional confirmation callback/error UI; new-path use requires redirect allowlisting |
 | `/trip-planner` | Validated Trip Planner with local request preview; development-only MOCK lifecycle/error inspector |
 | `/results` | Empty state by default; reusable Results UI with development-only structural fixture previews |
-| `/offline-demo` | Explicitly labeled DEMO placeholder; no bundled trips loaded |
+| `/offline-demo` | Three read-only sample trips; permanent DEMO label; no Auth/backend |
 | Any other path | Page-not-found placeholder |
 
 Routes remain public in this increment; Auth session UI does not protect backend data or enable generation. Opening `/reset-password` is not authorization to update credentials; a fresh verified recovery callback/session is required. There is no fake link-sent or password-updated screen.
@@ -111,7 +111,7 @@ BrowserRouter supports client navigation and direct links through Vite. A future
 
 - `src/main.tsx`: React entry point, BrowserRouter and global CSS.
 - `src/App.tsx`: route definitions.
-- `src/pages/`: Welcome/auth/recovery, Trip Planner and Results UI; demo placeholder.
+- `src/pages/`: Welcome/auth/recovery, Trip Planner, Results and Offline Demo UI.
 - `src/components/welcome/`: shared Riviera logo, price badges and illustrative postcards.
 - `src/components/auth/`: reusable password input and recovery layout/error/submit components.
 - `src/components/results/`: presentation components accepting v0.4 candidate responses and explicit provenance; a separate development-only fixture selector.
@@ -131,7 +131,7 @@ Scope follows the repository’s MVP scope and architecture: one destination, 1�
 
 Supabase Auth and protected JWT transport have been implemented and tested locally as recorded below. Real trip-generation endpoint integration and its generation-to-Results handoff remain pending. Future generation responses need full schema and semantic validation before passing them to the shared Results components. A trusted adapter must construct the `validated_api` provenance context; `live_evidence` must come from verified provider-sourced backend output. The public API does not carry the fixture manifest, and a badge alone is not live-price evidence. Fixture loading is isolated from the generation controller: selecting a fixture never completes a pending generation or establishes a session.
 
-The current pages use local UI assets but request Fraunces/Figtree from Google Fonts. Fallback system/serif fonts are available without that network access. Direct Offline Demo does not initialize Auth or contact providers; configured online routes may contact Supabase. Offline Demo is only a labeled entry placeholder, not the FE-03 implementation or a verified offline handover. Complete online/demo operation and second-computer testing remain later work.
+Runtime Google Fonts loading has been removed. No local font files were available, so the demo uses Georgia/serif headings and system-ui body text, preserving Riviera colors, spacing and responsive layout. Other screens retain their existing fallback stacks and no longer download fonts either. All demo illustrations are inline SVG; JavaScript, CSS and the three sample journeys are bundled locally. Direct Offline Demo does not initialize Auth or contact providers; configured online routes may contact Supabase. Production asset tests verify local asset references and demo inclusion. Diyar reported a successful real Wi-Fi-disconnected production preview test, recorded below separately from automated evidence. Second-computer handover remains unverified.
 
 ## BE-02 Auth and JWT verification
 
@@ -170,3 +170,131 @@ Supabase's implicit verification path can issue generic `otp` claims, which rema
 URL cleanup is intentional: credentials/codes and optional flow correlation are captured in memory before history replacement, then passed explicitly to SDK methods while automatic URL detection stays off. React StrictMode/concurrent processing shares one exchange promise. Cleanup does not consume the email verification link or remove its captured credentials prematurely.
 
 PKCE requires the browser/profile and exact origin that stored its verifier. Requesting an email in the Codex in-app browser and opening it in Chrome does not share that verifier. Respect provider cooldowns and avoid overlapping flows when repeating a manual test. If verification fails, record only safe error categories and have Adel inspect Auth logs privately; never share full recovery links or credentials.
+
+## FE-03 production offline verification
+
+Prepare dependencies while internet is available, then build and serve locally:
+
+```sh
+cd frontend
+npm ci
+npm run build
+npm run preview
+```
+
+Open `http://localhost:4173/offline-demo` directly; no account or environment
+configuration is required. Preview must stay running. Disconnect external internet
+while keeping localhost/loopback available, then cold-load/reload each of:
+
+- `/offline-demo?trip=rome`
+- `/offline-demo?trip=paris`
+- `/offline-demo?trip=barcelona`
+
+Use a fresh browser context or disable the HTTP cache to avoid relying on cached
+Google fonts or assets. Check selection, Back/Forward, reloads, all itinerary days,
+budget details, unknown costs and the permanent DEMO banner. Inspect the network
+log: only the local preview origin should be requested; no font CDN, Supabase,
+FastAPI, AI, analytics or travel-provider request should occur. Do not select a
+browser Offline setting that also blocks localhost when testing a cold load.
+
+The demo data is statically imported into local production JavaScript; switching
+trips needs no lazy fetch. Production chunk/import tests check that any emitted
+JavaScript dependencies resolve to bundled files. Development-only fixture and
+JWT-probe chunks remain excluded. This is a locally served offline presentation,
+not a service-worker installation: stopping the server or blocking loopback is
+not supported. The manual results below record the reported disconnected-browser
+run; second-computer testing is not claimed.
+
+### Manual offline evidence reported by Diyar
+
+**Recorded:** 2026-10-24. **Branch:** `feat/fe-03-offline-demo`.
+**Environment reported:** Chrome, production preview at
+`http://localhost:4173/offline-demo`, Wi-Fi disconnected, localhost preview server
+still running after dependencies and production assets were prepared locally.
+
+This is sanitized **user-reported manual evidence**, not an automated test or an
+agent-observed network-disconnection test. No raw Network export/HAR or screenshot
+was supplied with this report; the observations below are recorded as reported.
+They contain no credentials, account identifiers or private configuration.
+
+| Manual check | Reported observation | Result |
+|---|---|---|
+| Istanbul → Rome | Hard reload succeeded with Wi-Fi disconnected. | PASS |
+| London → Paris | Loaded offline; Over budget with a $670 sample projected total. | PASS |
+| Dubai → Barcelona | Loaded offline; Uncertain budget, hotel unavailable and flight taxes unknown. | PASS |
+| Sample provenance | All screens retained a visible DEMO banner and sample-price labels. | PASS |
+| Local application assets | Chrome Network showed only localhost document, JavaScript and CSS requests returning HTTP 200, plus the favicon request below. | PASS |
+| External requests | No Supabase, FastAPI, Google Fonts or other external requests appeared in the captured log, according to the report. | PASS |
+| Local favicon | `favicon.ico` returned HTTP 404 from localhost. | Non-blocking polish issue |
+
+The favicon failure does not prevent sample loading and is not an external
+request. It was not fixed in this documentation-only update. No claim is made
+that separate cold-cache reloads of Paris/Barcelona, Back/Forward while
+Wi-Fi-disconnected, a signed-out fresh-profile run, other browsers or a second
+computer were manually tested. No-sign-in access is additionally supported by
+route inspection and configured-client isolation tests. The reported hard reload,
+all-three-trip display and local-only Network observations cover Issue #27's
+required offline demonstration; the extra cases above remain useful handover
+checks rather than silently assumed results.
+
+### Automated verification rerun
+
+These checks were executed separately from Diyar's manual browser test when
+recording this evidence. They do not simulate a physical Wi-Fi disconnection:
+
+| Check | Result |
+|---|---|
+| `node --experimental-strip-types --test tests/*.test.mjs` from `frontend/` | 232 passed, 0 failed |
+| `python tests/validate_offline_demo.py` from `frontend/`, with `jsonschema` available | 23 passed: all three original datasets, schema/semantic checks, provenance and 15 rejected invalid mutations |
+| `python docs/contracts/validate_fixtures.py` from the repository root | 12 shared fixtures passed; 8 invalid mutations rejected |
+| `npm run typecheck` from `frontend/` | PASS |
+| `npm run build` from `frontend/` | PASS; existing warning for a JavaScript chunk larger than 500 kB |
+| `git diff --check` and new-file whitespace inspection | PASS |
+
+Schema and semantic checks use the checked-in v0.4 schema and shared validator,
+with the documented fixed fixture clock of 2026-10-15 UTC. They verify selected
+offer references, fee-aware selection, ledger links and arithmetic, complete
+itinerary dates, tax semantics, budget status, unknown/null amounts and explicit
+zero estimates. The frontend formats supplied totals without recalculating them.
+Automated coverage also checks that all three journeys are in production assets,
+all emitted asset/chunk references are local, DEV fixture tools and the JWT probe
+are excluded, and direct demo rendering does not initialize the configured Auth
+client. These are complementary checks, not evidence of live travel prices.
+
+### Issue #27 task and acceptance coverage
+
+Source: [FE-03: Implement Explicit Offline Demo](https://github.com/Nasrawy1/TravelMate/issues/27).
+All six tasks and all three acceptance criteria are covered by the implementation
+and evidence below. This local record does not change GitHub checkbox states or
+claim team review/merge approval.
+
+| Issue requirement | Status | Implementation and evidence |
+|---|---|---|
+| Task: bundle 2–3 complete predefined trips locally | PASS | `src/data/offlineDemo/{rome,paris,barcelona}.json`; `offlineDemo.test.mjs`, `validate_offline_demo.py` and production asset tests. |
+| Task: clear DEMO status; samples are not real-price evidence | PASS | Permanent banner in `src/pages/OfflineDemoPage.tsx`; shared Demo price labeling through `src/utils/results.ts`; UI tests and reported manual observations. |
+| Task: reuse Results components with explicit demo context | PASS | `OfflineDemoPage` passes `data_mode=offline_demo`, `live_evidence=false` to `TripResults`; shared offers, budget and itinerary components; `offlineDemoUi.test.mjs`. |
+| Task: access without sign-in, backend generation, Supabase or external-provider calls | PASS | Route outside Auth providers in `src/App.tsx`; local data imports, Auth initialization sentinel in `authRoutes.test.mjs`, service-free demo graph test, and reported local-only Network log. No manual fresh-profile claim. |
+| Task: initialize online services only for the selected online flow | PASS | Lazy `getSupabaseClient` construction and online route providers; demo stays outside both providers. Auth isolation tests and reported absence of Auth/API requests. Online exit links leave the demo explicitly. |
+| Task: verify operation with network disabled after local installation | PASS | Diyar's reported Wi-Fi-disconnected production preview test, with localhost server kept running. |
+| Acceptance: all sample trips open/display without network access | PASS | All three trips reported displayed while Wi-Fi was disconnected; Rome hard reload explicitly reported. |
+| Acceptance: no authentication, generation or save requests | PASS | Demo has no request/save controls or service imports; configured-client isolation tests and reported local-only Network log. |
+| Acceptance: clear DEMO status; unknown prices are not zero | PASS | Reported visible labels and Barcelona missing-price state; UI/data tests verify unknown hotel/taxes/total remain null or Unknown/Not calculable, while explicit free activities remain zero. |
+| Deliverables: offline demo, local samples, instructions and test evidence | PASS | Implemented route and bundled data; setup/retest instructions and separate manual/automated evidence in this README. |
+
+### Delivery assessment and remaining review items
+
+**PASS for implemented FE-03 #27 functionality and recorded evidence.** No
+confirmed functional blocker remains from these checks. The local favicon 404
+and existing bundle-size warning are non-blocking and remain documented.
+
+Before delivery, Ali/Nasrawy should review the three proposed journeys and the
+intentional Georgia/system-ui fallback typography. SPEC §10 still requests final
+journey agreement; this record does not invent that approval. The checked-in
+contract remains labeled a v0.4 review candidate; the demo validates against it,
+without implying approval or enabling real API integration. Revalidate if the
+adopted contract changes. Second-computer handover remains outside the evidence
+provided here and is still part of broader MVP handover work.
+
+All FE-03 changes remain local and uncommitted. Staging, commit, push, PR review
+and merge have not been performed by this verification update. Backend, online
+Auth/generation logic and environment files are unchanged by this update.
