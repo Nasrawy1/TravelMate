@@ -7,8 +7,10 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from app.api.error_mapping import TripRequestError, trip_request_error_handler
 from app.api.routes.health import router as health_router
 from app.api.routes.auth_probe import router as auth_probe_router
+from app.api.routes.trips import router as trips_router
 from app.errors import (
     http_exception_handler,
     unhandled_exception_handler,
@@ -65,8 +67,10 @@ def create_app(
     api.add_exception_handler(StarletteHTTPException, http_exception_handler)
     api.add_exception_handler(RequestValidationError, validation_exception_handler)
     api.add_exception_handler(Exception, unhandled_exception_handler)
+    api.add_exception_handler(TripRequestError, trip_request_error_handler)
 
     api.include_router(health_router, prefix="/api/v1")
+    api.include_router(trips_router, prefix="/api/v1")
 
     if os.getenv("ENABLE_AUTH_PROBE", "false").strip().lower() == "true":
         api.include_router(auth_probe_router, prefix="/api/v1")
