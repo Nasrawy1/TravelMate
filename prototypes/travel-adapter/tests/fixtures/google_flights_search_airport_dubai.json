@@ -1,0 +1,133 @@
+{
+ "status": true,
+ "message": "Success",
+ "timestamp": 1792741993987,
+ "data": [
+  {
+   "id": "/m/01f08r",
+   "type": "other",
+   "title": "Dubai - United Arab Emirates",
+   "subtitle": "City in the United Arab Emirates",
+   "city": "Dubai",
+   "distance": null,
+   "list": [
+    {
+     "id": "DXB",
+     "type": "airport",
+     "title": "Dubai International Airport",
+     "subtitle": "6 mi to destination",
+     "city": "Dubai",
+     "distance": "6 mi"
+    },
+    {
+     "id": "SHJ",
+     "type": "airport",
+     "title": "Sharjah International Airport",
+     "subtitle": "17 mi to destination",
+     "city": "Sharjah",
+     "distance": "17 mi"
+    },
+    {
+     "id": "AUH",
+     "type": "airport",
+     "title": "Zayed International Airport",
+     "subtitle": "66 mi to destination",
+     "city": "Abu Dhabi",
+     "distance": "66 mi"
+    },
+    {
+     "id": "DWC",
+     "type": "airport",
+     "title": "Al Maktoum International Airport (DWC)",
+     "subtitle": "21 mi to destination",
+     "city": "Dubai",
+     "distance": "21 mi"
+    }
+   ]
+  },
+  {
+   "id": "/m/025smcz",
+   "type": "other",
+   "title": "Palm Jumeirah - United Arab Emirates",
+   "subtitle": "Island in Dubai, United Arab Emirates",
+   "city": "Palm Jumeirah",
+   "distance": null,
+   "list": [
+    {
+     "id": "DXB",
+     "type": "airport",
+     "title": "Dubai International Airport",
+     "subtitle": "16 mi to destination",
+     "city": "Dubai",
+     "distance": "16 mi"
+    },
+    {
+     "id": "AUH",
+     "type": "airport",
+     "title": "Zayed International Airport",
+     "subtitle": "55 mi to destination",
+     "city": "Abu Dhabi",
+     "distance": "55 mi"
+    },
+    {
+     "id": "SHJ",
+     "type": "airport",
+     "title": "Sharjah International Airport",
+     "subtitle": "27 mi to destination",
+     "city": "Sharjah",
+     "distance": "27 mi"
+    },
+    {
+     "id": "DWC",
+     "type": "airport",
+     "title": "Al Maktoum International Airport (DWC)",
+     "subtitle": "13 mi to destination",
+     "city": "Dubai",
+     "distance": "13 mi"
+    },
+    {
+     "id": "RKT",
+     "type": "airport",
+     "title": "Ras Al Khaimah International Airport",
+     "subtitle": "60 mi to destination",
+     "city": "Ras Al Khaimah",
+     "distance": "60 mi"
+    },
+    {
+     "id": "FJR",
+     "type": "airport",
+     "title": "Fujairah International Airport",
+     "subtitle": "73 mi to destination",
+     "city": "Fujairah",
+     "distance": "73 mi"
+    },
+    {
+     "id": "AAN",
+     "type": "airport",
+     "title": "Al Ain International Airport",
+     "subtitle": "65 mi to destination",
+     "city": "Al Ain",
+     "distance": "65 mi"
+    }
+   ]
+  },
+  {
+   "id": "/g/120p4gkw",
+   "type": "other",
+   "title": "Ad Dubaiyah Saudi Arabia",
+   "subtitle": null,
+   "city": "Ad Dubaiyah",
+   "distance": null,
+   "list": [
+    {
+     "id": "RUH",
+     "type": "airport",
+     "title": "King Khalid International Airport",
+     "subtitle": "68 mi to destination",
+     "city": "Riyadh",
+     "distance": "68 mi"
+    }
+   ]
+  }
+ ]
+}

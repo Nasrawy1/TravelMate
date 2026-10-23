@@ -1,0 +1,159 @@
+{
+  "Riyadh": {
+    "search_id": "/m/0dlm_",
+    "source": "verified_lookup",
+    "http_status": 200,
+    "google_area_airports": {
+      "RUH": "Riyadh"
+    },
+    "our_airports_in_area": [
+      "RUH"
+    ],
+    "our_airports_missing_from_area": [],
+    "nearby_other_city_airports": {},
+    "nearby_without_timezone": []
+  },
+  "Jeddah": {
+    "search_id": "/m/01pk8b",
+    "source": "verified_lookup",
+    "http_status": 200,
+    "google_area_airports": {
+      "JED": "Jeddah"
+    },
+    "our_airports_in_area": [
+      "JED"
+    ],
+    "our_airports_missing_from_area": [],
+    "nearby_other_city_airports": {},
+    "nearby_without_timezone": []
+  },
+  "Doha": {
+    "search_id": "/m/0f2yw",
+    "source": "verified_lookup",
+    "http_status": 200,
+    "google_area_airports": {
+      "DOH": "Doha"
+    },
+    "our_airports_in_area": [
+      "DOH"
+    ],
+    "our_airports_missing_from_area": [],
+    "nearby_other_city_airports": {},
+    "nearby_without_timezone": []
+  },
+  "Amman": {
+    "search_id": "/m/0c7zf",
+    "source": "verified_lookup",
+    "http_status": 200,
+    "google_area_airports": {
+      "AMM": "Amman"
+    },
+    "our_airports_in_area": [
+      "AMM"
+    ],
+    "our_airports_missing_from_area": [],
+    "nearby_other_city_airports": {},
+    "nearby_without_timezone": []
+  },
+  "Baghdad": {
+    "search_id": "/m/01fqm",
+    "source": "verified_lookup",
+    "http_status": 200,
+    "google_area_airports": {
+      "BGW": "Baghdad"
+    },
+    "our_airports_in_area": [
+      "BGW"
+    ],
+    "our_airports_missing_from_area": [],
+    "nearby_other_city_airports": {},
+    "nearby_without_timezone": []
+  },
+  "Erbil": {
+    "search_id": "/m/03n7br",
+    "source": "verified_lookup",
+    "http_status": 200,
+    "google_area_airports": {
+      "EBL": "Erbil"
+    },
+    "our_airports_in_area": [
+      "EBL"
+    ],
+    "our_airports_missing_from_area": [],
+    "nearby_other_city_airports": {},
+    "nearby_without_timezone": []
+  },
+  "London": {
+    "search_id": "/m/04jpl",
+    "source": "verified_lookup",
+    "http_status": 200,
+    "google_area_airports": {
+      "LHR": "London",
+      "STN": "London",
+      "LGW": "London",
+      "LTN": "London",
+      "LCY": "London",
+      "SEN": "London",
+      "/m/04jpl": "London"
+    },
+    "our_airports_in_area": [
+      "LHR",
+      "STN",
+      "LGW",
+      "LTN",
+      "LCY"
+    ],
+    "our_airports_missing_from_area": [],
+    "nearby_other_city_airports": {
+      "SEN": "London",
+      "/m/04jpl": "London"
+    },
+    "nearby_without_timezone": [
+      "/m/04jpl"
+    ]
+  },
+  "Paris": {
+    "search_id": "/m/05qtj",
+    "source": "verified_lookup",
+    "http_status": 200,
+    "google_area_airports": {
+      "CDG": "Paris",
+      "ORY": "Paris",
+      "BVA": "Paris",
+      "/m/05qtj": "Paris"
+    },
+    "our_airports_in_area": [
+      "CDG",
+      "ORY"
+    ],
+    "our_airports_missing_from_area": [],
+    "nearby_other_city_airports": {
+      "BVA": "Paris",
+      "/m/05qtj": "Paris"
+    },
+    "nearby_without_timezone": [
+      "/m/05qtj"
+    ]
+  },
+  "Rome": {
+    "search_id": "/m/06c62",
+    "source": "verified_lookup",
+    "http_status": 200,
+    "google_area_airports": {
+      "FCO": "Rome",
+      "CIA": "Rome",
+      "/m/06c62": "Rome"
+    },
+    "our_airports_in_area": [
+      "FCO",
+      "CIA"
+    ],
+    "our_airports_missing_from_area": [],
+    "nearby_other_city_airports": {
+      "/m/06c62": "Rome"
+    },
+    "nearby_without_timezone": [
+      "/m/06c62"
+    ]
+  }
+}

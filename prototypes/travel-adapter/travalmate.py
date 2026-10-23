@@ -115,6 +115,17 @@ PROVIDER_INFO = {
         "timeout_seconds": GOOGLE_FLIGHTS_TIMEOUT_SECONDS,
         "retry_on_timeout": False  # A slow search is not retried: it would double the user's waiting time
     },
+    "google_flights_airport": {
+        "label": "Google Flights City Lookup",
+        "provider": "Google Flights (google-flights2, RapidAPI marketplace)",
+        "integration_type": "rapidapi_third_party",
+        "upstream_source": "google.com/travel/flights airport and city search",
+        "host": GOOGLE_FLIGHTS_HOST,
+        "path": "/api/v1/searchAirport",
+        "key_env_prefix": "GOOGLE_FLIGHTS",
+        "timeout_seconds": GOOGLE_FLIGHTS_TIMEOUT_SECONDS,
+        "retry_on_timeout": False
+    },
     "booking_destination": {
         "label": "Hotel Destination Lookup",
         "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
@@ -783,41 +794,63 @@ def convert_to_usd(amount, currency, fx):
 # ==========================================
 # 9. SUPPORTED CITIES, AIRPORTS & COVERAGE LIMITS
 # ==========================================
+# Google city IDs (google_city_id) for all 12 cities were verified live with searchAirport on 2026-10-21/23:
+# each ID's area contains all of the city's airports below (evidence/google-flights-city-lookup-20261023/).
 # Canonical city labels (public request values). "booking_dest_id" is either pinned (verified value) or resolved once
 # through Booking.com searchDestination, verified (type = city, same country code and name) and cached.
 # Cities that are not listed here are unsupported searches.
 SUPPORTED_CITIES = {
     "Istanbul": {"country_code": "tr", "airports": ["IST", "SAW"], "timezone": "Europe/Istanbul",
-                 "center": (41.0082, 28.9784), "booking_dest_id": None, "aliases": []},
+                 "center": (41.0082, 28.9784), "booking_dest_id": None, "aliases": [],
+                 "google_city_id": "/m/09949m"},  # Verified 2026-10-21 (searchAirport: IST + SAW)
     "Cairo": {"country_code": "eg", "airports": ["CAI"], "timezone": "Africa/Cairo",
-              "center": (30.0444, 31.2357), "booking_dest_id": "-290692", "aliases": []},  # Verified 2026-10-17
+              "center": (30.0444, 31.2357), "booking_dest_id": "-290692", "aliases": [],
+             "google_city_id": "/m/01w2v"},  # Verified 2026-10-17
     "Rome": {"country_code": "it", "airports": ["FCO", "CIA"], "timezone": "Europe/Rome",
-             "center": (41.9028, 12.4964), "booking_dest_id": None, "aliases": ["roma"]},
+             "center": (41.9028, 12.4964), "booking_dest_id": None, "aliases": ["roma"],
+            "google_city_id": "/m/06c62"},
     "Riyadh": {"country_code": "sa", "airports": ["RUH"], "timezone": "Asia/Riyadh",
-               "center": (24.7136, 46.6753), "booking_dest_id": None, "aliases": ["ar riyadh", "al riyadh"]},
+               "center": (24.7136, 46.6753), "booking_dest_id": None, "aliases": ["ar riyadh", "al riyadh"],
+              "google_city_id": "/m/0dlm_"},
     "Jeddah": {"country_code": "sa", "airports": ["JED"], "timezone": "Asia/Riyadh",
-               "center": (21.4858, 39.1925), "booking_dest_id": None, "aliases": ["jedda", "jiddah"]},
+               "center": (21.4858, 39.1925), "booking_dest_id": None, "aliases": ["jedda", "jiddah"],
+              "google_city_id": "/m/01pk8b"},
     "Dubai": {"country_code": "ae", "airports": ["DXB", "DWC"], "timezone": "Asia/Dubai",
-              "center": (25.2048, 55.2708), "booking_dest_id": None, "aliases": []},
+              "center": (25.2048, 55.2708), "booking_dest_id": None, "aliases": [],
+              "google_city_id": "/m/01f08r"},  # Verified 2026-10-23 (also covers SHJ / AUH: other cities)
     "Doha": {"country_code": "qa", "airports": ["DOH"], "timezone": "Asia/Qatar",
-             "center": (25.2854, 51.5310), "booking_dest_id": None, "aliases": []},
+             "center": (25.2854, 51.5310), "booking_dest_id": None, "aliases": [],
+            "google_city_id": "/m/0f2yw"},
     "Amman": {"country_code": "jo", "airports": ["AMM"], "timezone": "Asia/Amman",
-              "center": (31.9539, 35.9106), "booking_dest_id": None, "aliases": []},
+              "center": (31.9539, 35.9106), "booking_dest_id": None, "aliases": [],
+             "google_city_id": "/m/0c7zf"},
     "Baghdad": {"country_code": "iq", "airports": ["BGW"], "timezone": "Asia/Baghdad",
-                "center": (33.3152, 44.3661), "booking_dest_id": None, "aliases": []},
+                "center": (33.3152, 44.3661), "booking_dest_id": None, "aliases": [],
+               "google_city_id": "/m/01fqm"},
     "Erbil": {"country_code": "iq", "airports": ["EBL"], "timezone": "Asia/Baghdad",
-              "center": (36.1911, 44.0092), "booking_dest_id": None, "aliases": ["arbil", "hawler"]},
-    "London": {"country_code": "gb", "airports": ["LHR", "LGW", "STN", "LTN", "LCY"], "timezone": "Europe/London",
-               "center": (51.5074, -0.1278), "booking_dest_id": None, "aliases": []},
+              "center": (36.1911, 44.0092), "booking_dest_id": None, "aliases": ["arbil", "hawler"],
+             "google_city_id": "/m/03n7br"},
+    "London": {"country_code": "gb", "airports": ["LHR", "LGW", "STN", "LTN", "LCY", "SEN"], "timezone": "Europe/London",
+               "center": (51.5074, -0.1278), "booking_dest_id": None, "aliases": [],
+              "google_city_id": "/m/04jpl"},
     "Paris": {"country_code": "fr", "airports": ["CDG", "ORY"], "timezone": "Europe/Paris",
-              "center": (48.8566, 2.3522), "booking_dest_id": None, "aliases": []}
+              "center": (48.8566, 2.3522), "booking_dest_id": None, "aliases": [],
+             "google_city_id": "/m/05qtj"}
 }
 AIRPORT_CODE_PATTERN = re.compile(r"^[A-Z]{3}$")
 # Every configured airport code must be exactly three letters
 assert all(AIRPORT_CODE_PATTERN.match(a) for c in SUPPORTED_CITIES.values() for a in c["airports"])
 
+# City names of airports that Google Flights includes in a city area but that belong to ANOTHER city.
+# Flights using them are never selected; they can only appear as labeled nearby-airport alternatives.
+NEARBY_AIRPORT_CITIES = {"SHJ": "Sharjah", "AUH": "Abu Dhabi", "BVA": "Beauvais", "HHN": "Hahn",
+                         "ADB": "Izmir", "ESB": "Ankara", "MCT": "Muscat"}
+NEARBY_AIRPORT_TIMEZONES = {"SHJ": "Asia/Dubai", "AUH": "Asia/Dubai", "BVA": "Europe/Paris", "HHN": "Europe/Berlin",
+                            "ADB": "Europe/Istanbul", "ESB": "Europe/Istanbul", "MCT": "Asia/Muscat"}
+
 # IANA time zones used to verify that flight dates are local departure dates
 AIRPORT_TIMEZONES = {airport: city["timezone"] for city in SUPPORTED_CITIES.values() for airport in city["airports"]}
+AIRPORT_TIMEZONES.update({code: zone for code, zone in NEARBY_AIRPORT_TIMEZONES.items() if code not in AIRPORT_TIMEZONES})
 
 def _normalize_city_text(text):
     return re.sub(r"\s+", " ", str(text or "").strip().lower())
@@ -838,10 +871,9 @@ def haversine_km(lat1, lon1, lat2, lon2):
 # ==========================================
 # 10. INPUT VALIDATION (PUBLIC REQUEST, docs/api-contracts.md section 3)
 # ==========================================
-PUBLIC_REQUEST_FIELDS = ["departure_city", "destination_city", "start_date", "return_date", "adults", "budget_usd",
-                         "trip_type"]
-# "trip_type" is OPTIONAL ("round_trip" default = current v0.4 contract). "one_way" is a proposed contract extension
-# (v0.4 has "no one-way switch"): it searches only the outbound flight; return_date stays the end of the stay.
+PUBLIC_REQUEST_FIELDS = ["departure_city", "destination_city", "start_date", "return_date", "adults", "budget_usd"]
+# Public requests are ROUND TRIPS only (v0.4: "no one-way switch"; PR #25 review, item 3). "one_way" exists only as an
+# adapter-internal option (validate_request / search_travel trip_type argument) until a contract change is approved.
 TRIP_TYPES = ("round_trip", "one_way")
 
 # Every validator returns (clean_value, error_message). error_message is None when the value is valid.
@@ -888,12 +920,13 @@ def validate_airport_code(value, field_label):
         return None, f"{field_label} must be exactly 3 letters (IATA code, e.g., IST)."
     return code, None
 
-def validate_request(request_data, require_budget=True, rooms=None, origin_airport=None, destination_airport=None):
+def validate_request(request_data, require_budget=True, rooms=None, origin_airport=None, destination_airport=None,
+                     trip_type="round_trip"):
     """
     Validates the public request BEFORE any external call. Returns a clean trip dict or raises:
       invalid_input       -> one entry per invalid field in details["fields"]
       unsupported_search  -> valid input, but a city is outside the supported coverage
-    rooms / origin_airport / destination_airport are adapter-internal options, NOT public request fields.
+    rooms / origin_airport / destination_airport / trip_type are adapter-internal options, NOT public request fields.
     """
     if not isinstance(request_data, dict):
         raise TravelMateError("invalid_input", "Request data must be a JSON object.",
@@ -915,7 +948,6 @@ def validate_request(request_data, require_budget=True, rooms=None, origin_airpo
     start = check("start_date", validate_date(request_data.get("start_date"), "start_date"))
     end = check("return_date", validate_date(request_data.get("return_date"), "return_date"))
     adults = check("adults", validate_adults(request_data.get("adults")))
-    trip_type = request_data.get("trip_type", "round_trip")
     if trip_type not in TRIP_TYPES:
         field_errors.append({"field": "trip_type", "message": "trip_type must be 'round_trip' or 'one_way'."})
     budget_usd = None
@@ -971,7 +1003,7 @@ def validate_request(request_data, require_budget=True, rooms=None, origin_airpo
         "nights": (end - start).days,
         "adults": adults,
         "budget_usd": budget_usd,
-        "trip_type": trip_type,
+        "trip_type": trip_type,  # Adapter-internal (public requests are always round trips)
         # Adapter-internal values (never part of the public request)
         "adapter": {"origin_airport": airports["origin_airport"], "destination_airport": airports["destination_airport"],
                     "rooms": rooms, "rooms_source": "default" if rooms == DEFAULT_ROOMS else "adapter_option"}
@@ -1200,7 +1232,8 @@ def summarize_google_option(option, origin_airports, destination_airports, trave
     arrival = segments[-1].get("arrival_airport") or {}
     departure_code = str(departure.get("airport_code") or "").upper()
     arrival_code = str(arrival.get("airport_code") or "").upper()
-    if departure_code not in origin_airports or arrival_code not in destination_airports:
+    # origin_airports / destination_airports = None means "any airport" (used only for nearby alternatives)
+    if origin_airports is not None and (departure_code not in origin_airports or arrival_code not in destination_airports):
         return None, "route_mismatch"
     if option.get("self_transfer"):
         return None, "self_transfer"  # Separate tickets are not one bookable round trip
@@ -1223,6 +1256,8 @@ def summarize_google_option(option, origin_airports, destination_airports, trave
         "flight_numbers": flight_numbers,
         "departure_airport": departure_code,
         "arrival_airport": arrival_code,
+        "departure_airport_name": departure.get("airport_name"),
+        "arrival_airport_name": arrival.get("airport_name"),
         "departure_date": departure_date.isoformat(),
         "departure_local": f"{departure_date.isoformat()} {_local_clock(departure.get('time'))}",
         "arrival_local": f"{arrival_date.isoformat()} {_local_clock(arrival.get('time'))}",
@@ -1250,6 +1285,70 @@ def _google_search_link(origin, destination, travel_date):
     return (f"https://www.google.com/travel/flights?q=Flights%20from%20{origin}%20to%20{destination}"
             f"%20on%20{travel_date}%20one%20way")
 
+def resolve_google_city_scope(label, city, main_airport, deadline, cache_mode="default", evidence=None):
+    """
+    Google Flights search scope for a canonical city: its Google city ID, so ALL its airports are searched like on
+    the website (e.g., Istanbul = IST + SAW). Pinned IDs need no call; others are looked up once with searchAirport,
+    verified (same city name, contains one of our airports) and cached. Falls back to the main airport.
+    """
+    if city.get("google_city_id"):
+        return {"search_id": city["google_city_id"], "source": "pinned_mapping", "airport_cities": {}}
+    params = {"query": label, "language_code": "en-US", "country_code": "US"}
+    try:
+        payload, _ = provider_get("google_flights_airport", params, deadline, cache_ttl_hours=DESTINATION_ID_TTL_HOURS,
+                                  cache_mode=cache_mode, evidence=evidence)
+    except TravelMateError as error:
+        logger.warning(f"[!] Google city lookup for {label} failed ({error.code}); searching {main_airport} only.")
+        return {"search_id": main_airport, "source": f"fallback_main_airport ({error.code})", "airport_cities": {}}
+    for item in (payload.get("data") if isinstance(payload, dict) else None) or []:
+        if not isinstance(item, dict):
+            continue
+        airports = {a.get("id"): a.get("city") for a in item.get("list") or [] if isinstance(a, dict) and a.get("id")}
+        if (str(item.get("id", "")).startswith(("/m/", "/g/")) and _normalize_city_text(item.get("city")) == label.lower()
+                and set(airports) & set(city["airports"])):
+            logger.info(f"[+] Google city ID for {label}: {item['id']} (airports: {', '.join(airports)})")
+            return {"search_id": item["id"], "source": "verified_lookup", "airport_cities": airports}
+    return {"search_id": main_airport, "source": "fallback_main_airport (no verified city match)", "airport_cities": {}}
+
+def _airport_city(code, airport_cities, airport_name):
+    """Real city of an airport outside the requested city. Our table wins: Google labels e.g. BVA as "Paris"."""
+    return NEARBY_AIRPORT_CITIES.get(code) or airport_cities.get(code) or airport_name or code
+
+def _nearby_alternative(price, summary, direction, origin_label, destination_label, origin_airports,
+                        destination_airports, airport_cities, adults, selected_total):
+    """A cheaper flight using an airport of ANOTHER city: labeled alternative only, never selected or budgeted."""
+    notes = []
+    if summary["departure_airport"] not in origin_airports:
+        notes.append(f"Departs from {_airport_city(summary['departure_airport'], airport_cities, summary['departure_airport_name'])} "
+                     f"({summary['departure_airport']}), not {origin_label}")
+    if summary["arrival_airport"] not in destination_airports:
+        notes.append(f"Lands in {_airport_city(summary['arrival_airport'], airport_cities, summary['arrival_airport_name'])} "
+                     f"({summary['arrival_airport']}), not {destination_label}")
+    total = round_money(price)
+    return {
+        "label": "Alternative: " + "; ".join(notes),
+        "direction": direction,
+        "airline": summary["airline"],
+        "flight_numbers": summary["flight_numbers"],
+        "origin_airport": summary["departure_airport"],
+        "origin_airport_name": summary["departure_airport_name"],
+        "origin_city": _airport_city(summary["departure_airport"], airport_cities, summary["departure_airport_name"]),
+        "destination_airport": summary["arrival_airport"],
+        "destination_airport_name": summary["arrival_airport_name"],
+        "destination_city": _airport_city(summary["arrival_airport"], airport_cities, summary["arrival_airport_name"]),
+        "flight_date": summary["departure_date"],
+        "departure_local": summary["departure_local"],
+        "departure_utc": summary["departure_utc"],
+        "stops_label": summary["stops_label"],
+        "travelers": adults,
+        "total_price_usd": total,
+        "saving_vs_selected_usd": round_money(selected_total - total) if selected_total is not None else None,
+        "price_authority": "live_provider_quote",
+        "eligible": False,
+        "reason": "airport_outside_requested_city",
+        "usage": "alternative only; never selected, never sent to BE-04"
+    }
+
 def _google_leg_search(direction, origin, destination, travel_date, adults, deadline, cache_mode, evidence):
     """One ONE-WAY search (no return_date): its price is the provider total for ALL adults for that leg."""
     params = {"departure_id": origin, "arrival_id": destination, "outbound_date": travel_date,
@@ -1260,7 +1359,7 @@ def _google_leg_search(direction, origin, destination, travel_date, adults, dead
     return payload, provenance, params
 
 def normalize_google_legs(payload, provenance, direction, origin_airports, destination_airports, requested_date,
-                          adults, max_results=3):
+                          adults, max_results=3, nearby=None):
     """
     Returns (legs, schedules, coverage). legs use the exact BE-04 SelectedFlight fields with the REAL provider leg
     total; duplicates of the same flight (different fares / tokens) keep only the cheapest.
@@ -1273,6 +1372,11 @@ def normalize_google_legs(payload, provenance, direction, origin_airports, desti
     for option in options:
         summary, problem = summarize_google_option(option, origin_airports, destination_airports, requested_date)
         price = valid_amount(option.get("price"))
+        if problem == "route_mismatch" and price is not None and nearby is not None:
+            # Outside the requested city (e.g., SHJ for Dubai): kept aside as a possible labeled alternative only
+            other, other_problem = summarize_google_option(option, None, None, requested_date)
+            if other_problem is None:
+                nearby.append((price, other))
         if problem:
             excluded[problem] += 1
             continue
@@ -1362,24 +1466,43 @@ def search_google_flights(trip, deadline, cache_mode="default", evidence=None):
     Returns (outbound_legs, return_legs, public_offers, candidates, provenance_entries, schedules, coverage).
     """
     adapter = trip["adapter"]
-    origin_city, destination_city = SUPPORTED_CITIES[trip["departure_city"]], SUPPORTED_CITIES[trip["destination_city"]]
-    directions = [("outbound", adapter["origin_airport"], adapter["destination_airport"], trip["start_date"],
-                   origin_city["airports"], destination_city["airports"])]
+    origin_label, destination_label = trip["departure_city"], trip["destination_city"]
+    origin_city, destination_city = SUPPORTED_CITIES[origin_label], SUPPORTED_CITIES[destination_label]
+    # Search by city (all airports, like the website); selection still accepts ONLY the requested cities' airports
+    origin_scope = resolve_google_city_scope(origin_label, origin_city, adapter["origin_airport"], deadline, cache_mode, evidence)
+    destination_scope = resolve_google_city_scope(destination_label, destination_city, adapter["destination_airport"],
+                                                  deadline, cache_mode, evidence)
+    airport_cities = {**origin_scope["airport_cities"], **destination_scope["airport_cities"]}
+    directions = [("outbound", origin_scope["search_id"], destination_scope["search_id"], trip["start_date"],
+                   origin_city["airports"], destination_city["airports"], origin_label, destination_label)]
     if trip["trip_type"] == "round_trip":
-        directions.append(("return", adapter["destination_airport"], adapter["origin_airport"], trip["return_date"],
-                           destination_city["airports"], origin_city["airports"]))
+        directions.append(("return", destination_scope["search_id"], origin_scope["search_id"], trip["return_date"],
+                           destination_city["airports"], origin_city["airports"], destination_label, origin_label))
 
     with ThreadPoolExecutor(max_workers=len(directions), thread_name_prefix="flight-leg") as pool:
         futures = {d[0]: pool.submit(_google_leg_search, d[0], d[1], d[2], d[3], trip["adults"], deadline,
                                      cache_mode, evidence) for d in directions}
         searched = {direction: future.result() for direction, future in futures.items()}  # A failed leg fails all
 
-    legs, schedules, coverage = {"outbound": [], "return": []}, [], {"provider_calls": len(directions)}
-    for direction, _, _, travel_date, from_airports, to_airports in directions:
+    legs, schedules = {"outbound": [], "return": []}, []
+    coverage = {"provider_calls": len(directions),
+                "search_scope": {"origin": {k: v for k, v in origin_scope.items() if k != "airport_cities"},
+                                 "destination": {k: v for k, v in destination_scope.items() if k != "airport_cities"}}}
+    alternatives = {"outbound": [], "return": []}
+    for direction, _, _, travel_date, from_airports, to_airports, from_label, to_label in directions:
         payload, provenance, _ = searched[direction]
+        nearby = []
         legs[direction], leg_schedules, coverage[direction] = normalize_google_legs(
-            payload, provenance, direction, from_airports, to_airports, travel_date, trip["adults"])
+            payload, provenance, direction, from_airports, to_airports, travel_date, trip["adults"], nearby=nearby)
         schedules += leg_schedules
+        coverage[direction]["nearby_airport_options"] = len(nearby)
+        # Only a CHEAPER nearby-airport flight is shown, and only as a labeled alternative
+        selected_total = legs[direction][0]["total_price_usd"] if legs[direction] else None
+        nearby.sort(key=lambda item: (item[0], item[1]["flight_numbers"]))
+        if nearby and (selected_total is None or round_money(nearby[0][0]) < selected_total):
+            alternatives[direction].append(_nearby_alternative(
+                nearby[0][0], nearby[0][1], direction, from_label, to_label, from_airports, to_airports,
+                airport_cities, trip["adults"], selected_total))
     schedule_by_leg = {s["leg_id"]: s for s in schedules}
 
     offers = {}
@@ -1422,7 +1545,8 @@ def search_google_flights(trip, deadline, cache_mode="default", evidence=None):
             "airport_timezones": {"departure": AIRPORT_TIMEZONES.get(outbound["origin_airport"]),
                                   "destination": AIRPORT_TIMEZONES.get(outbound["destination_airport"])}
         })
-    return legs["outbound"], legs["return"], public_offers, candidates, provenance_entries, schedule_by_leg, coverage
+    return (legs["outbound"], legs["return"], public_offers, candidates, provenance_entries, schedule_by_leg, coverage,
+            alternatives)
 
 # ==========================================
 # 12. HOTEL PROVIDER (BOOKING.COM - LIVE, VERIFIED PER OFFER)
@@ -1678,8 +1802,9 @@ def normalize_hotel_offers(payload, trip, city, fx, provenance):
 def _search_flights(trip, deadline, fx, cache_mode, evidence, warnings, provenance_out):
     flights = {"status": "unavailable", "reason_code": "not_configured", "price_authority": None,
                "selected_outbound_flight": None, "selected_return_flight": None,
-               "offers": {"outbound": [], "return": []}, "alternative_date_offers": {"outbound": [], "return": []},
-               "round_trip_offers": [], "selected_offer": None, "schedule": None, "coverage": {}}
+               "offers": {"outbound": [], "return": []}, "indicative_quotes": None,
+               "round_trip_offers": [], "selected_offer": None, "schedule": None,
+               "nearby_airport_alternatives": {"outbound": [], "return": []}, "coverage": {}}
     if FLIGHT_MODE == "live":
         return _search_live_flights(trip, deadline, cache_mode, evidence, warnings, provenance_out, flights)
     if FLIGHT_MODE != "indicative":
@@ -1687,7 +1812,14 @@ def _search_flights(trip, deadline, fx, cache_mode, evidence, warnings, provenan
                                       "the flight provider cannot return round-trip prices for all travelers."))
         return flights, []
 
+    # Indicative mode (PR #25 review, item 1): Skyscanner cached single-adult quotes are kept FOR INFORMATION ONLY.
+    # They never become selected legs or BE-04 candidates, even when a quote matches the requested date, so an
+    # indicative price can never be counted as a provider price in the budget.
     flights["price_authority"] = "indicative"
+    flights["reason_code"] = "not_configured"  # Live flight prices are not configured in this mode
+    flights["indicative_quotes"] = {"exact_date": {"outbound": [], "return": []},
+                                    "alternative_dates": {"outbound": [], "return": []},
+                                    "usage": "information only; never selected, never sent to BE-04"}
     adapter = trip["adapter"]
     directions = [("outbound", adapter["origin_airport"], adapter["destination_airport"], trip["start_date"])]
     if trip["trip_type"] == "round_trip":
@@ -1698,10 +1830,10 @@ def _search_flights(trip, deadline, fx, cache_mode, evidence, warnings, provenan
                                                       f"{direction.title()} Flight", cache_mode, evidence)
             exact, alternatives, entries, coverage = normalize_flight_quotes(
                 payload, direction, origin, destination, travel_date, trip["adults"], fx, provenance)
-            flights["offers"][direction] = exact
-            flights["alternative_date_offers"][direction] = alternatives
+            flights["indicative_quotes"]["exact_date"][direction] = exact
+            flights["indicative_quotes"]["alternative_dates"][direction] = alternatives
             flights["coverage"][direction] = coverage
-            provenance_out.extend(entries)
+            provenance_out.extend(dict(entry, informational_only=True) for entry in entries)
             if coverage["excluded"]["unconvertible_currency"]:
                 warnings.append(build_warning("CURRENCY_UNAVAILABLE",
                                               f"{coverage['excluded']['unconvertible_currency']} {direction} flight quote(s) "
@@ -1713,30 +1845,15 @@ def _search_flights(trip, deadline, fx, cache_mode, evidence, warnings, provenan
                                       f"Flight search failed ({error.code})."))
         return flights, []
 
-    outbound, returning = flights["offers"]["outbound"], flights["offers"]["return"]
-    one_way = trip["trip_type"] == "one_way"
-    if not outbound or (not returning and not one_way):
-        flights["reason_code"] = "no_results"
-        alternatives = sum(len(v) for v in flights["alternative_date_offers"].values())
-        warnings.append(build_warning("FLIGHTS_UNAVAILABLE", "No flight quote exists for the exact requested dates. "
-                                      f"{alternatives} alternative-date quote(s) are listed separately; adopting a "
-                                      "different date requires a new request and a fresh hotel search."))
-        return flights, []
-
-    flights.update(status="available", reason_code=None,
-                   selected_outbound_flight=outbound[0], selected_return_flight=None if one_way else returning[0])
-    warnings.append(build_warning("FLIGHT_PRICES_INDICATIVE", "Flight prices are cached single-adult quotes multiplied "
-                                  "by the number of travelers; they are indicative, not bookable totals."))
-    candidates = [{"id": flight_leg_id(o), "base_usd": o["total_price_usd"], "additional_fees_usd": None,
-                   "included_in_base": True} for o in outbound] if one_way else         [{"id": round_trip_offer_id(o, r), "base_usd": round_money(o["total_price_usd"] + r["total_price_usd"]),
-          "additional_fees_usd": None, "included_in_base": True} for o in outbound for r in returning]
-    return flights, sorted(candidates, key=lambda c: (c["base_usd"], c["id"]))
+    warnings.append(build_warning("FLIGHT_PRICES_INDICATIVE", "Indicative cached flight quotes are shown for "
+                                  "information only. They are never selected and never used in the budget."))
+    return flights, []  # No selected legs and no candidates in indicative mode
 
 def _search_live_flights(trip, deadline, cache_mode, evidence, warnings, provenance_out, flights):
     """Google Flights live mode: real per-leg one-way quotes, v0.4 public offers and BE-04 candidates."""
     flights["price_authority"] = "live_provider_quote"
     try:
-        outbound, returning, offers, candidates, entries, schedules, coverage = search_google_flights(
+        outbound, returning, offers, candidates, entries, schedules, coverage, alternatives = search_google_flights(
             trip, deadline, cache_mode, evidence)
     except TravelMateError as error:
         flights["reason_code"] = error.code
@@ -1746,6 +1863,11 @@ def _search_live_flights(trip, deadline, cache_mode, evidence, warnings, provena
         return flights, []
     flights["coverage"] = coverage
     flights["offers"] = {"outbound": outbound, "return": returning}
+    flights["nearby_airport_alternatives"] = alternatives
+    for alternative in alternatives["outbound"] + alternatives["return"]:
+        warnings.append(build_warning("NEARBY_AIRPORT_ALTERNATIVE", f"{alternative['label']}: "
+                                      f"{alternative['airline']} ${alternative['total_price_usd']:.2f} "
+                                      "(shown as an alternative only, not selected)."))
     if not offers:
         flights["reason_code"] = "no_results"
         warnings.append(build_warning("FLIGHTS_UNAVAILABLE", "No flight matched the requested dates, route and "
@@ -1841,7 +1963,7 @@ def _search_travel_validated(trip, deadline, request_id, categories=("flights", 
     }
 
 def search_travel(trip_request, categories=("flights", "hotels"), deadline_at=None, request_id=None, rooms=None,
-                  cache_mode="default", evidence=None):
+                  cache_mode="default", evidence=None, trip_type="round_trip"):
     """
     Live travel adapter boundary (adapter-contracts.md). Returns both category objects with
     status available | unavailable and reason_code, BE-04-ready report_slice and candidates, warnings and provenance.
@@ -1849,7 +1971,7 @@ def search_travel(trip_request, categories=("flights", "hotels"), deadline_at=No
     """
     request_id = request_id or new_request_id()
     try:
-        trip = validate_request(trip_request, require_budget=False, rooms=rooms)
+        trip = validate_request(trip_request, require_budget=False, rooms=rooms, trip_type=trip_type)
         deadline = resolve_deadline(deadline_at)
         return _search_travel_validated(trip, deadline, request_id, tuple(categories), cache_mode, evidence)
     except TravelMateError as error:
@@ -2529,14 +2651,17 @@ def print_engine_result(result, show_full_json=False):
                                                     flights_data["selected_return_flight"]) if l)
         print(f"  Flight total for {result['trip_request']['adults']} traveler(s): {format_money(round_money(total))} "
               f"(sum of the legs, each priced by the provider)")
+    for alternative in sum((flights.get("nearby_airport_alternatives") or {}).values(), []):
+        print(f"  [i] {alternative['label']} | {to_console_name(alternative['airline'])} "
+              f"{alternative['departure_local']} | {format_money(alternative['total_price_usd'])} (alternative only)")
     others = [o for o in flights.get("round_trip_offers") or [] if o["id"] != result["selected_offers"]["selected_flight_offer_id"]]
     if others:
         print("  Other cheapest combinations: " + " | ".join(
             f"{to_console_name(o['airline'])} {format_money(o['price']['amount_usd'])}" for o in others))
-    alternatives = travel["flights"]["alternative_date_offers"]
-    count = len(alternatives["outbound"]) + len(alternatives["return"])
-    if count:
-        print(f"  ({count} alternative-date quote(s) excluded from selection; a new search is required to adopt them)")
+    quotes = travel["flights"].get("indicative_quotes")
+    if quotes:
+        count = sum(len(v) for group in ("exact_date", "alternative_dates") for v in quotes[group].values())
+        print(f"  ({count} indicative Skyscanner quote(s) available for information only; never selected or budgeted)")
 
     print_section("3. HOTELS  (report_slice.hotels_data) - verified dates & occupancy")
     selected_id = result["selected_offers"]["selected_hotel_offer_id"]
@@ -2608,10 +2733,6 @@ if __name__ == "__main__":
         "start_date": prompt_until_valid("Start date (YYYY-MM-DD): ", lambda v: validate_date(v, "start_date")).isoformat(),
         "return_date": prompt_until_valid("Return date (YYYY-MM-DD): ", lambda v: validate_date(v, "return_date")).isoformat()
     }
-    request_data["trip_type"] = prompt_until_valid(
-        "Trip type - '1' One-Way or '2' Round-Trip (Enter = Round-Trip): ",
-        lambda v: ({"": "round_trip", "2": "round_trip", "1": "one_way"}.get(v.strip()), None)
-        if v.strip() in ("", "1", "2") else (None, "Enter 1, 2 or press Enter."))
     request_data["adults"] = prompt_until_valid("Adults (1-4): ", parse_int_text)
     request_data["budget_usd"] = prompt_until_valid("Total budget in USD (e.g., 1500): ", parse_number_text)
 

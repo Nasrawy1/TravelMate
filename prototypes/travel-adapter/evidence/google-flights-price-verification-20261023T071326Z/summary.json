@@ -1,0 +1,233 @@
+{
+  "generated_at": "2026-10-23T07:13:26Z",
+  "legs": {
+    "outbound": {
+      "route": "IST->CAI",
+      "date": "2026-11-20",
+      "common_flights": 26,
+      "comparison": [
+        {
+          "flight": "SM 304",
+          "departure": "20-11-2026 12:15 PM",
+          "price_adults1": 100,
+          "price_adults2": 200,
+          "ratio": 2.0
+        },
+        {
+          "flight": "MS 746",
+          "departure": "20-11-2026 03:50 AM",
+          "price_adults1": 160,
+          "price_adults2": 319,
+          "ratio": 1.994
+        },
+        {
+          "flight": "MS 738",
+          "departure": "20-11-2026 02:00 PM",
+          "price_adults1": 161,
+          "price_adults2": 323,
+          "ratio": 2.006
+        },
+        {
+          "flight": "A3 995 + A3 930",
+          "departure": "20-11-2026 10:00 PM",
+          "price_adults1": 187,
+          "price_adults2": 374,
+          "ratio": 2.0
+        },
+        {
+          "flight": "A3 993 + A3 930",
+          "departure": "20-11-2026 04:45 PM",
+          "price_adults1": 187,
+          "price_adults2": 374,
+          "ratio": 2.0
+        },
+        {
+          "flight": "A3 991 + A3 930",
+          "departure": "20-11-2026 11:30 AM",
+          "price_adults1": 233,
+          "price_adults2": 418,
+          "ratio": 1.794
+        },
+        {
+          "flight": "A3 999 + A3 934",
+          "departure": "20-11-2026 06:30 AM",
+          "price_adults1": 211,
+          "price_adults2": 424,
+          "ratio": 2.009
+        },
+        {
+          "flight": "A3 991 + A3 934",
+          "departure": "20-11-2026 11:30 AM",
+          "price_adults1": 211,
+          "price_adults2": 424,
+          "ratio": 2.009
+        },
+        {
+          "flight": "TK 692",
+          "departure": "20-11-2026 02:15 AM",
+          "price_adults1": 242,
+          "price_adults2": 483,
+          "ratio": 1.996
+        },
+        {
+          "flight": "MS 736",
+          "departure": "20-11-2026 06:50 PM",
+          "price_adults1": 249,
+          "price_adults2": 499,
+          "ratio": 2.004
+        },
+        {
+          "flight": "TK 690",
+          "departure": "20-11-2026 07:55 AM",
+          "price_adults1": 257,
+          "price_adults2": 513,
+          "ratio": 1.996
+        },
+        {
+          "flight": "RJ 166 + RJ 507",
+          "departure": "20-11-2026 02:05 PM",
+          "price_adults1": 260,
+          "price_adults2": 520,
+          "ratio": 2.0
+        },
+        {
+          "flight": "RJ 164 + RJ 507",
+          "departure": "20-11-2026 10:10 PM",
+          "price_adults1": 260,
+          "price_adults2": 520,
+          "ratio": 2.0
+        },
+        {
+          "flight": "RJ 164 + RJ 501",
+          "departure": "20-11-2026 10:10 PM",
+          "price_adults1": 260,
+          "price_adults2": 520,
+          "ratio": 2.0
+        },
+        {
+          "flight": "RJ 166 + RJ 505",
+          "departure": "20-11-2026 02:05 PM",
+          "price_adults1": 260,
+          "price_adults2": 520,
+          "ratio": 2.0
+        }
+      ],
+      "booking_details_file": "outbound_booking_details_SM304_adults2.json",
+      "booking_details_http": 200
+    },
+    "return": {
+      "route": "CAI->IST",
+      "date": "2026-11-23",
+      "common_flights": 32,
+      "comparison": [
+        {
+          "flight": "SM 303",
+          "departure": "23-11-2026 08:00 AM",
+          "price_adults1": 104,
+          "price_adults2": 226,
+          "ratio": 2.173
+        },
+        {
+          "flight": "MS 745",
+          "departure": "23-11-2026 11:20 PM",
+          "price_adults1": 130,
+          "price_adults2": 259,
+          "ratio": 1.992
+        },
+        {
+          "flight": "TK 755",
+          "departure": "23-11-2026 03:30 PM",
+          "price_adults1": 180,
+          "price_adults2": 360,
+          "ratio": 2.0
+        },
+        {
+          "flight": "A3 931 + A3 994",
+          "departure": "23-11-2026 04:40 AM",
+          "price_adults1": 183,
+          "price_adults2": 365,
+          "ratio": 1.995
+        },
+        {
+          "flight": "A3 931 + A3 992",
+          "departure": "23-11-2026 04:40 AM",
+          "price_adults1": 183,
+          "price_adults2": 365,
+          "ratio": 1.995
+        },
+        {
+          "flight": "A3 931 + A3 990",
+          "departure": "23-11-2026 04:40 AM",
+          "price_adults1": 183,
+          "price_adults2": 365,
+          "ratio": 1.995
+        },
+        {
+          "flight": "A3 935 + A3 990",
+          "departure": "23-11-2026 08:50 PM",
+          "price_adults1": 203,
+          "price_adults2": 405,
+          "ratio": 1.995
+        },
+        {
+          "flight": "A3 935 + A3 992",
+          "departure": "23-11-2026 08:50 PM",
+          "price_adults1": 203,
+          "price_adults2": 405,
+          "ratio": 1.995
+        },
+        {
+          "flight": "TK 695",
+          "departure": "23-11-2026 08:45 PM",
+          "price_adults1": 210,
+          "price_adults2": 419,
+          "ratio": 1.995
+        },
+        {
+          "flight": "TK 693",
+          "departure": "23-11-2026 05:25 AM",
+          "price_adults1": 210,
+          "price_adults2": 419,
+          "ratio": 1.995
+        },
+        {
+          "flight": "A3 931 + A3 306 + A3 434",
+          "departure": "23-11-2026 04:40 AM",
+          "price_adults1": 236,
+          "price_adults2": 471,
+          "ratio": 1.996
+        },
+        {
+          "flight": "A3 931 + TK 1844",
+          "departure": "23-11-2026 04:40 AM",
+          "price_adults1": 273,
+          "price_adults2": 546,
+          "ratio": 2.0
+        },
+        {
+          "flight": "A3 931 + A3 300 + A3 434",
+          "departure": "23-11-2026 04:40 AM",
+          "price_adults1": 283,
+          "price_adults2": 565,
+          "ratio": 1.996
+        },
+        {
+          "flight": "MS 735",
+          "departure": "23-11-2026 02:20 PM",
+          "price_adults1": 313,
+          "price_adults2": 626,
+          "ratio": 2.0
+        },
+        {
+          "flight": "SV 314 + SV 251",
+          "departure": "23-11-2026 03:15 PM",
+          "price_adults1": 353,
+          "price_adults2": 706,
+          "ratio": 2.0
+        }
+      ],
+      "booking_details_file": "return_booking_details_SM303_adults2.json",
+      "booking_details_http": 200
+    }
+  }
+}

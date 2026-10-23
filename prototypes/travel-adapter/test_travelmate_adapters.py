@@ -105,15 +105,23 @@ class FakeProviderRouter:
         self.flights = {"ist": load_fixture("flights_ist_cai"), "cai": load_fixture("flights_cai_ist")}
         self.hotels = {"1": load_fixture("hotels_cairo_2a1r"), "2": load_fixture("hotels_cairo_2a2r")}
         self.fx = simulated_fx_payload()
-        # Real one-way searches recorded 2026-10-21 (2 adults): IST->CAI on 11-20 and CAI->IST on 11-23
-        self.google = {"IST": load_fixture("google_flights_oneway_ist_cai_2026-11-20_2a"),
-                       "CAI": load_fixture("google_flights_oneway_cai_ist_2026-11-23_2a")}
+        # Real one-way searches recorded 2026-10-21/23 (fixtures). Keys = the departure search ID the adapter sends:
+        # Istanbul and Dubai are searched by Google city ID; Cairo has no pinned ID and falls back to its airport.
+        self.google = {"IST": load_fixture("google_flights_oneway_ist_cai_2026-11-20_2a"),       # 2 adults
+                       "CAI": load_fixture("google_flights_oneway_cai_ist_2026-11-23_2a"),       # 2 adults
+                       "DXB": load_fixture("google_flights_oneway_dxb_ist_2026-11-20_1a"),       # 1 adult
+                       "IST_CITY_TO_DUBAI_CITY": load_fixture("google_flights_city_istanbul_to_city_dubai_2026-11-23_1a")}
+        self.google_routes = {("/m/09949m", "/m/01w2v", "2026-11-20"): "IST", ("/m/01w2v", "/m/09949m", "2026-11-23"): "CAI",
+                              ("/m/01f08r", "/m/09949m", "2026-11-20"): "DXB",
+                              ("/m/09949m", "/m/01f08r", "2026-11-23"): "IST_CITY_TO_DUBAI_CITY"}
+        self.airport_lookups = {"Istanbul": load_fixture("google_flights_search_airport_istanbul"),
+                                "Dubai": load_fixture("google_flights_search_airport_dubai")}
         self.overrides = {}  # service -> callable(params, headers) returning FakeResponse
         self.calls = []
 
     def __call__(self, url, headers=None, params=None, timeout=None):
         if "google-flights2" in url:
-            service = "gflights"
+            service = "gflights_airport" if "searchAirport" in url else "gflights"
         else:
             service = ("fx" if "open.er-api.com" in url else "flights" if "/skyscanner/route" in url
                        else "hotels" if "searchHotels" in url else "destination")
@@ -122,7 +130,11 @@ class FakeProviderRouter:
         if service in self.overrides:
             return self.overrides[service](params, headers)
         if service == "gflights":
-            return FakeResponse(200, self.google[params["departure_id"]], {"X-RateLimit-Requests-Remaining": "130"})
+            route = self.google_routes.get((params["departure_id"], params["arrival_id"], params["outbound_date"]))
+            body = self.google[route] if route else {"status": True, "data": {"itineraries": {"topFlights": [], "otherFlights": []}}}
+            return FakeResponse(200, body, {"X-RateLimit-Requests-Remaining": "130"})
+        if service == "gflights_airport":
+            return FakeResponse(200, self.airport_lookups.get(params["query"], {"status": True, "data": []}))
         if service == "fx":
             return FakeResponse(200, self.fx)
         if service == "flights":
@@ -364,17 +376,18 @@ class TestProviderFailures(AdapterTestCase):
 # 3. FLIGHT DATE CONSISTENCY & EXCLUSION (indicative mode)
 # ==========================================
 class TestFlightDates(AdapterTestCase):
-    def all_flight_legs(self, flights):
-        legs = flights["offers"]["outbound"] + flights["offers"]["return"]
-        legs += flights["alternative_date_offers"]["outbound"] + flights["alternative_date_offers"]["return"]
-        return legs + [l for l in (flights["selected_outbound_flight"], flights["selected_return_flight"]) if l]
+    """Indicative mode (Skyscanner cached quotes): information only, never selected or budgeted (PR #25 review, item 1)."""
+    def quotes(self, result):
+        return result["travel"]["flights"]["indicative_quotes"]
+
+    def all_quotes(self, result):
+        q = self.quotes(result)
+        return [leg for group in ("exact_date", "alternative_dates") for legs in q[group].values() for leg in legs]
 
     def test_flight_date_match_flag_consistency(self):
-        # Recorded data has no quote on the requested dates
         with self.indicative_flights():
             result = self.run_engine()
-        flights = result["travel"]["flights"]
-        legs = self.all_flight_legs(flights)
+        legs = self.all_quotes(result)
         self.assertTrue(legs)
         for leg in legs:
             self.assertEqual(leg["date_matches_request"], leg["flight_date"] == leg["requested_date"])
@@ -382,36 +395,38 @@ class TestFlightDates(AdapterTestCase):
             self.assertEqual(leg["days_from_requested_date"], expected_days)
             if BE04_AVAILABLE:
                 SelectedFlight.model_validate(leg)  # BE-04 date-flag validator
-        self.assertEqual(flights["offers"]["outbound"], [])
-        self.assertTrue(all(not l["date_matches_request"] for l in flights["alternative_date_offers"]["outbound"]))
-        self.assertIsNone(flights["selected_outbound_flight"])
-        self.assertIsNone(flights["selected_return_flight"])
-        self.assertEqual(flights["reason_code"], "no_results")
+        self.assertTrue(all(not l["date_matches_request"] for l in self.quotes(result)["alternative_dates"]["outbound"]))
         self.assertIsNone(result["selected_offers"]["selected_flight_offer_id"])
-        self.assertEqual(result["travel"]["flight_candidates"], [])
-        if BE04_AVAILABLE:
-            self.assertIsNone(self.assert_be04_accepts(result).selected_flight_offer_id)
 
-    def test_exact_date_flights_are_selected_with_true_flag(self):
-        self.router.with_exact_date_flights()
+    def test_indicative_price_never_enters_selection_or_budget(self):
+        # Even when an indicative quote matches the requested date exactly, it stays information only
+        self.router.with_exact_date_flights()  # SIMULATED exact-date quotes in both directions
         with self.indicative_flights():
             result = self.run_engine()
         flights = result["travel"]["flights"]
-        self.assertEqual(flights["status"], "available")
-        for leg in (flights["selected_outbound_flight"], flights["selected_return_flight"]):
-            self.assertTrue(leg["date_matches_request"])
-            self.assertEqual(leg["days_from_requested_date"], 0)
-            self.assertEqual(leg["total_price_usd"], tm.round_money(leg["price_per_person_usd"] * 2))
+        exact = self.quotes(result)["exact_date"]
+        self.assertTrue(exact["outbound"] and exact["return"])
+        self.assertTrue(exact["outbound"][0]["date_matches_request"])
+        self.assertEqual((flights["status"], flights["reason_code"]), ("unavailable", "not_configured"))
+        self.assertIsNone(flights["selected_outbound_flight"])
+        self.assertIsNone(flights["selected_return_flight"])
+        self.assertEqual(result["travel"]["flight_candidates"], [])
+        self.assertEqual(result["report_slice"]["flights_data"],
+                         {"selected_outbound_flight": None, "selected_return_flight": None})
+        self.assertIsNone(result["selected_offers"]["selected_flight_offer_id"])
         self.assertIn("FLIGHT_PRICES_INDICATIVE", [w["code"] for w in result["warnings"]])
+        self.assertTrue(all(p.get("informational_only") for p in result["travel"]["provenance"] if p["category"] == "flights"))
         if BE04_AVAILABLE:
             budget = self.assert_be04_accepts(result)
-            self.assertEqual(budget.selected_flight_offer_id, result["selected_offers"]["selected_flight_offer_id"])
-            self.assertIn(budget.selected_flight_offer_id, [c["id"] for c in result["travel"]["flight_candidates"]])
+            flight_line = next(c for c in budget.cost_items if c.category == "flights")
+            self.assertEqual((flight_line.kind, flight_line.amount_usd), ("unknown", None))
+            self.assertIsNone(budget.selected_flight_offer_id)
+            self.assertIn("flights", budget.missing_categories)
 
-    def test_selected_alternative_date_flight_is_rejected_by_ai_adapter(self):
+    def test_indicative_quote_is_rejected_by_ai_adapter(self):
         with self.indicative_flights():
             result = self.run_engine()
-        alternative = result["travel"]["flights"]["alternative_date_offers"]["outbound"][0]
+        alternative = self.quotes(result)["alternative_dates"]["outbound"][0]
         ai = tm.generate_itinerary(dict(BASE_REQUEST), {"flight": {"selected_outbound_flight": alternative,
                                                                    "selected_return_flight": alternative}}, {})
         self.assertEqual(ai["status"], "ok")
@@ -421,7 +436,7 @@ class TestFlightDates(AdapterTestCase):
     def test_inconsistent_flag_is_never_trusted(self):
         with self.indicative_flights():
             result = self.run_engine()
-        tampered = dict(result["travel"]["flights"]["alternative_date_offers"]["outbound"][0], date_matches_request=True)
+        tampered = dict(self.quotes(result)["alternative_dates"]["outbound"][0], date_matches_request=True)
         ai = tm.generate_itinerary(dict(BASE_REQUEST), {"flight": {"selected_outbound_flight": tampered,
                                                                    "selected_return_flight": tampered}}, {})
         self.assertIn("FLIGHT_DATE_MISMATCH_EXCLUDED", [w["code"] for w in ai["warnings"]])
@@ -439,7 +454,7 @@ class TestFlightDates(AdapterTestCase):
         with self.indicative_flights():
             result = self.run_engine()
         entry = next(p for p in result["travel"]["provenance"] if p["category"] == "flights")
-        self.assertEqual(set(entry["conversion"]) >= {"source", "rate_to_usd", "converted_at"}, True)
+        self.assertTrue({"source", "rate_to_usd", "converted_at"} <= set(entry["conversion"]))
         self.assertAlmostEqual(entry["conversion"]["rate_to_usd"], 1 / 0.75, places=6)
         self.assertEqual(entry["airport_timezones"], {"departure": "Europe/Istanbul", "destination": "Africa/Cairo"})
 
@@ -474,9 +489,10 @@ class TestLiveFlights(AdapterTestCase):
 
     def test_round_trip_uses_two_parallel_one_way_searches(self):
         self.run_live()
-        calls = sorted(self.google_calls(), key=lambda c: c["params"]["departure_id"])
+        calls = sorted(self.google_calls(), key=lambda c: c["params"]["outbound_date"])
+        # Istanbul is searched as a city (all airports); Cairo has no pinned city ID and falls back to CAI
         self.assertEqual([(c["params"]["departure_id"], c["params"]["arrival_id"], c["params"]["outbound_date"]) for c in calls],
-                         [("CAI", "IST", "2026-11-23"), ("IST", "CAI", "2026-11-20")])
+                         [("/m/09949m", "/m/01w2v", "2026-11-20"), ("/m/01w2v", "/m/09949m", "2026-11-23")])
         for call in calls:
             self.assertNotIn("return_date", call["params"])  # One-way searches: each leg has its own real price
             self.assertEqual(call["params"]["adults"], "2")
@@ -523,25 +539,21 @@ class TestLiveFlights(AdapterTestCase):
             if CONTRACT_SCHEMA is not None:
                 self.assertEqual(schema_errors("flight", offer), [])
 
-    def test_one_way_trip(self):
-        result = self.run_live({"trip_type": "one_way"})
-        self.assertEqual([c["params"]["departure_id"] for c in self.google_calls()], ["IST"])  # 1 call only
-        legs = result["report_slice"]["flights_data"]
-        self.assertIsNone(legs["selected_return_flight"])
-        self.assertEqual(legs["selected_outbound_flight"]["total_price_usd"], 272.0)
-        offer = result["travel"]["flights"]["selected_offer"]
-        self.assertIsNone(offer["return_departure_at"])  # Needs a contract extension (v0.4 is round trip only)
-        self.assertEqual(result["trip_request"]["trip_type"], "one_way")
-        if BE04_AVAILABLE:
-            budget = self.assert_be04_accepts(result)  # Candidate mode for one-way trips
-            line = next(c for c in budget.cost_items if c.category == "flights")
-            self.assertEqual((line.kind, float(line.amount_usd)), ("provider", 272.0))
-        self.assertEqual(result["status"], "success")
-
-    def test_invalid_trip_type_is_rejected(self):
-        result = self.run_live({"trip_type": "multi_city"})
-        self.assertEqual(result["error"]["code"], "invalid_input")
+    def test_public_trip_type_is_rejected(self):
+        # PR #25 review, item 3: one_way is not approved, and trip_type is not a public field
+        for value in ("one_way", "round_trip", "multi_city"):
+            result = self.run_live({"trip_type": value})
+            self.assertEqual(result["error"]["code"], "invalid_input")
+            self.assertIn("trip_type", [f["field"] for f in result["diagnostics"]["fields"]])
         self.assertFalse(self.google_calls())
+
+    def test_internal_one_way_option_is_not_exposed_publicly(self):
+        # Kept only as an adapter-internal option for a future contract change
+        travel = tm.search_travel(dict(LIVE_REQUEST), cache_mode="off", trip_type="one_way")
+        self.assertEqual([c["params"]["departure_id"] for c in self.google_calls()], ["/m/09949m"])
+        self.assertIsNone(travel["flights"]["selected_return_flight"])
+        self.assertEqual(travel["flights"]["selected_outbound_flight"]["total_price_usd"], 272.0)
+        self.assertNotIn("trip_type", travel["trip_request"])
 
     def test_duplicate_flights_are_deduplicated(self):
         top = self.router.google["IST"]["data"]["itineraries"]["topFlights"]
@@ -586,7 +598,7 @@ class TestLiveFlights(AdapterTestCase):
 
     def test_return_leg_failure_gives_no_partial_round_trip(self):
         self.router.overrides["gflights"] = lambda p, h: (
-            FakeResponse(500, {"message": "down"}) if p["departure_id"] == "CAI"
+            FakeResponse(500, {"message": "down"}) if p["departure_id"] == "/m/01w2v"
             else FakeResponse(200, self.router.google["IST"]))
         result = self.run_live()
         flights = result["travel"]["flights"]
@@ -636,6 +648,110 @@ class TestLiveFlights(AdapterTestCase):
         calls = len(self.google_calls())
         tm.run_travelmate_engine(dict(LIVE_REQUEST))
         self.assertEqual(len(self.google_calls()), calls)
+
+# ==========================================
+# 3.2 CITY-LEVEL SEARCH & NEARBY-AIRPORT ALTERNATIVES (recorded real responses from 2026-10-23)
+# ==========================================
+DUBAI_REQUEST = {"departure_city": "Dubai", "destination_city": "Istanbul", "start_date": "2026-11-20",
+                 "return_date": "2026-11-23", "adults": 1, "budget_usd": 1500}
+
+class TestNearbyAirports(AdapterTestCase):
+    """Return leg Istanbul (all airports) -> 'Dubai' as Google defines it (DXB + SHJ): SHJ is Sharjah, not Dubai."""
+    def setUp(self):
+        super().setUp()
+        self.mode = mock.patch.object(tm, "FLIGHT_MODE", "live")
+        self.mode.start()
+        self.groq_client.content = json.dumps(valid_ai_output(dates=LIVE_AI_DATES))
+
+    def tearDown(self):
+        self.mode.stop()
+        super().tearDown()
+
+    def run_dubai(self, **kwargs):
+        return tm.run_travelmate_engine(dict(DUBAI_REQUEST), cache_mode="off", **kwargs)
+
+    def return_options(self):
+        it = self.router.google["IST_CITY_TO_DUBAI_CITY"]["data"]["itineraries"]
+        return it["topFlights"] + it["otherFlights"]
+
+    def test_search_uses_city_ids_for_both_cities(self):
+        result = self.run_dubai()
+        calls = sorted(self.router.calls_for("gflights"), key=lambda c: c["params"]["outbound_date"])
+        self.assertEqual([(c["params"]["departure_id"], c["params"]["arrival_id"]) for c in calls],
+                         [("/m/01f08r", "/m/09949m"), ("/m/09949m", "/m/01f08r")])
+        scope = result["travel"]["flights"]["coverage"]["search_scope"]
+        self.assertEqual((scope["origin"]["source"], scope["destination"]["source"]), ("pinned_mapping", "pinned_mapping"))
+        self.assertFalse(self.router.calls_for("gflights_airport"))  # Pinned IDs need no lookup call
+
+    def test_selected_flight_is_always_from_requested_city_airports(self):
+        result = self.run_dubai()
+        legs = result["report_slice"]["flights_data"]
+        returning = legs["selected_return_flight"]
+        self.assertIn(returning["origin_airport"], tm.SUPPORTED_CITIES["Istanbul"]["airports"])
+        self.assertIn(returning["destination_airport"], tm.SUPPORTED_CITIES["Dubai"]["airports"])
+        strict = [o["price"] for o in self.return_options() if o["flights"][-1]["arrival_airport"]["airport_code"] in ("DXB", "DWC")]
+        self.assertEqual(returning["total_price_usd"], min(strict))  # Cheapest from ANY Istanbul airport to Dubai
+        self.assertEqual(returning["origin_airport"], "SAW")         # Found only because the whole city is searched
+        for offer in result["travel"]["flights"]["round_trip_offers"]:
+            self.assertNotIn("SHJ", offer["id"])
+        if BE04_AVAILABLE:
+            self.assert_be04_accepts(result)
+
+    def test_cheaper_nearby_airport_is_labeled_alternative_only(self):
+        result = self.run_dubai()
+        flights = result["travel"]["flights"]
+        alternatives = flights["nearby_airport_alternatives"]["return"]
+        self.assertEqual(len(alternatives), 1)
+        alternative = alternatives[0]
+        cheapest_shj = min(o["price"] for o in self.return_options() if o["flights"][-1]["arrival_airport"]["airport_code"] == "SHJ")
+        self.assertEqual(alternative["total_price_usd"], cheapest_shj)
+        self.assertEqual(alternative["label"], "Alternative: Lands in Sharjah (SHJ), not Dubai")
+        self.assertEqual((alternative["destination_airport"], alternative["destination_city"]), ("SHJ", "Sharjah"))
+        self.assertFalse(alternative["eligible"])
+        self.assertEqual(alternative["saving_vs_selected_usd"],
+                         tm.round_money(flights["selected_return_flight"]["total_price_usd"] - cheapest_shj))
+        # Never the main flight, never a candidate, never in the report slice, never sent to the AI
+        self.assertNotEqual(flights["selected_return_flight"]["destination_airport"], "SHJ")
+        self.assertFalse([c for c in result["travel"]["flight_candidates"] if "SHJ" in c["id"]])
+        self.assertNotIn("SHJ", json.dumps(result["report_slice"]))
+        self.assertNotIn("SHJ", self.groq_client.last_kwargs["messages"][1]["content"])
+        self.assertIn("NEARBY_AIRPORT_ALTERNATIVE", [w["code"] for w in result["warnings"]])
+
+    def test_no_alternative_when_nearby_airport_is_not_cheaper(self):
+        for option in self.return_options():
+            if option["flights"][-1]["arrival_airport"]["airport_code"] == "SHJ":
+                option["price"] = 999  # SIMULATED: Sharjah flights more expensive
+        result = self.run_dubai()
+        self.assertEqual(result["travel"]["flights"]["nearby_airport_alternatives"]["return"], [])
+        self.assertNotIn("NEARBY_AIRPORT_ALTERNATIVE", [w["code"] for w in result["warnings"]])
+
+    def test_city_id_lookup_is_verified_when_not_pinned(self):
+        dubai = dict(tm.SUPPORTED_CITIES["Dubai"], google_city_id=None)
+        with mock.patch.dict(tm.SUPPORTED_CITIES, {"Dubai": dubai}):
+            result = self.run_dubai()
+        scope = result["travel"]["flights"]["coverage"]["search_scope"]["origin"]
+        self.assertEqual((scope["search_id"], scope["source"]), ("/m/01f08r", "verified_lookup"))
+        self.assertEqual(result["travel"]["flights"]["nearby_airport_alternatives"]["return"][0]["destination_city"], "Sharjah")
+
+    def test_all_supported_cities_have_pinned_city_ids(self):
+        for label, city in tm.SUPPORTED_CITIES.items():
+            self.assertRegex(city.get("google_city_id") or "", r"^/[mg]/", label)  # No lookup request per city
+        self.assertIn("SEN", tm.SUPPORTED_CITIES["London"]["airports"])
+
+    def test_nearby_label_uses_real_city_not_google_area_name(self):
+        # Google's "Paris" area lists BVA with city "Paris"; the label must still name Beauvais
+        self.assertEqual(tm._airport_city("BVA", {"BVA": "Paris"}, "Paris Beauvais Airport"), "Beauvais")
+        self.assertEqual(tm._airport_city("SHJ", {}, None), "Sharjah")
+        self.assertEqual(tm._airport_city("XYZ", {"XYZ": "Somewhere"}, None), "Somewhere")
+
+    def test_city_lookup_failure_falls_back_to_main_airport(self):
+        self.router.overrides["gflights_airport"] = lambda p, h: FakeResponse(500, {"message": "down"})
+        dubai = dict(tm.SUPPORTED_CITIES["Dubai"], google_city_id=None)
+        with mock.patch.dict(tm.SUPPORTED_CITIES, {"Dubai": dubai}):
+            result = self.run_dubai()
+        scope = result["travel"]["flights"]["coverage"]["search_scope"]["origin"]
+        self.assertEqual(scope["search_id"], "DXB")
+        self.assertTrue(scope["source"].startswith("fallback_main_airport"))
 
 # ==========================================
 # 4. HOTEL ELIGIBILITY, FEES & OFFER IDS

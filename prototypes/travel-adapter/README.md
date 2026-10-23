@@ -6,11 +6,12 @@ TravelMate travel and AI adapters, shaped for Adel's merged BE-04 models (`backe
 
 | Path | Purpose |
 |---|---|
-| `travalmate.py` | `search_travel` (Booking.com hotels; Google Flights live round trips in `live` mode; Skyscanner only in `indicative` mode) and `generate_itinerary` (Groq structured itinerary), plus a prototype `run_travelmate_engine` for local testing and evidence |
-| `test_travelmate_adapters.py` | 95 offline tests (no network, no API quota), validated against BE-04 models and the v0.4 schema, plus the `--live-evidence` generator |
+| `travalmate.py` | `search_travel` (Booking.com hotels; Google Flights live round trips in `live` mode, searched city to city with labeled nearby-airport alternatives; Skyscanner only in `indicative` mode) and `generate_itinerary` (Groq structured itinerary), plus a prototype `run_travelmate_engine` for local testing and evidence |
+| `test_travelmate_adapters.py` | 103 offline tests (no network, no API quota), validated against BE-04 models and the v0.4 schema, plus the `--live-evidence` generator |
 | `tests/fixtures/` | Real provider responses recorded on 2026-10-17, used by the offline tests |
 | `evidence/` | Sanitized live evidence chains with SHA-256 manifests (`legacy-prototype-v1/` holds the superseded first runs) |
-| `INTEGRATION_GUIDE.md` | **Handoff reference:** input/output schemas with real examples, BE-04 mapping, unavailability states, error and warning codes, keys, FastAPI usage |
+| `verify_google_flights_pricing.py` | Reproducible Google Flights price-meaning check (1 vs 2 adults, booking details), 6 requests |
+| `INTEGRATION_GUIDE.md` | **Handoff reference:** agreed contract and unified JSON example (section 0), input/output schemas with real examples, BE-04 mapping, unavailability states, error and warning codes, keys, FastAPI usage |
 | `.env.example` | Required environment variable names (placeholders only) |
 | `requirements.txt` | Python dependencies |
 
@@ -38,4 +39,4 @@ Start with `manifest.json`.
 
 ## Known limitations
 
-Live round trips sum two one-way tickets, which can cost more than a single round-trip ticket on some routes. `trip_type: "one_way"` needs a contract extension. See `INTEGRATION_GUIDE.md` sections 2 and 11.
+Public requests are round trips only. Live round trips sum two one-way tickets, which can cost more than a single round-trip ticket on some routes. Skyscanner `indicative` quotes are information only. The Google Flights website comparison (screenshots) is still pending. See `INTEGRATION_GUIDE.md` sections 2.1 and 11.

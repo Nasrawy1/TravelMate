@@ -1,0 +1,66 @@
+{
+  "request": {
+    "path": "/api/v1/searchAirport",
+    "params": {
+      "query": "Riyadh",
+      "language_code": "en-US",
+      "country_code": "US"
+    },
+    "headers": {
+      "x-rapidapi-key": "<redacted>"
+    }
+  },
+  "retrieved_at": "2026-10-23T14:33:34Z",
+  "http_status": 200,
+  "rate_limit": {
+    "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+    "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499950",
+    "x-ratelimit-rapid-free-plans-hard-limit-reset": "2513041",
+    "x-ratelimit-requests-limit": "150",
+    "x-ratelimit-requests-remaining": "100",
+    "x-ratelimit-requests-reset": "2513041"
+  },
+  "response": {
+    "status": true,
+    "message": "Success",
+    "timestamp": 1792766002776,
+    "data": [
+      {
+        "id": "/m/0dlm_",
+        "type": "other",
+        "title": "Riyadh Saudi Arabia",
+        "subtitle": "Capital of Saudi Arabia",
+        "city": "Riyadh",
+        "distance": null,
+        "list": [
+          {
+            "id": "RUH",
+            "type": "airport",
+            "title": "King Khalid International Airport",
+            "subtitle": "17 mi to destination",
+            "city": "Riyadh",
+            "distance": "17 mi"
+          }
+        ]
+      },
+      {
+        "id": "/g/122vxjdq",
+        "type": "other",
+        "title": "Riyadh Al Khabra Saudi Arabia",
+        "subtitle": "City in Saudi Arabia",
+        "city": "Riyadh Al Khabra",
+        "distance": null,
+        "list": [
+          {
+            "id": "ELQ",
+            "type": "airport",
+            "title": "Prince Naif Bin Abdulaziz International Airport",
+            "subtitle": "22 mi to destination",
+            "city": "Al Qassim Province",
+            "distance": "22 mi"
+          }
+        ]
+      }
+    ]
+  }
+}

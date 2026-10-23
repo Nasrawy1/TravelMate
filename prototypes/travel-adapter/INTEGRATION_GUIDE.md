@@ -18,6 +18,54 @@ Ownership reminders (`docs/api-contracts.md` section 7):
 
 ---
 
+## 0. Agreed Adapter Contract (Ziyad ↔ Adel, 2026-10-21)
+
+Agreed between Ziyad (API-04/05) and Adel (BE-03/BE-04). The team lead records the adoption under PLAN-02 (#11), and **any later schema change goes back to him before adoption**. The final end-to-end integration test belongs to BE-03 (#9).
+
+**Agreed points**
+1. `hotels.offers[].hotel_id` is an **int** (BE-04 `HotelOffer`). The string ID is `hotel_candidates[].id` (`"17410709"`), and it equals BE-04's `selected_hotel_offer_id` and `CostItem.source_offer_id`.
+2. `fits_budget` is always `null` from the adapter, because budgeting belongs to BE-04.
+3. Warnings are `{code, message}` (`api-contracts.md`).
+4. The AI adapter is called as `generate_itinerary(trip_request, selected_offers, travel_availability, estimation_policy, deadline_at=..., request_id=...)` (`adapter-contracts.md`). `deadline_at` and `request_id` are keyword arguments.
+5. The AI output contains days `{date, activities, empty_day_reason}` with activities `{order, name, area, description, cost {amount_usd, kind, coverage}}`, `ancillary_estimates {food, local_transport}`, and `budget_activities` in the BE-04 `ActivityItem` shape (passed to `BudgetInput.activities`).
+
+**Invocation agreed for BE-03 (FastAPI):**
+- an `async def` endpoint;
+- `await run_in_threadpool(search_travel, ..., deadline_at=travel_deadline)` and `await run_in_threadpool(generate_itinerary, ..., deadline_at=deadline)`;
+- overall `deadline` = now + 60 s, and `travel_deadline` = `deadline` − 25 s;
+- the same `request_id` for both calls;
+- the AI `timeout` error maps to 504 `GENERATION_TIMEOUT`.
+
+**Unified JSON example** (real values from `evidence/tm-20261021173211-de83be15`; the full version is `07_final_response.json`, with BE-04's result in `08_be04_budget_output.json`):
+
+```json
+{
+  "travel_input": {"departure_city": "Istanbul", "destination_city": "Cairo", "start_date": "2026-11-20", "return_date": "2026-11-23", "adults": 2},
+  "travel_output": {
+    "flights": {"status": "available", "reason_code": null,
+      "selected_outbound_flight": {"airline": "Air Cairo", "carrier_codes": ["SM"], "origin_airport": "IST", "destination_airport": "CAI", "flight_date": "2026-11-20", "requested_date": "2026-11-20", "date_matches_request": true, "days_from_requested_date": 0, "is_direct": true, "stops_label": "Direct", "price_per_person_usd": 136.0, "travelers": 2, "total_price_usd": 272.0, "quoted_at": "2026-10-21T17:32:15Z", "booking_link": "https://www.google.com/travel/flights?q=..."},
+      "selected_return_flight": {"airline": "EgyptAir", "carrier_codes": ["MS"], "origin_airport": "CAI", "destination_airport": "IST", "flight_date": "2026-11-23", "requested_date": "2026-11-23", "date_matches_request": true, "days_from_requested_date": 0, "is_direct": true, "stops_label": "Direct", "price_per_person_usd": 111.5, "travelers": 2, "total_price_usd": 223.0, "quoted_at": "2026-10-21T17:32:12Z", "booking_link": "https://www.google.com/travel/flights?q=..."}},
+    "hotels": {"status": "available", "reason_code": null,
+      "offers": [{"hotel_id": 17410709, "name": "Cairo Nile HK Hotel", "star_rating": 3, "review_score": null, "nights": 3, "base_price_usd": 61.75, "taxes_and_fees_usd": 4.0, "total_price_usd": 65.75, "price_per_night_usd": 21.92, "fits_budget": null}]},
+    "hotel_candidates": [{"id": "17410709", "base_usd": 61.75, "additional_fees_usd": 4.0, "included_in_base": false}],
+    "warnings": []
+  },
+  "ai_input": {"trip_request": {"departure_city": "Istanbul", "destination_city": "Cairo", "start_date": "2026-11-20", "return_date": "2026-11-23", "adults": 2, "budget_usd": 1500},
+    "selected_offers": {"flight": "<selected_outbound_flight + selected_return_flight>", "hotel": "<hotels.offers[0]>"},
+    "travel_availability": {"flights": "live", "hotels": "live"},
+    "estimation_policy": {"id": null, "food": null, "local_transport": null},
+    "deadline_at": "2026-10-21T17:33:11Z", "request_id": "tm-20261021173211-de83be15"},
+  "ai_output": {"status": "ok",
+    "itinerary": [{"date": "2026-11-21", "empty_day_reason": null, "activities": [{"order": 1, "name": "Egyptian Museum visit", "area": "Tahrir Square", "description": "See the ancient artifacts including Tutankhamun's treasures.", "cost": {"amount_usd": 30.0, "kind": "estimate", "coverage": "all_travelers"}}]}],
+    "ancillary_estimates": {"food": {"amount_usd": null, "kind": "unknown", "basis": "No approved estimation policy.", "policy_id": null}, "local_transport": {"amount_usd": null, "kind": "unknown", "basis": "No approved estimation policy.", "policy_id": null}},
+    "budget_activities": [{"label": "Egyptian Museum visit", "kind": "estimate", "amount_usd": 30.0, "activity_ref": {"date": "2026-11-21", "order": 1}, "basis": "AI estimate for all travelers (not a provider price)."}]}
+}
+```
+
+Unavailability follows section 6: an unavailable category returns `status: "unavailable"` with a `reason_code`, the legs are `null` and the hotel lists are `[]`, and `{code, message}` warnings are added. The AI still returns a full itinerary, so BE-03 answers 200 with `budget.status = "uncertain"` and `live_integration_status = "no_price"`.
+
+---
+
 ## 1. Setup
 
 Run every command from the `prototypes/travel-adapter/` folder:
@@ -26,7 +74,7 @@ Run every command from the `prototypes/travel-adapter/` folder:
 cd prototypes/travel-adapter
 pip install -r requirements.txt          # requests, groq, python-dotenv (+ jsonschema, pydantic for tests)
 cp .env.example .env                     # then fill in your own keys (never commit .env)
-python test_travelmate_adapters.py       # 95 offline tests, no API quota used
+python test_travelmate_adapters.py       # 103 offline tests, no API quota used
 ```
 
 - All credentials come from environment variables (`.env.example` lists them, with placeholders only).
@@ -74,7 +122,7 @@ With one-way searches, the 60 s contract default is enough: the two full live ru
 | Question | Answer | Evidence |
 |---|---|---|
 | Searches the requested dates? | **Yes.** | All 63 outbound options departed on 2026-11-20 and all return options on 2026-11-23 |
-| Price for all adults? | **Yes, priced by the provider.** | The same flights cost $248 for 1 adult and $495 for 2. Another cost $617 vs $1,556, a ratio of 2.52, so it is a real group fare and not a multiplication |
+| Price for all adults? | **Yes: the group total, priced by the provider.** | See section 2.1 (1 vs 2 adults, provider booking details, website comparison) |
 | One-way search? | **Yes.** Omit `return_date`. | IST → CAI one-way $272 + CAI → IST one-way $223 = **$495**, the same as the round-trip fare. Each option carries its own `booking_token` |
 | Honors `currency=USD`? | **Yes.** | The same search with `currency=EUR` returned prices about 0.89× (the market rate). The response has no currency field |
 | Departure times? | **Yes, local airport times.** | Converted to UTC with IANA zones (12:15 Istanbul = 09:15Z) and verified against the requested local dates |
@@ -82,14 +130,52 @@ With one-way searches, the 60 s contract default is enough: the two full live ru
 | Taxes? | Included (provider convention: Google shows totals including required taxes and fees) | No tax field. Checked bags are not included (`bags.checked: 0`) |
 
 **How live flights are searched:**
-- one **one-way search per direction**, run in parallel with each other and with the hotels;
+- one **one-way search per direction**, **city to city** (all airports of each city, section 2.2), run in parallel with each other and with the hotels;
 - each leg keeps its **own real provider total for all adults**, so BE-04 prices the legs directly and nothing is split or invented;
-- a round trip uses 2 calls (about 75 searches a month on 150 requests) and a one-way trip uses 1; cached repeats are free;
+- a round trip uses 2 calls (about 75 searches a month on 150 requests); cached repeats are free;
 - the same flight returned several times (different fares or tokens) is kept once, at the cheapest price.
 
 Options that fail any check are excluded and counted in `travel.flights.coverage.<direction>.excluded`: date mismatch, route mismatch (by city airports), `self_transfer` (separate tickets), invalid price, unknown time zone, malformed data, or duplicate.
 
 Summing two one-way tickets can cost more than one round-trip ticket on some routes. The sum is a real, bookable price, and the provenance says so.
+
+### 2.1 Google Flights price meaning and fees (PR #25 review, item 2)
+
+Evidence folder: `evidence/google-flights-price-verification-20261023T065850Z/` (README, requests without keys, raw responses, `summary.json`). Reproduce with `python verify_google_flights_pricing.py IST CAI 2026-11-20 2026-11-23` (6 requests).
+
+| Question | Result |
+|---|---|
+| Per person or whole group? | **Whole group.** The same flights were searched with 1 and with 2 adults in the same minute. Ratios range from 1.79 to 2.21 across 26 outbound and 33 return flights (e.g., SM 303: $104 vs $226); a per-person price would not change with the count. |
+| Is the group total bookable? | The provider's `getBookingDetails` for the 2-adult itinerary returns the airline's own price, equal to the search price (SM 304 $200, SM 303 $226). |
+| Taxes and mandatory fees? | Google's help page "What does the total price include?" (support.google.com/faqs/answer/2736504): *"Our prices include standard taxes and fees. The airline may charge additional fees, such as baggage fees."* Checked bags are not included. |
+| Website comparison | **Pending:** browser screenshots of the same flights with 1 and 2 adults (steps in the evidence README). If the website disagrees, fees switch to `unknown` and the meaning is confirmed with the API provider before budgeting. |
+
+### 2.2 City-level search and nearby-airport alternatives
+
+Searching only a city's main airport missed cheaper flights from its other airports. For example, Istanbul → Dubai on 2026-11-23 cost $277 from IST, but **$160 from SAW**. The adapter therefore searches **city to city** with the Google city ID, like the website, at **the same number of requests**. Evidence: `evidence/google-flights-city-search-20261023/`.
+
+| Rule | Behaviour |
+|---|---|
+| Search scope | Google city ID **pinned in code for all 12 cities** (verified live with `searchAirport`, `evidence/google-flights-city-lookup-20261023/`), so no lookup request is spent: Istanbul `/m/09949m`, Cairo `/m/01w2v`, Dubai `/m/01f08r`, Riyadh `/m/0dlm_`, Jeddah `/m/01pk8b`, Doha `/m/0f2yw`, Amman `/m/0c7zf`, Baghdad `/m/01fqm`, Erbil `/m/03n7br`, London `/m/04jpl`, Paris `/m/05qtj`, Rome `/m/06c62`. A city added later without an ID is looked up once, verified (same city name, contains one of our airports) and cached for 30 days; if that fails, its main airport is searched (`coverage.search_scope`). |
+| **Main selected flight** | **Always** uses the requested cities' own airports (`SUPPORTED_CITIES[...]["airports"]`, e.g., Istanbul IST + SAW, Dubai DXB + DWC, London LHR + LGW + STN + LTN + LCY + SEN, Paris CDG + ORY, Rome FCO + CIA). It is the cheapest such flight in each direction. |
+| Nearby-airport alternative | Google's "Dubai" area also includes **SHJ (Sharjah)** and **AUH (Abu Dhabi)**, and its "Paris" area includes **BVA (Beauvais)**; these are other cities. The label always uses our own city name ("Lands in Beauvais (BVA), not Paris"), not Google's area name. If the cheapest flight through such an airport is **cheaper** than the selected flight, it is reported **only** in `flights.nearby_airport_alternatives.<direction>` and labeled with the real city and airport. It is never selected, never in `round_trip_offers` / `flight_candidates` / `report_slice`, never sent to the AI, and adds a `NEARBY_AIRPORT_ALTERNATIVE` warning. |
+
+Real example (return Istanbul → Dubai, 2026-11-23, 1 adult):
+
+```json
+"selected_return_flight": {"airline": "AJet", "origin_airport": "SAW", "destination_airport": "DXB", "total_price_usd": 148.0, "...": "..."},
+"nearby_airport_alternatives": {"outbound": [], "return": [{
+  "label": "Alternative: Lands in Sharjah (SHJ), not Dubai",
+  "direction": "return", "airline": "Pegasus", "flight_numbers": ["PC 746"],
+  "origin_airport": "SAW", "origin_city": "Istanbul", "destination_airport": "SHJ",
+  "destination_airport_name": "Sharjah International Airport", "destination_city": "Sharjah",
+  "flight_date": "2026-11-23", "departure_local": "2026-11-23 23:00", "stops_label": "Direct",
+  "travelers": 1, "total_price_usd": 116.0, "saving_vs_selected_usd": 32.0,
+  "price_authority": "live_provider_quote", "eligible": false, "reason": "airport_outside_requested_city",
+  "usage": "alternative only; never selected, never sent to BE-04"}]}
+```
+
+Adopting an alternative is a user decision: it changes the arrival city, so BE-03 needs a new request.
 
 ### Indicative flights: Skyscanner capabilities
 
@@ -111,16 +197,13 @@ These were verified live on 2026-10-17 and 2026-10-19; `travel.flights.coverage`
   - a `FLIGHTS_UNAVAILABLE` warning is added.
 
   This default exists because issue #18 says "unsupported precise searches must not supply authoritative trip costs", and BE-04 turns any selected flight into a `provider` cost line.
-- `live` (**recommended once PLAN-02 records Google Flights as the flight provider**):
+- `live` (**approved provider: Google Flights**):
   - Google Flights live round trips in the v0.4 public flight shape (section 3.1);
   - `price_authority: "live_provider_quote"`.
-- `indicative` (demos only):
-  - quotes are fetched;
-  - **only exact-date quotes** are selectable;
-  - the price is single-adult quote × travelers (unverified);
-  - a `FLIGHT_PRICES_INDICATIVE` warning is added.
-
-  Adopting an alternative date always requires a **new request with a fresh hotel search**.
+- `indicative` (information only):
+  - Skyscanner cached quotes are listed under `flights.indicative_quotes`;
+  - they are **never selected and never sent to BE-04**, even on an exact-date match (section 3, "Indicative quotes");
+  - adopting any shown date requires a **new request with a fresh hotel search**.
 
 ### Hotel verification
 
@@ -171,9 +254,8 @@ The exact public request (`docs/api-contracts.md` section 3). `budget_usd` is op
 | `return_date` | 1–7 nights after `start_date` |
 | `adults` | Integer 1–4. Booleans, fractions and numeric strings are rejected |
 | `budget_usd` | Number that stays > 0.00 after rounding to cents |
-| `trip_type` (optional) | `"round_trip"` (default, the current v0.4 contract) or `"one_way"`. **`one_way` is a proposed contract extension:** v0.4 says "no one-way switch" and requires `return_departure_at`. With `one_way`, only the outbound flight is searched, and `return_date` stays the end of the stay (hotel and itinerary) |
 
-Unknown fields (e.g., `rooms`, `origin`) are rejected as `invalid_input`. Rooms default to 1 internally and are never a public field.
+Unknown fields (e.g., `rooms`, `origin`, `trip_type`) are rejected as `invalid_input`. Public requests are **round trips only** (v0.4: "no one-way switch"; PR #25 review, item 3). Rooms default to 1 internally. One-way search exists only as an adapter-internal option (`search_travel(..., trip_type="one_way")`) for a future contract change, and is not exposed publicly.
 
 ### Output (real, trimmed to the selected hotel)
 
@@ -186,7 +268,7 @@ Unknown fields (e.g., `rooms`, `origin`) are rejected as `invalid_input`. Rooms 
     "status": "unavailable", "reason_code": "not_configured", "price_authority": null,
     "selected_outbound_flight": null, "selected_return_flight": null,
     "offers": {"outbound": [], "return": []},
-    "alternative_date_offers": {"outbound": [], "return": []},
+    "indicative_quotes": null,
     "coverage": {}
   },
   "hotels": {
@@ -239,9 +321,8 @@ Unknown fields (e.g., `rooms`, `origin`) are rejected as `invalid_input`. Rooms 
 | Offer | ID | Where it appears |
 |---|---|---|
 | Hotel | `str(hotel_id)`, e.g. `"17410709"` | `public_offers[].id`, `hotel_candidates[].id`, `provenance[].offer_id`, and BE-04 `selected_hotel_offer_id` / `CostItem.source_offer_id` |
-| Live one-way trip | the outbound leg ID | `round_trip_offers[].id`, `flight_candidates[].id` |
 | Flight leg | `airline-flight_date-origin-destination` | `provenance[].offer_id` |
-| Round trip (live and indicative) | `<outbound leg id>__<return leg id>`, the exact synthetic format BE-04 builds, e.g. `"Air Cairo-2026-11-20-IST-CAI__EgyptAir-2026-11-23-CAI-IST"` | `round_trip_offers[].id`, `flight_candidates[].id`, `provenance[].offer_id`, and BE-04 `selected_flight_offer_id` / `source_offer_id` |
+| Round trip (live) | `<outbound leg id>__<return leg id>`, the exact synthetic format BE-04 builds, e.g. `"Air Cairo-2026-11-20-IST-CAI__EgyptAir-2026-11-23-CAI-IST"` | `round_trip_offers[].id`, `flight_candidates[].id`, `provenance[].offer_id`, and BE-04 `selected_flight_offer_id` / `source_offer_id` |
 
 There are no other candidate ID fields.
 
@@ -253,7 +334,6 @@ There are no other candidate ID fields.
 | Hotel, `excludedPrice` > 0 | `included_in_base: false`, `additional_fees_usd: <amount>` | `additional_known` | One provider `taxes_fees` line, counted once |
 | Hotel, fees missing or unconvertible | `included_in_base: false`, `additional_fees_usd: null` | `unknown`, `null` | One unknown `taxes_fees` line, plus a `TAXES_UNKNOWN` warning |
 | Flight (live mode) | `included_in_base: true`, `additional_fees_usd: null` | `included`, `0.0` | No fee line |
-| Flight (indicative mode) | `included_in_base: true`, `additional_fees_usd: null` | – | No fee line |
 
 `HotelOffer.total_price_usd` is `base + taxes` exactly (BE-04 validator), or `null` when the taxes are unknown. It is **never** base + 0 when the fees are unknown.
 
@@ -296,37 +376,18 @@ There are no other candidate ID fields.
 - `price_per_person_usd` is the provider group total divided by the adults. It is informative only; BE-04 uses `total_price_usd`.
 - `booking_link` is a Google Flights search link for the leg. The provider's `booking_token` is not a URL; it is stored only as a hash in provenance.
 - Each `round_trip_offers[]` item **is the v0.4 public `flight` object** (schema-validated in tests): two valid one-way quotes combined into one round trip, which the contract explicitly allows. BE-03 can pass it straight to `travel_options.flights.offers`.
-- For `trip_type: "one_way"`, `selected_return_flight` is `null` and `round_trip_offers[].return_departure_at` is `null`. The latter is outside v0.4 until the contract extension is approved.
 - Flight provenance adds per-leg `itinerary` details (flight numbers, local and UTC times, stops, transit airports, duration, checked bags), the actual query parameters for each direction, and `coverage_evidence` that names both leg prices.
 
-### Exact-match vs mismatched flights (indicative mode, *simulated* exact date)
+### Indicative quotes (`indicative` mode): information only
 
-`date_matches_request` is **always computed** as `flight_date == requested_date`, never set by hand. `days_from_requested_date` is signed (+ means later). Only exact-date legs can be selected. Alternative-date legs stay in `alternative_date_offers`, never enter `report_slice` or `flight_candidates`, and are rejected by `generate_itinerary`.
+**Changed after the PR #25 review (item 1).** Skyscanner cached single-adult quotes are **never** selected and never become `flight_candidates`, **even when a quote matches the requested date**, so an indicative price can never reach BE-04 as a `provider` cost. In this mode:
+- `flights.status` is `unavailable` with `reason_code: "not_configured"`;
+- both selected legs are `null` and `flight_candidates` is `[]`;
+- the quotes are listed under `flights.indicative_quotes` (`exact_date` / `alternative_dates`, `usage: "information only; never selected, never sent to BE-04"`);
+- their provenance entries carry `informational_only: true`;
+- a `FLIGHT_PRICES_INDICATIVE` warning is added.
 
-```json
-"selected_outbound_flight": {
-  "airline": "Turkish Airlines", "carrier_codes": ["TK"], "origin_airport": "IST", "destination_airport": "CAI",
-  "flight_date": "2026-11-01", "requested_date": "2026-11-01", "date_matches_request": true, "days_from_requested_date": 0,
-  "is_direct": false, "stops_label": "With stops (count and transit airports not provided by provider)",
-  "price_per_person_usd": 117.33, "travelers": 2, "total_price_usd": 234.66,
-  "quoted_at": "2026-10-12T19:28:00Z", "booking_link": "https://www.skyscanner.net/transport/flights/IST/CAI/..."
-},
-"alternative_date_offers": {"outbound": [{
-  "flight_date": "2026-11-04", "requested_date": "2026-11-01", "date_matches_request": false, "days_from_requested_date": 3,
-  "...": "same SelectedFlight fields"
-}]},
-"flight_candidates": [{"id": "Turkish Airlines-2026-11-01-IST-CAI__Air Cairo-2026-11-05-CAI-IST", "base_usd": 384.0, "additional_fees_usd": null, "included_in_base": true}]
-```
-
-Flight provenance adds `conversion: {source, rate_to_usd: 1.33333333, converted_at, rate_timestamp}`, `quote_timestamp`, `transit_airports` and `airport_timezones: {departure: "Europe/Istanbul", destination: "Africa/Cairo"}`.
-
-If no exact-date quote exists for **both** directions:
-- `selected_outbound_flight` and `selected_return_flight` are `null`;
-- `flight_candidates` is `[]`;
-- `reason_code` is `no_results`;
-- a `FLIGHTS_UNAVAILABLE` warning says how many alternative dates exist.
-
-As a result, BE-04's `selected_flight_offer_id` is `null`.
+`date_matches_request` is still **always computed** as `flight_date == requested_date` (signed `days_from_requested_date`). The test `test_indicative_price_never_enters_selection_or_budget` proves that an exact-date indicative quote leaves BE-04's flight line `unknown`.
 
 ---
 
@@ -443,7 +504,7 @@ budget = calculate_budget(BudgetInput.model_validate({
 
 **Live round trips use BE-04's normal legs path.** Pass `report_slice.flights_data` as-is. BE-04 sums the two real leg totals and builds the same synthetic ID as `round_trip_offers[].id`.
 
-**One-way trips use candidate mode**, because BE-04's legs path needs both legs. Pass `flights_data` with both legs `null` and `"flight_candidates": [<the candidate with id == selected_flight_offer_id>]`. BE-04 prices it once as a `provider` line, with no fee line because `included_in_base` is true.
+(One-way trips are not public. If the contract adds them later, the internal one-way option prices through BE-04 candidate mode: legs `null` plus `"flight_candidates": [<selected candidate>]`.)
 
 **Result for live run `tm-20261021173211-de83be15`** (`08_be04_budget_output.json`):
 
@@ -465,7 +526,8 @@ budget = calculate_budget(BudgetInput.model_validate({
 | Situation | Adapter output | Warning codes | BE-03 public result |
 |---|---|---|---|
 | Flights disabled (default) | `flights.status = unavailable`, `reason_code = not_configured`, both legs `null`, `flight_candidates = []` | `FLIGHTS_UNAVAILABLE` | 200, flights `unavailable`, `offers: []` |
-| No exact-date flight (indicative mode) | Same, but `reason_code = no_results`; alternatives listed separately | `FLIGHTS_UNAVAILABLE` | 200 |
+| Cheaper flight only via another city's airport (live mode) | Main flight unchanged (requested cities' airports only); the cheaper one is listed in `nearby_airport_alternatives` with its label | `NEARBY_AIRPORT_ALTERNATIVE` | 200; show it as an optional alternative |
+| Indicative mode | `flights.status = unavailable`, `reason_code = not_configured`, legs `null`, `flight_candidates = []`; quotes only under `indicative_quotes` | `FLIGHT_PRICES_INDICATIVE` | 200, flights `unavailable` |
 | No eligible flight in a direction, or one leg's search fails (live mode) | `round_trip_offers = []`, both legs `null`, `reason_code` = `no_results` or the provider error code; never half a round trip | `FLIGHTS_UNAVAILABLE` | 200 |
 | No matching hotel | `hotels.status = unavailable`, `reason_code = no_results`, `offers = []`, `hotels_data = []`, `hotel_candidates = []` | `HOTELS_UNAVAILABLE` | 200 |
 | Provider failure | `reason_code` = `rate_limited` / `timeout` / `auth_error` / `provider_error` / `invalid_response` / `unsupported_search` | `TRAVEL_RATE_LIMITED`, `TRAVEL_TIMEOUT`, `FLIGHTS_UNAVAILABLE` or `HOTELS_UNAVAILABLE` | 200 (a travel 429 is a warning, not a whole-request 429) |
@@ -475,7 +537,7 @@ budget = calculate_budget(BudgetInput.model_validate({
 
 **Warning codes:**
 - Contract codes: `FLIGHTS_UNAVAILABLE`, `HOTELS_UNAVAILABLE`, `TRAVEL_RATE_LIMITED`, `TRAVEL_TIMEOUT`, `CURRENCY_UNAVAILABLE`, `TAXES_UNKNOWN`.
-- **New codes, documented here for UI review:** `FLIGHT_PRICES_INDICATIVE`, `FLIGHT_DATE_MISMATCH_EXCLUDED`, `HOTEL_MISMATCH_EXCLUDED`, `MEAL_COST_REASSIGNED`, `PRICE_EXPLANATION_DROPPED`, `POLICY_NOT_APPROVED`, `ESTIMATE_UNAVAILABLE`, `AI_UNAVAILABLE`, `AI_OUTPUT_NORMALIZED`.
+- **New codes, documented here for UI review:** `NEARBY_AIRPORT_ALTERNATIVE`, `FLIGHT_PRICES_INDICATIVE`, `FLIGHT_DATE_MISMATCH_EXCLUDED`, `HOTEL_MISMATCH_EXCLUDED`, `MEAL_COST_REASSIGNED`, `PRICE_EXPLANATION_DROPPED`, `POLICY_NOT_APPROVED`, `ESTIMATE_UNAVAILABLE`, `AI_UNAVAILABLE`, `AI_OUTPUT_NORMALIZED`.
 
 Errors are always `{code, message}`. Python exception text, stack traces and credentials are never returned.
 
@@ -491,13 +553,13 @@ Errors are always `{code, message}`. Python exception text, stack traces and cre
    - then that key is removed from the local `.env`, after writing a backup to `.env.bak`;
    - the next key becomes primary for **later** requests.
 
-   Transient 429s never prune. Deployments without a local `.env` are never modified. **Team-lead confirmation needed:** promoting the next key across runs could be read as the quota bypass that #18 forbids.
+   Transient 429s never prune. Deployments without a local `.env` are never modified. Approved by the team lead (PR #25 review).
 5. **Local key rotation** (`TRAVELMATE_LOCAL_KEY_ROTATION=true`, default `false`, **local development only**):
    - a dead key (quota-exhausted 429, or auth 401/403) is removed from `.env`, after writing a `.env.bak` backup;
    - it is archived in `.env.exhausted` with the reason and the quota reset time (from `x-ratelimit-requests-reset`), copy-paste ready so it can be restored later;
    - the **same request continues** with the next key.
 
-   Transient errors never rotate keys, and `provenance.key_slot` records which slot answered. `.env.exhausted` is ignored by git (`.env.*`). **Must stay `false` in shared or deployed environments:** issue #18 forbids rotating keys to bypass provider limits.
+   Transient errors never rotate keys, and `provenance.key_slot` records which slot answered. `.env.exhausted` is ignored by git (`.env.*`). **Approved by the team lead (PR #25 review)** for local development; keep it `false` in shared or deployed environments.
 6. **No automatic AI retry.**
 
 **Cache concurrency:**
@@ -541,7 +603,7 @@ async def trip_plan(request_data: dict):
 
 These are **suggested mappings that require alignment with the project database scope; they are not instructions to create or write tables.** Persistence is out of scope for #17 and #18.
 
-- `report_slice.flights_data` is an **object** with `selected_outbound_flight` and `selected_return_flight`. The full exact-date lists are in `travel.flights.offers.outbound` / `.return`, and alternatives are in `travel.flights.alternative_date_offers`.
+- `report_slice.flights_data` is an **object** with `selected_outbound_flight` and `selected_return_flight`. The per-direction lists are in `travel.flights.offers.outbound` / `.return`, the public round trips in `travel.flights.round_trip_offers`, and indicative-mode quotes (information only) in `travel.flights.indicative_quotes`.
 - `carrier_codes` belongs to flight legs; `transit_airports` is in the flight provenance entries.
 - The prototype's price-ordered hotel tiers were **removed**. Offer selection and budgeting now belong to BE-03 / BE-04.
 - React receives only BE-03's public result (v0.4), never this adapter envelope or `provenance`.
@@ -551,17 +613,19 @@ These are **suggested mappings that require alignment with the project database 
 ## 10. Tests and Evidence
 
 ```bash
-python test_travelmate_adapters.py                  # 95 offline tests (0 API quota)
+python test_travelmate_adapters.py                  # 103 offline tests (0 API quota)
 python test_travelmate_adapters.py --live-evidence  # ONE real run -> evidence/<request_id>/
 ```
 
 The offline tests use real provider responses recorded on 2026-10-17 (Booking, Skyscanner) and 2026-10-21 (Google Flights) in `tests/fixtures/`, plus explicitly **simulated** failures. When the repository backend and `jsonschema` are present, they also validate outputs against **Adel's BE-04 models / `calculate_budget`** and the **v0.4 JSON Schema**. They cover:
 - live flights:
-  - two parallel one-way searches;
+  - two parallel one-way searches, city to city (pinned IDs, verified lookup, fallback to the main airport);
+  - main flight always from the requested cities' airports; cheaper nearby-airport flights only as labeled alternatives;
   - real per-leg provider totals, never multiplied or split;
-  - BE-04 pricing the real legs (round trip) and candidate mode (one-way);
+  - BE-04 pricing the real legs;
   - v0.4 schema compliance;
-  - `trip_type` (`one_way`, invalid values);
+  - `trip_type` rejected as a public field (internal one-way option only);
+  - indicative quotes never selected or budgeted, even on an exact date;
   - de-duplication and normalization of unpadded dates;
   - local → UTC times, and stops counted from segments;
   - exclusion of date, route, self-transfer and invalid-price options;
@@ -581,6 +645,9 @@ The offline tests use real provider responses recorded on 2026-10-17 (Booking, S
 | Evidence | Content |
 |---|---|
 | `evidence/tm-20261021173211-de83be15` (**current, full chain**) | IST → Cairo, 2026-11-20 → 2026-11-23, 2 adults, flight mode `live` (two one-way searches). **Total response: 19.6 s.** **Flights:** real legs SM 304 $272 and MS 745 $223. **Hotels:** 20/20 verified. **AI:** validated, 4,413 ms. **BE-04:** sums the legs to 495.00; provider subtotal 560.75, `uncertain`. |
+| `evidence/tm-20261023142808-0a421e2f` | **Latest full chain with the city-level search:** Istanbul (`/m/09949m`) ↔ Cairo (`/m/01w2v`, verified live), 2 adults, **9.5 s end to end**; flights $200 + $184, hotels 20/20, AI validated, BE-04 accepted. |
+| `evidence/google-flights-city-search-20261023` | City-level search: Istanbul IST + SAW, and Dubai's Google area including SHJ / AUH; cheapest $160 from SAW vs $277 from IST; the Sharjah alternative ($116). |
+| `evidence/google-flights-price-verification-20261023T065850Z` | **Price meaning check (PR #25 review, item 2):** the same flights with 1 and 2 adults (both directions, within 27 s), the provider booking details for the 2-adult itineraries, and Google's tax statement. Website screenshots still pending (see its README). |
 | `evidence/tm-20261021173058-9506e07a` | Same request, **8.8 s**. Flights and hotels succeeded; the AI output was **rejected** for `{"amount_usd": null, "kind": "estimate"}`, which led to the estimate-without-amount normalization (it validates on offline replay). |
 | `evidence/tm-20261021165940-0411d285` | Previous round-trip flow (`getNextFlights`, candidate mode): full chain; same $495 total and BE-04 subtotal 560.75. |
 | `evidence/tm-20261021165822-1909eb51` | Same request. Live flights and hotels succeeded; the AI output was **rejected** (`invalid_output`) because of blank strings between activities. That led to the blank-item normalization; the same raw output now validates when replayed offline. |
@@ -594,11 +661,10 @@ The offline tests use real provider responses recorded on 2026-10-17 (Booking, S
   - two one-way tickets can cost more than one round-trip ticket on some routes (on IST–CAI both were $495);
   - economy class only;
   - checked bags are not included in the price;
-  - `one_way` needs a contract extension before BE-03 can expose it.
-- **Flights (indicative):** cached, date-independent, single-adult Skyscanner quotes. Demos only.
+- **Flights (indicative):** cached, date-independent, single-adult Skyscanner quotes, shown for information only.
 - **Provider status:** both flight providers are third-party RapidAPI services, not official airline or Google APIs.
 - **Hotels:** only the first result page (about 20 properties). `area` is `null` unless Booking's label names a district; `room_qty` is `null` when the provider does not state the unit count.
 - **Quota:**
   - Booking: 20 requests/month per key; a hotel search uses 1 (2 for a city without a pinned ID).
-  - Google Flights: 150/month; a live round trip uses 2 and a one-way trip uses 1.
+  - Google Flights: 150/month; a live round trip uses 2.
 - **AI cost estimates:** the AI may mark every activity cost `unknown` (as in the live run). That is valid, but it leaves `activities` in BE-04 `missing_categories`.

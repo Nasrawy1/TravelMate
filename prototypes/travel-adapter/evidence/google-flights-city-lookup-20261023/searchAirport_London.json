@@ -1,0 +1,264 @@
+{
+  "request": {
+    "path": "/api/v1/searchAirport",
+    "params": {
+      "query": "London",
+      "language_code": "en-US",
+      "country_code": "US"
+    },
+    "headers": {
+      "x-rapidapi-key": "<redacted>"
+    }
+  },
+  "retrieved_at": "2026-10-23T14:33:44Z",
+  "http_status": 200,
+  "rate_limit": {
+    "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+    "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499944",
+    "x-ratelimit-rapid-free-plans-hard-limit-reset": "2513031",
+    "x-ratelimit-requests-limit": "150",
+    "x-ratelimit-requests-remaining": "94",
+    "x-ratelimit-requests-reset": "2513031"
+  },
+  "response": {
+    "status": true,
+    "message": "Success",
+    "timestamp": 1792766012754,
+    "data": [
+      {
+        "id": "/m/04jpl",
+        "type": "other",
+        "title": "London, United Kingdom",
+        "subtitle": "Capital of England",
+        "city": "London",
+        "distance": null,
+        "list": [
+          {
+            "id": "LHR",
+            "type": "airport",
+            "title": "Heathrow Airport",
+            "subtitle": "14 mi to destination",
+            "city": "London",
+            "distance": "14 mi"
+          },
+          {
+            "id": "STN",
+            "type": "airport",
+            "title": "London Stansted Airport",
+            "subtitle": "30 mi to destination",
+            "city": "London",
+            "distance": "30 mi"
+          },
+          {
+            "id": "LGW",
+            "type": "airport",
+            "title": "London Gatwick Airport",
+            "subtitle": "25 mi to destination",
+            "city": "London",
+            "distance": "25 mi"
+          },
+          {
+            "id": "LTN",
+            "type": "airport",
+            "title": "London Luton Airport",
+            "subtitle": "27 mi to destination",
+            "city": "London",
+            "distance": "27 mi"
+          },
+          {
+            "id": "LCY",
+            "type": "airport",
+            "title": "London City Airport",
+            "subtitle": "7 mi to destination",
+            "city": "London",
+            "distance": "7 mi"
+          },
+          {
+            "id": "SEN",
+            "type": "airport",
+            "title": "London Southend Airport",
+            "subtitle": "35 mi to destination",
+            "city": "London",
+            "distance": "35 mi"
+          },
+          {
+            "id": "/m/04jpl",
+            "type": "other",
+            "title": "St Pancras International",
+            "subtitle": "2 mi to destination",
+            "city": "London",
+            "distance": "2 mi"
+          }
+        ]
+      },
+      {
+        "id": "/m/02hgz",
+        "type": "other",
+        "title": "Derry/Londonderry, United Kingdom",
+        "subtitle": "City in Northern Ireland",
+        "city": "Derry/Londonderry",
+        "distance": null,
+        "list": [
+          {
+            "id": "BFS",
+            "type": "airport",
+            "title": "Belfast International Airport",
+            "subtitle": "49 mi to destination",
+            "city": "Belfast",
+            "distance": "49 mi"
+          },
+          {
+            "id": "LDY",
+            "type": "airport",
+            "title": "City of Derry Airport",
+            "subtitle": "6 mi to destination",
+            "city": "Derry/Londonderry",
+            "distance": "6 mi"
+          }
+        ]
+      },
+      {
+        "id": "/m/0b1t1",
+        "type": "other",
+        "title": "London, Ontario, Canada",
+        "subtitle": "City in Ontario, Canada",
+        "city": "London",
+        "distance": null,
+        "list": [
+          {
+            "id": "YYZ",
+            "type": "airport",
+            "title": "Toronto Pearson International Airport",
+            "subtitle": "94 mi to destination",
+            "city": "Toronto",
+            "distance": "94 mi"
+          },
+          {
+            "id": "YXU",
+            "type": "airport",
+            "title": "London International Airport",
+            "subtitle": "6 mi to destination",
+            "city": "London",
+            "distance": "6 mi"
+          }
+        ]
+      },
+      {
+        "id": "/m/0nl99",
+        "type": "other",
+        "title": "London Borough of Richmond upon Thames, United Kingdom",
+        "subtitle": "Municipality in England",
+        "city": "London Borough of Richmond upon Thames",
+        "distance": null,
+        "list": [
+          {
+            "id": "LHR",
+            "type": "airport",
+            "title": "Heathrow Airport",
+            "subtitle": "4 mi to destination",
+            "city": "London",
+            "distance": "4 mi"
+          },
+          {
+            "id": "LGW",
+            "type": "airport",
+            "title": "London Gatwick Airport",
+            "subtitle": "18 mi to destination",
+            "city": "London",
+            "distance": "18 mi"
+          },
+          {
+            "id": "STN",
+            "type": "airport",
+            "title": "London Stansted Airport",
+            "subtitle": "34 mi to destination",
+            "city": "London",
+            "distance": "34 mi"
+          },
+          {
+            "id": "LCY",
+            "type": "airport",
+            "title": "London City Airport",
+            "subtitle": "12 mi to destination",
+            "city": "London",
+            "distance": "12 mi"
+          },
+          {
+            "id": "LTN",
+            "type": "airport",
+            "title": "London Luton Airport",
+            "subtitle": "27 mi to destination",
+            "city": "London",
+            "distance": "27 mi"
+          },
+          {
+            "id": "SOU",
+            "type": "airport",
+            "title": "Southampton Airport",
+            "subtitle": "53 mi to destination",
+            "city": "Southampton",
+            "distance": "53 mi"
+          },
+          {
+            "id": "SEN",
+            "type": "airport",
+            "title": "London Southend Airport",
+            "subtitle": "40 mi to destination",
+            "city": "London",
+            "distance": "40 mi"
+          },
+          {
+            "id": "/m/0g9k4",
+            "type": "other",
+            "title": "Swindon railway station",
+            "subtitle": "61 mi to destination",
+            "city": "Swindon",
+            "distance": "61 mi"
+          }
+        ]
+      },
+      {
+        "id": "/m/0mb2b",
+        "type": "other",
+        "title": "New London, Connecticut",
+        "subtitle": "City in Connecticut",
+        "city": "New London",
+        "distance": null,
+        "list": [
+          {
+            "id": "PVD",
+            "type": "airport",
+            "title": "Rhode Island T.F. Green International Airport",
+            "subtitle": "43 mi to destination",
+            "city": "Providence",
+            "distance": "43 mi"
+          },
+          {
+            "id": "BDL",
+            "type": "airport",
+            "title": "Bradley International Airport",
+            "subtitle": "50 mi to destination",
+            "city": "Hartford",
+            "distance": "50 mi"
+          },
+          {
+            "id": "HVN",
+            "type": "airport",
+            "title": "Tweed New Haven Airport",
+            "subtitle": "41 mi to destination",
+            "city": "New Haven",
+            "distance": "41 mi"
+          },
+          {
+            "id": "/m/0f2nf",
+            "type": "other",
+            "title": "New Haven",
+            "subtitle": "43 mi to destination",
+            "city": "New Haven",
+            "distance": "43 mi"
+          }
+        ]
+      }
+    ]
+  }
+}
