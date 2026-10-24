@@ -11,13 +11,8 @@ from pydantic import (
 )
 
 
-# TODO(BE-03 / Ziyad): Replace with the official list from adapter-contracts.md
-# once the verified canonical city list is provided.
-SUPPORTED_CITIES = frozenset({"Istanbul", "Rome", "Cairo", "Paris", "Dubai"})
-
-
 class GenerateTripRequest(BaseModel):
-    """Strict public request; city labels are normalized to title-cased canonicals."""
+    """Strict public request; city labels are trimmed, then resolved by the adapter."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -41,7 +36,8 @@ class GenerateTripRequest(BaseModel):
     @classmethod
     def normalize_city_label(cls, value: object) -> object:
         if isinstance(value, str):
-            return value.strip().title()
+            # Strip surrounding whitespace only; the adapter owns city resolution.
+            return value.strip()
         return value
 
     @field_validator("budget_usd")

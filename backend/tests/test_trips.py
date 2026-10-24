@@ -102,24 +102,34 @@ def test_forbidden_extra_fields_return_validation_error(extra: str) -> None:
     assert extra in {item["field"] for item in body["error"]["details"]["fields"]}
 
 
-def test_unsupported_city_returns_400() -> None:
+def test_unrecognized_city_passes_phase1_validation() -> None:
     with make_client(authenticated=True) as client:
         response = client.post(
             "/api/v1/trips/generate",
             json=request_payload(destination_city="Atlantis"),
         )
 
-    assert_error(response, status_code=400, code="UNSUPPORTED_LOCATION")
+    assert_error(response, status_code=501, code="NOT_IMPLEMENTED")
 
 
-def test_same_city_returns_400() -> None:
+def test_unicode_city_passes_phase1_validation() -> None:
     with make_client(authenticated=True) as client:
         response = client.post(
             "/api/v1/trips/generate",
-            json=request_payload(destination_city="Istanbul"),
+            json=request_payload(destination_city="العلا"),
         )
 
-    assert_error(response, status_code=400, code="UNSUPPORTED_LOCATION")
+    assert_error(response, status_code=501, code="NOT_IMPLEMENTED")
+
+
+def test_country_qualifier_city_passes_phase1_validation() -> None:
+    with make_client(authenticated=True) as client:
+        response = client.post(
+            "/api/v1/trips/generate",
+            json=request_payload(destination_city="Paris, France"),
+        )
+
+    assert_error(response, status_code=501, code="NOT_IMPLEMENTED")
 
 
 def test_past_start_date_returns_400() -> None:

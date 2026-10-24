@@ -5,7 +5,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 
-from app.api.schemas.trips import GenerateTripRequest, SUPPORTED_CITIES
+from app.api.schemas.trips import GenerateTripRequest
 
 
 def validation_error_fields(
@@ -35,7 +35,7 @@ class TripRequestError(Exception):
 
 
 def validate_trip_request(payload: GenerateTripRequest) -> None:
-    """Raise contract-mapped errors for well-typed date and city policy failures."""
+    """Raise contract-mapped errors for well-typed date policy failures."""
     # Validation reference is UTC calendar date per api-contracts.md §2.
     today_utc = datetime.now(timezone.utc).date()
     if payload.start_date <= today_utc:
@@ -52,21 +52,6 @@ def validate_trip_request(payload: GenerateTripRequest) -> None:
             code="INVALID_TRIP_DATES",
             message="Return date must be 1 to 7 nights after start date.",
         )
-
-    # TODO(BE-03 / Ziyad): refine once official city list is provided.
-    departure_city = payload.departure_city.strip()
-    destination_city = payload.destination_city.strip()
-    if (
-        departure_city not in SUPPORTED_CITIES
-        or destination_city not in SUPPORTED_CITIES
-        or departure_city == destination_city
-    ):
-        raise TripRequestError(
-            status_code=400,
-            code="UNSUPPORTED_LOCATION",
-            message="The requested departure and destination city pair is unsupported.",
-        )
-
 
 async def trip_request_error_handler(
     request: Request, exc: TripRequestError
