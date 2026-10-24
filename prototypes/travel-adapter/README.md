@@ -7,7 +7,7 @@ TravelMate travel and AI adapters, shaped for Adel's merged BE-04 models (`backe
 | Path | Purpose |
 |---|---|
 | `travalmate.py` | Local entry point: loads the adapter module **`backend/app/adapters/travelmate.py`** (imported directly by BE-03) with this folder's `.env` and cache. The module provides `search_travel` (Booking.com hotels; Google Flights live round trips in `live` mode, searched city to city with labeled nearby-airport alternatives; Skyscanner only in `indicative` mode) and `generate_itinerary` (Groq structured itinerary), plus a prototype `run_travelmate_engine` for local testing and evidence |
-| `test_travelmate_adapters.py` | 120 offline tests (no network, no API quota), validated against BE-04 models and the v0.4 schema, plus the `--live-evidence` generator |
+| `test_travelmate_adapters.py` | 121 offline tests (no network, no API quota), validated against BE-04 models and the v0.4 schema, plus the `--live-evidence` generator |
 | `tests/fixtures/` | Real provider responses recorded on 2026-10-17, used by the offline tests |
 | `evidence/` | Sanitized live evidence chains with SHA-256 manifests (`legacy-prototype-v1/` holds the superseded first runs) |
 | `verify_google_flights_pricing.py` | Reproducible Google Flights price-meaning check (1 vs 2 adults, booking details), 6 requests |

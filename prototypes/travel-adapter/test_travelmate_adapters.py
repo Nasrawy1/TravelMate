@@ -292,6 +292,22 @@ class TestInvalidInput(AdapterTestCase):
         self.assertEqual(result["error"]["code"], "unsupported_search")
         self.assertEqual(self.requests_get.call_count, 0)
 
+    def test_unsupported_city_names_each_field(self):
+        # BE-03 builds 400 UNSUPPORTED_LOCATION details.fields from diagnostics.fields
+        for request, fields in (({"destination_city": "Atlantis"}, ["destination_city"]),
+                                ({"departure_city": "Porto"}, ["departure_city"]),
+                                ({"departure_city": "Porto", "destination_city": "Atlantis"}, ["departure_city", "destination_city"])):
+            for result in (tm.search_travel(dict(BASE_REQUEST, **request), cache_mode="off"),
+                           tm.generate_itinerary(dict(BASE_REQUEST, **request), {}, {})):
+                self.assertEqual(result["error"]["code"], "unsupported_search")
+                self.assertEqual([f["field"] for f in result["diagnostics"]["fields"]], fields)
+                for field in result["diagnostics"]["fields"]:
+                    self.assertEqual(set(field), {"field", "message"})
+                    self.assertNotIn("Porto", field["message"])  # Safe message; the submitted text is not echoed
+                self.assertIn("Istanbul", result["diagnostics"]["supported_cities"])
+        self.assertEqual(self.requests_get.call_count, 0)
+        self.assertEqual(self.groq_client.calls, 0)
+
     def test_internal_airport_override_must_be_three_letters(self):
         with self.assertRaises(tm.TravelMateError) as ctx:
             tm.validate_request(dict(BASE_REQUEST), destination_airport="CAIR")
