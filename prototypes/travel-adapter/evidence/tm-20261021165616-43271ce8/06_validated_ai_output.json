@@ -1,0 +1,11 @@
+{
+  "status": "error",
+  "itinerary": null,
+  "ancillary_estimates": null,
+  "budget_activities": null,
+  "price_explanation": null,
+  "error": {
+    "code": "timeout",
+    "message": "The request did not finish before the deadline."
+  }
+}

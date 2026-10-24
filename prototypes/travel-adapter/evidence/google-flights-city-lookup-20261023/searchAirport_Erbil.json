@@ -1,0 +1,48 @@
+{
+  "request": {
+    "path": "/api/v1/searchAirport",
+    "params": {
+      "query": "Erbil",
+      "language_code": "en-US",
+      "country_code": "US"
+    },
+    "headers": {
+      "x-rapidapi-key": "<redacted>"
+    }
+  },
+  "retrieved_at": "2026-10-23T14:33:41Z",
+  "http_status": 200,
+  "rate_limit": {
+    "x-ratelimit-requests-limit": "150",
+    "x-ratelimit-requests-remaining": "95",
+    "x-ratelimit-requests-reset": "2513034",
+    "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+    "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499945",
+    "x-ratelimit-rapid-free-plans-hard-limit-reset": "2513034"
+  },
+  "response": {
+    "status": true,
+    "message": "Success",
+    "timestamp": 1792766009836,
+    "data": [
+      {
+        "id": "/m/03n7br",
+        "type": "other",
+        "title": "Erbil, Iraq",
+        "subtitle": "Capital of Iraqi Kurdistan",
+        "city": "Erbil",
+        "distance": null,
+        "list": [
+          {
+            "id": "EBL",
+            "type": "airport",
+            "title": "Erbil International Airport (EIA)",
+            "subtitle": "5 mi to destination",
+            "city": "Erbil",
+            "distance": "5 mi"
+          }
+        ]
+      }
+    ]
+  }
+}

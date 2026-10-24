@@ -1,0 +1,66 @@
+{
+  "request": {
+    "path": "/api/v1/searchAirport",
+    "params": {
+      "query": "Baghdad",
+      "language_code": "en-US",
+      "country_code": "US"
+    },
+    "headers": {
+      "x-rapidapi-key": "<redacted>"
+    }
+  },
+  "retrieved_at": "2026-10-23T14:33:40Z",
+  "http_status": 200,
+  "rate_limit": {
+    "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+    "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499946",
+    "x-ratelimit-rapid-free-plans-hard-limit-reset": "2513035",
+    "x-ratelimit-requests-limit": "150",
+    "x-ratelimit-requests-remaining": "96",
+    "x-ratelimit-requests-reset": "2513035"
+  },
+  "response": {
+    "status": true,
+    "message": "Success",
+    "timestamp": 1792766008382,
+    "data": [
+      {
+        "id": "/m/01fqm",
+        "type": "other",
+        "title": "Baghdad, Iraq",
+        "subtitle": "Capital of Iraq",
+        "city": "Baghdad",
+        "distance": null,
+        "list": [
+          {
+            "id": "BGW",
+            "type": "airport",
+            "title": "Baghdad International Airport",
+            "subtitle": "8 mi to destination",
+            "city": "Baghdad",
+            "distance": "8 mi"
+          }
+        ]
+      },
+      {
+        "id": "/m/0p8sb_w",
+        "type": "other",
+        "title": "Baghdadi, Iran",
+        "subtitle": "Village in Iran",
+        "city": "Baghdadi",
+        "distance": null,
+        "list": [
+          {
+            "id": "IKA",
+            "type": "airport",
+            "title": "(IKIA) Imam Khomeini International Airport",
+            "subtitle": "124 mi to destination",
+            "city": "Tehran",
+            "distance": "124 mi"
+          }
+        ]
+      }
+    ]
+  }
+}

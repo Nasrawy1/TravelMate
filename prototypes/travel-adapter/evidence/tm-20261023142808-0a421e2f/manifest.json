@@ -1,0 +1,126 @@
+{
+  "request_id": "tm-20261023142808-0a421e2f",
+  "generated_at": "2026-10-23T14:28:18Z",
+  "adapter_schema": "v2 (BE-04 report slice)",
+  "chain_checks": {
+    "total_response_seconds": 9.5,
+    "deadline_seconds": 60.0,
+    "final_status": "success",
+    "final_error_code": null,
+    "live_integration_status": "price_received",
+    "flight_mode": "live",
+    "flights_status": "available",
+    "flights_reason_code": null,
+    "flight_date_flags_consistent": true,
+    "live_round_trip_offers": 3,
+    "selected_leg_totals_usd": [
+      200.0,
+      184.0
+    ],
+    "leg_date_flags_consistent": true,
+    "live_offers_match_local_dates": true,
+    "live_offers_match_adults": true,
+    "selected_flight_offer_id": "Air Cairo-2026-11-22-IST-CAI__Air Cairo-2026-11-25-CAI-IST",
+    "selected_flight_total_usd": 384.0,
+    "hotel_offers_count": 20,
+    "hotel_offers_match_dates": true,
+    "hotel_offers_match_adults": true,
+    "hotel_room_qty_values": [
+      1,
+      null
+    ],
+    "selected_hotel_offer_id": "17410709",
+    "ai_status": "ok",
+    "ai_latency_ms": 4496,
+    "ai_itinerary_dates": [
+      "2026-11-22",
+      "2026-11-23",
+      "2026-11-24",
+      "2026-11-25"
+    ],
+    "be04": {
+      "available": true,
+      "report_slice_valid": true,
+      "error": null,
+      "status": "uncertain",
+      "selected_hotel_offer_id": "17410709",
+      "selected_flight_offer_id": "Air Cairo-2026-11-22-IST-CAI__Air Cairo-2026-11-25-CAI-IST",
+      "provider_subtotal_usd": "449.75"
+    },
+    "provider_calls": [
+      {
+        "service": "google_flights_airport",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "attempts": 1,
+        "retrieved_at": "2026-10-23T14:28:10Z",
+        "rate_limit": {
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499953",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2513365",
+          "x-ratelimit-requests-limit": "150",
+          "x-ratelimit-requests-remaining": "103",
+          "x-ratelimit-requests-reset": "2513365"
+        }
+      },
+      {
+        "service": "booking_hotels",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "attempts": 1,
+        "retrieved_at": "2026-10-23T14:28:11Z",
+        "rate_limit": {
+          "x-ratelimit-premium-limit": "50",
+          "x-ratelimit-premium-remaining": "50",
+          "x-ratelimit-premium-reset": "1901442",
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499984",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "1901442",
+          "x-ratelimit-requests-limit": "20",
+          "x-ratelimit-requests-remaining": "4",
+          "x-ratelimit-requests-reset": "1901442"
+        }
+      },
+      {
+        "service": "google_flights_search",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "attempts": 1,
+        "retrieved_at": "2026-10-23T14:28:13Z",
+        "rate_limit": {
+          "x-ratelimit-requests-limit": "150",
+          "x-ratelimit-requests-remaining": "102",
+          "x-ratelimit-requests-reset": "2513362",
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499952",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2513362"
+        }
+      },
+      {
+        "service": "google_flights_search",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "attempts": 1,
+        "retrieved_at": "2026-10-23T14:28:13Z",
+        "rate_limit": {
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499952",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2513362",
+          "x-ratelimit-requests-limit": "150",
+          "x-ratelimit-requests-remaining": "102",
+          "x-ratelimit-requests-reset": "2513362"
+        }
+      }
+    ]
+  },
+  "files": {
+    "01_inputs.json": "0089b5b57c86ffba59dc26a297fb0e518663e164f62cb33ea9dbbf0be7d49a2a",
+    "02_raw_provider_data.json": "18625b3c8ba5ceb317c4c09109090d2065b9340e4f234884930757325cc875b8",
+    "03_normalized_context.json": "c422c96ec917820c540616db24e83e6e5cb6eebc6850c88c87f2fd3ecd0c9cc9",
+    "04_ai_input.json": "0353dfdad6dda130759702c47322fd889f802db728b6a7c20fa29086c295427b",
+    "05_ai_raw_output.json": "a4b451348cb4850c996570e58fad3cf413c4b0d2f2d0c77ef442d020148c5a89",
+    "06_validated_ai_output.json": "c29459048eb0a92794ee313c925f3333471a7f473755276efda5493cd4279678",
+    "07_final_response.json": "e6903236e22dc999b1f6213b8addcba7744128f070c705b100b1a8f9e05ab380",
+    "08_be04_budget_output.json": "601da6483274f7ca8ca85c6d1892a24a4a379505e390a392a21762b9bc68f54f"
+  }
+}

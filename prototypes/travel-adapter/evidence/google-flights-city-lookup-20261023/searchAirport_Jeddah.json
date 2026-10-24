@@ -1,0 +1,48 @@
+{
+  "request": {
+    "path": "/api/v1/searchAirport",
+    "params": {
+      "query": "Jeddah",
+      "language_code": "en-US",
+      "country_code": "US"
+    },
+    "headers": {
+      "x-rapidapi-key": "<redacted>"
+    }
+  },
+  "retrieved_at": "2026-10-23T14:33:35Z",
+  "http_status": 200,
+  "rate_limit": {
+    "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+    "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499949",
+    "x-ratelimit-rapid-free-plans-hard-limit-reset": "2513039",
+    "x-ratelimit-requests-limit": "150",
+    "x-ratelimit-requests-remaining": "99",
+    "x-ratelimit-requests-reset": "2513039"
+  },
+  "response": {
+    "status": true,
+    "message": "Success",
+    "timestamp": 1792766004237,
+    "data": [
+      {
+        "id": "/m/01pk8b",
+        "type": "other",
+        "title": "Jeddah Saudi Arabia",
+        "subtitle": "City in Saudi Arabia",
+        "city": "Jeddah",
+        "distance": null,
+        "list": [
+          {
+            "id": "JED",
+            "type": "airport",
+            "title": "King Abdulaziz International Airport",
+            "subtitle": "11 mi to destination",
+            "city": "Jeddah",
+            "distance": "11 mi"
+          }
+        ]
+      }
+    ]
+  }
+}

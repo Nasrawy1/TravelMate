@@ -1,0 +1,2976 @@
+{
+ "status": true,
+ "message": "Success",
+ "timestamp": 1792603424170,
+ "data": {
+  "itineraries": {
+   "topFlights": [
+    {
+     "departure_time": "20-11-2026 12:15 PM",
+     "arrival_time": "20-11-2026 01:20 PM",
+     "duration": {
+      "raw": 125,
+      "text": "2 hr 5 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 12:15"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 13:20"
+       },
+       "duration": {
+        "raw": 125,
+        "text": "2 hr 5 min"
+       },
+       "airline": "Air Cairo",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SM.png",
+       "flight_number": "SM 304",
+       "aircraft": "Airbus A320",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Emissions estimate: 231 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": null,
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 4,
+      "CO2e": 231000,
+      "typical_for_this_route": 223000,
+      "higher": 8000
+     },
+     "price": 272,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SM.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ1ZUVFRNd05Cb0xDSmJVQVJBQ0dnTlZVMFE0SFhDVzFBRT0iXV0sWyIyMDI2LTExLTIwIiwiSVNUIiwiQ0FJIixbWyJJU1QiLCIyMDI2LTExLTIwIiwiQ0FJIiwiU00iLCIzMDQiXV1dXQ=="
+    },
+    {
+     "departure_time": "20-11-2026 03:50 AM",
+     "arrival_time": "20-11-2026 05:10 AM",
+     "duration": {
+      "raw": 140,
+      "text": "2 hr 20 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 03:50"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 05:10"
+       },
+       "duration": {
+        "raw": 140,
+        "text": "2 hr 20 min"
+       },
+       "airline": "EgyptAir",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+       "flight_number": "MS 746",
+       "aircraft": "Boeing 737",
+       "seat": "Average legroom",
+       "legroom": "30 in",
+       "extensions": [
+        "Average legroom (30 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Emissions estimate: 256 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": null,
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 15,
+      "CO2e": 256000,
+      "typical_for_this_route": 223000,
+      "higher": 33000
+     },
+     "price": 319,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ1ZOVXpjME5ob0xDUEw0QVJBQ0dnTlZVMFE0SFhEeStBRT0iXV0sWyIyMDI2LTExLTIwIiwiSVNUIiwiQ0FJIixbWyJJU1QiLCIyMDI2LTExLTIwIiwiQ0FJIiwiTVMiLCI3NDYiXV1dXQ=="
+    },
+    {
+     "departure_time": "20-11-2026 02:00 PM",
+     "arrival_time": "20-11-2026 03:20 PM",
+     "duration": {
+      "raw": 140,
+      "text": "2 hr 20 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 14:00"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 15:20"
+       },
+       "duration": {
+        "raw": 140,
+        "text": "2 hr 20 min"
+       },
+       "airline": "EgyptAir",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+       "flight_number": "MS 738",
+       "aircraft": "Airbus A320neo",
+       "seat": "Average legroom",
+       "legroom": "30 in",
+       "extensions": [
+        "Average legroom (30 in)",
+        "In-seat power & USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 238 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": null,
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 7,
+      "CO2e": 238000,
+      "typical_for_this_route": 223000,
+      "higher": 15000
+     },
+     "price": 323,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ1ZOVXpjek9Cb0xDSUw4QVJBQ0dnTlZVMFE0SFhDQy9BRT0iXV0sWyIyMDI2LTExLTIwIiwiSVNUIiwiQ0FJIixbWyJJU1QiLCIyMDI2LTExLTIwIiwiQ0FJIiwiTVMiLCI3MzgiXV1dXQ=="
+    },
+    {
+     "departure_time": "20-11-2026 02:15 AM",
+     "arrival_time": "20-11-2026 03:40 AM",
+     "duration": {
+      "raw": 145,
+      "text": "2 hr 25 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 02:15"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 03:40"
+       },
+       "duration": {
+        "raw": 145,
+        "text": "2 hr 25 min"
+       },
+       "airline": "Turkish Airlines",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+       "flight_number": "TK 692",
+       "aircraft": "Airbus A330",
+       "seat": "Average legroom",
+       "legroom": "31 in",
+       "extensions": [
+        "Average legroom (31 in)",
+        "In-seat power & USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 193 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": null,
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": -13,
+      "CO2e": 193000,
+      "typical_for_this_route": 223000,
+      "higher": -30000
+     },
+     "price": 484,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ1ZVU3pZNU1ob0xDTGo1QWhBQ0dnTlZVMFE0SFhDNCtRST0iXV0sWyIyMDI2LTExLTIwIiwiSVNUIiwiQ0FJIixbWyJJU1QiLCIyMDI2LTExLTIwIiwiQ0FJIiwiVEsiLCI2OTIiXV1dXQ=="
+    }
+   ],
+   "otherFlights": [
+    {
+     "departure_time": "20-11-2026 04:45 PM",
+     "arrival_time": "21-11-2026 02:55 AM",
+     "duration": {
+      "raw": 670,
+      "text": "11 hr 10 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 16:45"
+       },
+       "arrival_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 17:15"
+       },
+       "duration": {
+        "raw": 90,
+        "text": "1 hr 30 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 993",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 118 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-21 00:50"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-21 02:55"
+       },
+       "duration": {
+        "raw": 125,
+        "text": "2 hr 5 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 930",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 181 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "ATH",
+       "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+       "duration_label": "7 hr 35 min",
+       "duration": 455,
+       "city": "Athens"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 34,
+      "CO2e": 299000,
+      "typical_for_this_route": 223000,
+      "higher": 76000
+     },
+     "price": 375,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3RCTXprNU0zeEJNemt6TUJvTENOK2tBaEFDR2dOVlUwUTRIWERmcEFJPSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBVEgiLCJBMyIsIjk5MyJdLFsiQVRIIiwiMjAyNi0xMS0yMSIsIkNBSSIsIkEzIiwiOTMwIl1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 10:00 PM",
+     "arrival_time": "21-11-2026 02:55 AM",
+     "duration": {
+      "raw": 355,
+      "text": "5 hr 55 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 22:00"
+       },
+       "arrival_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 22:30"
+       },
+       "duration": {
+        "raw": 90,
+        "text": "1 hr 30 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 995",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 118 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-21 00:50"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-21 02:55"
+       },
+       "duration": {
+        "raw": 125,
+        "text": "2 hr 5 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 930",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 181 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "ATH",
+       "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+       "duration_label": "2 hr 20 min",
+       "duration": 140,
+       "city": "Athens"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 34,
+      "CO2e": 299000,
+      "typical_for_this_route": 223000,
+      "higher": 76000
+     },
+     "price": 375,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3RCTXprNU5YeEJNemt6TUJvTENOK2tBaEFDR2dOVlUwUTRIWERmcEFJPSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBVEgiLCJBMyIsIjk5NSJdLFsiQVRIIiwiMjAyNi0xMS0yMSIsIkNBSSIsIkEzIiwiOTMwIl1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 06:50 PM",
+     "arrival_time": "20-11-2026 08:10 PM",
+     "duration": {
+      "raw": 140,
+      "text": "2 hr 20 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 18:50"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 20:10"
+       },
+       "duration": {
+        "raw": 140,
+        "text": "2 hr 20 min"
+       },
+       "airline": "EgyptAir",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+       "flight_number": "MS 736",
+       "aircraft": "Boeing 737",
+       "seat": "Average legroom",
+       "legroom": "30 in",
+       "extensions": [
+        "Average legroom (30 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Emissions estimate: 256 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": null,
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 15,
+      "CO2e": 256000,
+      "typical_for_this_route": 223000,
+      "higher": 33000
+     },
+     "price": 419,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ1ZOVXpjek5ob0xDSUxIQWhBQ0dnTlZVMFE0SFhDQ3h3ST0iXV0sWyIyMDI2LTExLTIwIiwiSVNUIiwiQ0FJIixbWyJJU1QiLCIyMDI2LTExLTIwIiwiQ0FJIiwiTVMiLCI3MzYiXV1dXQ=="
+    },
+    {
+     "departure_time": "20-11-2026 11:30 AM",
+     "arrival_time": "21-11-2026 02:55 AM",
+     "duration": {
+      "raw": 985,
+      "text": "16 hr 25 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 11:30"
+       },
+       "arrival_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 12:00"
+       },
+       "duration": {
+        "raw": 90,
+        "text": "1 hr 30 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 991",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 118 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-21 00:50"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-21 02:55"
+       },
+       "duration": {
+        "raw": 125,
+        "text": "2 hr 5 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 930",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 181 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "ATH",
+       "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+       "duration_label": "12 hr 50 min",
+       "duration": 770,
+       "city": "Athens"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 34,
+      "CO2e": 299000,
+      "typical_for_this_route": 223000,
+      "higher": 76000
+     },
+     "price": 419,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3RCTXprNU1YeEJNemt6TUJvTENJVEhBaEFDR2dOVlUwUTRIWENFeHdJPSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBVEgiLCJBMyIsIjk5MSJdLFsiQVRIIiwiMjAyNi0xMS0yMSIsIkNBSSIsIkEzIiwiOTMwIl1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 06:30 AM",
+     "arrival_time": "20-11-2026 07:55 PM",
+     "duration": {
+      "raw": 865,
+      "text": "14 hr 25 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 06:30"
+       },
+       "arrival_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 07:00"
+       },
+       "duration": {
+        "raw": 90,
+        "text": "1 hr 30 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 999",
+       "aircraft": "Airbus A320neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 122 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 18:00"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 19:55"
+       },
+       "duration": {
+        "raw": 115,
+        "text": "1 hr 55 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 934",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 181 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "ATH",
+       "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+       "duration_label": "11 hr 0 min",
+       "duration": 660,
+       "city": "Athens"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 36,
+      "CO2e": 303000,
+      "typical_for_this_route": 223000,
+      "higher": 80000
+     },
+     "price": 425,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3RCTXprNU9YeEJNemt6TkJvTENLL0xBaEFDR2dOVlUwUTRIWEN2eXdJPSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBVEgiLCJBMyIsIjk5OSJdLFsiQVRIIiwiMjAyNi0xMS0yMCIsIkNBSSIsIkEzIiwiOTM0Il1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 11:30 AM",
+     "arrival_time": "20-11-2026 07:55 PM",
+     "duration": {
+      "raw": 565,
+      "text": "9 hr 25 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 11:30"
+       },
+       "arrival_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 12:00"
+       },
+       "duration": {
+        "raw": 90,
+        "text": "1 hr 30 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 991",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 118 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 18:00"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 19:55"
+       },
+       "duration": {
+        "raw": 115,
+        "text": "1 hr 55 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 934",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 181 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "ATH",
+       "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+       "duration_label": "6 hr 0 min",
+       "duration": 360,
+       "city": "Athens"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 34,
+      "CO2e": 299000,
+      "typical_for_this_route": 223000,
+      "higher": 76000
+     },
+     "price": 425,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3RCTXprNU1YeEJNemt6TkJvTENLL0xBaEFDR2dOVlUwUTRIWEN2eXdJPSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBVEgiLCJBMyIsIjk5MSJdLFsiQVRIIiwiMjAyNi0xMS0yMCIsIkNBSSIsIkEzIiwiOTM0Il1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 07:55 AM",
+     "arrival_time": "20-11-2026 09:20 AM",
+     "duration": {
+      "raw": 145,
+      "text": "2 hr 25 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 07:55"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 09:20"
+       },
+       "duration": {
+        "raw": 145,
+        "text": "2 hr 25 min"
+       },
+       "airline": "Turkish Airlines",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+       "flight_number": "TK 690",
+       "aircraft": "Airbus A321neo",
+       "seat": "Average legroom",
+       "legroom": "30 in",
+       "extensions": [
+        "Average legroom (30 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 224 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": null,
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 0,
+      "CO2e": 224000,
+      "typical_for_this_route": 223000,
+      "higher": 1000
+     },
+     "price": 514,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ1ZVU3pZNU1Cb0xDUENRQXhBQ0dnTlZVMFE0SFhEd2tBTT0iXV0sWyIyMDI2LTExLTIwIiwiSVNUIiwiQ0FJIixbWyJJU1QiLCIyMDI2LTExLTIwIiwiQ0FJIiwiVEsiLCI2OTAiXV1dXQ=="
+    },
+    {
+     "departure_time": "20-11-2026 02:05 PM",
+     "arrival_time": "20-11-2026 06:55 PM",
+     "duration": {
+      "raw": 350,
+      "text": "5 hr 50 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 14:05"
+       },
+       "arrival_airport": {
+        "airport_name": "Queen Alia International Airport",
+        "airport_code": "AMM",
+        "time": "2026-11-20 16:40"
+       },
+       "duration": {
+        "raw": 155,
+        "text": "2 hr 35 min"
+       },
+       "airline": "Royal Jordanian",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+       "flight_number": "RJ 166",
+       "aircraft": "Airbus A320neo",
+       "seat": "Below average legroom",
+       "legroom": "29 in",
+       "extensions": [
+        "Below average legroom (29 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 203 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Queen Alia International Airport",
+        "airport_code": "AMM",
+        "time": "2026-11-20 18:20"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 18:55"
+       },
+       "duration": {
+        "raw": 95,
+        "text": "1 hr 35 min"
+       },
+       "airline": "Royal Jordanian",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+       "flight_number": "RJ 505",
+       "aircraft": "Airbus A320neo",
+       "seat": "Below average legroom",
+       "legroom": "29 in",
+       "extensions": [
+        "Below average legroom (29 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 122 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "AMM",
+       "airport_name": "Queen Alia International Airport",
+       "duration_label": "1 hr 40 min",
+       "duration": 100,
+       "city": "Amman"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 46,
+      "CO2e": 325000,
+      "typical_for_this_route": 223000,
+      "higher": 102000
+     },
+     "price": 520,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3RTU2pFMk5ueFNTalV3TlJvTENPS1ZBeEFDR2dOVlUwUTRIWERpbFFNPSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBTU0iLCJSSiIsIjE2NiJdLFsiQU1NIiwiMjAyNi0xMS0yMCIsIkNBSSIsIlJKIiwiNTA1Il1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 02:05 PM",
+     "arrival_time": "21-11-2026 02:05 AM",
+     "duration": {
+      "raw": 780,
+      "text": "13 hr 0 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 14:05"
+       },
+       "arrival_airport": {
+        "airport_name": "Queen Alia International Airport",
+        "airport_code": "AMM",
+        "time": "2026-11-20 16:40"
+       },
+       "duration": {
+        "raw": 155,
+        "text": "2 hr 35 min"
+       },
+       "airline": "Royal Jordanian",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+       "flight_number": "RJ 166",
+       "aircraft": "Airbus A320neo",
+       "seat": "Below average legroom",
+       "legroom": "29 in",
+       "extensions": [
+        "Below average legroom (29 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 203 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Queen Alia International Airport",
+        "airport_code": "AMM",
+        "time": "2026-11-21 01:30"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-21 02:05"
+       },
+       "duration": {
+        "raw": 95,
+        "text": "1 hr 35 min"
+       },
+       "airline": "Royal Jordanian",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+       "flight_number": "RJ 507",
+       "aircraft": "Airbus A320neo",
+       "seat": "Average legroom",
+       "legroom": "30 in",
+       "extensions": [
+        "Average legroom (30 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 141 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "AMM",
+       "airport_name": "Queen Alia International Airport",
+       "duration_label": "8 hr 50 min",
+       "duration": 530,
+       "city": "Amman"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 54,
+      "CO2e": 344000,
+      "typical_for_this_route": 223000,
+      "higher": 121000
+     },
+     "price": 520,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3RTU2pFMk5ueFNTalV3TnhvTENPS1ZBeEFDR2dOVlUwUTRIWERpbFFNPSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBTU0iLCJSSiIsIjE2NiJdLFsiQU1NIiwiMjAyNi0xMS0yMSIsIkNBSSIsIlJKIiwiNTA3Il1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 10:10 PM",
+     "arrival_time": "21-11-2026 02:05 AM",
+     "duration": {
+      "raw": 295,
+      "text": "4 hr 55 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 22:10"
+       },
+       "arrival_airport": {
+        "airport_name": "Queen Alia International Airport",
+        "airport_code": "AMM",
+        "time": "2026-11-21 00:45"
+       },
+       "duration": {
+        "raw": 155,
+        "text": "2 hr 35 min"
+       },
+       "airline": "Royal Jordanian",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+       "flight_number": "RJ 164",
+       "aircraft": "Airbus A320neo",
+       "seat": "Average legroom",
+       "legroom": "30 in",
+       "extensions": [
+        "Average legroom (30 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 234 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Queen Alia International Airport",
+        "airport_code": "AMM",
+        "time": "2026-11-21 01:30"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-21 02:05"
+       },
+       "duration": {
+        "raw": 95,
+        "text": "1 hr 35 min"
+       },
+       "airline": "Royal Jordanian",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+       "flight_number": "RJ 507",
+       "aircraft": "Airbus A320neo",
+       "seat": "Average legroom",
+       "legroom": "30 in",
+       "extensions": [
+        "Average legroom (30 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 141 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "AMM",
+       "airport_name": "Queen Alia International Airport",
+       "duration_label": "0 hr 45 min",
+       "duration": 45,
+       "city": "Amman"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 68,
+      "CO2e": 375000,
+      "typical_for_this_route": 223000,
+      "higher": 152000
+     },
+     "price": 520,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3RTU2pFMk5IeFNTalV3TnhvTENPS1ZBeEFDR2dOVlUwUTRIWERpbFFNPSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBTU0iLCJSSiIsIjE2NCJdLFsiQU1NIiwiMjAyNi0xMS0yMSIsIkNBSSIsIlJKIiwiNTA3Il1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 10:10 PM",
+     "arrival_time": "21-11-2026 07:40 AM",
+     "duration": {
+      "raw": 630,
+      "text": "10 hr 30 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 22:10"
+       },
+       "arrival_airport": {
+        "airport_name": "Queen Alia International Airport",
+        "airport_code": "AMM",
+        "time": "2026-11-21 00:45"
+       },
+       "duration": {
+        "raw": 155,
+        "text": "2 hr 35 min"
+       },
+       "airline": "Royal Jordanian",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+       "flight_number": "RJ 164",
+       "aircraft": "Airbus A320neo",
+       "seat": "Average legroom",
+       "legroom": "30 in",
+       "extensions": [
+        "Average legroom (30 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 234 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Queen Alia International Airport",
+        "airport_code": "AMM",
+        "time": "2026-11-21 07:05"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-21 07:40"
+       },
+       "duration": {
+        "raw": 95,
+        "text": "1 hr 35 min"
+       },
+       "airline": "Royal Jordanian",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+       "flight_number": "RJ 501",
+       "aircraft": "Airbus A320neo",
+       "seat": "Below average legroom",
+       "legroom": "29 in",
+       "extensions": [
+        "Below average legroom (29 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 122 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "AMM",
+       "airport_name": "Queen Alia International Airport",
+       "duration_label": "6 hr 20 min",
+       "duration": 380,
+       "city": "Amman"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 60,
+      "CO2e": 356000,
+      "typical_for_this_route": 223000,
+      "higher": 133000
+     },
+     "price": 520,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3RTU2pFMk5IeFNTalV3TVJvTENPS1ZBeEFDR2dOVlUwUTRIWERpbFFNPSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBTU0iLCJSSiIsIjE2NCJdLFsiQU1NIiwiMjAyNi0xMS0yMSIsIkNBSSIsIlJKIiwiNTAxIl1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 10:10 PM",
+     "arrival_time": "21-11-2026 01:05 PM",
+     "duration": {
+      "raw": 955,
+      "text": "15 hr 55 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 22:10"
+       },
+       "arrival_airport": {
+        "airport_name": "Queen Alia International Airport",
+        "airport_code": "AMM",
+        "time": "2026-11-21 00:45"
+       },
+       "duration": {
+        "raw": 155,
+        "text": "2 hr 35 min"
+       },
+       "airline": "Royal Jordanian",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+       "flight_number": "RJ 164",
+       "aircraft": "Airbus A320neo",
+       "seat": "Average legroom",
+       "legroom": "30 in",
+       "extensions": [
+        "Average legroom (30 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 234 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Queen Alia International Airport",
+        "airport_code": "AMM",
+        "time": "2026-11-21 12:30"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-21 13:05"
+       },
+       "duration": {
+        "raw": 95,
+        "text": "1 hr 35 min"
+       },
+       "airline": "Royal Jordanian",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+       "flight_number": "RJ 503",
+       "aircraft": "Airbus A320neo",
+       "seat": "Below average legroom",
+       "legroom": "29 in",
+       "extensions": [
+        "Below average legroom (29 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 122 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "AMM",
+       "airport_name": "Queen Alia International Airport",
+       "duration_label": "11 hr 45 min",
+       "duration": 705,
+       "city": "Amman"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 60,
+      "CO2e": 356000,
+      "typical_for_this_route": 223000,
+      "higher": 133000
+     },
+     "price": 520,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3RTU2pFMk5IeFNTalV3TXhvTENPS1ZBeEFDR2dOVlUwUTRIWERpbFFNPSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBTU0iLCJSSiIsIjE2NCJdLFsiQU1NIiwiMjAyNi0xMS0yMSIsIkNBSSIsIlJKIiwiNTAzIl1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 11:30 AM",
+     "arrival_time": "20-11-2026 09:40 PM",
+     "duration": {
+      "raw": 670,
+      "text": "11 hr 10 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 11:30"
+       },
+       "arrival_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 12:00"
+       },
+       "duration": {
+        "raw": 90,
+        "text": "1 hr 30 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 991",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 118 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 19:40"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 21:40"
+       },
+       "duration": {
+        "raw": 120,
+        "text": "2 hr 0 min"
+       },
+       "airline": "EgyptAir",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+       "flight_number": "MS 750",
+       "aircraft": "Boeing 737",
+       "seat": "Average legroom",
+       "legroom": "31 in",
+       "extensions": [
+        "Average legroom (31 in)",
+        "Emissions estimate: 248 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "ATH",
+       "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+       "duration_label": "7 hr 40 min",
+       "duration": 460,
+       "city": "Athens"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 64,
+      "CO2e": 366000,
+      "typical_for_this_route": 223000,
+      "higher": 143000
+     },
+     "price": 537,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3RCTXprNU1YeE5VemMxTUJvTENKR2pBeEFDR2dOVlUwUTRIWENSb3dNPSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBVEgiLCJBMyIsIjk5MSJdLFsiQVRIIiwiMjAyNi0xMS0yMCIsIkNBSSIsIk1TIiwiNzUwIl1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 04:45 PM",
+     "arrival_time": "20-11-2026 09:40 PM",
+     "duration": {
+      "raw": 355,
+      "text": "5 hr 55 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 16:45"
+       },
+       "arrival_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 17:15"
+       },
+       "duration": {
+        "raw": 90,
+        "text": "1 hr 30 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 993",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 118 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 19:40"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 21:40"
+       },
+       "duration": {
+        "raw": 120,
+        "text": "2 hr 0 min"
+       },
+       "airline": "EgyptAir",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+       "flight_number": "MS 750",
+       "aircraft": "Boeing 737",
+       "seat": "Average legroom",
+       "legroom": "31 in",
+       "extensions": [
+        "Average legroom (31 in)",
+        "Emissions estimate: 248 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "ATH",
+       "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+       "duration_label": "2 hr 25 min",
+       "duration": 145,
+       "city": "Athens"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 64,
+      "CO2e": 366000,
+      "typical_for_this_route": 223000,
+      "higher": 143000
+     },
+     "price": 537,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3RCTXprNU0zeE5VemMxTUJvTENKR2pBeEFDR2dOVlUwUTRIWENSb3dNPSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBVEgiLCJBMyIsIjk5MyJdLFsiQVRIIiwiMjAyNi0xMS0yMCIsIkNBSSIsIk1TIiwiNzUwIl1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 04:40 PM",
+     "arrival_time": "21-11-2026 02:55 AM",
+     "duration": {
+      "raw": 675,
+      "text": "11 hr 15 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 16:40"
+       },
+       "arrival_airport": {
+        "airport_name": "Αεροδρόμιο Θεσσαλονίκης «Μακεδονία» (Thessaloniki Airport \"Makedonia\")",
+        "airport_code": "SKG",
+        "time": "2026-11-20 17:10"
+       },
+       "duration": {
+        "raw": 90,
+        "text": "1 hr 30 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 505",
+       "aircraft": "Airbus A320",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "Emissions estimate: 128 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Αεροδρόμιο Θεσσαλονίκης «Μακεδονία» (Thessaloniki Airport \"Makedonia\")",
+        "airport_code": "SKG",
+        "time": "2026-11-20 21:50"
+       },
+       "arrival_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 22:45"
+       },
+       "duration": {
+        "raw": 55,
+        "text": "0 hr 55 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 127",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Emissions estimate: 83 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-21 00:50"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-21 02:55"
+       },
+       "duration": {
+        "raw": 125,
+        "text": "2 hr 5 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 930",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 181 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "SKG",
+       "airport_name": "Αεροδρόμιο Θεσσαλονίκης «Μακεδονία» (Thessaloniki Airport \"Makedonia\")",
+       "duration_label": "4 hr 40 min",
+       "duration": 280,
+       "city": "Thessaloniki"
+      },
+      {
+       "airport_code": "ATH",
+       "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+       "duration_label": "2 hr 5 min",
+       "duration": 125,
+       "city": "Athens"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 76,
+      "CO2e": 393000,
+      "typical_for_this_route": 223000,
+      "higher": 170000
+     },
+     "price": 549,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFaEZCTXpVd05YeEJNekV5TjN4Qk16a3pNQm9MQ0orc0F4QUNHZ05WVTBRNEhYQ2ZyQU09Il1dLFsiMjAyNi0xMS0yMCIsIklTVCIsIkNBSSIsW1siSVNUIiwiMjAyNi0xMS0yMCIsIlNLRyIsIkEzIiwiNTA1Il0sWyJTS0ciLCIyMDI2LTExLTIwIiwiQVRIIiwiQTMiLCIxMjciXSxbIkFUSCIsIjIwMjYtMTEtMjEiLCJDQUkiLCJBMyIsIjkzMCJdXV1d"
+    },
+    {
+     "departure_time": "20-11-2026 04:40 PM",
+     "arrival_time": "21-11-2026 02:55 AM",
+     "duration": {
+      "raw": 675,
+      "text": "11 hr 15 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 16:40"
+       },
+       "arrival_airport": {
+        "airport_name": "Αεροδρόμιο Θεσσαλονίκης «Μακεδονία» (Thessaloniki Airport \"Makedonia\")",
+        "airport_code": "SKG",
+        "time": "2026-11-20 17:10"
+       },
+       "duration": {
+        "raw": 90,
+        "text": "1 hr 30 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 505",
+       "aircraft": "Airbus A320",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "Emissions estimate: 128 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Αεροδρόμιο Θεσσαλονίκης «Μακεδονία» (Thessaloniki Airport \"Makedonia\")",
+        "airport_code": "SKG",
+        "time": "2026-11-20 18:15"
+       },
+       "arrival_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 19:10"
+       },
+       "duration": {
+        "raw": 55,
+        "text": "0 hr 55 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 121",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Emissions estimate: 83 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-21 00:50"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-21 02:55"
+       },
+       "duration": {
+        "raw": 125,
+        "text": "2 hr 5 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 930",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 181 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "SKG",
+       "airport_name": "Αεροδρόμιο Θεσσαλονίκης «Μακεδονία» (Thessaloniki Airport \"Makedonia\")",
+       "duration_label": "1 hr 5 min",
+       "duration": 65,
+       "city": "Thessaloniki"
+      },
+      {
+       "airport_code": "ATH",
+       "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+       "duration_label": "5 hr 40 min",
+       "duration": 340,
+       "city": "Athens"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 76,
+      "CO2e": 393000,
+      "typical_for_this_route": 223000,
+      "higher": 170000
+     },
+     "price": 549,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFaEZCTXpVd05YeEJNekV5TVh4Qk16a3pNQm9MQ0orc0F4QUNHZ05WVTBRNEhYQ2ZyQU09Il1dLFsiMjAyNi0xMS0yMCIsIklTVCIsIkNBSSIsW1siSVNUIiwiMjAyNi0xMS0yMCIsIlNLRyIsIkEzIiwiNTA1Il0sWyJTS0ciLCIyMDI2LTExLTIwIiwiQVRIIiwiQTMiLCIxMjEiXSxbIkFUSCIsIjIwMjYtMTEtMjEiLCJDQUkiLCJBMyIsIjkzMCJdXV1d"
+    },
+    {
+     "departure_time": "20-11-2026 03:50 PM",
+     "arrival_time": "21-11-2026 02:55 AM",
+     "duration": {
+      "raw": 725,
+      "text": "12 hr 5 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 15:50"
+       },
+       "arrival_airport": {
+        "airport_name": "Heraklion International Airport N. Kazantzakis",
+        "airport_code": "HER",
+        "time": "2026-11-20 16:20"
+       },
+       "duration": {
+        "raw": 90,
+        "text": "1 hr 30 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 435",
+       "aircraft": "Airbus A320",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "Emissions estimate: 165 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Heraklion International Airport N. Kazantzakis",
+        "airport_code": "HER",
+        "time": "2026-11-20 21:50"
+       },
+       "arrival_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 22:40"
+       },
+       "duration": {
+        "raw": 50,
+        "text": "0 hr 50 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 321",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Emissions estimate: 82 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-21 00:50"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-21 02:55"
+       },
+       "duration": {
+        "raw": 125,
+        "text": "2 hr 5 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 930",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 181 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "HER",
+       "airport_name": "Heraklion International Airport N. Kazantzakis",
+       "duration_label": "5 hr 30 min",
+       "duration": 330,
+       "city": "Heraklion"
+      },
+      {
+       "airport_code": "ATH",
+       "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+       "duration_label": "2 hr 10 min",
+       "duration": 130,
+       "city": "Athens"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 92,
+      "CO2e": 428000,
+      "typical_for_this_route": 223000,
+      "higher": 205000
+     },
+     "price": 550,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFaEZCTXpRek5YeEJNek15TVh4Qk16a3pNQm9MQ0krdEF4QUNHZ05WVTBRNEhYQ1ByUU09Il1dLFsiMjAyNi0xMS0yMCIsIklTVCIsIkNBSSIsW1siSVNUIiwiMjAyNi0xMS0yMCIsIkhFUiIsIkEzIiwiNDM1Il0sWyJIRVIiLCIyMDI2LTExLTIwIiwiQVRIIiwiQTMiLCIzMjEiXSxbIkFUSCIsIjIwMjYtMTEtMjEiLCJDQUkiLCJBMyIsIjkzMCJdXV1d"
+    },
+    {
+     "departure_time": "20-11-2026 04:40 PM",
+     "arrival_time": "21-11-2026 02:55 AM",
+     "duration": {
+      "raw": 675,
+      "text": "11 hr 15 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 16:40"
+       },
+       "arrival_airport": {
+        "airport_name": "Αεροδρόμιο Θεσσαλονίκης «Μακεδονία» (Thessaloniki Airport \"Makedonia\")",
+        "airport_code": "SKG",
+        "time": "2026-11-20 17:10"
+       },
+       "duration": {
+        "raw": 90,
+        "text": "1 hr 30 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 505",
+       "aircraft": "Airbus A320",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "Emissions estimate: 128 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Αεροδρόμιο Θεσσαλονίκης «Μακεδονία» (Thessaloniki Airport \"Makedonia\")",
+        "airport_code": "SKG",
+        "time": "2026-11-20 20:35"
+       },
+       "arrival_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 21:25"
+       },
+       "duration": {
+        "raw": 50,
+        "text": "0 hr 50 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 125",
+       "aircraft": "Airbus A320",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "Emissions estimate: 101 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-21 00:50"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-21 02:55"
+       },
+       "duration": {
+        "raw": 125,
+        "text": "2 hr 5 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 930",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 181 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "SKG",
+       "airport_name": "Αεροδρόμιο Θεσσαλονίκης «Μακεδονία» (Thessaloniki Airport \"Makedonia\")",
+       "duration_label": "3 hr 25 min",
+       "duration": 205,
+       "city": "Thessaloniki"
+      },
+      {
+       "airport_code": "ATH",
+       "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+       "duration_label": "3 hr 25 min",
+       "duration": 205,
+       "city": "Athens"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 84,
+      "CO2e": 410000,
+      "typical_for_this_route": 223000,
+      "higher": 187000
+     },
+     "price": 587,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFaEZCTXpVd05YeEJNekV5Tlh4Qk16a3pNQm9MQ0l2S0F4QUNHZ05WVTBRNEhYQ0x5Z009Il1dLFsiMjAyNi0xMS0yMCIsIklTVCIsIkNBSSIsW1siSVNUIiwiMjAyNi0xMS0yMCIsIlNLRyIsIkEzIiwiNTA1Il0sWyJTS0ciLCIyMDI2LTExLTIwIiwiQVRIIiwiQTMiLCIxMjUiXSxbIkFUSCIsIjIwMjYtMTEtMjEiLCJDQUkiLCJBMyIsIjkzMCJdXV1d"
+    },
+    {
+     "departure_time": "20-11-2026 08:30 PM",
+     "arrival_time": "21-11-2026 02:55 AM",
+     "duration": {
+      "raw": 445,
+      "text": "7 hr 25 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 20:30"
+       },
+       "arrival_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 21:00"
+       },
+       "duration": {
+        "raw": 90,
+        "text": "1 hr 30 min"
+       },
+       "airline": "Turkish Airlines",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+       "flight_number": "TK 1845",
+       "aircraft": "Airbus A321 (Sharklets)",
+       "seat": "Average legroom",
+       "legroom": "31 in",
+       "extensions": [
+        "Average legroom (31 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 165 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-21 00:50"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-21 02:55"
+       },
+       "duration": {
+        "raw": 125,
+        "text": "2 hr 5 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 930",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 181 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "ATH",
+       "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+       "duration_label": "3 hr 50 min",
+       "duration": 230,
+       "city": "Athens"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 55,
+      "CO2e": 346000,
+      "typical_for_this_route": 223000,
+      "higher": 123000
+     },
+     "price": 649,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3hVU3pFNE5EVjhRVE01TXpBYUN3anorZ01RQWhvRFZWTkVPQjF3OC9vRCJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBVEgiLCJUSyIsIjE4NDUiXSxbIkFUSCIsIjIwMjYtMTEtMjEiLCJDQUkiLCJBMyIsIjkzMCJdXV1d"
+    },
+    {
+     "departure_time": "20-11-2026 05:45 PM",
+     "arrival_time": "21-11-2026 02:15 AM",
+     "duration": {
+      "raw": 570,
+      "text": "9 hr 30 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 17:45"
+       },
+       "arrival_airport": {
+        "airport_name": "Leonardo da Vinci International Airport",
+        "airport_code": "FCO",
+        "time": "2026-11-20 18:15"
+       },
+       "duration": {
+        "raw": 150,
+        "text": "2 hr 30 min"
+       },
+       "airline": "Turkish Airlines",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+       "flight_number": "TK 1863",
+       "aircraft": "Airbus A350",
+       "seat": "Average legroom",
+       "legroom": "31 in",
+       "extensions": [
+        "Average legroom (31 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 226 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Leonardo da Vinci International Airport",
+        "airport_code": "FCO",
+        "time": "2026-11-20 22:00"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-21 02:15"
+       },
+       "duration": {
+        "raw": 195,
+        "text": "3 hr 15 min"
+       },
+       "airline": "ITA",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/AZ.png",
+       "flight_number": "AZ 894",
+       "aircraft": "Airbus A321neo",
+       "seat": "Average legroom",
+       "legroom": "31 in",
+       "extensions": [
+        "Average legroom (31 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 382 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "FCO",
+       "airport_name": "Leonardo da Vinci International Airport",
+       "duration_label": "3 hr 45 min",
+       "duration": 225,
+       "city": "Rome"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 173,
+      "CO2e": 608000,
+      "typical_for_this_route": 223000,
+      "higher": 385000
+     },
+     "price": 717,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3hVU3pFNE5qTjhRVm80T1RRYUN3aUhzQVFRQWhvRFZWTkVPQjF3aDdBRSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJGQ08iLCJUSyIsIjE4NjMiXSxbIkZDTyIsIjIwMjYtMTEtMjAiLCJDQUkiLCJBWiIsIjg5NCJdXV1d"
+    },
+    {
+     "departure_time": "20-11-2026 11:45 AM",
+     "arrival_time": "20-11-2026 07:55 PM",
+     "duration": {
+      "raw": 550,
+      "text": "9 hr 10 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 11:45"
+       },
+       "arrival_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 12:15"
+       },
+       "duration": {
+        "raw": 90,
+        "text": "1 hr 30 min"
+       },
+       "airline": "Turkish Airlines",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+       "flight_number": "TK 1847",
+       "aircraft": "Airbus A321 (Sharklets)",
+       "seat": "Average legroom",
+       "legroom": "31 in",
+       "extensions": [
+        "Average legroom (31 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 165 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 18:00"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 19:55"
+       },
+       "duration": {
+        "raw": 115,
+        "text": "1 hr 55 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 934",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 181 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "ATH",
+       "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+       "duration_label": "5 hr 45 min",
+       "duration": 345,
+       "city": "Athens"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 55,
+      "CO2e": 346000,
+      "typical_for_this_route": 223000,
+      "higher": 123000
+     },
+     "price": 726,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3hVU3pFNE5EZDhRVE01TXpRYUN3akx0Z1FRQWhvRFZWTkVPQjF3eTdZRSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBVEgiLCJUSyIsIjE4NDciXSxbIkFUSCIsIjIwMjYtMTEtMjAiLCJDQUkiLCJBMyIsIjkzNCJdXV1d"
+    },
+    {
+     "departure_time": "20-11-2026 02:25 PM",
+     "arrival_time": "20-11-2026 07:55 PM",
+     "duration": {
+      "raw": 390,
+      "text": "6 hr 30 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 14:25"
+       },
+       "arrival_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 14:55"
+       },
+       "duration": {
+        "raw": 90,
+        "text": "1 hr 30 min"
+       },
+       "airline": "Turkish Airlines",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+       "flight_number": "TK 1849",
+       "aircraft": "Airbus A321neo",
+       "seat": "Average legroom",
+       "legroom": "30 in",
+       "extensions": [
+        "Average legroom (30 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 131 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 18:00"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 19:55"
+       },
+       "duration": {
+        "raw": 115,
+        "text": "1 hr 55 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 934",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 181 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "ATH",
+       "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+       "duration_label": "3 hr 5 min",
+       "duration": 185,
+       "city": "Athens"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 40,
+      "CO2e": 312000,
+      "typical_for_this_route": 223000,
+      "higher": 89000
+     },
+     "price": 726,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3hVU3pFNE5EbDhRVE01TXpRYUN3akx0Z1FRQWhvRFZWTkVPQjF3eTdZRSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBVEgiLCJUSyIsIjE4NDkiXSxbIkFUSCIsIjIwMjYtMTEtMjAiLCJDQUkiLCJBMyIsIjkzNCJdXV1d"
+    },
+    {
+     "departure_time": "20-11-2026 10:25 PM",
+     "arrival_time": "21-11-2026 04:50 AM",
+     "duration": {
+      "raw": 445,
+      "text": "7 hr 25 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 22:25"
+       },
+       "arrival_airport": {
+        "airport_name": "King Abdulaziz International Airport",
+        "airport_code": "JED",
+        "time": "2026-11-21 02:15"
+       },
+       "duration": {
+        "raw": 230,
+        "text": "3 hr 50 min"
+       },
+       "airline": "Saudia",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+       "flight_number": "SV 260",
+       "aircraft": "Airbus A321",
+       "seat": "Average legroom",
+       "legroom": "31 in",
+       "extensions": [
+        "Average legroom (31 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 463 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "King Abdulaziz International Airport",
+        "airport_code": "JED",
+        "time": "2026-11-21 03:30"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-21 04:50"
+       },
+       "duration": {
+        "raw": 140,
+        "text": "2 hr 20 min"
+       },
+       "airline": "Saudia",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+       "flight_number": "SV 383",
+       "aircraft": "Airbus A330",
+       "seat": "Above average legroom",
+       "legroom": "32 in",
+       "extensions": [
+        "Above average legroom (32 in)",
+        "In-seat power & USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 186 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "JED",
+       "airport_name": "King Abdulaziz International Airport",
+       "duration_label": "1 hr 15 min",
+       "duration": 75,
+       "city": "Jeddah"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 191,
+      "CO2e": 650000,
+      "typical_for_this_route": 223000,
+      "higher": 427000
+     },
+     "price": 822,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3RUVmpJMk1IeFRWak00TXhvTENNT0JCUkFDR2dOVlUwUTRIWEREZ1FVPSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJKRUQiLCJTViIsIjI2MCJdLFsiSkVEIiwiMjAyNi0xMS0yMSIsIkNBSSIsIlNWIiwiMzgzIl1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 10:25 PM",
+     "arrival_time": "20-11-2026 11:55 PM",
+     "duration": {
+      "raw": 150,
+      "text": "2 hr 30 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 22:25"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 23:55"
+       },
+       "duration": {
+        "raw": 150,
+        "text": "2 hr 30 min"
+       },
+       "airline": "Turkish Airlines",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+       "flight_number": "TK 686",
+       "aircraft": "Airbus A321neo",
+       "seat": "Average legroom",
+       "legroom": "30 in",
+       "extensions": [
+        "Average legroom (30 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Emissions estimate: 217 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": null,
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": -3,
+      "CO2e": 217000,
+      "typical_for_this_route": 223000,
+      "higher": -6000
+     },
+     "price": 831,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ1ZVU3pZNE5ob0xDSXlKQlJBQ0dnTlZVMFE0SFhDTWlRVT0iXV0sWyIyMDI2LTExLTIwIiwiSVNUIiwiQ0FJIixbWyJJU1QiLCIyMDI2LTExLTIwIiwiQ0FJIiwiVEsiLCI2ODYiXV1dXQ=="
+    },
+    {
+     "departure_time": "20-11-2026 11:30 AM",
+     "arrival_time": "20-11-2026 03:15 PM",
+     "duration": {
+      "raw": 285,
+      "text": "4 hr 45 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 11:30"
+       },
+       "arrival_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 12:00"
+       },
+       "duration": {
+        "raw": 90,
+        "text": "1 hr 30 min"
+       },
+       "airline": "Aegean",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+       "flight_number": "A3 991",
+       "aircraft": "Airbus A321neo",
+       "seat": "Below average legroom",
+       "legroom": "28 in",
+       "extensions": [
+        "Below average legroom (28 in)",
+        "In-seat USB outlets",
+        "Stream media to your device",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 118 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "airport_code": "ATH",
+        "time": "2026-11-20 13:15"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 15:15"
+       },
+       "duration": {
+        "raw": 120,
+        "text": "2 hr 0 min"
+       },
+       "airline": "EgyptAir",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+       "flight_number": "MS 748",
+       "aircraft": "Boeing 737",
+       "seat": "Average legroom",
+       "legroom": "31 in",
+       "extensions": [
+        "Average legroom (31 in)",
+        "Emissions estimate: 248 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "ATH",
+       "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+       "duration_label": "1 hr 15 min",
+       "duration": 75,
+       "city": "Athens"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 64,
+      "CO2e": 366000,
+      "typical_for_this_route": 223000,
+      "higher": 143000
+     },
+     "price": 852,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3RCTXprNU1YeE5VemMwT0JvTENQR1lCUkFDR2dOVlUwUTRIWER4bUFVPSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJBVEgiLCJBMyIsIjk5MSJdLFsiQVRIIiwiMjAyNi0xMS0yMCIsIkNBSSIsIk1TIiwiNzQ4Il1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 11:55 AM",
+     "arrival_time": "20-11-2026 06:30 PM",
+     "duration": {
+      "raw": 455,
+      "text": "7 hr 35 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 11:55"
+       },
+       "arrival_airport": {
+        "airport_name": "King Abdulaziz International Airport",
+        "airport_code": "JED",
+        "time": "2026-11-20 15:45"
+       },
+       "duration": {
+        "raw": 230,
+        "text": "3 hr 50 min"
+       },
+       "airline": "Saudia",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+       "flight_number": "SV 266",
+       "aircraft": "Airbus A321",
+       "seat": "Average legroom",
+       "legroom": "31 in",
+       "extensions": [
+        "Average legroom (31 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 463 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "King Abdulaziz International Airport",
+        "airport_code": "JED",
+        "time": "2026-11-20 17:10"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 18:30"
+       },
+       "duration": {
+        "raw": 140,
+        "text": "2 hr 20 min"
+       },
+       "airline": "Saudia",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+       "flight_number": "SV 303",
+       "aircraft": "Airbus A330",
+       "seat": "Above average legroom",
+       "legroom": "32 in",
+       "extensions": [
+        "Above average legroom (32 in)",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 194 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "JED",
+       "airport_name": "King Abdulaziz International Airport",
+       "duration_label": "1 hr 25 min",
+       "duration": 85,
+       "city": "Jeddah"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 195,
+      "CO2e": 658000,
+      "typical_for_this_route": 223000,
+      "higher": 435000
+     },
+     "price": 930,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ3RUVmpJMk5ueFRWak13TXhvTENPclZCUkFDR2dOVlUwUTRIWERxMVFVPSJdXSxbIjIwMjYtMTEtMjAiLCJJU1QiLCJDQUkiLFtbIklTVCIsIjIwMjYtMTEtMjAiLCJKRUQiLCJTViIsIjI2NiJdLFsiSkVEIiwiMjAyNi0xMS0yMCIsIkNBSSIsIlNWIiwiMzAzIl1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 06:30 AM",
+     "arrival_time": "20-11-2026 02:40 PM",
+     "duration": {
+      "raw": 550,
+      "text": "9 hr 10 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 06:30"
+       },
+       "arrival_airport": {
+        "airport_name": "Bahrain International Airport",
+        "airport_code": "BAH",
+        "time": "2026-11-20 10:30"
+       },
+       "duration": {
+        "raw": 240,
+        "text": "4 hr 0 min"
+       },
+       "airline": "Gulf Air",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/GF.png",
+       "flight_number": "GF 46",
+       "aircraft": "Airbus A320neo",
+       "seat": "Average legroom",
+       "legroom": "30 in",
+       "extensions": [
+        "Average legroom (30 in)",
+        "In-seat power & USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 427 kg CO2e"
+       ]
+      },
+      {
+       "departure_airport": {
+        "airport_name": "Bahrain International Airport",
+        "airport_code": "BAH",
+        "time": "2026-11-20 12:10"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 14:40"
+       },
+       "duration": {
+        "raw": 210,
+        "text": "3 hr 30 min"
+       },
+       "airline": "Gulf Air",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/GF.png",
+       "flight_number": "GF 71",
+       "aircraft": "Airbus A320neo",
+       "seat": "Average legroom",
+       "legroom": "30 in",
+       "extensions": [
+        "Average legroom (30 in)",
+        "In-seat power & USB outlets",
+        "On-demand video",
+        "Free Wi-Fi",
+        "Wi-Fi for a fee",
+        "Emissions estimate: 317 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": [
+      {
+       "airport_code": "BAH",
+       "airport_name": "Bahrain International Airport",
+       "duration_label": "1 hr 40 min",
+       "duration": 100,
+       "city": "Bahrain"
+      }
+     ],
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": 234,
+      "CO2e": 744000,
+      "typical_for_this_route": 223000,
+      "higher": 521000
+     },
+     "price": 1096,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/GF.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ2xIUmpRMmZFZEdOekVhQ3dqTjF3WVFBaG9EVlZORU9CMXd6ZGNHIl1dLFsiMjAyNi0xMS0yMCIsIklTVCIsIkNBSSIsW1siSVNUIiwiMjAyNi0xMS0yMCIsIkJBSCIsIkdGIiwiNDYiXSxbIkJBSCIsIjIwMjYtMTEtMjAiLCJDQUkiLCJHRiIsIjcxIl1dXV0="
+    },
+    {
+     "departure_time": "20-11-2026 06:20 PM",
+     "arrival_time": "20-11-2026 07:50 PM",
+     "duration": {
+      "raw": 150,
+      "text": "2 hr 30 min"
+     },
+     "flights": [
+      {
+       "departure_airport": {
+        "airport_name": "Istanbul Airport",
+        "airport_code": "IST",
+        "time": "2026-11-20 18:20"
+       },
+       "arrival_airport": {
+        "airport_name": "Cairo International Airport",
+        "airport_code": "CAI",
+        "time": "2026-11-20 19:50"
+       },
+       "duration": {
+        "raw": 150,
+        "text": "2 hr 30 min"
+       },
+       "airline": "Turkish Airlines",
+       "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+       "flight_number": "TK 694",
+       "aircraft": "Airbus A321neo",
+       "seat": "Average legroom",
+       "legroom": "30 in",
+       "extensions": [
+        "Average legroom (30 in)",
+        "In-seat USB outlets",
+        "On-demand video",
+        "Emissions estimate: 217 kg CO2e"
+       ]
+      }
+     ],
+     "delay": {
+      "values": false,
+      "text": 0
+     },
+     "self_transfer": false,
+     "layovers": null,
+     "bags": {
+      "carry_on": 2,
+      "checked": null
+     },
+     "carbon_emissions": {
+      "difference_percent": -3,
+      "CO2e": 217000,
+      "typical_for_this_route": 223000,
+      "higher": -6000
+     },
+     "price": 1808,
+     "stops": 0,
+     "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+     "booking_token": "W1syLDEsWyIyIiwwLDAsMF0sWyJDalJJU25GYVYzVTFiMHRqTWpSQlNtSnhRM2RDUnkwdExTMHRMUzB0TFhaMGRYVXhPVUZCUVVGQlIzSlpPVkk0UVc1blgyVkJFZ1ZVU3pZNU5Cb0xDTHFFQ3hBQ0dnTlZVMFE0SFhDNmhBcz0iXV0sWyIyMDI2LTExLTIwIiwiSVNUIiwiQ0FJIixbWyJJU1QiLCIyMDI2LTExLTIwIiwiQ0FJIiwiVEsiLCI2OTQiXV1dXQ=="
+    }
+   ]
+  },
+  "priceHistory": {
+   "summary": {
+    "current": 272,
+    "low": [
+     {
+      "operation": "<",
+      "value": 255
+     }
+    ],
+    "typical": [
+     {
+      "operation": ">=",
+      "value": 255
+     },
+     {
+      "operation": "&&",
+      "value": null
+     },
+     {
+      "operation": "<=",
+      "value": 310
+     }
+    ],
+    "high": [
+     {
+      "operation": "<",
+      "value": 310
+     }
+    ]
+   },
+   "history": []
+  }
+ }
+}

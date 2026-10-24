@@ -1,0 +1,104 @@
+{
+  "request_id": "tm-20261021165940-0411d285",
+  "generated_at": "2026-10-21T17:00:06Z",
+  "adapter_schema": "v2 (BE-04 report slice)",
+  "chain_checks": {
+    "final_status": "success",
+    "final_error_code": null,
+    "live_integration_status": "price_received",
+    "flight_mode": "live",
+    "flights_status": "available",
+    "flights_reason_code": null,
+    "flight_date_flags_consistent": null,
+    "live_round_trip_offers": 3,
+    "live_offers_match_local_dates": true,
+    "live_offers_match_adults": true,
+    "selected_flight_offer_id": "gf:SM304:2026-11-20__MS745:2026-11-23",
+    "selected_flight_total_usd": 495.0,
+    "hotel_offers_count": 20,
+    "hotel_offers_match_dates": true,
+    "hotel_offers_match_adults": true,
+    "hotel_room_qty_values": [
+      1,
+      null
+    ],
+    "selected_hotel_offer_id": "17410709",
+    "ai_status": "ok",
+    "ai_latency_ms": 4305,
+    "ai_itinerary_dates": [
+      "2026-11-20",
+      "2026-11-21",
+      "2026-11-22",
+      "2026-11-23"
+    ],
+    "be04": {
+      "available": true,
+      "report_slice_valid": true,
+      "error": null,
+      "status": "uncertain",
+      "selected_hotel_offer_id": "17410709",
+      "selected_flight_offer_id": "gf:SM304:2026-11-20__MS745:2026-11-23",
+      "provider_subtotal_usd": "560.75"
+    },
+    "provider_calls": [
+      {
+        "service": "booking_hotels",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "attempts": 1,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "rate_limit": {
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499994",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2065148",
+          "x-ratelimit-premium-limit": "50",
+          "x-ratelimit-premium-remaining": "50",
+          "x-ratelimit-premium-reset": "2065148",
+          "x-ratelimit-requests-limit": "20",
+          "x-ratelimit-requests-remaining": "14",
+          "x-ratelimit-requests-reset": "2065148"
+        }
+      },
+      {
+        "service": "google_flights_search",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "attempts": 1,
+        "retrieved_at": "2026-10-21T16:59:50Z",
+        "rate_limit": {
+          "x-ratelimit-requests-limit": "150",
+          "x-ratelimit-requests-remaining": "138",
+          "x-ratelimit-requests-reset": "2677064",
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499988",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2677064"
+        }
+      },
+      {
+        "service": "google_flights_return",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "attempts": 1,
+        "retrieved_at": "2026-10-21T17:00:01Z",
+        "rate_limit": {
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499987",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2677052",
+          "x-ratelimit-requests-limit": "150",
+          "x-ratelimit-requests-remaining": "137",
+          "x-ratelimit-requests-reset": "2677052"
+        }
+      }
+    ]
+  },
+  "files": {
+    "01_inputs.json": "2e1355b047d8b7e7d64d5a4185973f2236069f5d7160445803293e3961a6cff0",
+    "02_raw_provider_data.json": "c4328921ac1295f7fcb812722aa40aeb18a18816965ba45a1b5ebfcd66314aa8",
+    "03_normalized_context.json": "3b9442d5e301f0ee4f8053a74cfb7230c7672857d32284a71a3653c85e34d5f1",
+    "04_ai_input.json": "8d1e1d769308a5b5f276ce8eadcfa5cb1ae6da47667fcd2b2cbc80cab0545190",
+    "05_ai_raw_output.json": "2f25b70795acc3169125c909eaafaf8283f146c3ee79a576979d8cbe1981d80c",
+    "06_validated_ai_output.json": "1f120c119544d10ac597a75857f43d915c8bca9fe2b43aa6bd7d061b7a8fcae5",
+    "07_final_response.json": "fb895dbaa5cb1bfa274ab687c0821d4810f0d2404afb44c80fb9bceb5e7571b1",
+    "08_be04_budget_output.json": "f8237c9cc1adb43cc3b017720ffc6b6c14ec046841afccbd0374e6ca250d9ce5"
+  }
+}

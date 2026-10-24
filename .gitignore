@@ -28,3 +28,9 @@ coverage/
 # Local operating-system metadata.
 .DS_Store
 Thumbs.db
+
+# TravelMate travel-adapter prototype: local cache and generated reports
+travelmate_cache.json
+travelmate_cache.json.lock
+travelmate_raw_data.json
+travelmate_final_report.json

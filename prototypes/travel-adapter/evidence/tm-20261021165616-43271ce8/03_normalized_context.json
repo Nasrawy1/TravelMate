@@ -1,0 +1,67 @@
+{
+  "search_travel": {
+    "request_id": "tm-20261021165616-43271ce8",
+    "status": "ok",
+    "trip_request": {
+      "departure_city": "Istanbul",
+      "destination_city": "Cairo",
+      "start_date": "2026-11-20",
+      "return_date": "2026-11-23",
+      "adults": 2,
+      "budget_usd": 1500.0
+    },
+    "flights": {
+      "status": "unavailable",
+      "reason_code": "timeout",
+      "price_authority": "live_provider_quote",
+      "selected_outbound_flight": null,
+      "selected_return_flight": null,
+      "offers": {
+        "outbound": [],
+        "return": []
+      },
+      "alternative_date_offers": {
+        "outbound": [],
+        "return": []
+      },
+      "round_trip_offers": [],
+      "selected_offer": null,
+      "coverage": {}
+    },
+    "hotels": {
+      "status": "unavailable",
+      "reason_code": "timeout",
+      "offers": [],
+      "public_offers": [],
+      "coverage": {},
+      "destination_mapping": {
+        "dest_id": "-290692",
+        "search_type": "CITY",
+        "source": "pinned_mapping"
+      }
+    },
+    "report_slice": {
+      "flights_data": {
+        "selected_outbound_flight": null,
+        "selected_return_flight": null
+      },
+      "hotels_data": []
+    },
+    "flight_candidates": [],
+    "hotel_candidates": [],
+    "warnings": [
+      {
+        "code": "TRAVEL_TIMEOUT",
+        "message": "Flight search failed (timeout)."
+      },
+      {
+        "code": "TRAVEL_TIMEOUT",
+        "message": "Hotel search failed (timeout)."
+      }
+    ],
+    "provenance": [],
+    "data_mode": "live"
+  },
+  "selected_hotel_offer_id": null,
+  "selected_flight_offer_id": null
+}

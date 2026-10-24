@@ -1,0 +1,77 @@
+{
+ "path": "/api/v1/searchAirport",
+ "params": {
+  "query": "Istanbul",
+  "language_code": "en-US",
+  "country_code": "US"
+ },
+ "http_status": 200,
+ "rate_limit": {
+  "X-RateLimit-Requests-Limit": "150",
+  "X-RateLimit-Requests-Remaining": "148",
+  "X-RateLimit-Requests-Reset": "2678175",
+  "X-RateLimit-rapid-free-plans-hard-limit-Limit": "500000",
+  "X-RateLimit-rapid-free-plans-hard-limit-Remaining": "499998",
+  "X-RateLimit-rapid-free-plans-hard-limit-Reset": "2678175"
+ },
+ "elapsed_ms": 1851,
+ "body": {
+  "status": true,
+  "message": "Success",
+  "timestamp": 1792600868259,
+  "data": [
+   {
+    "id": "/m/09949m",
+    "type": "other",
+    "title": "Istanbul, Türkiye",
+    "subtitle": "City in Turkey",
+    "city": "Istanbul",
+    "distance": null,
+    "list": [
+     {
+      "id": "SAW",
+      "type": "airport",
+      "title": "Sabiha Gökçen International Airport",
+      "subtitle": "19 mi to destination",
+      "city": "Istanbul",
+      "distance": "19 mi"
+     },
+     {
+      "id": "IST",
+      "type": "airport",
+      "title": "Istanbul Airport",
+      "subtitle": "21 mi to destination",
+      "city": "Istanbul",
+      "distance": "21 mi"
+     }
+    ]
+   },
+   {
+    "id": "/g/121x295d",
+    "type": "other",
+    "title": "İstanbuldere, Türkiye",
+    "subtitle": null,
+    "city": "İstanbuldere",
+    "distance": null,
+    "list": [
+     {
+      "id": "SAW",
+      "type": "airport",
+      "title": "Sabiha Gökçen International Airport",
+      "subtitle": "52 mi to destination",
+      "city": "Istanbul",
+      "distance": "52 mi"
+     },
+     {
+      "id": "YEI",
+      "type": "airport",
+      "title": "Bursa Yenişehir Airport",
+      "subtitle": "47 mi to destination",
+      "city": "Bursa",
+      "distance": "47 mi"
+     }
+    ]
+   }
+  ]
+ }
+}

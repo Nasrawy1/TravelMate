@@ -1,0 +1,3062 @@
+{
+ "path": "/api/v1/searchFlights",
+ "params": {
+  "departure_id": "/m/09949m",
+  "arrival_id": "DXB",
+  "outbound_date": "2026-11-23",
+  "travel_class": "ECONOMY",
+  "adults": "1",
+  "show_hidden": "1",
+  "currency": "USD",
+  "language_code": "en-US",
+  "country_code": "US",
+  "search_type": "best"
+ },
+ "http_status": 200,
+ "rate_limit": {
+  "X-RateLimit-Requests-Limit": "150",
+  "X-RateLimit-Requests-Remaining": "106",
+  "X-RateLimit-Requests-Reset": "2537068",
+  "X-RateLimit-rapid-free-plans-hard-limit-Limit": "500000",
+  "X-RateLimit-rapid-free-plans-hard-limit-Remaining": "499956",
+  "X-RateLimit-rapid-free-plans-hard-limit-Reset": "2537068"
+ },
+ "elapsed_ms": 3162,
+ "body": {
+  "status": true,
+  "message": "Success",
+  "timestamp": 1792741974776,
+  "data": {
+   "itineraries": {
+    "topFlights": [
+     {
+      "departure_time": "23-11-2026 08:55 PM",
+      "arrival_time": "24-11-2026 03:15 AM",
+      "duration": {
+       "raw": 320,
+       "text": "5 hr 20 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Sabiha Gökçen International Airport",
+         "airport_code": "SAW",
+         "time": "2026-11-23 20:55"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 03:15"
+        },
+        "duration": {
+         "raw": 320,
+         "text": "5 hr 20 min"
+        },
+        "airline": "AJet",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/VF.png",
+        "flight_number": "VF 143",
+        "aircraft": "Boeing 737MAX 8 Passenger",
+        "seat": "Below average legroom",
+        "legroom": "29 in",
+        "extensions": [
+         "Below average legroom (29 in)",
+         "In-seat USB outlets",
+         "Emissions estimate: 200 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": null,
+      "bags": {
+       "carry_on": 0,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": -24,
+       "CO2e": 200000,
+       "typical_for_this_route": 264000,
+       "higher": -64000
+      },
+      "price": 160,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/VF.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ1ZXUmpFME14b0tDS3A4RUFJYUExVlRSRGdkY0twOCJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIlNBVyIsIjIwMjYtMTEtMjMiLCJEWEIiLCJWRiIsIjE0MyJdXV1d"
+     },
+     {
+      "departure_time": "23-11-2026 08:50 PM",
+      "arrival_time": "24-11-2026 02:15 AM",
+      "duration": {
+       "raw": 265,
+       "text": "4 hr 25 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Sabiha Gökçen International Airport",
+         "airport_code": "SAW",
+         "time": "2026-11-23 20:50"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 02:15"
+        },
+        "duration": {
+         "raw": 265,
+         "text": "4 hr 25 min"
+        },
+        "airline": "Pegasus",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/PC.png",
+        "flight_number": "PC 740",
+        "aircraft": "Airbus A321",
+        "seat": "Below average legroom",
+        "legroom": "28 in",
+        "extensions": [
+         "Below average legroom (28 in)",
+         "Stream media to your device",
+         "Emissions estimate: 222 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": null,
+      "bags": {
+       "carry_on": 0,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": -16,
+       "CO2e": 222000,
+       "typical_for_this_route": 264000,
+       "higher": -42000
+      },
+      "price": 162,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/PC.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ1ZRUXpjME1Cb0tDT2w5RUFJYUExVlRSRGdkY09sOSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIlNBVyIsIjIwMjYtMTEtMjMiLCJEWEIiLCJQQyIsIjc0MCJdXV1d"
+     },
+     {
+      "departure_time": "23-11-2026 02:20 PM",
+      "arrival_time": "23-11-2026 07:45 PM",
+      "duration": {
+       "raw": 265,
+       "text": "4 hr 25 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Sabiha Gökçen International Airport",
+         "airport_code": "SAW",
+         "time": "2026-11-23 14:20"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-23 19:45"
+        },
+        "duration": {
+         "raw": 265,
+         "text": "4 hr 25 min"
+        },
+        "airline": "flydubai",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/FZ.png",
+        "flight_number": "FZ 752",
+        "aircraft": "Boeing 737",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Emissions estimate: 253 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": null,
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": -4,
+       "CO2e": 253000,
+       "typical_for_this_route": 264000,
+       "higher": -11000
+      },
+      "price": 271,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/FZ.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ1ZHV2pjMU1ob0xDTHJUQVJBQ0dnTlZVMFE0SFhDNjB3RT0iXV0sWyIyMDI2LTExLTIzIiwiL20vMDk5NDltIiwiRFhCIixbWyJTQVciLCIyMDI2LTExLTIzIiwiRFhCIiwiRloiLCI3NTIiXV1dXQ=="
+     },
+     {
+      "departure_time": "23-11-2026 04:05 PM",
+      "arrival_time": "23-11-2026 09:35 PM",
+      "duration": {
+       "raw": 270,
+       "text": "4 hr 30 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 16:05"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-23 21:35"
+        },
+        "duration": {
+         "raw": 270,
+         "text": "4 hr 30 min"
+        },
+        "airline": "Emirates",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/EK.png",
+        "flight_number": "EK 124",
+        "aircraft": "Airbus A380",
+        "seat": "Above average legroom",
+        "legroom": "32 in",
+        "extensions": [
+         "Above average legroom (32 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 242 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": null,
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": -8,
+       "CO2e": 242000,
+       "typical_for_this_route": 264000,
+       "higher": -22000
+      },
+      "price": 596,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/EK.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ1ZGU3pFeU5Cb0xDTHpSQXhBQ0dnTlZVMFE0SFhDODBRTT0iXV0sWyIyMDI2LTExLTIzIiwiL20vMDk5NDltIiwiRFhCIixbWyJJU1QiLCIyMDI2LTExLTIzIiwiRFhCIiwiRUsiLCIxMjQiXV1dXQ=="
+     }
+    ],
+    "otherFlights": [
+     {
+      "departure_time": "23-11-2026 09:15 PM",
+      "arrival_time": "25-11-2026 03:45 AM",
+      "duration": {
+       "raw": 1770,
+       "text": "29 hr 30 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Sabiha Gökçen International Airport",
+         "airport_code": "SAW",
+         "time": "2026-11-23 21:15"
+        },
+        "arrival_airport": {
+         "airport_name": "Ankara Esenboga Airport",
+         "airport_code": "ESB",
+         "time": "2026-11-23 22:20"
+        },
+        "duration": {
+         "raw": 65,
+         "text": "1 hr 5 min"
+        },
+        "airline": "AJet",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/VF.png",
+        "flight_number": "VF 3008",
+        "aircraft": "Boeing 737MAX 8 Passenger",
+        "seat": "Below average legroom",
+        "legroom": "29 in",
+        "extensions": [
+         "Below average legroom (29 in)",
+         "In-seat USB outlets",
+         "Emissions estimate: 43 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Ankara Esenboga Airport",
+         "airport_code": "ESB",
+         "time": "2026-11-24 21:40"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-25 03:45"
+        },
+        "duration": {
+         "raw": 305,
+         "text": "5 hr 5 min"
+        },
+        "airline": "AJet",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/VF.png",
+        "flight_number": "VF 549",
+        "aircraft": "Boeing 737MAX 8 Passenger",
+        "seat": "Below average legroom",
+        "legroom": "29 in",
+        "extensions": [
+         "Below average legroom (29 in)",
+         "In-seat USB outlets",
+         "Emissions estimate: 181 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "ESB",
+        "airport_name": "Ankara Esenboga Airport",
+        "duration_label": "23 hr 20 min",
+        "duration": 1400,
+        "city": "Ankara"
+       }
+      ],
+      "bags": {
+       "carry_on": 0,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": -15,
+       "CO2e": 224000,
+       "typical_for_this_route": 264000,
+       "higher": -40000
+      },
+      "price": 148,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/VF.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3hXUmpNd01EaDhWa1kxTkRrYUNnaitjaEFDR2dOVlUwUTRIWEQrY2c9PSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIlNBVyIsIjIwMjYtMTEtMjMiLCJFU0IiLCJWRiIsIjMwMDgiXSxbIkVTQiIsIjIwMjYtMTEtMjQiLCJEWEIiLCJWRiIsIjU0OSJdXV1d"
+     },
+     {
+      "departure_time": "23-11-2026 01:55 AM",
+      "arrival_time": "23-11-2026 07:25 AM",
+      "duration": {
+       "raw": 270,
+       "text": "4 hr 30 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 01:55"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-23 07:25"
+        },
+        "duration": {
+         "raw": 270,
+         "text": "4 hr 30 min"
+        },
+        "airline": "flydubai",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/FZ.png",
+        "flight_number": "FZ 756",
+        "aircraft": "Boeing 737",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Emissions estimate: 258 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": null,
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": -2,
+       "CO2e": 258000,
+       "typical_for_this_route": 264000,
+       "higher": -6000
+      },
+      "price": 277,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/FZ.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ1ZHV2pjMU5ob0xDUGJYQVJBQ0dnTlZVMFE0SFhEMjF3RT0iXV0sWyIyMDI2LTExLTIzIiwiL20vMDk5NDltIiwiRFhCIixbWyJJU1QiLCIyMDI2LTExLTIzIiwiRFhCIiwiRloiLCI3NTYiXV1dXQ=="
+     },
+     {
+      "departure_time": "23-11-2026 06:35 PM",
+      "arrival_time": "24-11-2026 12:05 AM",
+      "duration": {
+       "raw": 270,
+       "text": "4 hr 30 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 18:35"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 00:05"
+        },
+        "duration": {
+         "raw": 270,
+         "text": "4 hr 30 min"
+        },
+        "airline": "flydubai",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/FZ.png",
+        "flight_number": "FZ 728",
+        "aircraft": "Boeing 737",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Emissions estimate: 258 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": null,
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": -2,
+       "CO2e": 258000,
+       "typical_for_this_route": 264000,
+       "higher": -6000
+      },
+      "price": 277,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/FZ.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ1ZHV2pjeU9Cb0xDUGJYQVJBQ0dnTlZVMFE0SFhEMjF3RT0iXV0sWyIyMDI2LTExLTIzIiwiL20vMDk5NDltIiwiRFhCIixbWyJJU1QiLCIyMDI2LTExLTIzIiwiRFhCIiwiRloiLCI3MjgiXV1dXQ=="
+     },
+     {
+      "departure_time": "23-11-2026 02:05 PM",
+      "arrival_time": "23-11-2026 09:35 PM",
+      "duration": {
+       "raw": 390,
+       "text": "6 hr 30 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 14:05"
+        },
+        "arrival_airport": {
+         "airport_name": "Queen Alia International Airport",
+         "airport_code": "AMM",
+         "time": "2026-11-23 16:40"
+        },
+        "duration": {
+         "raw": 155,
+         "text": "2 hr 35 min"
+        },
+        "airline": "Royal Jordanian",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+        "flight_number": "RJ 166",
+        "aircraft": "Airbus A320neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 120 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Queen Alia International Airport",
+         "airport_code": "AMM",
+         "time": "2026-11-23 17:25"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-23 21:35"
+        },
+        "duration": {
+         "raw": 190,
+         "text": "3 hr 10 min"
+        },
+        "airline": "Royal Jordanian",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+        "flight_number": "RJ 614",
+        "aircraft": "Airbus A321neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 159 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "AMM",
+        "airport_name": "Queen Alia International Airport",
+        "duration_label": "0 hr 45 min",
+        "duration": 45,
+        "city": "Amman"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 5,
+       "CO2e": 278000,
+       "typical_for_this_route": 264000,
+       "higher": 14000
+      },
+      "price": 286,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3RTU2pFMk5ueFNTall4TkJvTENPamVBUkFDR2dOVlUwUTRIWERvM2dFPSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJBTU0iLCJSSiIsIjE2NiJdLFsiQU1NIiwiMjAyNi0xMS0yMyIsIkRYQiIsIlJKIiwiNjE0Il1dXV0="
+     },
+     {
+      "departure_time": "23-11-2026 02:05 PM",
+      "arrival_time": "24-11-2026 04:15 AM",
+      "duration": {
+       "raw": 790,
+       "text": "13 hr 10 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 14:05"
+        },
+        "arrival_airport": {
+         "airport_name": "Queen Alia International Airport",
+         "airport_code": "AMM",
+         "time": "2026-11-23 16:40"
+        },
+        "duration": {
+         "raw": 155,
+         "text": "2 hr 35 min"
+        },
+        "airline": "Royal Jordanian",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+        "flight_number": "RJ 166",
+        "aircraft": "Airbus A320neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 120 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Queen Alia International Airport",
+         "airport_code": "AMM",
+         "time": "2026-11-24 00:10"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 04:15"
+        },
+        "duration": {
+         "raw": 185,
+         "text": "3 hr 5 min"
+        },
+        "airline": "Royal Jordanian",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+        "flight_number": "RJ 612",
+        "aircraft": "Boeing 787",
+        "seat": "Above average legroom",
+        "legroom": "32 in",
+        "extensions": [
+         "Above average legroom (32 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Emissions estimate: 143 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "AMM",
+        "airport_name": "Queen Alia International Airport",
+        "duration_label": "7 hr 30 min",
+        "duration": 450,
+        "city": "Amman"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 0,
+       "CO2e": 263000,
+       "typical_for_this_route": 264000,
+       "higher": -1000
+      },
+      "price": 286,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3RTU2pFMk5ueFNTall4TWhvTENPamVBUkFDR2dOVlUwUTRIWERvM2dFPSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJBTU0iLCJSSiIsIjE2NiJdLFsiQU1NIiwiMjAyNi0xMS0yNCIsIkRYQiIsIlJKIiwiNjEyIl1dXV0="
+     },
+     {
+      "departure_time": "23-11-2026 10:10 PM",
+      "arrival_time": "24-11-2026 12:45 PM",
+      "duration": {
+       "raw": 815,
+       "text": "13 hr 35 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 22:10"
+        },
+        "arrival_airport": {
+         "airport_name": "Queen Alia International Airport",
+         "airport_code": "AMM",
+         "time": "2026-11-24 00:45"
+        },
+        "duration": {
+         "raw": 155,
+         "text": "2 hr 35 min"
+        },
+        "airline": "Royal Jordanian",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+        "flight_number": "RJ 164",
+        "aircraft": "Airbus A320neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 120 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Queen Alia International Airport",
+         "airport_code": "AMM",
+         "time": "2026-11-24 08:40"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 12:45"
+        },
+        "duration": {
+         "raw": 185,
+         "text": "3 hr 5 min"
+        },
+        "airline": "Royal Jordanian",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+        "flight_number": "RJ 610",
+        "aircraft": "Airbus A321neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 159 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "AMM",
+        "airport_name": "Queen Alia International Airport",
+        "duration_label": "7 hr 55 min",
+        "duration": 475,
+        "city": "Amman"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 5,
+       "CO2e": 278000,
+       "typical_for_this_route": 264000,
+       "higher": 14000
+      },
+      "price": 286,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/RJ.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3RTU2pFMk5IeFNTall4TUJvTENPamVBUkFDR2dOVlUwUTRIWERvM2dFPSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJBTU0iLCJSSiIsIjE2NCJdLFsiQU1NIiwiMjAyNi0xMS0yNCIsIkRYQiIsIlJKIiwiNjEwIl1dXV0="
+     },
+     {
+      "departure_time": "23-11-2026 06:30 AM",
+      "arrival_time": "23-11-2026 04:00 PM",
+      "duration": {
+       "raw": 510,
+       "text": "8 hr 30 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 06:30"
+        },
+        "arrival_airport": {
+         "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+         "airport_code": "ATH",
+         "time": "2026-11-23 07:00"
+        },
+        "duration": {
+         "raw": 90,
+         "text": "1 hr 30 min"
+        },
+        "airline": "Aegean",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+        "flight_number": "A3 999",
+        "aircraft": "Airbus A320neo",
+        "seat": "Below average legroom",
+        "legroom": "28 in",
+        "extensions": [
+         "Below average legroom (28 in)",
+         "In-seat USB outlets",
+         "Stream media to your device",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 61 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+         "airport_code": "ATH",
+         "time": "2026-11-23 09:10"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-23 16:00"
+        },
+        "duration": {
+         "raw": 290,
+         "text": "4 hr 50 min"
+        },
+        "airline": "Aegean",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+        "flight_number": "A3 958",
+        "aircraft": "Airbus A320neo",
+        "seat": "Below average legroom",
+        "legroom": "28 in",
+        "extensions": [
+         "Below average legroom (28 in)",
+         "In-seat USB outlets",
+         "Stream media to your device",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 240 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "ATH",
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "duration_label": "2 hr 10 min",
+        "duration": 130,
+        "city": "Athens"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 14,
+       "CO2e": 301000,
+       "typical_for_this_route": 264000,
+       "higher": 37000
+      },
+      "price": 351,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/A3.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3RCTXprNU9YeEJNemsxT0JvTENKbVNBaEFDR2dOVlUwUTRIWENaa2dJPSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJBVEgiLCJBMyIsIjk5OSJdLFsiQVRIIiwiMjAyNi0xMS0yMyIsIkRYQiIsIkEzIiwiOTU4Il1dXV0="
+     },
+     {
+      "departure_time": "23-11-2026 12:20 PM",
+      "arrival_time": "23-11-2026 09:25 PM",
+      "duration": {
+       "raw": 485,
+       "text": "8 hr 5 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 12:20"
+        },
+        "arrival_airport": {
+         "airport_name": "Beirut-Rafic Hariri International Airport",
+         "airport_code": "BEY",
+         "time": "2026-11-23 13:15"
+        },
+        "duration": {
+         "raw": 115,
+         "text": "1 hr 55 min"
+        },
+        "airline": "MEA",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/ME.png",
+        "flight_number": "ME 266",
+        "aircraft": "Airbus A320",
+        "seat": "Above average legroom",
+        "legroom": "32 in",
+        "extensions": [
+         "Above average legroom (32 in)",
+         "On-demand video",
+         "Emissions estimate: 130 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Beirut-Rafic Hariri International Airport",
+         "airport_code": "BEY",
+         "time": "2026-11-23 16:05"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-23 21:25"
+        },
+        "duration": {
+         "raw": 200,
+         "text": "3 hr 20 min"
+        },
+        "airline": "MEA",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/ME.png",
+        "flight_number": "ME 428",
+        "aircraft": "Airbus A321neo",
+        "seat": "Above average legroom",
+        "legroom": "32 in",
+        "extensions": [
+         "Above average legroom (32 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 215 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "BEY",
+        "airport_name": "Beirut-Rafic Hariri International Airport",
+        "duration_label": "2 hr 50 min",
+        "duration": 170,
+        "city": "Beirut"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 30,
+       "CO2e": 344000,
+       "typical_for_this_route": 264000,
+       "higher": 80000
+      },
+      "price": 378,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/ME.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3ROUlRJMk5ueE5SVFF5T0JvTENJcW5BaEFDR2dOVlUwUTRIWENLcHdJPSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJCRVkiLCJNRSIsIjI2NiJdLFsiQkVZIiwiMjAyNi0xMS0yMyIsIkRYQiIsIk1FIiwiNDI4Il1dXV0="
+     },
+     {
+      "departure_time": "23-11-2026 06:30 AM",
+      "arrival_time": "23-11-2026 06:15 PM",
+      "duration": {
+       "raw": 645,
+       "text": "10 hr 45 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 06:30"
+        },
+        "arrival_airport": {
+         "airport_name": "Bahrain International Airport",
+         "airport_code": "BAH",
+         "time": "2026-11-23 10:30"
+        },
+        "duration": {
+         "raw": 240,
+         "text": "4 hr 0 min"
+        },
+        "airline": "Gulf Air",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/GF.png",
+        "flight_number": "GF 46",
+        "aircraft": "Airbus A320neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 213 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Bahrain International Airport",
+         "airport_code": "BAH",
+         "time": "2026-11-23 15:50"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-23 18:15"
+        },
+        "duration": {
+         "raw": 85,
+         "text": "1 hr 25 min"
+        },
+        "airline": "Gulf Air",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/GF.png",
+        "flight_number": "GF 508",
+        "aircraft": "Airbus A320neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Emissions estimate: 65 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "BAH",
+        "airport_name": "Bahrain International Airport",
+        "duration_label": "5 hr 20 min",
+        "duration": 320,
+        "city": "Bahrain"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 5,
+       "CO2e": 278000,
+       "typical_for_this_route": 264000,
+       "higher": 14000
+      },
+      "price": 401,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/GF.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3BIUmpRMmZFZEdOVEE0R2dzSTViZ0NFQUlhQTFWVFJEZ2RjT1c0QWc9PSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJCQUgiLCJHRiIsIjQ2Il0sWyJCQUgiLCIyMDI2LTExLTIzIiwiRFhCIiwiR0YiLCI1MDgiXV1dXQ=="
+     },
+     {
+      "departure_time": "23-11-2026 06:30 AM",
+      "arrival_time": "23-11-2026 08:35 PM",
+      "duration": {
+       "raw": 785,
+       "text": "13 hr 5 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 06:30"
+        },
+        "arrival_airport": {
+         "airport_name": "Bahrain International Airport",
+         "airport_code": "BAH",
+         "time": "2026-11-23 10:30"
+        },
+        "duration": {
+         "raw": 240,
+         "text": "4 hr 0 min"
+        },
+        "airline": "Gulf Air",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/GF.png",
+        "flight_number": "GF 46",
+        "aircraft": "Airbus A320neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 213 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Bahrain International Airport",
+         "airport_code": "BAH",
+         "time": "2026-11-23 18:10"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-23 20:35"
+        },
+        "duration": {
+         "raw": 85,
+         "text": "1 hr 25 min"
+        },
+        "airline": "Gulf Air",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/GF.png",
+        "flight_number": "GF 510",
+        "aircraft": "Airbus A320neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Emissions estimate: 65 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "BAH",
+        "airport_name": "Bahrain International Airport",
+        "duration_label": "7 hr 40 min",
+        "duration": 460,
+        "city": "Bahrain"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 5,
+       "CO2e": 278000,
+       "typical_for_this_route": 264000,
+       "higher": 14000
+      },
+      "price": 401,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/GF.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3BIUmpRMmZFZEdOVEV3R2dzSTViZ0NFQUlhQTFWVFJEZ2RjT1c0QWc9PSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJCQUgiLCJHRiIsIjQ2Il0sWyJCQUgiLCIyMDI2LTExLTIzIiwiRFhCIiwiR0YiLCI1MTAiXV1dXQ=="
+     },
+     {
+      "departure_time": "23-11-2026 04:20 PM",
+      "arrival_time": "24-11-2026 03:35 AM",
+      "duration": {
+       "raw": 615,
+       "text": "10 hr 15 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 16:20"
+        },
+        "arrival_airport": {
+         "airport_name": "Bahrain International Airport",
+         "airport_code": "BAH",
+         "time": "2026-11-23 20:15"
+        },
+        "duration": {
+         "raw": 235,
+         "text": "3 hr 55 min"
+        },
+        "airline": "Gulf Air",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/GF.png",
+        "flight_number": "GF 44",
+        "aircraft": "Airbus A320neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 213 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Bahrain International Airport",
+         "airport_code": "BAH",
+         "time": "2026-11-24 01:10"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 03:35"
+        },
+        "duration": {
+         "raw": 85,
+         "text": "1 hr 25 min"
+        },
+        "airline": "Gulf Air",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/GF.png",
+        "flight_number": "GF 500",
+        "aircraft": "Airbus A320neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Emissions estimate: 65 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "BAH",
+        "airport_name": "Bahrain International Airport",
+        "duration_label": "4 hr 55 min",
+        "duration": 295,
+        "city": "Bahrain"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 5,
+       "CO2e": 278000,
+       "typical_for_this_route": 264000,
+       "higher": 14000
+      },
+      "price": 401,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/GF.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3BIUmpRMGZFZEdOVEF3R2dzSTViZ0NFQUlhQTFWVFJEZ2RjT1c0QWc9PSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJCQUgiLCJHRiIsIjQ0Il0sWyJCQUgiLCIyMDI2LTExLTI0IiwiRFhCIiwiR0YiLCI1MDAiXV1dXQ=="
+     },
+     {
+      "departure_time": "23-11-2026 10:20 PM",
+      "arrival_time": "24-11-2026 01:00 PM",
+      "duration": {
+       "raw": 820,
+       "text": "13 hr 40 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 22:20"
+        },
+        "arrival_airport": {
+         "airport_name": "Almaty International Airport",
+         "airport_code": "ALA",
+         "time": "2026-11-24 05:50"
+        },
+        "duration": {
+         "raw": 330,
+         "text": "5 hr 30 min"
+        },
+        "airline": "Air Astana",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/KC.png",
+        "flight_number": "KC 912",
+        "aircraft": "Airbus A321neo",
+        "seat": "Average legroom",
+        "legroom": "31 in",
+        "extensions": [
+         "Average legroom (31 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Emissions estimate: 322 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Almaty International Airport",
+         "airport_code": "ALA",
+         "time": "2026-11-24 08:30"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 13:00"
+        },
+        "duration": {
+         "raw": 330,
+         "text": "5 hr 30 min"
+        },
+        "airline": "Air Astana",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/KC.png",
+        "flight_number": "KC 897",
+        "aircraft": "Boeing 767",
+        "seat": "Average legroom",
+        "legroom": "31 in",
+        "extensions": [
+         "Average legroom (31 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 224 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "ALA",
+        "airport_name": "Almaty International Airport",
+        "duration_label": "2 hr 40 min",
+        "duration": 160,
+        "city": "Almaty"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 107,
+       "CO2e": 546000,
+       "typical_for_this_route": 264000,
+       "higher": 282000
+      },
+      "price": 406,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/KC.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3RMUXpreE1ueExRemc1TnhvTENQVzhBaEFDR2dOVlUwUTRIWEQxdkFJPSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJBTEEiLCJLQyIsIjkxMiJdLFsiQUxBIiwiMjAyNi0xMS0yNCIsIkRYQiIsIktDIiwiODk3Il1dXV0="
+     },
+     {
+      "departure_time": "23-11-2026 01:50 PM",
+      "arrival_time": "23-11-2026 09:15 PM",
+      "duration": {
+       "raw": 385,
+       "text": "6 hr 25 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 13:50"
+        },
+        "arrival_airport": {
+         "airport_name": "Hamad International Airport",
+         "airport_code": "DOH",
+         "time": "2026-11-23 18:05"
+        },
+        "duration": {
+         "raw": 255,
+         "text": "4 hr 15 min"
+        },
+        "airline": "Qatar Airways",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/QR.png",
+        "flight_number": "QR 240",
+        "aircraft": "Boeing 777",
+        "seat": "Average legroom",
+        "legroom": "31 in",
+        "extensions": [
+         "Average legroom (31 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 232 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Hamad International Airport",
+         "airport_code": "DOH",
+         "time": "2026-11-23 18:55"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-23 21:15"
+        },
+        "duration": {
+         "raw": 80,
+         "text": "1 hr 20 min"
+        },
+        "airline": "Qatar Airways",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/QR.png",
+        "flight_number": "QR 1018",
+        "aircraft": "Airbus A350",
+        "seat": "Average legroom",
+        "legroom": "31 in",
+        "extensions": [
+         "Average legroom (31 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 52 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "DOH",
+        "airport_name": "Hamad International Airport",
+        "duration_label": "0 hr 50 min",
+        "duration": 50,
+        "city": "Doha"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 8,
+       "CO2e": 284000,
+       "typical_for_this_route": 264000,
+       "higher": 20000
+      },
+      "price": 511,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/QR.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3hSVWpJME1IeFJVakV3TVRnYUN3anFqZ01RQWhvRFZWTkVPQjF3Nm80RCJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJET0giLCJRUiIsIjI0MCJdLFsiRE9IIiwiMjAyNi0xMS0yMyIsIkRYQiIsIlFSIiwiMTAxOCJdXV1d"
+     },
+     {
+      "departure_time": "23-11-2026 08:10 PM",
+      "arrival_time": "24-11-2026 03:50 AM",
+      "duration": {
+       "raw": 400,
+       "text": "6 hr 40 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 20:10"
+        },
+        "arrival_airport": {
+         "airport_name": "Hamad International Airport",
+         "airport_code": "DOH",
+         "time": "2026-11-24 00:25"
+        },
+        "duration": {
+         "raw": 255,
+         "text": "4 hr 15 min"
+        },
+        "airline": "Qatar Airways",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/QR.png",
+        "flight_number": "QR 246",
+        "aircraft": "Boeing 777",
+        "seat": "Average legroom",
+        "legroom": "31 in",
+        "extensions": [
+         "Average legroom (31 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 234 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Hamad International Airport",
+         "airport_code": "DOH",
+         "time": "2026-11-24 01:30"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 03:50"
+        },
+        "duration": {
+         "raw": 80,
+         "text": "1 hr 20 min"
+        },
+        "airline": "Qatar Airways",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/QR.png",
+        "flight_number": "QR 1002",
+        "aircraft": "Boeing 777",
+        "seat": "Above average legroom",
+        "legroom": "32 in",
+        "extensions": [
+         "Above average legroom (32 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 61 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "DOH",
+        "airport_name": "Hamad International Airport",
+        "duration_label": "1 hr 5 min",
+        "duration": 65,
+        "city": "Doha"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 11,
+       "CO2e": 294000,
+       "typical_for_this_route": 264000,
+       "higher": 30000
+      },
+      "price": 511,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/QR.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3hSVWpJME5ueFJVakV3TURJYUN3anFqZ01RQWhvRFZWTkVPQjF3Nm80RCJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJET0giLCJRUiIsIjI0NiJdLFsiRE9IIiwiMjAyNi0xMS0yNCIsIkRYQiIsIlFSIiwiMTAwMiJdXV1d"
+     },
+     {
+      "departure_time": "23-11-2026 06:50 PM",
+      "arrival_time": "24-11-2026 03:45 AM",
+      "duration": {
+       "raw": 475,
+       "text": "7 hr 55 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 18:50"
+        },
+        "arrival_airport": {
+         "airport_name": "Cairo International Airport",
+         "airport_code": "CAI",
+         "time": "2026-11-23 20:10"
+        },
+        "duration": {
+         "raw": 140,
+         "text": "2 hr 20 min"
+        },
+        "airline": "EgyptAir",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+        "flight_number": "MS 736",
+        "aircraft": "Boeing 737",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Emissions estimate: 128 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Cairo International Airport",
+         "airport_code": "CAI",
+         "time": "2026-11-23 22:20"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 03:45"
+        },
+        "duration": {
+         "raw": 205,
+         "text": "3 hr 25 min"
+        },
+        "airline": "EgyptAir",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+        "flight_number": "MS 910",
+        "aircraft": "Boeing 737MAX 8 Passenger",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat USB outlets",
+         "Stream media to your device",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 183 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "CAI",
+        "airport_name": "Cairo International Airport",
+        "duration_label": "2 hr 10 min",
+        "duration": 130,
+        "city": "Cairo"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 18,
+       "CO2e": 312000,
+       "typical_for_this_route": 264000,
+       "higher": 48000
+      },
+      "price": 518,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3ROVXpjek5ueE5Vemt4TUJvTENLNlVBeEFDR2dOVlUwUTRIWEN1bEFNPSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJDQUkiLCJNUyIsIjczNiJdLFsiQ0FJIiwiMjAyNi0xMS0yMyIsIkRYQiIsIk1TIiwiOTEwIl1dXV0="
+     },
+     {
+      "departure_time": "23-11-2026 03:50 AM",
+      "arrival_time": "23-11-2026 03:00 PM",
+      "duration": {
+       "raw": 610,
+       "text": "10 hr 10 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 03:50"
+        },
+        "arrival_airport": {
+         "airport_name": "Cairo International Airport",
+         "airport_code": "CAI",
+         "time": "2026-11-23 05:10"
+        },
+        "duration": {
+         "raw": 140,
+         "text": "2 hr 20 min"
+        },
+        "airline": "EgyptAir",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+        "flight_number": "MS 746",
+        "aircraft": "Airbus A320neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 119 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Cairo International Airport",
+         "airport_code": "CAI",
+         "time": "2026-11-23 09:35"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-23 15:00"
+        },
+        "duration": {
+         "raw": 205,
+         "text": "3 hr 25 min"
+        },
+        "airline": "EgyptAir",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+        "flight_number": "MS 912",
+        "aircraft": "Airbus A350",
+        "seat": "Average legroom",
+        "legroom": "31 in",
+        "extensions": [
+         "Average legroom (31 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 164 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "CAI",
+        "airport_name": "Cairo International Airport",
+        "duration_label": "4 hr 25 min",
+        "duration": 265,
+        "city": "Cairo"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 7,
+       "CO2e": 282000,
+       "typical_for_this_route": 264000,
+       "higher": 18000
+      },
+      "price": 520,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3ROVXpjME5ueE5Vemt4TWhvTENQYVZBeEFDR2dOVlUwUTRIWEQybFFNPSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJDQUkiLCJNUyIsIjc0NiJdLFsiQ0FJIiwiMjAyNi0xMS0yMyIsIkRYQiIsIk1TIiwiOTEyIl1dXV0="
+     },
+     {
+      "departure_time": "23-11-2026 02:00 PM",
+      "arrival_time": "24-11-2026 03:45 AM",
+      "duration": {
+       "raw": 765,
+       "text": "12 hr 45 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 14:00"
+        },
+        "arrival_airport": {
+         "airport_name": "Cairo International Airport",
+         "airport_code": "CAI",
+         "time": "2026-11-23 15:20"
+        },
+        "duration": {
+         "raw": 140,
+         "text": "2 hr 20 min"
+        },
+        "airline": "EgyptAir",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+        "flight_number": "MS 738",
+        "aircraft": "Airbus A320neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 119 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Cairo International Airport",
+         "airport_code": "CAI",
+         "time": "2026-11-23 22:20"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 03:45"
+        },
+        "duration": {
+         "raw": 205,
+         "text": "3 hr 25 min"
+        },
+        "airline": "EgyptAir",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+        "flight_number": "MS 910",
+        "aircraft": "Boeing 737MAX 8 Passenger",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat USB outlets",
+         "Stream media to your device",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 183 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "CAI",
+        "airport_name": "Cairo International Airport",
+        "duration_label": "7 hr 0 min",
+        "duration": 420,
+        "city": "Cairo"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 14,
+       "CO2e": 302000,
+       "typical_for_this_route": 264000,
+       "higher": 38000
+      },
+      "price": 520,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/MS.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3ROVXpjek9IeE5Vemt4TUJvTENQYVZBeEFDR2dOVlUwUTRIWEQybFFNPSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJDQUkiLCJNUyIsIjczOCJdLFsiQ0FJIiwiMjAyNi0xMS0yMyIsIkRYQiIsIk1TIiwiOTEwIl1dXV0="
+     },
+     {
+      "departure_time": "23-11-2026 07:35 PM",
+      "arrival_time": "24-11-2026 01:10 AM",
+      "duration": {
+       "raw": 275,
+       "text": "4 hr 35 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 19:35"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 01:10"
+        },
+        "duration": {
+         "raw": 275,
+         "text": "4 hr 35 min"
+        },
+        "airline": "Turkish Airlines",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+        "flight_number": "TK 760",
+        "aircraft": "Airbus A350",
+        "seat": "Average legroom",
+        "legroom": "31 in",
+        "extensions": [
+         "Average legroom (31 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 214 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": null,
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": -19,
+       "CO2e": 214000,
+       "typical_for_this_route": 264000,
+       "higher": -50000
+      },
+      "price": 571,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ1ZVU3pjMk1Cb0xDT2E5QXhBQ0dnTlZVMFE0SFhEbXZRTT0iXV0sWyIyMDI2LTExLTIzIiwiL20vMDk5NDltIiwiRFhCIixbWyJJU1QiLCIyMDI2LTExLTIzIiwiRFhCIiwiVEsiLCI3NjAiXV1dXQ=="
+     },
+     {
+      "departure_time": "23-11-2026 09:45 PM",
+      "arrival_time": "24-11-2026 03:10 AM",
+      "duration": {
+       "raw": 265,
+       "text": "4 hr 25 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 21:45"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 03:10"
+        },
+        "duration": {
+         "raw": 265,
+         "text": "4 hr 25 min"
+        },
+        "airline": "Turkish Airlines",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+        "flight_number": "TK 758",
+        "aircraft": "Airbus A321neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 241 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": null,
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": -9,
+       "CO2e": 241000,
+       "typical_for_this_route": 264000,
+       "higher": -23000
+      },
+      "price": 571,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ1ZVU3pjMU9Cb0xDT2E5QXhBQ0dnTlZVMFE0SFhEbXZRTT0iXV0sWyIyMDI2LTExLTIzIiwiL20vMDk5NDltIiwiRFhCIixbWyJJU1QiLCIyMDI2LTExLTIzIiwiRFhCIiwiVEsiLCI3NTgiXV1dXQ=="
+     },
+     {
+      "departure_time": "23-11-2026 01:30 AM",
+      "arrival_time": "23-11-2026 06:55 AM",
+      "duration": {
+       "raw": 265,
+       "text": "4 hr 25 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 01:30"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-23 06:55"
+        },
+        "duration": {
+         "raw": 265,
+         "text": "4 hr 25 min"
+        },
+        "airline": "Turkish Airlines",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+        "flight_number": "TK 762",
+        "aircraft": "Boeing 787",
+        "seat": "Average legroom",
+        "legroom": "31 in",
+        "extensions": [
+         "Average legroom (31 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 196 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": null,
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": -26,
+       "CO2e": 196000,
+       "typical_for_this_route": 264000,
+       "higher": -68000
+      },
+      "price": 576,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ1ZVU3pjMk1ob0xDTmpCQXhBQ0dnTlZVMFE0SFhEWXdRTT0iXV0sWyIyMDI2LTExLTIzIiwiL20vMDk5NDltIiwiRFhCIixbWyJJU1QiLCIyMDI2LTExLTIzIiwiRFhCIiwiVEsiLCI3NjIiXV1dXQ=="
+     },
+     {
+      "departure_time": "23-11-2026 07:55 AM",
+      "arrival_time": "23-11-2026 01:30 PM",
+      "duration": {
+       "raw": 275,
+       "text": "4 hr 35 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 07:55"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-23 13:30"
+        },
+        "duration": {
+         "raw": 275,
+         "text": "4 hr 35 min"
+        },
+        "airline": "Turkish Airlines",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+        "flight_number": "TK 764",
+        "aircraft": "Airbus A321neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 241 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": null,
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": -9,
+       "CO2e": 241000,
+       "typical_for_this_route": 264000,
+       "higher": -23000
+      },
+      "price": 576,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ1ZVU3pjMk5Cb0xDTmpCQXhBQ0dnTlZVMFE0SFhEWXdRTT0iXV0sWyIyMDI2LTExLTIzIiwiL20vMDk5NDltIiwiRFhCIixbWyJJU1QiLCIyMDI2LTExLTIzIiwiRFhCIiwiVEsiLCI3NjQiXV1dXQ=="
+     },
+     {
+      "departure_time": "23-11-2026 08:05 PM",
+      "arrival_time": "24-11-2026 01:20 AM",
+      "duration": {
+       "raw": 255,
+       "text": "4 hr 15 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 20:05"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 01:20"
+        },
+        "duration": {
+         "raw": 255,
+         "text": "4 hr 15 min"
+        },
+        "airline": "Emirates",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/EK.png",
+        "flight_number": "EK 122",
+        "aircraft": "Boeing 777",
+        "seat": "Above average legroom",
+        "legroom": "32 in",
+        "extensions": [
+         "Above average legroom (32 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 235 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": null,
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": -11,
+       "CO2e": 235000,
+       "typical_for_this_route": 264000,
+       "higher": -29000
+      },
+      "price": 596,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/EK.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ1ZGU3pFeU1ob0xDTHpSQXhBQ0dnTlZVMFE0SFhDODBRTT0iXV0sWyIyMDI2LTExLTIzIiwiL20vMDk5NDltIiwiRFhCIixbWyJJU1QiLCIyMDI2LTExLTIzIiwiRFhCIiwiRUsiLCIxMjIiXV1dXQ=="
+     },
+     {
+      "departure_time": "23-11-2026 11:40 PM",
+      "arrival_time": "24-11-2026 04:55 AM",
+      "duration": {
+       "raw": 255,
+       "text": "4 hr 15 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 23:40"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 04:55"
+        },
+        "duration": {
+         "raw": 255,
+         "text": "4 hr 15 min"
+        },
+        "airline": "Emirates",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/EK.png",
+        "flight_number": "EK 118",
+        "aircraft": "Airbus A350",
+        "seat": "Above average legroom",
+        "legroom": "32 in",
+        "extensions": [
+         "Above average legroom (32 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 212 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": null,
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": -20,
+       "CO2e": 212000,
+       "typical_for_this_route": 264000,
+       "higher": -52000
+      },
+      "price": 596,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/EK.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ1ZGU3pFeE9Cb0xDTHpSQXhBQ0dnTlZVMFE0SFhDODBRTT0iXV0sWyIyMDI2LTExLTIzIiwiL20vMDk5NDltIiwiRFhCIixbWyJJU1QiLCIyMDI2LTExLTIzIiwiRFhCIiwiRUsiLCIxMTgiXV1dXQ=="
+     },
+     {
+      "departure_time": "23-11-2026 03:25 PM",
+      "arrival_time": "24-11-2026 02:25 AM",
+      "duration": {
+       "raw": 600,
+       "text": "10 hr 0 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 15:25"
+        },
+        "arrival_airport": {
+         "airport_name": "King Abdulaziz International Airport",
+         "airport_code": "JED",
+         "time": "2026-11-23 19:10"
+        },
+        "duration": {
+         "raw": 225,
+         "text": "3 hr 45 min"
+        },
+        "airline": "Saudia",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+        "flight_number": "SV 256",
+        "aircraft": "Airbus A330",
+        "seat": "Above average legroom",
+        "legroom": "32 in",
+        "extensions": [
+         "Above average legroom (32 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 164 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "King Abdulaziz International Airport",
+         "airport_code": "JED",
+         "time": "2026-11-23 22:40"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 02:25"
+        },
+        "duration": {
+         "raw": 165,
+         "text": "2 hr 45 min"
+        },
+        "airline": "Saudia",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+        "flight_number": "SV 598",
+        "aircraft": "Airbus A320",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat power & USB outlets",
+         "Stream media to your device",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 189 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "JED",
+        "airport_name": "King Abdulaziz International Airport",
+        "duration_label": "3 hr 30 min",
+        "duration": 210,
+        "city": "Jeddah"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 34,
+       "CO2e": 354000,
+       "typical_for_this_route": 264000,
+       "higher": 90000
+      },
+      "price": 649,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3RUVmpJMU5ueFRWalU1T0JvTENOLzZBeEFDR2dOVlUwUTRIWERmK2dNPSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJKRUQiLCJTViIsIjI1NiJdLFsiSkVEIiwiMjAyNi0xMS0yMyIsIkRYQiIsIlNWIiwiNTk4Il1dXV0="
+     },
+     {
+      "departure_time": "23-11-2026 06:25 PM",
+      "arrival_time": "24-11-2026 04:55 AM",
+      "duration": {
+       "raw": 570,
+       "text": "9 hr 30 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 18:25"
+        },
+        "arrival_airport": {
+         "airport_name": "King Abdulaziz International Airport",
+         "airport_code": "JED",
+         "time": "2026-11-23 22:15"
+        },
+        "duration": {
+         "raw": 230,
+         "text": "3 hr 50 min"
+        },
+        "airline": "Saudia",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+        "flight_number": "SV 278",
+        "aircraft": "Airbus A321",
+        "seat": "Average legroom",
+        "legroom": "31 in",
+        "extensions": [
+         "Average legroom (31 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 232 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "King Abdulaziz International Airport",
+         "airport_code": "JED",
+         "time": "2026-11-24 01:10"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 04:55"
+        },
+        "duration": {
+         "raw": 165,
+         "text": "2 hr 45 min"
+        },
+        "airline": "Saudia",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+        "flight_number": "SV 590",
+        "aircraft": "Airbus A321",
+        "seat": "Above average legroom",
+        "legroom": "32 in",
+        "extensions": [
+         "Above average legroom (32 in)",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 203 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "JED",
+        "airport_name": "King Abdulaziz International Airport",
+        "duration_label": "2 hr 55 min",
+        "duration": 175,
+        "city": "Jeddah"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 64,
+       "CO2e": 434000,
+       "typical_for_this_route": 264000,
+       "higher": 170000
+      },
+      "price": 649,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3RUVmpJM09IeFRWalU1TUJvTENOLzZBeEFDR2dOVlUwUTRIWERmK2dNPSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJKRUQiLCJTViIsIjI3OCJdLFsiSkVEIiwiMjAyNi0xMS0yNCIsIkRYQiIsIlNWIiwiNTkwIl1dXV0="
+     },
+     {
+      "departure_time": "23-11-2026 10:25 PM",
+      "arrival_time": "24-11-2026 09:45 AM",
+      "duration": {
+       "raw": 620,
+       "text": "10 hr 20 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 22:25"
+        },
+        "arrival_airport": {
+         "airport_name": "King Abdulaziz International Airport",
+         "airport_code": "JED",
+         "time": "2026-11-24 02:15"
+        },
+        "duration": {
+         "raw": 230,
+         "text": "3 hr 50 min"
+        },
+        "airline": "Saudia",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+        "flight_number": "SV 260",
+        "aircraft": "Airbus A321",
+        "seat": "Average legroom",
+        "legroom": "31 in",
+        "extensions": [
+         "Average legroom (31 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 232 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "King Abdulaziz International Airport",
+         "airport_code": "JED",
+         "time": "2026-11-24 06:00"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 09:45"
+        },
+        "duration": {
+         "raw": 165,
+         "text": "2 hr 45 min"
+        },
+        "airline": "Saudia",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+        "flight_number": "SV 566",
+        "aircraft": "Airbus A321",
+        "seat": "Average legroom",
+        "legroom": "31 in",
+        "extensions": [
+         "Average legroom (31 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 179 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "JED",
+        "airport_name": "King Abdulaziz International Airport",
+        "duration_label": "3 hr 45 min",
+        "duration": 225,
+        "city": "Jeddah"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 56,
+       "CO2e": 411000,
+       "typical_for_this_route": 264000,
+       "higher": 147000
+      },
+      "price": 649,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3RUVmpJMk1IeFRWalUyTmhvTENOLzZBeEFDR2dOVlUwUTRIWERmK2dNPSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJKRUQiLCJTViIsIjI2MCJdLFsiSkVEIiwiMjAyNi0xMS0yNCIsIkRYQiIsIlNWIiwiNTY2Il1dXV0="
+     },
+     {
+      "departure_time": "23-11-2026 11:55 AM",
+      "arrival_time": "23-11-2026 09:30 PM",
+      "duration": {
+       "raw": 515,
+       "text": "8 hr 35 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 11:55"
+        },
+        "arrival_airport": {
+         "airport_name": "King Abdulaziz International Airport",
+         "airport_code": "JED",
+         "time": "2026-11-23 15:45"
+        },
+        "duration": {
+         "raw": 230,
+         "text": "3 hr 50 min"
+        },
+        "airline": "Saudia",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+        "flight_number": "SV 266",
+        "aircraft": "Airbus A321",
+        "seat": "Average legroom",
+        "legroom": "31 in",
+        "extensions": [
+         "Average legroom (31 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 232 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "King Abdulaziz International Airport",
+         "airport_code": "JED",
+         "time": "2026-11-23 17:45"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-23 21:30"
+        },
+        "duration": {
+         "raw": 165,
+         "text": "2 hr 45 min"
+        },
+        "airline": "Saudia",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+        "flight_number": "SV 594",
+        "aircraft": "Airbus A321",
+        "seat": "Average legroom",
+        "legroom": "31 in",
+        "extensions": [
+         "Average legroom (31 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 179 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "JED",
+        "airport_name": "King Abdulaziz International Airport",
+        "duration_label": "2 hr 0 min",
+        "duration": 120,
+        "city": "Jeddah"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 56,
+       "CO2e": 411000,
+       "typical_for_this_route": 264000,
+       "higher": 147000
+      },
+      "price": 702,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/SV.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3RUVmpJMk5ueFRWalU1TkJvTENJT2tCQkFDR2dOVlUwUTRIWENEcEFRPSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJKRUQiLCJTViIsIjI2NiJdLFsiSkVEIiwiMjAyNi0xMS0yMyIsIkRYQiIsIlNWIiwiNTk0Il1dXV0="
+     },
+     {
+      "departure_time": "23-11-2026 02:25 PM",
+      "arrival_time": "24-11-2026 12:25 AM",
+      "duration": {
+       "raw": 540,
+       "text": "9 hr 0 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 14:25"
+        },
+        "arrival_airport": {
+         "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+         "airport_code": "ATH",
+         "time": "2026-11-23 14:55"
+        },
+        "duration": {
+         "raw": 90,
+         "text": "1 hr 30 min"
+        },
+        "airline": "Turkish Airlines",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+        "flight_number": "TK 1849",
+        "aircraft": "Airbus A321neo",
+        "seat": "Average legroom",
+        "legroom": "30 in",
+        "extensions": [
+         "Average legroom (30 in)",
+         "In-seat USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 65 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+         "airport_code": "ATH",
+         "time": "2026-11-23 18:00"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-24 00:25"
+        },
+        "duration": {
+         "raw": 265,
+         "text": "4 hr 25 min"
+        },
+        "airline": "Emirates",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/EK.png",
+        "flight_number": "EK 210",
+        "aircraft": "Boeing 777",
+        "seat": "Above average legroom",
+        "legroom": "32 in",
+        "extensions": [
+         "Above average legroom (32 in)",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 271 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "ATH",
+        "airport_name": "Athens International Airport \"Eleftherios Venizelos\"",
+        "duration_label": "3 hr 5 min",
+        "duration": 185,
+        "city": "Athens"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 28,
+       "CO2e": 337000,
+       "typical_for_this_route": 264000,
+       "higher": 73000
+      },
+      "price": 822,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3hVU3pFNE5EbDhSVXN5TVRBYUN3anhnUVVRQWhvRFZWTkVPQjF3OFlFRiJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJBVEgiLCJUSyIsIjE4NDkiXSxbIkFUSCIsIjIwMjYtMTEtMjMiLCJEWEIiLCJFSyIsIjIxMCJdXV1d"
+     },
+     {
+      "departure_time": "23-11-2026 01:10 PM",
+      "arrival_time": "23-11-2026 09:25 PM",
+      "duration": {
+       "raw": 435,
+       "text": "7 hr 15 min"
+      },
+      "flights": [
+       {
+        "departure_airport": {
+         "airport_name": "Istanbul Airport",
+         "airport_code": "IST",
+         "time": "2026-11-23 13:10"
+        },
+        "arrival_airport": {
+         "airport_name": "Beirut-Rafic Hariri International Airport",
+         "airport_code": "BEY",
+         "time": "2026-11-23 14:05"
+        },
+        "duration": {
+         "raw": 115,
+         "text": "1 hr 55 min"
+        },
+        "airline": "Turkish Airlines",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/TK.png",
+        "flight_number": "TK 824",
+        "aircraft": "Airbus A321",
+        "seat": "Extra reclining seat",
+        "legroom": "N/A",
+        "extensions": [
+         "Extra reclining seat",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 178 kg CO2e"
+        ]
+       },
+       {
+        "departure_airport": {
+         "airport_name": "Beirut-Rafic Hariri International Airport",
+         "airport_code": "BEY",
+         "time": "2026-11-23 16:05"
+        },
+        "arrival_airport": {
+         "airport_name": "Dubai International Airport",
+         "airport_code": "DXB",
+         "time": "2026-11-23 21:25"
+        },
+        "duration": {
+         "raw": 200,
+         "text": "3 hr 20 min"
+        },
+        "airline": "MEA",
+        "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/ME.png",
+        "flight_number": "ME 428",
+        "aircraft": "Airbus A321neo",
+        "seat": "Extra reclining seat",
+        "legroom": "N/A",
+        "extensions": [
+         "Extra reclining seat",
+         "In-seat power & USB outlets",
+         "On-demand video",
+         "Free Wi-Fi",
+         "Wi-Fi for a fee",
+         "Emissions estimate: 322 kg CO2e"
+        ]
+       }
+      ],
+      "delay": {
+       "values": false,
+       "text": 0
+      },
+      "self_transfer": false,
+      "layovers": [
+       {
+        "airport_code": "BEY",
+        "airport_name": "Beirut-Rafic Hariri International Airport",
+        "duration_label": "2 hr 0 min",
+        "duration": 120,
+        "city": "Beirut"
+       }
+      ],
+      "bags": {
+       "carry_on": 1,
+       "checked": null
+      },
+      "carbon_emissions": {
+       "difference_percent": 89,
+       "CO2e": 500000,
+       "typical_for_this_route": 264000,
+       "higher": 236000
+      },
+      "price": 1238,
+      "stops": 0,
+      "airline_logo": "https://www.gstatic.com/flights/airline_logos/70px/multi.png",
+      "booking_token": "W1syLDEsWyIxIiwwLDAsMF0sWyJDalJJTlMxdlpsQnJTRzF4ZW10QlJIQmhhbWRDUnkwdExTMHRMUzB0ZG5kaVpta3lNVUZCUVVGQlIzSmlSV3hWVDA5cU9FdEJFZ3RVU3pneU5IeE5SVFF5T0JvTENOWEdCeEFDR2dOVlUwUTRIWERWeGdjPSJdXSxbIjIwMjYtMTEtMjMiLCIvbS8wOTk0OW0iLCJEWEIiLFtbIklTVCIsIjIwMjYtMTEtMjMiLCJCRVkiLCJUSyIsIjgyNCJdLFsiQkVZIiwiMjAyNi0xMS0yMyIsIkRYQiIsIk1FIiwiNDI4Il1dXV0="
+     }
+    ]
+   },
+   "priceHistory": {
+    "summary": {
+     "current": 148,
+     "low": [
+      {
+       "operation": "<",
+       "value": 105
+      }
+     ],
+     "typical": [
+      {
+       "operation": ">=",
+       "value": 105
+      },
+      {
+       "operation": "&&",
+       "value": null
+      },
+      {
+       "operation": "<=",
+       "value": 170
+      }
+     ],
+     "high": [
+      {
+       "operation": "<",
+       "value": 170
+      }
+     ]
+    },
+    "history": [
+     {
+      "time": 1787432400000,
+      "value": 133
+     },
+     {
+      "time": 1787518800000,
+      "value": 133
+     },
+     {
+      "time": 1787605200000,
+      "value": 133
+     },
+     {
+      "time": 1787691600000,
+      "value": 133
+     },
+     {
+      "time": 1787778000000,
+      "value": 133
+     },
+     {
+      "time": 1787864400000,
+      "value": 133
+     },
+     {
+      "time": 1787950800000,
+      "value": 132
+     },
+     {
+      "time": 1788037200000,
+      "value": 132
+     },
+     {
+      "time": 1788123600000,
+      "value": 133
+     },
+     {
+      "time": 1788210000000,
+      "value": 132
+     },
+     {
+      "time": 1788296400000,
+      "value": 133
+     },
+     {
+      "time": 1788382800000,
+      "value": 133
+     },
+     {
+      "time": 1788469200000,
+      "value": 133
+     },
+     {
+      "time": 1788555600000,
+      "value": 132
+     },
+     {
+      "time": 1788642000000,
+      "value": 132
+     },
+     {
+      "time": 1788728400000,
+      "value": 132
+     },
+     {
+      "time": 1788814800000,
+      "value": 132
+     },
+     {
+      "time": 1788901200000,
+      "value": 132
+     },
+     {
+      "time": 1788987600000,
+      "value": 133
+     },
+     {
+      "time": 1789074000000,
+      "value": 133
+     },
+     {
+      "time": 1789160400000,
+      "value": 132
+     },
+     {
+      "time": 1789246800000,
+      "value": 133
+     },
+     {
+      "time": 1789333200000,
+      "value": 134
+     },
+     {
+      "time": 1789419600000,
+      "value": 132
+     },
+     {
+      "time": 1789506000000,
+      "value": 122
+     },
+     {
+      "time": 1789592400000,
+      "value": 122
+     },
+     {
+      "time": 1789678800000,
+      "value": 122
+     },
+     {
+      "time": 1789765200000,
+      "value": 121
+     },
+     {
+      "time": 1789851600000,
+      "value": 121
+     },
+     {
+      "time": 1789938000000,
+      "value": 121
+     },
+     {
+      "time": 1790024400000,
+      "value": 132
+     },
+     {
+      "time": 1790110800000,
+      "value": 132
+     },
+     {
+      "time": 1790197200000,
+      "value": 132
+     },
+     {
+      "time": 1790283600000,
+      "value": 132
+     },
+     {
+      "time": 1790370000000,
+      "value": 132
+     },
+     {
+      "time": 1790456400000,
+      "value": 132
+     },
+     {
+      "time": 1790542800000,
+      "value": 132
+     },
+     {
+      "time": 1790629200000,
+      "value": 132
+     },
+     {
+      "time": 1790715600000,
+      "value": 132
+     },
+     {
+      "time": 1790802000000,
+      "value": 132
+     },
+     {
+      "time": 1790888400000,
+      "value": 132
+     },
+     {
+      "time": 1790974800000,
+      "value": 132
+     },
+     {
+      "time": 1791061200000,
+      "value": 132
+     },
+     {
+      "time": 1791147600000,
+      "value": 132
+     },
+     {
+      "time": 1791234000000,
+      "value": 132
+     },
+     {
+      "time": 1791320400000,
+      "value": 132
+     },
+     {
+      "time": 1791406800000,
+      "value": 132
+     },
+     {
+      "time": 1791493200000,
+      "value": 132
+     },
+     {
+      "time": 1791579600000,
+      "value": 143
+     },
+     {
+      "time": 1791666000000,
+      "value": 143
+     },
+     {
+      "time": 1791752400000,
+      "value": 143
+     },
+     {
+      "time": 1791838800000,
+      "value": 143
+     },
+     {
+      "time": 1791925200000,
+      "value": 143
+     },
+     {
+      "time": 1792011600000,
+      "value": 143
+     },
+     {
+      "time": 1792098000000,
+      "value": 143
+     },
+     {
+      "time": 1792184400000,
+      "value": 143
+     },
+     {
+      "time": 1792270800000,
+      "value": 143
+     },
+     {
+      "time": 1792357200000,
+      "value": 139
+     },
+     {
+      "time": 1792443600000,
+      "value": 139
+     },
+     {
+      "time": 1792530000000,
+      "value": 139
+     },
+     {
+      "time": 1792616400000,
+      "value": 139
+     },
+     {
+      "time": 1792702800000,
+      "value": 148
+     }
+    ]
+   }
+  }
+ }
+}

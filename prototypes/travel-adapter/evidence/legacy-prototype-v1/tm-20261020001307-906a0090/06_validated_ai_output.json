@@ -1,0 +1,116 @@
+{
+  "status": "success",
+  "itinerary": [
+    {
+      "day_number": 1,
+      "date": "2026-11-19",
+      "day_type": "arrival",
+      "activities": [
+        {
+          "time_of_day": "morning",
+          "title": "Arrive in Cairo and check into hotel",
+          "description": "Land in Cairo, transfer to Cairo Downtown Boutiques and complete check‑in.",
+          "location": "Cairo Downtown Boutiques",
+          "cost_status": "unknown",
+          "estimated_cost_usd_per_person": null
+        }
+      ],
+      "empty_day_reason": null
+    },
+    {
+      "day_number": 2,
+      "date": "2026-11-20",
+      "day_type": "full_day",
+      "activities": [
+        {
+          "time_of_day": "morning",
+          "title": "Visit Egyptian Museum",
+          "description": "Explore the extensive collection of ancient Egyptian artifacts at the Egyptian Museum in Tahrir Square.",
+          "location": "Egyptian Museum, Cairo",
+          "cost_status": "estimate",
+          "estimated_cost_usd_per_person": 15.0
+        },
+        {
+          "time_of_day": "afternoon",
+          "title": "Explore Khan El Khalili Bazaar",
+          "description": "Wander through the historic market, browse souvenirs and enjoy the vibrant atmosphere.",
+          "location": "Khan El Khalili, Cairo",
+          "cost_status": "unknown",
+          "estimated_cost_usd_per_person": null
+        },
+        {
+          "time_of_day": "evening",
+          "title": "Dinner at a local restaurant",
+          "description": "Savor traditional Egyptian dishes such as koshari or grilled kofta at a well‑reviewed eatery.",
+          "location": "Downtown Cairo",
+          "cost_status": "estimate",
+          "estimated_cost_usd_per_person": 30.0
+        }
+      ],
+      "empty_day_reason": null
+    },
+    {
+      "day_number": 3,
+      "date": "2026-11-21",
+      "day_type": "full_day",
+      "activities": [
+        {
+          "time_of_day": "morning",
+          "title": "Visit Giza Pyramids and Sphinx",
+          "description": "Tour the iconic Great Pyramid, the Sphinx, and the surrounding archaeological site.",
+          "location": "Giza Plateau",
+          "cost_status": "estimate",
+          "estimated_cost_usd_per_person": 20.0
+        },
+        {
+          "time_of_day": "afternoon",
+          "title": "Lunch near the pyramids",
+          "description": "Enjoy a relaxed meal with views of the pyramids at a nearby restaurant.",
+          "location": "Giza Plateau",
+          "cost_status": "estimate",
+          "estimated_cost_usd_per_person": 15.0
+        },
+        {
+          "time_of_day": "evening",
+          "title": "Nile dinner cruise",
+          "description": "Experience a scenic cruise on the Nile with live entertainment and a multi‑course dinner.",
+          "location": "Nile River, Cairo",
+          "cost_status": "estimate",
+          "estimated_cost_usd_per_person": 50.0
+        }
+      ],
+      "empty_day_reason": null
+    },
+    {
+      "day_number": 4,
+      "date": "2026-11-22",
+      "day_type": "departure",
+      "activities": [],
+      "empty_day_reason": "Travel to airport for departure flight"
+    }
+  ],
+  "ancillary_estimates": {
+    "activities": {
+      "status": "estimate",
+      "amount_usd": 260.0,
+      "basis": "Sum of AI per-person activity estimates x 2 adult(s)",
+      "includes_unknown_items": true,
+      "unknown_items": 2
+    },
+    "food": {
+      "status": "unknown",
+      "amount_usd": null,
+      "policy_id": null,
+      "reason": "no_approved_estimation_policy"
+    },
+    "local_transport": {
+      "status": "unknown",
+      "amount_usd": null,
+      "policy_id": null,
+      "reason": "no_approved_estimation_policy"
+    },
+    "authority": "estimate_only (never part of authoritative totals)"
+  },
+  "price_explanation": "The selected hotel, Cairo Downtown Boutiques, costs $248.46 in total (base $246.0 plus $2.46 taxes). The overall trip budget is $1500.0. Flight prices are unavailable, so the flight subtotal is $null (unavailable) and the combined flight‑hotel subtotal is also unavailable. The remaining budget after accounting for the hotel alone is $1251.54. Please note that flight prices are only indicative and the subtotal does not represent the complete trip cost.",
+  "error": null
+}

@@ -1,0 +1,11 @@
+{
+  "status": "error",
+  "itinerary": null,
+  "ancillary_estimates": null,
+  "budget_activities": null,
+  "price_explanation": null,
+  "error": {
+    "code": "invalid_output",
+    "message": "The AI output failed validation and was not published."
+  }
+}

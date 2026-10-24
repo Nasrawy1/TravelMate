@@ -1,0 +1,150 @@
+{
+  "status": "ok",
+  "itinerary": [
+    {
+      "date": "2026-11-20",
+      "empty_day_reason": "Travel day – arrival in Cairo",
+      "activities": []
+    },
+    {
+      "date": "2026-11-21",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Visit the Egyptian Museum",
+          "area": "Tahrir Square",
+          "description": "Explore ancient Egyptian artifacts, including the Tutankhamun collection.",
+          "cost": {
+            "amount_usd": null,
+            "kind": "unknown",
+            "coverage": null
+          }
+        },
+        {
+          "order": 2,
+          "name": "Stroll along the Nile Corniche",
+          "area": "Cairo Corniche",
+          "description": "Enjoy a leisurely walk with views of the river and city skyline.",
+          "cost": {
+            "amount_usd": null,
+            "kind": "unknown",
+            "coverage": null
+          }
+        },
+        {
+          "order": 3,
+          "name": "Shop at Khan El Khalili Bazaar",
+          "area": "Khan El Khalili",
+          "description": "Browse traditional crafts, spices, and souvenirs in the historic market.",
+          "cost": {
+            "amount_usd": null,
+            "kind": "unknown",
+            "coverage": null
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Visit the Giza Pyramid Complex",
+          "area": "Giza Plateau",
+          "description": "See the Great Pyramid, the Sphinx, and learn about ancient engineering.",
+          "cost": {
+            "amount_usd": null,
+            "kind": "unknown",
+            "coverage": null
+          }
+        },
+        {
+          "order": 2,
+          "name": "Relax at Al-Azhar Park",
+          "area": "Al-Azhar Park",
+          "description": "Enjoy green spaces, fountains, and panoramic city views.",
+          "cost": {
+            "amount_usd": null,
+            "kind": "unknown",
+            "coverage": null
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-11-23",
+      "empty_day_reason": "Travel day – departure from Cairo",
+      "activities": []
+    }
+  ],
+  "ancillary_estimates": {
+    "food": {
+      "amount_usd": null,
+      "kind": "unknown",
+      "basis": "No approved estimation policy.",
+      "policy_id": null
+    },
+    "local_transport": {
+      "amount_usd": null,
+      "kind": "unknown",
+      "basis": "No approved estimation policy.",
+      "policy_id": null
+    }
+  },
+  "budget_activities": [
+    {
+      "label": "Visit the Egyptian Museum",
+      "kind": "unknown",
+      "amount_usd": null,
+      "activity_ref": {
+        "date": "2026-11-21",
+        "order": 1
+      },
+      "basis": "AI could not estimate this cost."
+    },
+    {
+      "label": "Stroll along the Nile Corniche",
+      "kind": "unknown",
+      "amount_usd": null,
+      "activity_ref": {
+        "date": "2026-11-21",
+        "order": 2
+      },
+      "basis": "AI could not estimate this cost."
+    },
+    {
+      "label": "Shop at Khan El Khalili Bazaar",
+      "kind": "unknown",
+      "amount_usd": null,
+      "activity_ref": {
+        "date": "2026-11-21",
+        "order": 3
+      },
+      "basis": "AI could not estimate this cost."
+    },
+    {
+      "label": "Visit the Giza Pyramid Complex",
+      "kind": "unknown",
+      "amount_usd": null,
+      "activity_ref": {
+        "date": "2026-11-22",
+        "order": 1
+      },
+      "basis": "AI could not estimate this cost."
+    },
+    {
+      "label": "Relax at Al-Azhar Park",
+      "kind": "unknown",
+      "amount_usd": null,
+      "activity_ref": {
+        "date": "2026-11-22",
+        "order": 2
+      },
+      "basis": "AI could not estimate this cost."
+    }
+  ],
+  "price_explanation": "The selected hotel, Cairo Nile HK Hotel, has a base price of $61.75. Taxes and fees add $4.0, bringing the total hotel cost to $65.75. Flight prices are unavailable, so no flight cost information can be provided.",
+  "error": null
+}

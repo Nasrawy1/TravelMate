@@ -1,0 +1,813 @@
+{
+ "status": true,
+ "message": "Success",
+ "timestamp": 1792264988025,
+ "data": {
+  "hotels": [
+   {
+    "hotel_id": 17410709,
+    "accessibilityLabel": "Cairo Nile HK Hotel.\n3 out of 5 stars.\n‎0.6 km from downtown‬.\nLate Escape Deal\nNew to Booking.com.\n 2 hotel rooms : 8 beds.\nPrice for 4 nights, 2 adults.\nOriginal price 190 USD. Current price 146 USD..\n+1 USD taxes and charges.",
+    "property": {
+     "rankingPosition": 0,
+     "checkin": {
+      "fromTime": "12:00",
+      "untilTime": "12:00"
+     },
+     "priceBreakdown": {
+      "strikethroughPrice": {
+       "amountRounded": "$190",
+       "value": 190.08,
+       "currency": "USD"
+      },
+      "excludedPrice": {
+       "currency": "USD",
+       "value": 1.46360000000009
+      },
+      "grossPrice": {
+       "amountRounded": "$146",
+       "currency": "USD",
+       "value": 146.36
+      },
+      "benefitBadges": [
+       {
+        "text": "Late Escape Deal",
+        "explanation": "Late Escape Deal",
+        "variant": "constructive",
+        "identifier": "Late Escape Campaign"
+       }
+      ],
+      "taxExceptions": []
+     },
+     "accuratePropertyClass": 3,
+     "position": 0,
+     "checkinDate": "2026-11-01",
+     "name": "Cairo Nile HK Hotel",
+     "ufi": -290692,
+     "checkout": {
+      "untilTime": "13:00",
+      "fromTime": "13:00"
+     },
+     "reviewScore": 0,
+     "recommendedUnitsConfigurationLabel": "<b>2 hotel rooms</b>: 8 beds",
+     "photoUrls": [
+      "https://cf.bstatic.com/xdata/images/hotel/square500/926656594.jpg?k=6841fe2d81a716d710b85c74a8f2a2147d4256a2c11e68cf96e74db1f68cbc9d&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square1024/926656594.jpg?k=6841fe2d81a716d710b85c74a8f2a2147d4256a2c11e68cf96e74db1f68cbc9d&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square2000/926656594.jpg?k=6841fe2d81a716d710b85c74a8f2a2147d4256a2c11e68cf96e74db1f68cbc9d&o="
+     ],
+     "reviewScoreWord": "",
+     "longitude": 31.241277,
+     "reviewCount": 0,
+     "wishlistName": "Cairo",
+     "isFirstPage": true,
+     "propertyClass": 3,
+     "countryCode": "eg",
+     "id": 17410709,
+     "checkoutDate": "2026-11-05",
+     "qualityClass": 0,
+     "latitude": 30.0429271,
+     "blockIds": [
+      "1741070902_445607051_1_1_0",
+      "1741070902_445607051_1_1_0"
+     ],
+     "mainPhotoId": 926656594,
+     "optOutFromGalleryChanges": 0,
+     "currency": "USD"
+    }
+   },
+   {
+    "hotel_id": 676629,
+    "accessibilityLabel": "Le Meridien Cairo Airport.\n5 out of 5 stars.\nThis is a Preferred property.\n8.9 Excellent 5269 reviews.\n‎Heliopolis‬ • ‎17.2 km from downtown‬\n‎Sustainability certification‬.\n 2 hotel rooms : 2 beds.\nPrice for 4 nights, 2 adults.\n1906 USD.\n+289 USD taxes and charges.",
+    "property": {
+     "priceBreakdown": {
+      "grossPrice": {
+       "value": 1906.24,
+       "currency": "USD",
+       "amountRounded": "$1,906"
+      },
+      "excludedPrice": {
+       "value": 288.6592,
+       "currency": "USD"
+      },
+      "benefitBadges": [],
+      "taxExceptions": []
+     },
+     "accuratePropertyClass": 5,
+     "position": 1,
+     "checkinDate": "2026-11-01",
+     "name": "Le Meridien Cairo Airport",
+     "ufi": -290692,
+     "checkout": {
+      "untilTime": "12:00",
+      "fromTime": "05:00"
+     },
+     "rankingPosition": 1,
+     "checkin": {
+      "untilTime": "00:00",
+      "fromTime": "14:00"
+     },
+     "countryCode": "eg",
+     "qualityClass": 0,
+     "id": 676629,
+     "checkoutDate": "2026-11-05",
+     "latitude": 30.1136448155254,
+     "blockIds": [
+      "67662908_94500331_1_1_0_1121292",
+      "67662908_94500331_1_1_0_1121292"
+     ],
+     "optOutFromGalleryChanges": 1,
+     "mainPhotoId": 630067390,
+     "currency": "USD",
+     "reviewScore": 8.9,
+     "recommendedUnitsConfigurationLabel": "<b>2 hotel rooms</b>: 2 beds",
+     "isPreferred": true,
+     "reviewScoreWord": "Excellent",
+     "photoUrls": [
+      "https://cf.bstatic.com/xdata/images/hotel/square500/630067390.jpg?k=b6ebd266698b1d5285191e433cbffc0859423bffb298abcd5ad579a8cab7e6a5&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square1024/630067390.jpg?k=b6ebd266698b1d5285191e433cbffc0859423bffb298abcd5ad579a8cab7e6a5&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square2000/630067390.jpg?k=b6ebd266698b1d5285191e433cbffc0859423bffb298abcd5ad579a8cab7e6a5&o="
+     ],
+     "reviewCount": 5269,
+     "longitude": 31.3953396677971,
+     "wishlistName": "Cairo",
+     "isFirstPage": true,
+     "propertyClass": 5
+    }
+   },
+   {
+    "hotel_id": 245740,
+    "accessibilityLabel": "Aura Inn Hotel Cairo.\n3 out of 5 stars.\n7.4 Good 313 reviews.\n‎Mohandesin‬ • ‎3.7 km from downtown‬.\nMobile-only price.\nBreakfast included.\n 2 hotel rooms : 2 beds.\nPrice for 4 nights, 2 adults.\nOriginal price 542 USD. Current price 487 USD..\n+73 USD taxes and charges.\nFree cancellation.",
+    "property": {
+     "checkout": {
+      "untilTime": "12:00",
+      "fromTime": "00:00"
+     },
+     "ufi": -290692,
+     "name": "Aura Inn Hotel Cairo",
+     "checkinDate": "2026-11-01",
+     "position": 2,
+     "accuratePropertyClass": 3,
+     "priceBreakdown": {
+      "taxExceptions": [],
+      "excludedPrice": {
+       "value": 72.5980000000001,
+       "currency": "USD"
+      },
+      "grossPrice": {
+       "value": 487.4688,
+       "currency": "USD",
+       "amountRounded": "$487"
+      },
+      "benefitBadges": [
+       {
+        "identifier": "Mobile Rate",
+        "variant": "constructive",
+        "text": "Mobile-only price",
+        "explanation": "Mobile-only price"
+       }
+      ],
+      "strikethroughPrice": {
+       "value": 541.632,
+       "currency": "USD",
+       "amountRounded": "$542"
+      }
+     },
+     "checkin": {
+      "fromTime": "14:00",
+      "untilTime": "00:00"
+     },
+     "rankingPosition": 2,
+     "currency": "USD",
+     "optOutFromGalleryChanges": 0,
+     "mainPhotoId": 668827057,
+     "blockIds": [
+      "24574012_223920845_0_41_0",
+      "24574012_223920845_0_41_0"
+     ],
+     "latitude": 30.0515856074874,
+     "qualityClass": 0,
+     "id": 245740,
+     "checkoutDate": "2026-11-05",
+     "countryCode": "eg",
+     "propertyClass": 3,
+     "isFirstPage": true,
+     "wishlistName": "Cairo",
+     "reviewCount": 313,
+     "longitude": 31.1983662843704,
+     "photoUrls": [
+      "https://cf.bstatic.com/xdata/images/hotel/square500/668827057.jpg?k=8a3bfb65da1a1ae8d8f2cac877481568c1aea72c980eac43ee4b8a54226bbeb6&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square1024/668827057.jpg?k=8a3bfb65da1a1ae8d8f2cac877481568c1aea72c980eac43ee4b8a54226bbeb6&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square2000/668827057.jpg?k=8a3bfb65da1a1ae8d8f2cac877481568c1aea72c980eac43ee4b8a54226bbeb6&o="
+     ],
+     "reviewScoreWord": "Good",
+     "recommendedUnitsConfigurationLabel": "<b>2 hotel rooms</b>: 2 beds",
+     "reviewScore": 7.4
+    }
+   },
+   {
+    "hotel_id": 348358,
+    "accessibilityLabel": "Hilton Cairo Grand Nile.\n5 out of 5 stars.\nThis is a Preferred property.\n8.1 Very Good 11570 reviews.\n‎1.4 km from downtown‬\n‎Sustainability certification‬.\n 2 hotel rooms : 2 beds.\nPrice for 4 nights, 2 adults.\n1989 USD.\n+298 USD taxes and charges.\nFree cancellation.\nNo prepayment needed.",
+    "property": {
+     "reviewScoreWord": "Very Good",
+     "photoUrls": [
+      "https://cf.bstatic.com/xdata/images/hotel/square500/838276800.jpg?k=0f2c6592cd12e80ee659493f2e4080b2411bd2a90906e8ac9dca5cfab7e4d0d2&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square1024/838276800.jpg?k=0f2c6592cd12e80ee659493f2e4080b2411bd2a90906e8ac9dca5cfab7e4d0d2&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square2000/838276800.jpg?k=0f2c6592cd12e80ee659493f2e4080b2411bd2a90906e8ac9dca5cfab7e4d0d2&o="
+     ],
+     "recommendedUnitsConfigurationLabel": "<b>2 hotel rooms</b>: 2 beds",
+     "isPreferred": true,
+     "reviewScore": 8.1,
+     "propertyClass": 5,
+     "isFirstPage": true,
+     "wishlistName": "Cairo",
+     "reviewCount": 11570,
+     "longitude": 31.2270069122314,
+     "latitude": 30.0338326597725,
+     "qualityClass": 0,
+     "id": 348358,
+     "checkoutDate": "2026-11-05",
+     "countryCode": "eg",
+     "currency": "USD",
+     "optOutFromGalleryChanges": 0,
+     "mainPhotoId": 838276800,
+     "blockIds": [
+      "34835839_404461023_1_1_0",
+      "34835839_404461023_1_1_0"
+     ],
+     "rankingPosition": 3,
+     "checkin": {
+      "untilTime": "00:00",
+      "fromTime": "15:00"
+     },
+     "checkinDate": "2026-11-01",
+     "position": 3,
+     "accuratePropertyClass": 5,
+     "priceBreakdown": {
+      "taxExceptions": [],
+      "excludedPrice": {
+       "value": 298.368,
+       "currency": "USD"
+      },
+      "grossPrice": {
+       "amountRounded": "$1,989",
+       "currency": "USD",
+       "value": 1989.12
+      },
+      "benefitBadges": []
+     },
+     "checkout": {
+      "fromTime": "00:00",
+      "untilTime": "12:00"
+     },
+     "ufi": -290692,
+     "name": "Hilton Cairo Grand Nile"
+    }
+   },
+   {
+    "hotel_id": 16018,
+    "accessibilityLabel": "Sheraton Cairo Hotel & Casino.\n5 out of 5 stars.\nThis is a Preferred property.\n8.7 Excellent 3019 reviews.\n‎1.6 km from downtown‬\n‎Sustainability certification‬.\n 2 hotel rooms : 4 beds.\nPrice for 4 nights, 2 adults.\n2972 USD.\n+446 USD taxes and charges.\nFree cancellation.\nNo prepayment needed.",
+    "property": {
+     "blockIds": [
+      "1601829_344147944_1_1_0",
+      "1601829_344147944_1_1_0"
+     ],
+     "optOutFromGalleryChanges": 1,
+     "mainPhotoId": 808087476,
+     "currency": "USD",
+     "countryCode": "eg",
+     "qualityClass": 0,
+     "checkoutDate": "2026-11-05",
+     "id": 16018,
+     "latitude": 30.0392522202216,
+     "reviewCount": 3019,
+     "longitude": 31.219899058342,
+     "wishlistName": "Cairo",
+     "isFirstPage": true,
+     "propertyClass": 5,
+     "reviewScore": 8.7,
+     "recommendedUnitsConfigurationLabel": "<b>2 hotel rooms</b>: 4 beds",
+     "isPreferred": true,
+     "photoUrls": [
+      "https://cf.bstatic.com/xdata/images/hotel/square500/808087476.jpg?k=daeead329e27186c2df2108769cc5764d593fdd23a76a56c6323f918b64469f0&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square1024/808087476.jpg?k=daeead329e27186c2df2108769cc5764d593fdd23a76a56c6323f918b64469f0&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square2000/808087476.jpg?k=daeead329e27186c2df2108769cc5764d593fdd23a76a56c6323f918b64469f0&o="
+     ],
+     "reviewScoreWord": "Excellent",
+     "name": "Sheraton Cairo Hotel & Casino",
+     "ufi": -290692,
+     "checkout": {
+      "untilTime": "12:00",
+      "fromTime": "00:00"
+     },
+     "priceBreakdown": {
+      "benefitBadges": [],
+      "excludedPrice": {
+       "currency": "USD",
+       "value": 445.872
+      },
+      "grossPrice": {
+       "amountRounded": "$2,972",
+       "value": 2972.48,
+       "currency": "USD"
+      },
+      "taxExceptions": []
+     },
+     "accuratePropertyClass": 5,
+     "position": 4,
+     "checkinDate": "2026-11-01",
+     "checkin": {
+      "fromTime": "15:00",
+      "untilTime": "00:00"
+     },
+     "rankingPosition": 4
+    }
+   },
+   {
+    "hotel_id": 8217560,
+    "accessibilityLabel": "Stay Inn Cairo Hotel.\n4 out of 5 stars.\n8.3 Very Good 560 reviews.\n‎Mohandesin‬ • ‎4 km from downtown‬.\nBreakfast included.\n 2 hotel rooms : 2 beds.\nPrice for 4 nights, 2 adults.\nOriginal price 432 USD. Current price 389 USD..\n+62 USD taxes and charges.",
+    "property": {
+     "propertyClass": 4,
+     "isFirstPage": true,
+     "wishlistName": "Cairo",
+     "reviewCount": 560,
+     "longitude": 31.1948653015785,
+     "photoUrls": [
+      "https://cf.bstatic.com/xdata/images/hotel/square500/923523835.jpg?k=43ba100f4df82885aa09c25c4b0b10552a984fcf0baa22e0c576b3fd30a078a8&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square1024/923523835.jpg?k=43ba100f4df82885aa09c25c4b0b10552a984fcf0baa22e0c576b3fd30a078a8&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square2000/923523835.jpg?k=43ba100f4df82885aa09c25c4b0b10552a984fcf0baa22e0c576b3fd30a078a8&o="
+     ],
+     "reviewScoreWord": "Very Good",
+     "recommendedUnitsConfigurationLabel": "<b>2 hotel rooms</b>: 2 beds",
+     "reviewScore": 8.3,
+     "currency": "USD",
+     "optOutFromGalleryChanges": 1,
+     "mainPhotoId": 923523835,
+     "blockIds": [
+      "821756005_344921236_1_1_0",
+      "821756005_344921236_1_1_0"
+     ],
+     "latitude": 30.0526960703426,
+     "qualityClass": 0,
+     "id": 8217560,
+     "checkoutDate": "2026-11-05",
+     "countryCode": "eg",
+     "checkin": {
+      "untilTime": "00:00",
+      "fromTime": "14:00"
+     },
+     "rankingPosition": 5,
+     "checkout": {
+      "fromTime": "00:00",
+      "untilTime": "12:00"
+     },
+     "ufi": -290692,
+     "name": "Stay Inn Cairo Hotel",
+     "checkinDate": "2026-11-01",
+     "position": 5,
+     "accuratePropertyClass": 4,
+     "priceBreakdown": {
+      "grossPrice": {
+       "amountRounded": "$389",
+       "currency": "USD",
+       "value": 388.9984
+      },
+      "excludedPrice": {
+       "value": 62.3786000000001,
+       "currency": "USD"
+      },
+      "benefitBadges": [],
+      "taxExceptions": [],
+      "strikethroughPrice": {
+       "amountRounded": "$432",
+       "currency": "USD",
+       "value": 432.2304
+      }
+     }
+    }
+   },
+   {
+    "hotel_id": 16031,
+    "accessibilityLabel": "Pyramisa Hotel Cairo.\n5 out of 5 stars.\nThis is a Preferred property.\n8.7 Excellent 13068 reviews.\n‎1.8 km from downtown‬.\nLate Escape Deal.\n 1 private suite • 1 hotel room : 2 beds.\nPrice for 4 nights, 2 adults.\nOriginal price 2173 USD. Current price 1715 USD..\n+277 USD taxes and charges.",
+    "property": {
+     "longitude": 31.2186479299635,
+     "reviewCount": 13068,
+     "wishlistName": "Cairo",
+     "isFirstPage": true,
+     "propertyClass": 5,
+     "reviewScore": 8.7,
+     "isPreferred": true,
+     "recommendedUnitsConfigurationLabel": "<b>1 private suite • 1 hotel room</b>: 2 beds",
+     "photoUrls": [
+      "https://cf.bstatic.com/xdata/images/hotel/square500/116989077.jpg?k=5fd5f30992ce2e69deb83b78cde63b6469b611b75a52e68c99805f6d247ae4cf&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square1024/116989077.jpg?k=5fd5f30992ce2e69deb83b78cde63b6469b611b75a52e68c99805f6d247ae4cf&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square2000/116989077.jpg?k=5fd5f30992ce2e69deb83b78cde63b6469b611b75a52e68c99805f6d247ae4cf&o="
+     ],
+     "reviewScoreWord": "Excellent",
+     "blockIds": [
+      "1603139_95140702_1_41_0",
+      "1603102_244505030_1_25_0"
+     ],
+     "mainPhotoId": 116989077,
+     "optOutFromGalleryChanges": 0,
+     "currency": "USD",
+     "countryCode": "eg",
+     "checkoutDate": "2026-11-05",
+     "id": 16031,
+     "qualityClass": 0,
+     "latitude": 30.0377689111787,
+     "checkin": {
+      "untilTime": "00:00",
+      "fromTime": "15:00"
+     },
+     "rankingPosition": 6,
+     "name": "Pyramisa Hotel Cairo",
+     "ufi": -290692,
+     "checkout": {
+      "fromTime": "00:00",
+      "untilTime": "12:00"
+     },
+     "priceBreakdown": {
+      "taxExceptions": [],
+      "benefitBadges": [
+       {
+        "identifier": "Late Escape Campaign",
+        "text": "Late Escape Deal",
+        "explanation": "Late Escape Deal",
+        "variant": "constructive"
+       }
+      ],
+      "grossPrice": {
+       "value": 1714.9936,
+       "currency": "USD",
+       "amountRounded": "$1,715"
+      },
+      "excludedPrice": {
+       "value": 277.037,
+       "currency": "USD"
+      },
+      "strikethroughPrice": {
+       "currency": "USD",
+       "value": 2172.8448,
+       "amountRounded": "$2,173"
+      }
+     },
+     "accuratePropertyClass": 5,
+     "position": 6,
+     "checkinDate": "2026-11-01"
+    }
+   },
+   {
+    "hotel_id": 16478,
+    "accessibilityLabel": "Dusit Thani LakeView Cairo.\n5 out of 5 stars.\nThis is a Preferred property.\n8.6 Excellent 2486 reviews.\n‎New Cairo City‬ • ‎21.3 km from downtown‬.\n 2 hotel rooms : 2 beds.\nPrice for 4 nights, 2 adults.\n2733 USD.\n+414 USD taxes and charges.",
+    "property": {
+     "currency": "USD",
+     "mainPhotoId": 728181233,
+     "optOutFromGalleryChanges": 1,
+     "blockIds": [
+      "1647801_95141166_1_1_0_459298",
+      "1647801_95141166_1_1_0_459298"
+     ],
+     "latitude": 30.0255285937813,
+     "checkoutDate": "2026-11-05",
+     "id": 16478,
+     "qualityClass": 0,
+     "countryCode": "eg",
+     "propertyClass": 5,
+     "isFirstPage": true,
+     "wishlistName": "Cairo",
+     "longitude": 31.4560782909393,
+     "reviewCount": 2486,
+     "reviewScoreWord": "Excellent",
+     "photoUrls": [
+      "https://cf.bstatic.com/xdata/images/hotel/square500/728181233.jpg?k=0e6a7cdfc1fd60c4904d29fec58ebd1cd562f470ca5d76c98a6277707675198e&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square1024/728181233.jpg?k=0e6a7cdfc1fd60c4904d29fec58ebd1cd562f470ca5d76c98a6277707675198e&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square2000/728181233.jpg?k=0e6a7cdfc1fd60c4904d29fec58ebd1cd562f470ca5d76c98a6277707675198e&o="
+     ],
+     "isPreferred": true,
+     "recommendedUnitsConfigurationLabel": "<b>2 hotel rooms</b>: 2 beds",
+     "reviewScore": 8.6,
+     "checkout": {
+      "fromTime": "00:00",
+      "untilTime": "12:00"
+     },
+     "ufi": -290692,
+     "name": "Dusit Thani LakeView Cairo",
+     "checkinDate": "2026-11-01",
+     "position": 7,
+     "accuratePropertyClass": 5,
+     "priceBreakdown": {
+      "taxExceptions": [],
+      "benefitBadges": [],
+      "excludedPrice": {
+       "currency": "USD",
+       "value": 413.746
+      },
+      "grossPrice": {
+       "amountRounded": "$2,733",
+       "value": 2732.8,
+       "currency": "USD"
+      }
+     },
+     "checkin": {
+      "untilTime": "00:00",
+      "fromTime": "15:00"
+     },
+     "rankingPosition": 7
+    }
+   },
+   {
+    "hotel_id": 16063,
+    "accessibilityLabel": "Golden Carven Hotel.\n3 out of 5 stars.\nThis is a Preferred property.\n7.5 Good 1017 reviews.\n‎Heliopolis‬ • ‎11 km from downtown‬.\nMobile-only price.\n 2 hotel rooms : 4 beds.\nPrice for 4 nights, 2 adults.\nOriginal price 460 USD. Current price 291 USD..\n+44 USD taxes and charges.",
+    "property": {
+     "wishlistName": "Cairo",
+     "longitude": 31.3386948271864,
+     "reviewCount": 1017,
+     "propertyClass": 3,
+     "isFirstPage": true,
+     "reviewScore": 7.5,
+     "photoUrls": [
+      "https://cf.bstatic.com/xdata/images/hotel/square500/682032882.jpg?k=2d038414c48c4bcfc128174af9267123c2dba0ca108212693d0ba4c26be52676&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square1024/682032882.jpg?k=2d038414c48c4bcfc128174af9267123c2dba0ca108212693d0ba4c26be52676&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square2000/682032882.jpg?k=2d038414c48c4bcfc128174af9267123c2dba0ca108212693d0ba4c26be52676&o="
+     ],
+     "reviewScoreWord": "Good",
+     "isPreferred": true,
+     "recommendedUnitsConfigurationLabel": "<b>2 hotel rooms</b>: 4 beds",
+     "mainPhotoId": 682032882,
+     "optOutFromGalleryChanges": 0,
+     "blockIds": [
+      "1606302_422260507_1_2_0",
+      "1606302_422260507_1_2_0"
+     ],
+     "currency": "USD",
+     "countryCode": "eg",
+     "latitude": 30.0881822297843,
+     "id": 16063,
+     "checkoutDate": "2026-11-05",
+     "qualityClass": 0,
+     "checkin": {
+      "untilTime": "23:30",
+      "fromTime": "11:00"
+     },
+     "rankingPosition": 8,
+     "ufi": -290692,
+     "name": "Golden Carven Hotel",
+     "checkout": {
+      "untilTime": "13:00",
+      "fromTime": "12:00"
+     },
+     "accuratePropertyClass": 3,
+     "priceBreakdown": {
+      "strikethroughPrice": {
+       "amountRounded": "$460",
+       "currency": "USD",
+       "value": 459.648
+      },
+      "benefitBadges": [
+       {
+        "identifier": "Mobile Rate",
+        "variant": "constructive",
+        "text": "Mobile-only price",
+        "explanation": "Mobile-only price"
+       }
+      ],
+      "excludedPrice": {
+       "currency": "USD",
+       "value": 43.5758000000001
+      },
+      "grossPrice": {
+       "amountRounded": "$291",
+       "value": 290.5056,
+       "currency": "USD"
+      },
+      "taxExceptions": []
+     },
+     "checkinDate": "2026-11-01",
+     "position": 8
+    }
+   },
+   {
+    "hotel_id": 12556380,
+    "accessibilityLabel": "Logistics 5 Stars.\n7.8 Good 698 reviews.\n‎Nasr City‬ • ‎11.1 km from downtown‬.\nBreakfast included.\n 2 private suites : 6 beds.\nPrice for 4 nights, 2 adults.\n700 USD.\n+105 USD taxes and charges.",
+    "property": {
+     "ufi": -290692,
+     "name": "Logistics 5 Stars",
+     "checkout": {
+      "fromTime": "11:00",
+      "untilTime": "12:00"
+     },
+     "accuratePropertyClass": 0,
+     "priceBreakdown": {
+      "benefitBadges": [],
+      "excludedPrice": {
+       "currency": "USD",
+       "value": 104.976
+      },
+      "grossPrice": {
+       "amountRounded": "$700",
+       "currency": "USD",
+       "value": 699.84
+      },
+      "taxExceptions": []
+     },
+     "checkinDate": "2026-11-01",
+     "position": 9,
+     "checkin": {
+      "untilTime": "23:00",
+      "fromTime": "14:00"
+     },
+     "rankingPosition": 9,
+     "optOutFromGalleryChanges": 0,
+     "mainPhotoId": 857551482,
+     "blockIds": [
+      "1255638002_445956823_1_1_0",
+      "1255638002_445956823_1_1_0"
+     ],
+     "currency": "USD",
+     "countryCode": "eg",
+     "latitude": 30.06994020804,
+     "qualityClass": 0,
+     "checkoutDate": "2026-11-05",
+     "id": 12556380,
+     "wishlistName": "Cairo",
+     "reviewCount": 698,
+     "longitude": 31.34751254063,
+     "propertyClass": 0,
+     "isFirstPage": true,
+     "reviewScore": 7.8,
+     "photoUrls": [
+      "https://cf.bstatic.com/xdata/images/hotel/square500/857551482.jpg?k=2b3e78e675da4e88bded13e650ba586a96c9b960703b0eee68a48577f7d7f812&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square1024/857551482.jpg?k=2b3e78e675da4e88bded13e650ba586a96c9b960703b0eee68a48577f7d7f812&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/square2000/857551482.jpg?k=2b3e78e675da4e88bded13e650ba586a96c9b960703b0eee68a48577f7d7f812&o="
+     ],
+     "reviewScoreWord": "Good",
+     "recommendedUnitsConfigurationLabel": "<b>2 private suites</b>: 6 beds"
+    }
+   }
+  ],
+  "meta": [
+   {
+    "title": "5614 properties"
+   }
+  ],
+  "appear": [
+   {
+    "id": "cma",
+    "component": {
+     "props": {
+      "fill": true,
+      "content": {
+       "props": {
+        "fitContentWidth": true,
+        "items": [
+         {
+          "props": {
+           "component": {
+            "props": {
+             "items": [
+              {
+               "props": {
+                "text": [
+                 {
+                  "font": "body_2",
+                  "text": "Read more on how payments affect the order of listed properties"
+                 },
+                 {
+                  "color": "foreground",
+                  "font": "strong_2",
+                  "text": "  "
+                 },
+                 {
+                  "font": "body_2",
+                  "color": "action_foreground",
+                  "text": "Learn more",
+                  "linkActions": [
+                   {
+                    "props": {
+                     "url": "booking://webview?url=https%3A%2F%2Fm.booking.com%2Fgeneral.en-us.html%3Faid%3D332731%3Btmpl%3Ddocs%2Fterms-and-conditions"
+                    }
+                   }
+                  ]
+                 }
+                ]
+               }
+              }
+             ],
+             "spacing": "spacing_half"
+            }
+           }
+          }
+         },
+         {
+          "props": {}
+         },
+         {
+          "props": {
+           "component": {
+            "props": {
+             "variant": "tertiary_tinted",
+             "icon": "close",
+             "accessibilityLabel": "Close",
+             "tertiaryTintedColor": "foreground"
+            }
+           }
+          }
+         }
+        ]
+       }
+      }
+     }
+    }
+   },
+   {
+    "contentUrl": "https://mobile-apps.booking.com/json/mobile.saba?route_path=saba-chat-entrypoint&arrival_date=2026-11-01&categories_filter_additional_data=&departure_date=2026-11-05&dest_ids=-290692&exposure_api_version=2.59&flex_window=0&generate_map_bounding_box=1&guest_qty=2&include_bh_quality_classification=1&include_genius_badge=1&include_rtb=1&include_ski_information=1&location_source=autocomplete&mobile_saba_variant=1&outcome=search_results&reason=new_search&room_qty=2&sb_calendar_open=1&search_type=city&selected_filter_sources=&sort_by=auto&sort_by_source=sort_options&source=startup_page&travel_purpose=&units=metric&offset=0&affiliate_id=332731&attribution_affiliate_id=332731&currency_code=USD&device_id=273805cb41984326bce0560231169fbd&distance_unit=metric&languagecode=en-us&min_saba_version=31&network_type=wifi&notification_auth_status=3&saba_version=179&screen_density=3&temperature_unit=c&user_os=26.6&user_version=69.4-iphone&categories_filter=price%3A%3AUSD-min-max&page=search-results"
+   },
+   {
+    "id": "flight_cross_sell_banner",
+    "component": {
+     "props": {
+      "payload": {
+       "header_override": {
+        "X-Booking-CCXP-Version": "2.59",
+        "X-Booking-Deeplink-Affiliate-Id": 0,
+        "X-Booking-Affiliate-Id": 332731
+       },
+       "language_code": "en-us",
+       "currency_code": "USD",
+       "display_mode": "STANDARD",
+       "screen_width": 1,
+       "placements": [
+        {
+         "page": "ACCOMMODATION_SEARCH_RESULTS",
+         "destination_location": {
+          "cc1": "eg",
+          "ufi": -290692
+         },
+         "placement_name": "IN_FEED_BANNER",
+         "accommodation_context": {
+          "check_in": "2026-11-01",
+          "check_out": "2026-11-05",
+          "children": [],
+          "adults": 2
+         },
+         "client_id": "41a366f0-591d-49ab-80b2-e18a8fbf06dd"
+        }
+       ]
+      },
+      "method": "post",
+      "contentUrl": "https://mobile-apps.booking.com/json/mobile.saba?route_path=cross-sell&arrival_date=2026-11-01&categories_filter_additional_data=&departure_date=2026-11-05&dest_ids=-290692&exposure_api_version=2.59&flex_window=0&generate_map_bounding_box=1&guest_qty=2&include_bh_quality_classification=1&include_genius_badge=1&include_rtb=1&include_ski_information=1&location_source=autocomplete&mobile_saba_variant=1&outcome=search_results&reason=new_search&room_qty=2&sb_calendar_open=1&search_type=city&selected_filter_sources=&sort_by=auto&sort_by_source=sort_options&source=startup_page&travel_purpose=&units=metric&offset=0&affiliate_id=332731&attribution_affiliate_id=332731&currency_code=USD&device_id=273805cb41984326bce0560231169fbd&distance_unit=metric&languagecode=en-us&min_saba_version=31&network_type=wifi&notification_auth_status=3&saba_version=179&screen_density=3&temperature_unit=c&user_os=26.6&user_version=69.4-iphone&categories_filter=price%3A%3AUSD-min-max&component_id=flight_cross_sell_banner"
+     }
+    }
+   },
+   {
+    "id": "signin_now",
+    "component": {
+     "props": {
+      "text": "Get instant access to our Genius loyalty program and enjoy discounts at properties worldwide.",
+      "title": "Sign in and save money"
+     }
+    }
+   },
+   {
+    "component": {
+     "props": {
+      "component": {
+       "props": {
+        "contentUrl": "https://mobile-apps.booking.com/json/mobile.saba?route_path=cross-sell&arrival_date=2026-11-01&categories_filter_additional_data=&departure_date=2026-11-05&dest_ids=-290692&exposure_api_version=2.59&flex_window=0&generate_map_bounding_box=1&guest_qty=2&include_bh_quality_classification=1&include_genius_badge=1&include_rtb=1&include_ski_information=1&location_source=autocomplete&mobile_saba_variant=1&outcome=search_results&reason=new_search&room_qty=2&sb_calendar_open=1&search_type=city&selected_filter_sources=&sort_by=auto&sort_by_source=sort_options&source=startup_page&travel_purpose=&units=metric&offset=0&affiliate_id=332731&attribution_affiliate_id=332731&currency_code=USD&device_id=273805cb41984326bce0560231169fbd&distance_unit=metric&languagecode=en-us&min_saba_version=31&network_type=wifi&notification_auth_status=3&saba_version=179&screen_density=3&temperature_unit=c&user_os=26.6&user_version=69.4-iphone&categories_filter=price%3A%3AUSD-min-max&component_id=attractions_cross_sell",
+        "method": "post",
+        "payload": {
+         "currency_code": "USD",
+         "language_code": "en-us",
+         "header_override": {
+          "X-Booking-CCXP-Version": "2.59",
+          "X-Booking-Affiliate-Id": 332731,
+          "X-Booking-Deeplink-Affiliate-Id": 0
+         },
+         "placements": [
+          {
+           "placement_name": "IN_FEED_ATTRACTION_BANNER",
+           "accommodation_context": {
+            "adults": 2,
+            "check_out": "2026-11-05",
+            "children": [],
+            "check_in": "2026-11-01"
+           },
+           "client_id": "c05b74f1-9ef3-4fd7-a84c-0a79c120ae2e",
+           "destination_location": {
+            "cc1": "eg",
+            "ufi": -290692
+           },
+           "page": "ACCOMMODATION_SEARCH_RESULTS"
+          }
+         ],
+         "screen_width": 1,
+         "display_mode": "STANDARD"
+        }
+       }
+      },
+      "id": "attractions_cross_sell"
+     }
+    }
+   }
+  ]
+ }
+}

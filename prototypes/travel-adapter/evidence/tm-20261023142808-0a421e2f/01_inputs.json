@@ -1,0 +1,29 @@
+{
+  "request_data": {
+    "departure_city": "Istanbul",
+    "destination_city": "Cairo",
+    "start_date": "2026-11-22",
+    "return_date": "2026-11-25",
+    "adults": 2,
+    "budget_usd": 1500
+  },
+  "validated_trip": {
+    "departure_city": "Istanbul",
+    "destination_city": "Cairo",
+    "start_date": "2026-11-22",
+    "return_date": "2026-11-25",
+    "nights": 3,
+    "adults": 2,
+    "budget_usd": 1500.0,
+    "trip_type": "round_trip",
+    "adapter": {
+      "origin_airport": "IST",
+      "destination_airport": "CAI",
+      "rooms": 1,
+      "rooms_source": "default"
+    }
+  },
+  "deadline_at": "2026-10-23T14:29:08.995559+00:00",
+  "estimation_policy": null,
+  "flight_mode": "live"
+}

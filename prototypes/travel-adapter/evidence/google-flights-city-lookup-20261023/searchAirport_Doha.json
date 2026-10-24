@@ -1,0 +1,160 @@
+{
+  "request": {
+    "path": "/api/v1/searchAirport",
+    "params": {
+      "query": "Doha",
+      "language_code": "en-US",
+      "country_code": "US"
+    },
+    "headers": {
+      "x-rapidapi-key": "<redacted>"
+    }
+  },
+  "retrieved_at": "2026-10-23T14:33:37Z",
+  "http_status": 200,
+  "rate_limit": {
+    "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+    "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499948",
+    "x-ratelimit-rapid-free-plans-hard-limit-reset": "2513038",
+    "x-ratelimit-requests-limit": "150",
+    "x-ratelimit-requests-remaining": "98",
+    "x-ratelimit-requests-reset": "2513038"
+  },
+  "response": {
+    "status": true,
+    "message": "Success",
+    "timestamp": 1792766005467,
+    "data": [
+      {
+        "id": "/m/0f2yw",
+        "type": "other",
+        "title": "Doha, Qatar",
+        "subtitle": "Capital of Qatar",
+        "city": "Doha",
+        "distance": null,
+        "list": [
+          {
+            "id": "DOH",
+            "type": "airport",
+            "title": "Hamad International Airport",
+            "subtitle": "4 mi to destination",
+            "city": "Doha",
+            "distance": "4 mi"
+          }
+        ]
+      },
+      {
+        "id": "/m/0f1ffh",
+        "type": "other",
+        "title": "Doharighat, Uttar Pradesh, India",
+        "subtitle": "Town in India",
+        "city": "Doharighat",
+        "distance": null,
+        "list": [
+          {
+            "id": "VNS",
+            "type": "airport",
+            "title": "Lal Bahadur Shastri International Airport, Varanasi",
+            "subtitle": "69 mi to destination",
+            "city": "Varanasi",
+            "distance": "69 mi"
+          },
+          {
+            "id": "GOP",
+            "type": "airport",
+            "title": "Gorakhpur Airport",
+            "subtitle": "32 mi to destination",
+            "city": "Gorakhpur",
+            "distance": "32 mi"
+          }
+        ]
+      },
+      {
+        "id": "/m/0glqlq2",
+        "type": "other",
+        "title": "Dohazari, Bangladesh",
+        "subtitle": "Municipality in Bangladesh",
+        "city": "Dohazari",
+        "distance": null,
+        "list": [
+          {
+            "id": "CGP",
+            "type": "airport",
+            "title": "Shah Amanat International Airport (Area Chittagong)",
+            "subtitle": "17 mi to destination",
+            "city": "Chattogram",
+            "distance": "17 mi"
+          },
+          {
+            "id": "CXB",
+            "type": "airport",
+            "title": "Cox's Bazar International Airport",
+            "subtitle": "49 mi to destination",
+            "city": "Cox's Bazar",
+            "distance": "49 mi"
+          }
+        ]
+      },
+      {
+        "id": "/m/03cqtbg",
+        "type": "other",
+        "title": "Dohalice, Czechia",
+        "subtitle": "Municipality in the Czech Republic",
+        "city": "Dohalice",
+        "distance": null,
+        "list": [
+          {
+            "id": "PRG",
+            "type": "airport",
+            "title": "Letiště Václava Havla Praha",
+            "subtitle": "65 mi to destination",
+            "city": "Prague",
+            "distance": "65 mi"
+          },
+          {
+            "id": "PED",
+            "type": "airport",
+            "title": "Pardubice Airport",
+            "subtitle": "19 mi to destination",
+            "city": "Pardubice",
+            "distance": "19 mi"
+          }
+        ]
+      },
+      {
+        "id": "/g/12llyt7tg",
+        "type": "other",
+        "title": "Dohara, Uttar Pradesh, India",
+        "subtitle": "City in India",
+        "city": "Dohara",
+        "distance": null,
+        "list": [
+          {
+            "id": "BEK",
+            "type": "airport",
+            "title": "Bareilly Airport",
+            "subtitle": "3 mi to destination",
+            "city": "Bareilly",
+            "distance": "3 mi"
+          },
+          {
+            "id": "DEL",
+            "type": "airport",
+            "title": "Indira Gandhi International Airport",
+            "subtitle": "143 mi to destination",
+            "city": "New Delhi",
+            "distance": "143 mi"
+          },
+          {
+            "id": "PGH",
+            "type": "airport",
+            "title": "Pantnagar Airport",
+            "subtitle": "45 mi to destination",
+            "city": "Pantnagar",
+            "distance": "45 mi"
+          }
+        ]
+      }
+    ]
+  }
+}

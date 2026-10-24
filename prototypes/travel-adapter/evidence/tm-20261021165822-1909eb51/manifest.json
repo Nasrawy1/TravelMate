@@ -1,0 +1,99 @@
+{
+  "request_id": "tm-20261021165822-1909eb51",
+  "generated_at": "2026-10-21T16:58:38Z",
+  "adapter_schema": "v2 (BE-04 report slice)",
+  "chain_checks": {
+    "final_status": "error",
+    "final_error_code": "invalid_output",
+    "live_integration_status": "price_received",
+    "flight_mode": "live",
+    "flights_status": "available",
+    "flights_reason_code": null,
+    "flight_date_flags_consistent": null,
+    "live_round_trip_offers": 3,
+    "live_offers_match_local_dates": true,
+    "live_offers_match_adults": true,
+    "selected_flight_offer_id": "gf:SM304:2026-11-20__MS745:2026-11-23",
+    "selected_flight_total_usd": 495.0,
+    "hotel_offers_count": 20,
+    "hotel_offers_match_dates": true,
+    "hotel_offers_match_adults": true,
+    "hotel_room_qty_values": [
+      1,
+      null
+    ],
+    "selected_hotel_offer_id": "17410709",
+    "ai_status": "error",
+    "ai_latency_ms": 3624,
+    "ai_itinerary_dates": [],
+    "be04": {
+      "available": true,
+      "report_slice_valid": null,
+      "error": null,
+      "status": null,
+      "selected_hotel_offer_id": null,
+      "selected_flight_offer_id": null,
+      "provider_subtotal_usd": null
+    },
+    "provider_calls": [
+      {
+        "service": "booking_hotels",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "attempts": 1,
+        "retrieved_at": "2026-10-21T16:58:25Z",
+        "rate_limit": {
+          "x-ratelimit-premium-limit": "50",
+          "x-ratelimit-premium-remaining": "50",
+          "x-ratelimit-premium-reset": "2065227",
+          "x-ratelimit-requests-limit": "20",
+          "x-ratelimit-requests-remaining": "15",
+          "x-ratelimit-requests-reset": "2065227",
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499995",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2065227"
+        }
+      },
+      {
+        "service": "google_flights_search",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "attempts": 1,
+        "retrieved_at": "2026-10-21T16:58:25Z",
+        "rate_limit": {
+          "x-ratelimit-requests-limit": "150",
+          "x-ratelimit-requests-remaining": "140",
+          "x-ratelimit-requests-reset": "2677148",
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499990",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2677148"
+        }
+      },
+      {
+        "service": "google_flights_return",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "attempts": 1,
+        "retrieved_at": "2026-10-21T16:58:34Z",
+        "rate_limit": {
+          "x-ratelimit-requests-limit": "150",
+          "x-ratelimit-requests-remaining": "139",
+          "x-ratelimit-requests-reset": "2677140",
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499989",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2677140"
+        }
+      }
+    ]
+  },
+  "files": {
+    "01_inputs.json": "6b572337aa3ba44a6b52e3d6c9a14a60f61897248ca6c8e1d48f5ae23d70ec5f",
+    "02_raw_provider_data.json": "57e58d6478d4c504caf2fe0886ac2c45393526927cab2d477d00d07a16603a32",
+    "03_normalized_context.json": "3e5dd3b923ef7045dc4e03bfbed5a0fde324c338f338efae978658a42cd11518",
+    "04_ai_input.json": "8d1e1d769308a5b5f276ce8eadcfa5cb1ae6da47667fcd2b2cbc80cab0545190",
+    "05_ai_raw_output.json": "32697760dd17338aab519a1f13d70c47a94070b88badcbb302ae5fb7ff28cd21",
+    "06_validated_ai_output.json": "6654f7ddc3d5dd3fccd1c1d916a2927798bbc1cf59bb9a31f035a9cb17e8f873",
+    "07_final_response.json": "8a0a3a35c422e33b325a3acbc23d4f260ad0ef8aa22d0010f521cf6f5023a06c",
+    "08_be04_budget_output.json": "4553e116ce927f6b05597620a07e324647ef1dba7d00ad63e1117796847066bf"
+  }
+}

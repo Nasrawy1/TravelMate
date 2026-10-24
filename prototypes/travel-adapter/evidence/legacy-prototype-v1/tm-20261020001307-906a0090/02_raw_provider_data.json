@@ -1,0 +1,3530 @@
+[
+  {
+    "service": "skyscanner_route",
+    "provenance": {
+      "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+      "integration_type": "rapidapi_third_party",
+      "upstream_source": "skyscanner.net route pages (cached fare quotes, not a live fare search)",
+      "endpoint": "GET /v1/skyscanner/route",
+      "query_parameters": {
+        "origin": "ist",
+        "destination": "cai",
+        "date": "2026-11-19",
+        "adults": "2",
+        "currency": "USD",
+        "market": "US",
+        "locale": "en-US"
+      },
+      "retrieved_at": "2026-10-20T00:13:11Z",
+      "cache_status": "refresh",
+      "http_status": 200,
+      "key_slot": 1,
+      "attempts": 1,
+      "rate_limit": {
+        "x-ratelimit-requests-limit": "20",
+        "x-ratelimit-requests-remaining": "2",
+        "x-ratelimit-requests-reset": "2211745",
+        "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+        "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499982",
+        "x-ratelimit-rapid-free-plans-hard-limit-reset": "2211745"
+      }
+    },
+    "response": {
+      "data": {
+        "requested_origin": "ist",
+        "requested_destination": "cai",
+        "url": "https://www.skyscanner.net/routes/ist/cai",
+        "origin": {
+          "sky_code": "ISTA",
+          "entity_id": "27542903",
+          "name": "Istanbul",
+          "country_name": "Türkiye (Turkey)",
+          "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+        },
+        "destination": {
+          "sky_code": "CAIR",
+          "entity_id": "27539681",
+          "name": "Cairo",
+          "country_name": null,
+          "image_url": null
+        },
+        "title": "Cheap Flights from Istanbul (IST) to Cairo (CAI) | Skyscanner",
+        "cheapest_price": 88,
+        "currency": "GBP",
+        "offer_name": "Cheap Flights from Istanbul to Cairo",
+        "deals": [
+          {
+            "id": "{bl}:202610192144*I*IST*CAI*20270105*skyp*TK",
+            "price": 88,
+            "formatted_price": "£88",
+            "direct": false,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-01-05",
+                "formatted_date": "Tue, 5 Jan",
+                "quoted_at": "2026-10-19T21:44Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Turkish Airlines",
+                "carrier_code": "TK"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20270105?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610192144%2AI%2AIST%2ACAI%2A20270105%2Askyp%2ATK&pq_prevCurrency=GBP&pq_prevPrice=88"
+          },
+          {
+            "id": "{bl}:202610192124*I*IST*CAI*20261212*ctuk*TK",
+            "price": 89,
+            "formatted_price": "£89",
+            "direct": false,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2026-12-12",
+                "formatted_date": "Sat, 12 Dec",
+                "quoted_at": "2026-10-19T21:24Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Turkish Airlines",
+                "carrier_code": "TK"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20261212?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610192124%2AI%2AIST%2ACAI%2A20261212%2Actuk%2ATK&pq_prevCurrency=GBP&pq_prevPrice=89"
+          },
+          {
+            "id": "{bl}:202610191059*I*IST*CAI*20261130*s1uk*TK",
+            "price": 89,
+            "formatted_price": "£89",
+            "direct": false,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2026-11-30",
+                "formatted_date": "Mon, 30 Nov",
+                "quoted_at": "2026-10-19T10:59Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Turkish Airlines",
+                "carrier_code": "TK"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20261130?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610191059%2AI%2AIST%2ACAI%2A20261130%2As1uk%2ATK&pq_prevCurrency=GBP&pq_prevPrice=89"
+          },
+          {
+            "id": "{bl}:202610182020*I*IST*CAI*20261029*bcuk*SM",
+            "price": 94,
+            "formatted_price": "£94",
+            "direct": false,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2026-10-29",
+                "formatted_date": "Thu, 29 Oct",
+                "quoted_at": "2026-10-18T20:20Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20261029?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610182020%2AI%2AIST%2ACAI%2A20261029%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=94"
+          },
+          {
+            "id": "{bl}:202610190914*D*IST*CAI*20261210*ctuk*SM",
+            "price": 97,
+            "formatted_price": "£97",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2026-12-10",
+                "formatted_date": "Thu, 10 Dec",
+                "quoted_at": "2026-10-19T09:14Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20261210?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610190914%2AD%2AIST%2ACAI%2A20261210%2Actuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=97"
+          },
+          {
+            "id": "{bl}:202610101129*D*IST*CAI*20270623*bcuk*SM",
+            "price": 98,
+            "formatted_price": "£98",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-06-23",
+                "formatted_date": "Wed, 23 Jun",
+                "quoted_at": "2026-10-10T11:29Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20270623?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610101129%2AD%2AIST%2ACAI%2A20270623%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=98"
+          },
+          {
+            "id": "{bl}:202610091137*D*IST*CAI*20270309*bcuk*SM",
+            "price": 98,
+            "formatted_price": "£98",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-03-09",
+                "formatted_date": "Tue, 9 Mar",
+                "quoted_at": "2026-10-09T11:37Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20270309?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610091137%2AD%2AIST%2ACAI%2A20270309%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=98"
+          },
+          {
+            "id": "{bl}:202610081530*D*IST*CAI*20270209*bcuk*SM",
+            "price": 98,
+            "formatted_price": "£98",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-02-09",
+                "formatted_date": "Tue, 9 Feb",
+                "quoted_at": "2026-10-08T15:30Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20270209?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610081530%2AD%2AIST%2ACAI%2A20270209%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=98"
+          },
+          {
+            "id": "{bl}:202610091225*D*IST*CAI*20270418*bcuk*SM",
+            "price": 98,
+            "formatted_price": "£98",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-04-18",
+                "formatted_date": "Sun, 18 Apr",
+                "quoted_at": "2026-10-09T12:25Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20270418?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610091225%2AD%2AIST%2ACAI%2A20270418%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=98"
+          },
+          {
+            "id": "{bl}:202610191915*D*IST*CAI*20261125*ctuk*SM",
+            "price": 98,
+            "formatted_price": "£98",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2026-11-25",
+                "formatted_date": "Wed, 25 Nov",
+                "quoted_at": "2026-10-19T19:15Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20261125?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610191915%2AD%2AIST%2ACAI%2A20261125%2Actuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=98"
+          },
+          {
+            "id": "{bl}:202610181332*I*IST*CAI*20270204*ctuk*TK",
+            "price": 98,
+            "formatted_price": "£98",
+            "direct": false,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-02-04",
+                "formatted_date": "Thu, 4 Feb",
+                "quoted_at": "2026-10-18T13:32Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Turkish Airlines",
+                "carrier_code": "TK"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20270204?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610181332%2AI%2AIST%2ACAI%2A20270204%2Actuk%2ATK&pq_prevCurrency=GBP&pq_prevPrice=98"
+          },
+          {
+            "id": "{bl}:202610082122*D*IST*CAI*20270730*bcuk*SM",
+            "price": 98,
+            "formatted_price": "£98",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-07-30",
+                "formatted_date": "Fri, 30 Jul",
+                "quoted_at": "2026-10-08T21:22Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20270730?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610082122%2AD%2AIST%2ACAI%2A20270730%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=98"
+          },
+          {
+            "id": "{bl}:202610121834*D*IST*CAI*20270107*bcuk*SM",
+            "price": 99,
+            "formatted_price": "£99",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-01-07",
+                "formatted_date": "Thu, 7 Jan",
+                "quoted_at": "2026-10-12T18:34Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20270107?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610121834%2AD%2AIST%2ACAI%2A20270107%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=99"
+          },
+          {
+            "id": "{bl}:202610142225*D*IST*CAI*20270515*bcuk*SM",
+            "price": 99,
+            "formatted_price": "£99",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-05-15",
+                "formatted_date": "Sat, 15 May",
+                "quoted_at": "2026-10-14T22:25Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20270515?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610142225%2AD%2AIST%2ACAI%2A20270515%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=99"
+          },
+          {
+            "id": "{bl}:202610191935*D*IST*CAI*20261028*ctuk*TK",
+            "price": 108,
+            "formatted_price": "£108",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2026-10-28",
+                "formatted_date": "Wed, 28 Oct",
+                "quoted_at": "2026-10-19T19:35Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Turkish Airlines",
+                "carrier_code": "TK"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20261028?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610191935%2AD%2AIST%2ACAI%2A20261028%2Actuk%2ATK&pq_prevCurrency=GBP&pq_prevPrice=108"
+          },
+          {
+            "id": "{bl}:202610152341*D*IST*CAI*20270809*bcuk*SM",
+            "price": 114,
+            "formatted_price": "£114",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": "Türkiye (Turkey)",
+              "image_url": "https://content.skyscnr.com/media/34e17d8a-6acb-48fa-bb16-c9ee4db54f1a/GettyImages-497834022.jpg"
+            },
+            "destination": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-08-09",
+                "formatted_date": "Mon, 9 Aug",
+                "quoted_at": "2026-10-15T23:41Z",
+                "origin": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/IST/CAI/20270809?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610152341%2AD%2AIST%2ACAI%2A20270809%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=114"
+          }
+        ],
+        "deals_count": 16,
+        "cheapest_by_month": [
+          {
+            "month": "2026-10",
+            "month_name": "October",
+            "price": 94,
+            "formatted_price": "£94"
+          },
+          {
+            "month": "2026-11",
+            "month_name": "November",
+            "price": 89,
+            "formatted_price": "£89"
+          },
+          {
+            "month": "2026-12",
+            "month_name": "December",
+            "price": 89,
+            "formatted_price": "£89"
+          },
+          {
+            "month": "2027-01",
+            "month_name": "January",
+            "price": 88,
+            "formatted_price": "£88"
+          },
+          {
+            "month": "2027-02",
+            "month_name": "February",
+            "price": 98,
+            "formatted_price": "£98"
+          },
+          {
+            "month": "2027-03",
+            "month_name": "March",
+            "price": 98,
+            "formatted_price": "£98"
+          },
+          {
+            "month": "2027-04",
+            "month_name": "April",
+            "price": 98,
+            "formatted_price": "£98"
+          },
+          {
+            "month": "2027-05",
+            "month_name": "May",
+            "price": 99,
+            "formatted_price": "£99"
+          },
+          {
+            "month": "2027-06",
+            "month_name": "June",
+            "price": 98,
+            "formatted_price": "£98"
+          },
+          {
+            "month": "2027-07",
+            "month_name": "July",
+            "price": 98,
+            "formatted_price": "£98"
+          },
+          {
+            "month": "2027-08",
+            "month_name": "August",
+            "price": 114,
+            "formatted_price": "£114"
+          },
+          {
+            "month": "2027-09",
+            "month_name": "September",
+            "price": 117,
+            "formatted_price": "£117"
+          }
+        ],
+        "nearby_airports": [
+          {
+            "airport_name": "Cairo",
+            "sky_code": "CAI",
+            "distance": 10,
+            "formatted_price": "£88",
+            "carrier_name": "Turkish Airlines",
+            "is_cheapest": false,
+            "is_closest": true
+          },
+          {
+            "airport_name": "Sphinx International",
+            "sky_code": "SPX",
+            "distance": 23,
+            "formatted_price": "£65",
+            "carrier_name": "Pegasus Airlines",
+            "is_cheapest": true,
+            "is_closest": false
+          }
+        ],
+        "airlines_direct": [
+          {
+            "name": "Air Cairo",
+            "code": "MC",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/MC.png"
+          },
+          {
+            "name": "Air Serbia",
+            "code": "JU",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/JU.png"
+          },
+          {
+            "name": "EgyptAir",
+            "code": "MS",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/MS.png"
+          },
+          {
+            "name": "Ethiopian Airlines",
+            "code": "ET",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/ET.png"
+          },
+          {
+            "name": "LOT",
+            "code": "LO",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/LO.png"
+          },
+          {
+            "name": "Singapore Airlines",
+            "code": "SQ",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/SQ.png"
+          },
+          {
+            "name": "Thai Airways",
+            "code": "TG",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/TG.png"
+          },
+          {
+            "name": "Turkish Airlines",
+            "code": "TK",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/TK.png"
+          }
+        ],
+        "popular_airlines": [
+          {
+            "name": "Turkish Airlines",
+            "code": "TK",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/TK.png"
+          },
+          {
+            "name": "EgyptAir",
+            "code": "MS",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/MS.png"
+          },
+          {
+            "name": "Ethiopian Airlines",
+            "code": "ET",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/ET.png"
+          },
+          {
+            "name": "Singapore Airlines",
+            "code": "SQ",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/SQ.png"
+          },
+          {
+            "name": "Air Serbia",
+            "code": "JU",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/JU.png"
+          },
+          {
+            "name": "Air Cairo",
+            "code": "MC",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/MC.png"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "How much are return flights from Istanbul to Cairo?",
+            "answer": "The best price we found for a return flight from Istanbul to Cairo is £151. This is an estimate based on information collected from different airlines and travel providers over the last 4 days and is subject to change and availability."
+          },
+          {
+            "question": "How long does it take to fly from Istanbul to Cairo?",
+            "answer": "2 hours and 23 minutes is the average flight time from Istanbul to Cairo."
+          },
+          {
+            "question": "Which airlines fly direct from Istanbul to Cairo?",
+            "answer": "Turkish Airlines, EgyptAir and Ethiopian Airlines fly direct from Istanbul to Cairo."
+          },
+          {
+            "question": "How many flights are there a week from Istanbul to Cairo?",
+            "answer": "As of October 2026, there are 163 flights per week flying from Istanbul to Cairo."
+          },
+          {
+            "question": "When is the cheapest time to fly from Istanbul to Cairo?",
+            "answer": "The cheapest month to fly from Istanbul to Cairo is usually November."
+          },
+          {
+            "question": "Which upcoming date is cheapest to fly from Istanbul Airport to Cairo Airport on?",
+            "answer": "After crunching the numbers on our flight calendar, we found that it's currently cheapest to fly from Istanbul Airport to Cairo Airport on Wednesday, 11 November 2026 ."
+          },
+          {
+            "question": "Can I get a direct flight from Istanbul Airport to Cairo Airport?",
+            "answer": "Yes – the average flight time is 2 hours and 23 minutes."
+          },
+          {
+            "question": "How can I find the best flight deal to Cairo?",
+            "answer": "We show every price from over 1,200 airlines and travel agents, comparing them all so you don’t have to. If you know you want to fly to Cairo but you’re not ready to book, set up a Price Alert. We’ll track prices for you, and let you know when they rise or fall."
+          },
+          {
+            "question": "When is the best time to book flights to Cairo?",
+            "answer": null
+          },
+          {
+            "question": "Which is the cheapest airline to fly from Istanbul Airport to Cairo with?",
+            "answer": "Currently, Turkish Airlines and Air Cairo offer the cheapest flight tickets to Cairo."
+          }
+        ],
+        "facts": {
+          "cheapest_month": "November",
+          "most_expensive_month": "September",
+          "cheapest_origin_airport": "Istanbul",
+          "cheapest_destination_airport": "Cairo",
+          "cheapest_airline": "Turkish Airlines",
+          "most_popular_airline": "Turkish Airlines",
+          "average_flight_time": "2 hours and 23 minutes",
+          "cheapest_outbound_date": "Wednesday, 11 November 2026",
+          "formatted_one_way_price": "£88",
+          "formatted_return_price": "£151",
+          "formatted_annual_average_price": "£151",
+          "warmest_month": null,
+          "coldest_month": null,
+          "wettest_month": null,
+          "driest_month": null
+        },
+        "usage_note": "Fares are Skyscanner's cached quotes for this pair, not a live search: each deal states `quoted_at` on every leg, and `deep_link_path` names the exact airports and date the quote belongs to. There is no pagination -- the page returns its whole set in one response, 13-16 deals measured across seven city pairs. `origin.sky_code` and `destination.sky_code`, and every `nearby_airports[].sky_code`, are valid inputs to this same endpoint, which is how a caller walks the graph without a place lookup."
+      }
+    }
+  },
+  {
+    "service": "exchange_rates",
+    "provenance": {
+      "provider": "ExchangeRate-API open access (open.er-api.com)",
+      "integration_type": "direct_public_api",
+      "endpoint": "GET /v6/latest/USD",
+      "query_parameters": {},
+      "retrieved_at": "2026-10-20T00:13:11Z",
+      "cache_status": "refresh"
+    },
+    "response": {
+      "result": "success",
+      "provider": "https://www.exchangerate-api.com",
+      "documentation": "https://www.exchangerate-api.com/docs/free",
+      "terms_of_use": "https://www.exchangerate-api.com/terms",
+      "time_last_update_unix": 1792368152,
+      "time_last_update_utc": "Mon, 19 Oct 2026 00:02:32 +0000",
+      "time_next_update_unix": 1792456542,
+      "time_next_update_utc": "Tue, 20 Oct 2026 00:35:42 +0000",
+      "time_eol_unix": 0,
+      "base_code": "USD",
+      "rates": {
+        "USD": 1,
+        "AED": 3.6725,
+        "AFN": 64.885038,
+        "ALL": 81.138404,
+        "AMD": 362.223825,
+        "ANG": 1.79,
+        "AOA": 922.913691,
+        "ARS": 1514.5655,
+        "AUD": 1.435811,
+        "AWG": 1.79,
+        "AZN": 1.69889,
+        "BAM": 1.742369,
+        "BBD": 2,
+        "BDT": 123.400189,
+        "BGN": 1.742369,
+        "BHD": 0.376,
+        "BIF": 2993.72463,
+        "BMD": 1,
+        "BND": 1.279456,
+        "BOB": 11.679146,
+        "BRL": 5.072543,
+        "BSD": 1,
+        "BTN": 95.179994,
+        "BWP": 13.686338,
+        "BYN": 3.008706,
+        "BZD": 2,
+        "CAD": 1.41317,
+        "CDF": 2313.897484,
+        "CHF": 0.824293,
+        "CLF": 0.024836,
+        "CLP": 981.666438,
+        "CNH": 6.685114,
+        "CNY": 6.69274,
+        "COP": 3174.489272,
+        "CRC": 454.235017,
+        "CUP": 24,
+        "CVE": 98.230607,
+        "CZK": 21.677301,
+        "DJF": 177.721,
+        "DKK": 6.647974,
+        "DOP": 61.266775,
+        "DZD": 134.441124,
+        "EGP": 53.524668,
+        "ERN": 15,
+        "ETB": 161.526631,
+        "EUR": 0.890861,
+        "FJD": 2.266348,
+        "FKP": 0.750286,
+        "FOK": 6.646127,
+        "GBP": 0.750306,
+        "GEL": 2.597015,
+        "GGP": 0.750286,
+        "GHS": 11.653982,
+        "GIP": 0.750286,
+        "GMD": 74.592507,
+        "GNF": 8799.417357,
+        "GTQ": 7.634239,
+        "GYD": 209.238987,
+        "HKD": 7.848103,
+        "HNL": 26.863079,
+        "HRK": 6.71218,
+        "HTG": 130.866575,
+        "HUF": 323.526082,
+        "IDR": 18052.884411,
+        "ILS": 3.109192,
+        "IMP": 0.750286,
+        "INR": 95.184915,
+        "IQD": 1517.21795,
+        "IRR": 1656702.65636,
+        "ISK": 121.015354,
+        "JEP": 0.750286,
+        "JMD": 158.757038,
+        "JOD": 0.709,
+        "JPY": 157.911394,
+        "KES": 129.78817,
+        "KGS": 87.48013,
+        "KHR": 4053.729877,
+        "KID": 1.435868,
+        "KMF": 438.274072,
+        "KRW": 1333.598991,
+        "KWD": 0.309747,
+        "KYD": 0.833333,
+        "KZT": 452.264725,
+        "LAK": 22329.647611,
+        "LBP": 89500,
+        "LKR": 330.890582,
+        "LRD": 170.844554,
+        "LSL": 16.463069,
+        "LYD": 6.42229,
+        "MAD": 9.726552,
+        "MDL": 17.899087,
+        "MGA": 4588.70537,
+        "MKD": 55.076251,
+        "MMK": 2096.436877,
+        "MNT": 3602.37199,
+        "MOP": 8.083622,
+        "MRU": 40.250742,
+        "MUR": 47.298871,
+        "MVR": 15.434853,
+        "MWK": 1733.601802,
+        "MXN": 18.457069,
+        "MYR": 4.081565,
+        "MZN": 63.653766,
+        "NAD": 16.463069,
+        "NGN": 1331.61657,
+        "NIO": 36.785767,
+        "NOK": 9.435805,
+        "NPR": 152.28799,
+        "NZD": 1.768993,
+        "OMR": 0.384497,
+        "PAB": 1,
+        "PEN": 3.436238,
+        "PGK": 4.535461,
+        "PHP": 63.065741,
+        "PKR": 276.755441,
+        "PLN": 3.893647,
+        "PYG": 5729.581248,
+        "QAR": 3.64,
+        "RON": 4.738261,
+        "RSD": 104.328541,
+        "RUB": 83.208148,
+        "RWF": 1475.489769,
+        "SAR": 3.75,
+        "SBD": 8.049499,
+        "SCR": 14.499424,
+        "SDG": 458.53704,
+        "SEK": 9.91606,
+        "SGD": 1.279456,
+        "SHP": 0.750286,
+        "SLE": 24.357927,
+        "SLL": 24357.92723,
+        "SOS": 571.453737,
+        "SRD": 37.90582,
+        "SSP": 5788.734904,
+        "STN": 21.826054,
+        "SYP": 121.63046,
+        "SZL": 16.463069,
+        "THB": 33.419704,
+        "TJS": 9.230257,
+        "TMT": 3.500326,
+        "TND": 2.993037,
+        "TOP": 2.392699,
+        "TRY": 49.543961,
+        "TTD": 6.777632,
+        "TVD": 1.435868,
+        "TWD": 32.446228,
+        "TZS": 2632.127793,
+        "UAH": 44.860486,
+        "UGX": 4060.877425,
+        "UYU": 40.170706,
+        "UZS": 12230.51031,
+        "VES": 881.0664,
+        "VND": 25869.403572,
+        "VUV": 119.559497,
+        "WST": 2.747154,
+        "XAF": 584.365429,
+        "XCD": 2.7,
+        "XCG": 1.79,
+        "XDR": 0.736942,
+        "XOF": 584.365429,
+        "XPF": 106.308028,
+        "YER": 236.014668,
+        "ZAR": 16.461903,
+        "ZMW": 20.155207,
+        "ZWG": 26.6072,
+        "ZWL": 26.6072
+      }
+    }
+  },
+  {
+    "service": "skyscanner_route",
+    "provenance": {
+      "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+      "integration_type": "rapidapi_third_party",
+      "upstream_source": "skyscanner.net route pages (cached fare quotes, not a live fare search)",
+      "endpoint": "GET /v1/skyscanner/route",
+      "query_parameters": {
+        "origin": "cai",
+        "destination": "ist",
+        "date": "2026-11-22",
+        "adults": "2",
+        "currency": "USD",
+        "market": "US",
+        "locale": "en-US"
+      },
+      "retrieved_at": "2026-10-20T00:13:18Z",
+      "cache_status": "refresh",
+      "http_status": 200,
+      "key_slot": 1,
+      "attempts": 1,
+      "rate_limit": {
+        "x-ratelimit-requests-limit": "20",
+        "x-ratelimit-requests-remaining": "1",
+        "x-ratelimit-requests-reset": "2211738",
+        "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+        "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499981",
+        "x-ratelimit-rapid-free-plans-hard-limit-reset": "2211738"
+      }
+    },
+    "response": {
+      "data": {
+        "requested_origin": "cai",
+        "requested_destination": "ist",
+        "url": "https://www.skyscanner.net/routes/cai/ist",
+        "origin": {
+          "sky_code": "CAIR",
+          "entity_id": "27539681",
+          "name": "Cairo",
+          "country_name": "Egypt",
+          "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+        },
+        "destination": {
+          "sky_code": "ISTA",
+          "entity_id": "27542903",
+          "name": "Istanbul",
+          "country_name": null,
+          "image_url": null
+        },
+        "title": "Cheap Flights from Cairo (CAI) to Istanbul (IST) | Skyscanner",
+        "cheapest_price": 56,
+        "currency": "GBP",
+        "offer_name": "Cheap Flights from Cairo to Istanbul",
+        "deals": [
+          {
+            "id": "{bl}:202610160814*D*CAI*IST*20261111*bcuk*SM",
+            "price": 56,
+            "formatted_price": "£56",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": "Egypt",
+              "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+            },
+            "destination": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2026-11-11",
+                "formatted_date": "Wed, 11 Nov",
+                "quoted_at": "2026-10-16T08:14Z",
+                "origin": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/CAI/IST/20261111?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610160814%2AD%2ACAI%2AIST%2A20261111%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=56"
+          },
+          {
+            "id": "{bl}:202610170907*D*CAI*IST*20261206*bcuk*SM",
+            "price": 61,
+            "formatted_price": "£61",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": "Egypt",
+              "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+            },
+            "destination": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2026-12-06",
+                "formatted_date": "Sun, 6 Dec",
+                "quoted_at": "2026-10-17T09:07Z",
+                "origin": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/CAI/IST/20261206?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610170907%2AD%2ACAI%2AIST%2A20261206%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=61"
+          },
+          {
+            "id": "{bl}:202610181620*D*CAI*IST*20261023*bcuk*SM",
+            "price": 68,
+            "formatted_price": "£68",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": "Egypt",
+              "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+            },
+            "destination": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2026-10-23",
+                "formatted_date": "Fri, 23 Oct",
+                "quoted_at": "2026-10-18T16:20Z",
+                "origin": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/CAI/IST/20261023?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610181620%2AD%2ACAI%2AIST%2A20261023%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=68"
+          },
+          {
+            "id": "{bl}:202610181847*D*CAI*IST*20270410*bcuk*SM",
+            "price": 89,
+            "formatted_price": "£89",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": "Egypt",
+              "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+            },
+            "destination": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-04-10",
+                "formatted_date": "Sat, 10 Apr",
+                "quoted_at": "2026-10-18T18:47Z",
+                "origin": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/CAI/IST/20270410?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610181847%2AD%2ACAI%2AIST%2A20270410%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=89"
+          },
+          {
+            "id": "{bl}:202610171917*D*CAI*IST*20270109*bcuk*SM",
+            "price": 89,
+            "formatted_price": "£89",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": "Egypt",
+              "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+            },
+            "destination": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-01-09",
+                "formatted_date": "Sat, 9 Jan",
+                "quoted_at": "2026-10-17T19:17Z",
+                "origin": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/CAI/IST/20270109?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610171917%2AD%2ACAI%2AIST%2A20270109%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=89"
+          },
+          {
+            "id": "{bl}:202610191231*D*CAI*IST*20270218*bcuk*SM",
+            "price": 89,
+            "formatted_price": "£89",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": "Egypt",
+              "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+            },
+            "destination": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-02-18",
+                "formatted_date": "Thu, 18 Feb",
+                "quoted_at": "2026-10-19T12:31Z",
+                "origin": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/CAI/IST/20270218?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610191231%2AD%2ACAI%2AIST%2A20270218%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=89"
+          },
+          {
+            "id": "{bl}:202610191050*D*CAI*IST*20270314*acai*SM",
+            "price": 91,
+            "formatted_price": "£91",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": "Egypt",
+              "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+            },
+            "destination": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-03-14",
+                "formatted_date": "Sun, 14 Mar",
+                "quoted_at": "2026-10-19T10:50Z",
+                "origin": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/CAI/IST/20270314?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610191050%2AD%2ACAI%2AIST%2A20270314%2Aacai%2ASM&pq_prevCurrency=GBP&pq_prevPrice=91"
+          },
+          {
+            "id": "{bl}:202610181839*D*CAI*IST*20270522*acai*SM",
+            "price": 91,
+            "formatted_price": "£91",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": "Egypt",
+              "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+            },
+            "destination": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-05-22",
+                "formatted_date": "Sat, 22 May",
+                "quoted_at": "2026-10-18T18:39Z",
+                "origin": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/CAI/IST/20270522?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610181839%2AD%2ACAI%2AIST%2A20270522%2Aacai%2ASM&pq_prevCurrency=GBP&pq_prevPrice=91"
+          },
+          {
+            "id": "{bl}:202610190927*D*CAI*IST*20270707*acai*SM",
+            "price": 91,
+            "formatted_price": "£91",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": "Egypt",
+              "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+            },
+            "destination": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-07-07",
+                "formatted_date": "Wed, 7 Jul",
+                "quoted_at": "2026-10-19T09:27Z",
+                "origin": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/CAI/IST/20270707?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610190927%2AD%2ACAI%2AIST%2A20270707%2Aacai%2ASM&pq_prevCurrency=GBP&pq_prevPrice=91"
+          },
+          {
+            "id": "{bl}:202610182205*D*CAI*IST*20270608*acai*SM",
+            "price": 92,
+            "formatted_price": "£92",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": "Egypt",
+              "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+            },
+            "destination": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-06-08",
+                "formatted_date": "Tue, 8 Jun",
+                "quoted_at": "2026-10-18T22:05Z",
+                "origin": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/CAI/IST/20270608?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610182205%2AD%2ACAI%2AIST%2A20270608%2Aacai%2ASM&pq_prevCurrency=GBP&pq_prevPrice=92"
+          },
+          {
+            "id": "{bl}:202610182147*D*CAI*IST*20270801*acai*SM",
+            "price": 92,
+            "formatted_price": "£92",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": "Egypt",
+              "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+            },
+            "destination": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-08-01",
+                "formatted_date": "Sun, 1 Aug",
+                "quoted_at": "2026-10-18T21:47Z",
+                "origin": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/CAI/IST/20270801?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610182147%2AD%2ACAI%2AIST%2A20270801%2Aacai%2ASM&pq_prevCurrency=GBP&pq_prevPrice=92"
+          },
+          {
+            "id": "{bl}:202610141717*D*CAI*IST*20270904*acai*SM",
+            "price": 103,
+            "formatted_price": "£103",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": "Egypt",
+              "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+            },
+            "destination": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-09-04",
+                "formatted_date": "Sat, 4 Sep",
+                "quoted_at": "2026-10-14T17:17Z",
+                "origin": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "Air Cairo",
+                "carrier_code": "SM"
+              }
+            ],
+            "deep_link_path": "/transport/flights/CAI/IST/20270904?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610141717%2AD%2ACAI%2AIST%2A20270904%2Aacai%2ASM&pq_prevCurrency=GBP&pq_prevPrice=103"
+          },
+          {
+            "id": "{bl}:202610171719*D*CAI*IST*20271010*bcuk*MS",
+            "price": 133,
+            "formatted_price": "£133",
+            "direct": true,
+            "cabin_class": null,
+            "origin": {
+              "sky_code": "CAIR",
+              "entity_id": "27539681",
+              "name": "Cairo",
+              "country_name": "Egypt",
+              "image_url": "https://content.skyscnr.com/media/a5495773-cf3f-4b29-bb4e-99bc512c1e74/image-4682.jpg"
+            },
+            "destination": {
+              "sky_code": "ISTA",
+              "entity_id": "27542903",
+              "name": "Istanbul",
+              "country_name": null,
+              "image_url": null
+            },
+            "legs": [
+              {
+                "date": "2027-10-10",
+                "formatted_date": "Sun, 10 Oct",
+                "quoted_at": "2026-10-17T17:19Z",
+                "origin": {
+                  "sky_code": "CAI",
+                  "entity_id": "104120222",
+                  "name": "Cairo",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "destination": {
+                  "sky_code": "IST",
+                  "entity_id": "95673323",
+                  "name": "Istanbul",
+                  "country_name": null,
+                  "image_url": null
+                },
+                "carrier_name": "EgyptAir",
+                "carrier_code": "MS"
+              }
+            ],
+            "deep_link_path": "/transport/flights/CAI/IST/20271010?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610171719%2AD%2ACAI%2AIST%2A20271010%2Abcuk%2AMS&pq_prevCurrency=GBP&pq_prevPrice=133"
+          }
+        ],
+        "deals_count": 13,
+        "cheapest_by_month": [
+          {
+            "month": "2026-10",
+            "month_name": "October",
+            "price": 68,
+            "formatted_price": "£68"
+          },
+          {
+            "month": "2026-11",
+            "month_name": "November",
+            "price": 56,
+            "formatted_price": "£56"
+          },
+          {
+            "month": "2026-12",
+            "month_name": "December",
+            "price": 61,
+            "formatted_price": "£61"
+          },
+          {
+            "month": "2027-01",
+            "month_name": "January",
+            "price": 89,
+            "formatted_price": "£89"
+          },
+          {
+            "month": "2027-02",
+            "month_name": "February",
+            "price": 89,
+            "formatted_price": "£89"
+          },
+          {
+            "month": "2027-03",
+            "month_name": "March",
+            "price": 91,
+            "formatted_price": "£91"
+          },
+          {
+            "month": "2027-04",
+            "month_name": "April",
+            "price": 89,
+            "formatted_price": "£89"
+          },
+          {
+            "month": "2027-05",
+            "month_name": "May",
+            "price": 91,
+            "formatted_price": "£91"
+          },
+          {
+            "month": "2027-06",
+            "month_name": "June",
+            "price": 92,
+            "formatted_price": "£92"
+          },
+          {
+            "month": "2027-07",
+            "month_name": "July",
+            "price": 91,
+            "formatted_price": "£91"
+          },
+          {
+            "month": "2027-08",
+            "month_name": "August",
+            "price": 92,
+            "formatted_price": "£92"
+          },
+          {
+            "month": "2027-09",
+            "month_name": "September",
+            "price": 103,
+            "formatted_price": "£103"
+          }
+        ],
+        "nearby_airports": [
+          {
+            "airport_name": "Istanbul Sabiha",
+            "sky_code": "SAW",
+            "distance": 19,
+            "formatted_price": "£56",
+            "carrier_name": "Air Arabia Egypt",
+            "is_cheapest": true,
+            "is_closest": true
+          },
+          {
+            "airport_name": "Istanbul",
+            "sky_code": "IST",
+            "distance": 21,
+            "formatted_price": "£56",
+            "carrier_name": "Air Cairo",
+            "is_cheapest": true,
+            "is_closest": false
+          }
+        ],
+        "airlines_direct": [
+          {
+            "name": "Air Cairo",
+            "code": "MC",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/MC.png"
+          },
+          {
+            "name": "Air Serbia",
+            "code": "JU",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/JU.png"
+          },
+          {
+            "name": "EgyptAir",
+            "code": "MS",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/MS.png"
+          },
+          {
+            "name": "Ethiopian Airlines",
+            "code": "ET",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/ET.png"
+          },
+          {
+            "name": "LOT",
+            "code": "LO",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/LO.png"
+          },
+          {
+            "name": "Singapore Airlines",
+            "code": "SQ",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/SQ.png"
+          },
+          {
+            "name": "Thai Airways",
+            "code": "TG",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/TG.png"
+          },
+          {
+            "name": "Turkish Airlines",
+            "code": "TK",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/TK.png"
+          }
+        ],
+        "popular_airlines": [
+          {
+            "name": "Turkish Airlines",
+            "code": "TK",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/TK.png"
+          },
+          {
+            "name": "EgyptAir",
+            "code": "MS",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/MS.png"
+          },
+          {
+            "name": "Ethiopian Airlines",
+            "code": "ET",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/ET.png"
+          },
+          {
+            "name": "Singapore Airlines",
+            "code": "SQ",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/SQ.png"
+          },
+          {
+            "name": "Air Cairo",
+            "code": "MC",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/MC.png"
+          },
+          {
+            "name": "Air Serbia",
+            "code": "JU",
+            "logo_url": "https://logos.skyscnr.com/images/airlines/JU.png"
+          }
+        ],
+        "faqs": [
+          {
+            "question": "How much are return flights from Cairo to Istanbul?",
+            "answer": "The best price we found for a return flight from Cairo to Istanbul is £110. This is an estimate based on information collected from different airlines and travel providers over the last 4 days and is subject to change and availability."
+          },
+          {
+            "question": "How long does it take to fly from Cairo to Istanbul?",
+            "answer": "2 hours and 26 minutes is the average flight time from Cairo to Istanbul."
+          },
+          {
+            "question": "Which airlines fly direct from Cairo to Istanbul?",
+            "answer": "Turkish Airlines, EgyptAir and Ethiopian Airlines fly direct from Cairo to Istanbul."
+          },
+          {
+            "question": "How many flights are there a week from Cairo to Istanbul?",
+            "answer": "As of October 2026, there are 178 flights per week flying from Cairo to Istanbul."
+          },
+          {
+            "question": "When is the cheapest time to fly from Cairo to Istanbul?",
+            "answer": "The cheapest month to fly from Cairo to Istanbul is usually December."
+          },
+          {
+            "question": "Which upcoming date is cheapest to fly from Cairo Airport to Istanbul Airport on?",
+            "answer": "After crunching the numbers on our flight calendar, we found that it's currently cheapest to fly from Cairo Airport to Istanbul Airport on Wednesday, 9 December 2026 ."
+          },
+          {
+            "question": "Can I get a direct flight from Cairo Airport to Istanbul Airport?",
+            "answer": "Yes – the average flight time is 2 hours and 26 minutes."
+          },
+          {
+            "question": "How can I find the best flight deal to Istanbul?",
+            "answer": "We show every price from over 1,200 airlines and travel agents, comparing them all so you don’t have to. If you know you want to fly to Istanbul but you’re not ready to book, set up a Price Alert. We’ll track prices for you, and let you know when they rise or fall."
+          },
+          {
+            "question": "When is the best time to book flights to Istanbul?",
+            "answer": null
+          },
+          {
+            "question": "Which is the cheapest airline to fly from Cairo Airport to Istanbul with?",
+            "answer": "Currently, Air Cairo offers the cheapest flight tickets to Istanbul."
+          }
+        ],
+        "facts": {
+          "cheapest_month": "December",
+          "most_expensive_month": "September",
+          "cheapest_origin_airport": "Cairo",
+          "cheapest_destination_airport": "Istanbul",
+          "cheapest_airline": "Air Cairo",
+          "most_popular_airline": "Turkish Airlines",
+          "average_flight_time": "2 hours and 26 minutes",
+          "cheapest_outbound_date": "Wednesday, 9 December 2026",
+          "formatted_one_way_price": "£56",
+          "formatted_return_price": "£110",
+          "formatted_annual_average_price": "£110",
+          "warmest_month": null,
+          "coldest_month": null,
+          "wettest_month": null,
+          "driest_month": null
+        },
+        "usage_note": "Fares are Skyscanner's cached quotes for this pair, not a live search: each deal states `quoted_at` on every leg, and `deep_link_path` names the exact airports and date the quote belongs to. There is no pagination -- the page returns its whole set in one response, 13-16 deals measured across seven city pairs. `origin.sky_code` and `destination.sky_code`, and every `nearby_airports[].sky_code`, are valid inputs to this same endpoint, which is how a caller walks the graph without a place lookup."
+      }
+    }
+  },
+  {
+    "service": "booking_hotels",
+    "provenance": {
+      "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+      "integration_type": "rapidapi_third_party",
+      "upstream_source": "booking.com live hotel availability search",
+      "endpoint": "GET /api/v1/hotels/searchHotels",
+      "query_parameters": {
+        "dest_id": "-290692",
+        "search_type": "CITY",
+        "arrival_date": "2026-11-19",
+        "departure_date": "2026-11-22",
+        "adults": "2",
+        "room_qty": "1",
+        "page_number": "1",
+        "units": "metric",
+        "temperature_unit": "c",
+        "languagecode": "en-us",
+        "currency_code": "USD"
+      },
+      "retrieved_at": "2026-10-20T00:13:21Z",
+      "cache_status": "refresh",
+      "http_status": 200,
+      "key_slot": 1,
+      "attempts": 1,
+      "rate_limit": {
+        "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+        "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499986",
+        "x-ratelimit-rapid-free-plans-hard-limit-reset": "2211774",
+        "x-ratelimit-premium-limit": "50",
+        "x-ratelimit-premium-remaining": "50",
+        "x-ratelimit-premium-reset": "2211774",
+        "x-ratelimit-requests-limit": "20",
+        "x-ratelimit-requests-remaining": "6",
+        "x-ratelimit-requests-reset": "2211774"
+      }
+    },
+    "response": {
+      "status": true,
+      "message": "Success",
+      "timestamp": 1792455190961,
+      "data": {
+        "hotels": [
+          {
+            "hotel_id": 17427572,
+            "accessibilityLabel": "Stylish 1BR Studio l Delta Towers , Nasr City Cairo.\n4 out of 5 for property rating.\n‎Nasr City‬ • ‎11.1 km from downtown‬.\nMobile-only price\nNew to Booking.com.\n Entire studio – 80 m² : 2 beds • 1 bedroom • 1 bathroom.\nPrice for 3 nights, 2 adults.\nOriginal price 218 USD. Current price 157 USD..\n+2 USD taxes and charges.\nWe have 1 left at this price.",
+            "property": {
+              "optOutFromGalleryChanges": 1,
+              "reviewCount": 0,
+              "countryCode": "eg",
+              "id": 17427572,
+              "priceBreakdown": {
+                "grossPrice": {
+                  "currency": "USD",
+                  "value": 156.73,
+                  "amountRounded": "$157"
+                },
+                "excludedPrice": {
+                  "value": 1.56730000000009,
+                  "currency": "USD"
+                },
+                "benefitBadges": [
+                  {
+                    "variant": "constructive",
+                    "explanation": "Mobile-only price",
+                    "identifier": "Mobile Rate",
+                    "text": "Mobile-only price"
+                  }
+                ],
+                "taxExceptions": [],
+                "strikethroughPrice": {
+                  "value": 217.68,
+                  "currency": "USD",
+                  "amountRounded": "$218"
+                }
+              },
+              "rankingPosition": 0,
+              "checkin": {
+                "fromTime": "15:00",
+                "untilTime": "18:00"
+              },
+              "propertyClass": 0,
+              "recommendedUnitsConfigurationLabel": "<b>Entire studio – 80 m²</b>: 2 beds • 1 bedroom • 1 bathroom",
+              "checkout": {
+                "fromTime": "08:00",
+                "untilTime": "11:00"
+              },
+              "checkoutDate": "2026-11-22",
+              "checkinDate": "2026-11-19",
+              "mainPhotoId": 927402923,
+              "longitude": 31.3469128742818,
+              "reviewScore": 0,
+              "qualityClass": 4,
+              "ufi": -290692,
+              "latitude": 30.0695470281633,
+              "wishlistName": "Cairo",
+              "accuratePropertyClass": 0,
+              "position": 0,
+              "isFirstPage": true,
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/927402923.jpg?k=47ef4b2c74dcbe445b09e29ae056fda9cb558f5026ef2008644cedf3d0a9665b&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/927402923.jpg?k=47ef4b2c74dcbe445b09e29ae056fda9cb558f5026ef2008644cedf3d0a9665b&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/927402923.jpg?k=47ef4b2c74dcbe445b09e29ae056fda9cb558f5026ef2008644cedf3d0a9665b&o="
+              ],
+              "name": "Stylish 1BR Studio l Delta Towers , Nasr City Cairo",
+              "reviewScoreWord": "",
+              "blockIds": [
+                "1742757201_445727695_2_0_0"
+              ],
+              "currency": "USD"
+            }
+          },
+          {
+            "hotel_id": 17410709,
+            "accessibilityLabel": "Cairo Nile HK Hotel.\n3 out of 5 stars.\n‎0.6 km from downtown‬.\nLate Escape Deal\nNew to Booking.com.\n Hotel room : 4 beds.\nPrice for 3 nights, 2 adults.\nOriginal price 80 USD. Current price 62 USD..\n+4 USD taxes and charges.\nWe have 6 left at this price.",
+            "property": {
+              "blockIds": [
+                "1741070902_445607051_2_1_0"
+              ],
+              "currency": "USD",
+              "accuratePropertyClass": 3,
+              "wishlistName": "Cairo",
+              "reviewScoreWord": "",
+              "name": "Cairo Nile HK Hotel",
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/926656594.jpg?k=6841fe2d81a716d710b85c74a8f2a2147d4256a2c11e68cf96e74db1f68cbc9d&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/926656594.jpg?k=6841fe2d81a716d710b85c74a8f2a2147d4256a2c11e68cf96e74db1f68cbc9d&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/926656594.jpg?k=6841fe2d81a716d710b85c74a8f2a2147d4256a2c11e68cf96e74db1f68cbc9d&o="
+              ],
+              "isFirstPage": true,
+              "position": 1,
+              "mainPhotoId": 926656594,
+              "checkinDate": "2026-11-19",
+              "checkoutDate": "2026-11-22",
+              "checkout": {
+                "fromTime": "13:00",
+                "untilTime": "13:00"
+              },
+              "recommendedUnitsConfigurationLabel": "<b>Hotel room</b>: 4 beds",
+              "propertyClass": 3,
+              "latitude": 30.0429271,
+              "ufi": -290692,
+              "qualityClass": 0,
+              "longitude": 31.241277,
+              "reviewScore": 0,
+              "countryCode": "eg",
+              "reviewCount": 0,
+              "optOutFromGalleryChanges": 0,
+              "checkin": {
+                "untilTime": "12:00",
+                "fromTime": "12:00"
+              },
+              "rankingPosition": 1,
+              "priceBreakdown": {
+                "taxExceptions": [],
+                "strikethroughPrice": {
+                  "amountRounded": "$80",
+                  "value": 80.1900000000001,
+                  "currency": "USD"
+                },
+                "grossPrice": {
+                  "currency": "USD",
+                  "value": 61.7500000000001,
+                  "amountRounded": "$62"
+                },
+                "excludedPrice": {
+                  "currency": "USD",
+                  "value": 4.00000000000009
+                },
+                "benefitBadges": [
+                  {
+                    "text": "Late Escape Deal",
+                    "explanation": "Late Escape Deal",
+                    "identifier": "Late Escape Campaign",
+                    "variant": "constructive"
+                  }
+                ]
+              },
+              "id": 17410709
+            }
+          },
+          {
+            "hotel_id": 14449343,
+            "accessibilityLabel": "Khashaba Residence.\n4 out of 5 for property rating.\n‎Dokki‬ • ‎3.4 km from downtown‬.\n Entire apartment – 40 m² : 2 beds • 1 bedroom • 1 bathroom.\nPrice for 3 nights, 2 adults.\n122 USD.\n+18 USD taxes and charges.\nWe have 1 left at this price.",
+            "property": {
+              "blockIds": [
+                "1444934302_415907030_2_0_0"
+              ],
+              "currency": "USD",
+              "accuratePropertyClass": 0,
+              "wishlistName": "Cairo",
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/702934918.jpg?k=f5566d01e998fe78d1d215bd9f5cac5af22f57e5c4b17826dd7f139c03a4bfa7&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/702934918.jpg?k=f5566d01e998fe78d1d215bd9f5cac5af22f57e5c4b17826dd7f139c03a4bfa7&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/702934918.jpg?k=f5566d01e998fe78d1d215bd9f5cac5af22f57e5c4b17826dd7f139c03a4bfa7&o="
+              ],
+              "position": 2,
+              "isFirstPage": true,
+              "reviewScoreWord": "",
+              "name": "Khashaba Residence",
+              "checkoutDate": "2026-11-22",
+              "checkout": {
+                "untilTime": "11:00",
+                "fromTime": "00:00"
+              },
+              "propertyClass": 0,
+              "recommendedUnitsConfigurationLabel": "<b>Entire apartment – 40 m²</b>: 2 beds • 1 bedroom • 1 bathroom",
+              "mainPhotoId": 702934918,
+              "checkinDate": "2026-11-19",
+              "reviewScore": 0,
+              "longitude": 31.2010351,
+              "latitude": 30.0496977,
+              "ufi": -290692,
+              "qualityClass": 4,
+              "optOutFromGalleryChanges": 0,
+              "countryCode": "eg",
+              "reviewCount": 0,
+              "priceBreakdown": {
+                "grossPrice": {
+                  "currency": "USD",
+                  "value": 121.5,
+                  "amountRounded": "$122"
+                },
+                "excludedPrice": {
+                  "currency": "USD",
+                  "value": 18.2250000000001
+                },
+                "benefitBadges": [],
+                "taxExceptions": []
+              },
+              "id": 14449343,
+              "checkin": {
+                "fromTime": "14:00",
+                "untilTime": "00:00"
+              },
+              "rankingPosition": 2
+            }
+          },
+          {
+            "hotel_id": 17469303,
+            "accessibilityLabel": "Lorenda House.\n10 Exceptional 1 review.\n‎500 m from downtown‬.\n Entire apartment – 180 m² : 3 beds • 2 bedrooms • 1 living room • 3 bathrooms.\nPrice for 3 nights, 2 adults.\nOriginal price 336 USD. Current price 252 USD..\n+38 USD taxes and charges.\nFree cancellation.\nNo prepayment needed.\nWe have 1 left at this price.",
+            "property": {
+              "ufi": -290692,
+              "latitude": 30.044673972838,
+              "qualityClass": 0,
+              "longitude": 31.2406099225191,
+              "reviewScore": 10,
+              "mainPhotoId": 929379216,
+              "checkinDate": "2026-11-19",
+              "checkoutDate": "2026-11-22",
+              "checkout": {
+                "fromTime": "10:00",
+                "untilTime": "11:00"
+              },
+              "propertyClass": 0,
+              "recommendedUnitsConfigurationLabel": "<b>Entire apartment – 180 m²</b>: 3 beds • 2 bedrooms • 1 living room • 3 bathrooms",
+              "checkin": {
+                "fromTime": "13:00",
+                "untilTime": "23:00"
+              },
+              "rankingPosition": 3,
+              "priceBreakdown": {
+                "grossPrice": {
+                  "amountRounded": "$252",
+                  "currency": "USD",
+                  "value": 252
+                },
+                "excludedPrice": {
+                  "currency": "USD",
+                  "value": 37.8000000000001
+                },
+                "benefitBadges": [],
+                "strikethroughPrice": {
+                  "value": 336,
+                  "currency": "USD",
+                  "amountRounded": "$336"
+                },
+                "taxExceptions": []
+              },
+              "id": 17469303,
+              "countryCode": "eg",
+              "reviewCount": 1,
+              "optOutFromGalleryChanges": 0,
+              "currency": "USD",
+              "blockIds": [
+                "1746930301_446069321_4_0_0"
+              ],
+              "reviewScoreWord": "Exceptional",
+              "name": "Lorenda House",
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/929379216.jpg?k=73b31499c5bbcb823268a57d893260e9f3e4a5e430e0507167434bb9abe83a7e&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/929379216.jpg?k=73b31499c5bbcb823268a57d893260e9f3e4a5e430e0507167434bb9abe83a7e&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/929379216.jpg?k=73b31499c5bbcb823268a57d893260e9f3e4a5e430e0507167434bb9abe83a7e&o="
+              ],
+              "isFirstPage": true,
+              "position": 3,
+              "accuratePropertyClass": 0,
+              "wishlistName": "Cairo"
+            }
+          },
+          {
+            "hotel_id": 16089863,
+            "accessibilityLabel": "شقه راقيه مريحه المهندسين اطلاله مباشره.\n‎3.9 km from downtown‬.\n Entire apartment – 180 m² : 7 beds • 2 bedrooms • 1 living room • 2 bathrooms.\nPrice for 3 nights, 2 adults.\n140 USD.\n+21 USD taxes and charges.\nWe have 1 left at this price.",
+            "property": {
+              "currency": "USD",
+              "blockIds": [
+                "1608986301_431809443_5_0_0"
+              ],
+              "position": 4,
+              "isFirstPage": true,
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/845005244.jpg?k=c98a4870ca0a71c0165bec31b2126ec1450ecd94972941ca509d4b503c91b320&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/845005244.jpg?k=c98a4870ca0a71c0165bec31b2126ec1450ecd94972941ca509d4b503c91b320&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/845005244.jpg?k=c98a4870ca0a71c0165bec31b2126ec1450ecd94972941ca509d4b503c91b320&o="
+              ],
+              "name": "شقه راقيه مريحه المهندسين اطلاله مباشره",
+              "reviewScoreWord": "",
+              "wishlistName": "Cairo",
+              "accuratePropertyClass": 0,
+              "longitude": 31.2031079,
+              "reviewScore": 0,
+              "qualityClass": 0,
+              "ufi": -290692,
+              "latitude": 30.0654003,
+              "propertyClass": 0,
+              "recommendedUnitsConfigurationLabel": "<b>Entire apartment – 180 m²</b>: 7 beds • 2 bedrooms • 1 living room • 2 bathrooms",
+              "checkout": {
+                "fromTime": "08:00",
+                "untilTime": "11:00"
+              },
+              "checkoutDate": "2026-11-22",
+              "checkinDate": "2026-11-19",
+              "mainPhotoId": 845005244,
+              "id": 16089863,
+              "priceBreakdown": {
+                "taxExceptions": [],
+                "excludedPrice": {
+                  "value": 21.0600000000001,
+                  "currency": "USD"
+                },
+                "grossPrice": {
+                  "amountRounded": "$140",
+                  "currency": "USD",
+                  "value": 140.4
+                },
+                "benefitBadges": []
+              },
+              "rankingPosition": 4,
+              "checkin": {
+                "fromTime": "15:00",
+                "untilTime": "18:00"
+              },
+              "optOutFromGalleryChanges": 0,
+              "reviewCount": 0,
+              "countryCode": "eg"
+            }
+          },
+          {
+            "hotel_id": 17468579,
+            "accessibilityLabel": "Family-Friendly 3BR Apartment l Nasr City, Cairo.\n4 out of 5 for property rating.\n‎Nasr City‬ • ‎10.8 km from downtown‬.\nNew to Booking.com.\n Entire apartment – 160 m² : 5 beds • 3 bedrooms • 1 living room • 3 bathrooms.\nPrice for 3 nights, 2 adults.\nOriginal price 348 USD. Current price 278 USD..\n+3 USD taxes and charges.\nWe have 1 left at this price.",
+            "property": {
+              "accuratePropertyClass": 0,
+              "wishlistName": "Cairo",
+              "name": "Family-Friendly 3BR Apartment l Nasr City, Cairo",
+              "reviewScoreWord": "",
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/929345508.jpg?k=e497beb59bae81c19a3fd90aef5aa43f2a0c2d171f79754742caebfab5c53e05&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/929345508.jpg?k=e497beb59bae81c19a3fd90aef5aa43f2a0c2d171f79754742caebfab5c53e05&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/929345508.jpg?k=e497beb59bae81c19a3fd90aef5aa43f2a0c2d171f79754742caebfab5c53e05&o="
+              ],
+              "isFirstPage": true,
+              "position": 5,
+              "blockIds": [
+                "1746857901_446047851_6_0_0"
+              ],
+              "currency": "USD",
+              "reviewCount": 0,
+              "countryCode": "eg",
+              "optOutFromGalleryChanges": 1,
+              "rankingPosition": 5,
+              "checkin": {
+                "untilTime": "18:00",
+                "fromTime": "15:00"
+              },
+              "priceBreakdown": {
+                "grossPrice": {
+                  "amountRounded": "$278",
+                  "currency": "USD",
+                  "value": 278.28
+                },
+                "excludedPrice": {
+                  "currency": "USD",
+                  "value": 2.78280000000009
+                },
+                "benefitBadges": [],
+                "taxExceptions": [],
+                "strikethroughPrice": {
+                  "currency": "USD",
+                  "value": 347.85,
+                  "amountRounded": "$348"
+                }
+              },
+              "id": 17468579,
+              "mainPhotoId": 929345508,
+              "checkinDate": "2026-11-19",
+              "recommendedUnitsConfigurationLabel": "<b>Entire apartment – 160 m²</b>: 5 beds • 3 bedrooms • 1 living room • 3 bathrooms",
+              "propertyClass": 0,
+              "checkoutDate": "2026-11-22",
+              "checkout": {
+                "fromTime": "08:00",
+                "untilTime": "11:00"
+              },
+              "qualityClass": 4,
+              "latitude": 30.0679457,
+              "ufi": -290692,
+              "longitude": 31.344603,
+              "reviewScore": 0
+            }
+          },
+          {
+            "hotel_id": 17251639,
+            "accessibilityLabel": "The Square Boutique Hotel By SK.\n9.4 Wonderful 19 reviews.\n‎450 m from downtown‬.\nMobile-only price.\nBreakfast included.\n Private room : 1 bed.\nPrice for 3 nights, 2 adults.\nOriginal price 150 USD. Current price 135 USD..\n+1 USD taxes and charges.\nFree cancellation.\nNo prepayment needed.\nWe have 4 left at this price.",
+            "property": {
+              "rankingPosition": 6,
+              "checkin": {
+                "fromTime": "15:00",
+                "untilTime": "23:00"
+              },
+              "priceBreakdown": {
+                "benefitBadges": [
+                  {
+                    "text": "Mobile-only price",
+                    "explanation": "Mobile-only price",
+                    "identifier": "Mobile Rate",
+                    "variant": "constructive"
+                  }
+                ],
+                "excludedPrice": {
+                  "value": 1.35000000000009,
+                  "currency": "USD"
+                },
+                "grossPrice": {
+                  "amountRounded": "$135",
+                  "currency": "USD",
+                  "value": 135
+                },
+                "strikethroughPrice": {
+                  "amountRounded": "$150",
+                  "value": 150,
+                  "currency": "USD"
+                },
+                "taxExceptions": []
+              },
+              "id": 17251639,
+              "reviewCount": 19,
+              "countryCode": "eg",
+              "optOutFromGalleryChanges": 0,
+              "qualityClass": 0,
+              "ufi": -290692,
+              "latitude": 30.0474465193776,
+              "longitude": 31.2385503981476,
+              "reviewScore": 9.4,
+              "mainPhotoId": 922331553,
+              "checkinDate": "2026-11-19",
+              "propertyClass": 0,
+              "recommendedUnitsConfigurationLabel": "<b>Private room</b>: 1 bed",
+              "checkoutDate": "2026-11-22",
+              "checkout": {
+                "untilTime": "12:00",
+                "fromTime": "11:00"
+              },
+              "name": "The Square Boutique Hotel By SK",
+              "reviewScoreWord": "Wonderful",
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/922331553.jpg?k=386abc8c8c963de87a23c1a303667f131c204804baa3765dbcc6fdd4cd28404d&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/922331553.jpg?k=386abc8c8c963de87a23c1a303667f131c204804baa3765dbcc6fdd4cd28404d&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/922331553.jpg?k=386abc8c8c963de87a23c1a303667f131c204804baa3765dbcc6fdd4cd28404d&o="
+              ],
+              "position": 6,
+              "isFirstPage": true,
+              "accuratePropertyClass": 0,
+              "wishlistName": "Cairo",
+              "currency": "USD",
+              "blockIds": [
+                "1725163902_444175694_2_1_0"
+              ]
+            }
+          },
+          {
+            "hotel_id": 17306376,
+            "accessibilityLabel": "السفارات للخدمات الفندقيه الشامله بمدينه نصر.\n8.4 Very Good 18 reviews.\n‎Nasr City‬ • ‎10.8 km from downtown‬.\nMobile-only price.\n Entire apartment – 150 m² : 4 beds • 3 bedrooms • 1 living room • 2 bathrooms.\nPrice for 3 nights, 2 adults.\nOriginal price 105 USD. Current price 83 USD..\n+1 USD taxes and charges.\nFree cancellation.\nNo prepayment needed.",
+            "property": {
+              "blockIds": [
+                "1730637601_444682936_4_0_0"
+              ],
+              "currency": "USD",
+              "accuratePropertyClass": 0,
+              "wishlistName": "Cairo",
+              "name": "السفارات للخدمات الفندقيه الشامله بمدينه نصر",
+              "reviewScoreWord": "Very Good",
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/921577779.jpg?k=d0e57d6a0aa37051b763c74607a938455e8483db9ccd1f35400059896f8008c3&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/921577779.jpg?k=d0e57d6a0aa37051b763c74607a938455e8483db9ccd1f35400059896f8008c3&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/921577779.jpg?k=d0e57d6a0aa37051b763c74607a938455e8483db9ccd1f35400059896f8008c3&o="
+              ],
+              "position": 7,
+              "isFirstPage": true,
+              "mainPhotoId": 921577779,
+              "checkinDate": "2026-11-19",
+              "recommendedUnitsConfigurationLabel": "<b>Entire apartment – 150 m²</b>: 4 beds • 3 bedrooms • 1 living room • 2 bathrooms",
+              "propertyClass": 0,
+              "checkoutDate": "2026-11-22",
+              "checkout": {
+                "untilTime": "11:00",
+                "fromTime": "09:00"
+              },
+              "qualityClass": 0,
+              "latitude": 30.0685278,
+              "ufi": -290692,
+              "reviewScore": 8.4,
+              "longitude": 31.3443056,
+              "reviewCount": 18,
+              "countryCode": "eg",
+              "optOutFromGalleryChanges": 0,
+              "rankingPosition": 7,
+              "checkin": {
+                "fromTime": "13:00",
+                "untilTime": "23:30"
+              },
+              "priceBreakdown": {
+                "taxExceptions": [],
+                "strikethroughPrice": {
+                  "amountRounded": "$105",
+                  "currency": "USD",
+                  "value": 105
+                },
+                "grossPrice": {
+                  "currency": "USD",
+                  "value": 83.1600000000001,
+                  "amountRounded": "$83"
+                },
+                "excludedPrice": {
+                  "value": 0.8316,
+                  "currency": "USD"
+                },
+                "benefitBadges": [
+                  {
+                    "explanation": "Mobile-only price",
+                    "identifier": "Mobile Rate",
+                    "variant": "constructive",
+                    "text": "Mobile-only price"
+                  }
+                ]
+              },
+              "id": 17306376
+            }
+          },
+          {
+            "hotel_id": 676629,
+            "accessibilityLabel": "Le Meridien Cairo Airport.\n5 out of 5 stars.\nThis is a Preferred property.\n8.9 Excellent 5278 reviews.\n‎Heliopolis‬ • ‎17.2 km from downtown‬\n‎Sustainability certification‬.\n Hotel room : 1 bed.\nPrice for 3 nights, 2 adults.\n671 USD.\n+102 USD taxes and charges.\nWe have 5 left at this price.",
+            "property": {
+              "currency": "USD",
+              "blockIds": [
+                "67662908_94500331_2_42_0_1121292"
+              ],
+              "position": 8,
+              "isFirstPage": true,
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/630067390.jpg?k=b6ebd266698b1d5285191e433cbffc0859423bffb298abcd5ad579a8cab7e6a5&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/630067390.jpg?k=b6ebd266698b1d5285191e433cbffc0859423bffb298abcd5ad579a8cab7e6a5&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/630067390.jpg?k=b6ebd266698b1d5285191e433cbffc0859423bffb298abcd5ad579a8cab7e6a5&o="
+              ],
+              "name": "Le Meridien Cairo Airport",
+              "reviewScoreWord": "Excellent",
+              "wishlistName": "Cairo",
+              "accuratePropertyClass": 5,
+              "isPreferred": true,
+              "reviewScore": 8.9,
+              "longitude": 31.3953396677971,
+              "qualityClass": 0,
+              "ufi": -290692,
+              "latitude": 30.1136448155254,
+              "propertyClass": 5,
+              "recommendedUnitsConfigurationLabel": "<b>Hotel room</b>: 1 bed",
+              "checkout": {
+                "untilTime": "12:00",
+                "fromTime": "05:00"
+              },
+              "checkoutDate": "2026-11-22",
+              "checkinDate": "2026-11-19",
+              "mainPhotoId": 630067390,
+              "id": 676629,
+              "priceBreakdown": {
+                "grossPrice": {
+                  "currency": "USD",
+                  "value": 671.16,
+                  "amountRounded": "$671"
+                },
+                "excludedPrice": {
+                  "currency": "USD",
+                  "value": 101.6328
+                },
+                "benefitBadges": [],
+                "taxExceptions": []
+              },
+              "rankingPosition": 8,
+              "checkin": {
+                "fromTime": "14:00",
+                "untilTime": "00:00"
+              },
+              "optOutFromGalleryChanges": 1,
+              "reviewCount": 5278,
+              "countryCode": "eg"
+            }
+          },
+          {
+            "hotel_id": 245740,
+            "accessibilityLabel": "Aura Inn Hotel Cairo.\n3 out of 5 stars.\n7.4 Good 314 reviews.\n‎Mohandesin‬ • ‎3.7 km from downtown‬.\n1 bed.\nPrice for 3 nights, 2 adults.\n136 USD.\n+23 USD taxes and charges.\nFree cancellation.",
+            "property": {
+              "longitude": 31.1983662843704,
+              "reviewScore": 7.4,
+              "ufi": -290692,
+              "latitude": 30.0515856074874,
+              "qualityClass": 0,
+              "checkout": {
+                "untilTime": "12:00",
+                "fromTime": "00:00"
+              },
+              "checkoutDate": "2026-11-22",
+              "recommendedUnitsConfigurationLabel": "1 bed",
+              "propertyClass": 3,
+              "checkinDate": "2026-11-19",
+              "mainPhotoId": 668827057,
+              "id": 245740,
+              "priceBreakdown": {
+                "taxExceptions": [],
+                "excludedPrice": {
+                  "currency": "USD",
+                  "value": 22.7700000000001
+                },
+                "grossPrice": {
+                  "currency": "USD",
+                  "value": 135.88,
+                  "amountRounded": "$136"
+                },
+                "benefitBadges": []
+              },
+              "checkin": {
+                "fromTime": "14:00",
+                "untilTime": "00:00"
+              },
+              "rankingPosition": 9,
+              "optOutFromGalleryChanges": 0,
+              "countryCode": "eg",
+              "reviewCount": 314,
+              "currency": "USD",
+              "blockIds": [
+                "0_0_2_0_0"
+              ],
+              "position": 9,
+              "isFirstPage": true,
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/668827057.jpg?k=8a3bfb65da1a1ae8d8f2cac877481568c1aea72c980eac43ee4b8a54226bbeb6&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/668827057.jpg?k=8a3bfb65da1a1ae8d8f2cac877481568c1aea72c980eac43ee4b8a54226bbeb6&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/668827057.jpg?k=8a3bfb65da1a1ae8d8f2cac877481568c1aea72c980eac43ee4b8a54226bbeb6&o="
+              ],
+              "reviewScoreWord": "Good",
+              "name": "Aura Inn Hotel Cairo",
+              "isTPI": true,
+              "wishlistName": "Cairo",
+              "accuratePropertyClass": 3
+            }
+          },
+          {
+            "hotel_id": 348358,
+            "accessibilityLabel": "Hilton Cairo Grand Nile.\n5 out of 5 stars.\nThis is a Preferred property.\n8.1 Very Good 11569 reviews.\n‎1.4 km from downtown‬\n‎Sustainability certification‬.\n Hotel room : 2 beds.\nPrice for 3 nights, 2 adults.\n820 USD.\n+123 USD taxes and charges.\nFree cancellation.\nNo prepayment needed.",
+            "property": {
+              "wishlistName": "Cairo",
+              "accuratePropertyClass": 5,
+              "position": 10,
+              "isFirstPage": true,
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/838276800.jpg?k=0f2c6592cd12e80ee659493f2e4080b2411bd2a90906e8ac9dca5cfab7e4d0d2&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/838276800.jpg?k=0f2c6592cd12e80ee659493f2e4080b2411bd2a90906e8ac9dca5cfab7e4d0d2&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/838276800.jpg?k=0f2c6592cd12e80ee659493f2e4080b2411bd2a90906e8ac9dca5cfab7e4d0d2&o="
+              ],
+              "reviewScoreWord": "Very Good",
+              "name": "Hilton Cairo Grand Nile",
+              "blockIds": [
+                "34835850_404461023_2_2_0"
+              ],
+              "currency": "USD",
+              "optOutFromGalleryChanges": 0,
+              "countryCode": "eg",
+              "reviewCount": 11569,
+              "id": 348358,
+              "priceBreakdown": {
+                "taxExceptions": [],
+                "benefitBadges": [],
+                "grossPrice": {
+                  "value": 820.3552,
+                  "currency": "USD",
+                  "amountRounded": "$820"
+                },
+                "excludedPrice": {
+                  "currency": "USD",
+                  "value": 123.0533
+                }
+              },
+              "checkin": {
+                "untilTime": "00:00",
+                "fromTime": "15:00"
+              },
+              "rankingPosition": 10,
+              "checkout": {
+                "untilTime": "12:00",
+                "fromTime": "00:00"
+              },
+              "checkoutDate": "2026-11-22",
+              "propertyClass": 5,
+              "recommendedUnitsConfigurationLabel": "<b>Hotel room</b>: 2 beds",
+              "checkinDate": "2026-11-19",
+              "mainPhotoId": 838276800,
+              "reviewScore": 8.1,
+              "longitude": 31.2270069122314,
+              "isPreferred": true,
+              "latitude": 30.0338326597725,
+              "ufi": -290692,
+              "qualityClass": 0
+            }
+          },
+          {
+            "hotel_id": 16018,
+            "accessibilityLabel": "Sheraton Cairo Hotel & Casino.\n5 out of 5 stars.\nThis is a Preferred property.\n8.7 Excellent 3019 reviews.\n‎1.6 km from downtown‬\n‎Sustainability certification‬.\n Hotel room : 2 beds.\nPrice for 3 nights, 2 adults.\n998 USD.\n+150 USD taxes and charges.\nFree cancellation.\nNo prepayment needed.\nWe have 5 left at this price.",
+            "property": {
+              "wishlistName": "Cairo",
+              "accuratePropertyClass": 5,
+              "name": "Sheraton Cairo Hotel & Casino",
+              "reviewScoreWord": "Excellent",
+              "position": 11,
+              "isFirstPage": true,
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/808087476.jpg?k=daeead329e27186c2df2108769cc5764d593fdd23a76a56c6323f918b64469f0&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/808087476.jpg?k=daeead329e27186c2df2108769cc5764d593fdd23a76a56c6323f918b64469f0&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/808087476.jpg?k=daeead329e27186c2df2108769cc5764d593fdd23a76a56c6323f918b64469f0&o="
+              ],
+              "blockIds": [
+                "1601829_344147944_2_2_0"
+              ],
+              "currency": "USD",
+              "reviewCount": 3019,
+              "countryCode": "eg",
+              "optOutFromGalleryChanges": 1,
+              "rankingPosition": 11,
+              "checkin": {
+                "fromTime": "15:00",
+                "untilTime": "00:00"
+              },
+              "id": 16018,
+              "priceBreakdown": {
+                "benefitBadges": [],
+                "excludedPrice": {
+                  "value": 149.688,
+                  "currency": "USD"
+                },
+                "grossPrice": {
+                  "currency": "USD",
+                  "value": 997.92,
+                  "amountRounded": "$998"
+                },
+                "taxExceptions": []
+              },
+              "checkinDate": "2026-11-19",
+              "mainPhotoId": 808087476,
+              "propertyClass": 5,
+              "recommendedUnitsConfigurationLabel": "<b>Hotel room</b>: 2 beds",
+              "checkout": {
+                "fromTime": "00:00",
+                "untilTime": "12:00"
+              },
+              "checkoutDate": "2026-11-22",
+              "qualityClass": 0,
+              "ufi": -290692,
+              "latitude": 30.0392522202216,
+              "isPreferred": true,
+              "longitude": 31.219899058342,
+              "reviewScore": 8.7
+            }
+          },
+          {
+            "hotel_id": 8217560,
+            "accessibilityLabel": "Stay Inn Cairo Hotel.\n4 out of 5 stars.\n8.3 Very Good 559 reviews.\n‎Mohandesin‬ • ‎4 km from downtown‬.\nBreakfast included.\n Hotel room : 2 beds.\nPrice for 3 nights, 2 adults.\nOriginal price 239 USD. Current price 215 USD..\n+34 USD taxes and charges.",
+            "property": {
+              "currency": "USD",
+              "blockIds": [
+                "821756007_344921236_2_1_0"
+              ],
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/923523835.jpg?k=43ba100f4df82885aa09c25c4b0b10552a984fcf0baa22e0c576b3fd30a078a8&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/923523835.jpg?k=43ba100f4df82885aa09c25c4b0b10552a984fcf0baa22e0c576b3fd30a078a8&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/923523835.jpg?k=43ba100f4df82885aa09c25c4b0b10552a984fcf0baa22e0c576b3fd30a078a8&o="
+              ],
+              "position": 12,
+              "isFirstPage": true,
+              "name": "Stay Inn Cairo Hotel",
+              "reviewScoreWord": "Very Good",
+              "accuratePropertyClass": 4,
+              "wishlistName": "Cairo",
+              "longitude": 31.1948653015785,
+              "reviewScore": 8.3,
+              "qualityClass": 0,
+              "latitude": 30.0526960703426,
+              "ufi": -290692,
+              "propertyClass": 4,
+              "recommendedUnitsConfigurationLabel": "<b>Hotel room</b>: 2 beds",
+              "checkoutDate": "2026-11-22",
+              "checkout": {
+                "untilTime": "12:00",
+                "fromTime": "00:00"
+              },
+              "mainPhotoId": 923523835,
+              "checkinDate": "2026-11-19",
+              "priceBreakdown": {
+                "strikethroughPrice": {
+                  "amountRounded": "$239",
+                  "currency": "USD",
+                  "value": 238.6944
+                },
+                "taxExceptions": [],
+                "grossPrice": {
+                  "currency": "USD",
+                  "value": 214.8272,
+                  "amountRounded": "$215"
+                },
+                "excludedPrice": {
+                  "value": 34.4491000000001,
+                  "currency": "USD"
+                },
+                "benefitBadges": []
+              },
+              "id": 8217560,
+              "rankingPosition": 12,
+              "checkin": {
+                "fromTime": "14:00",
+                "untilTime": "00:00"
+              },
+              "optOutFromGalleryChanges": 1,
+              "reviewCount": 559,
+              "countryCode": "eg"
+            }
+          },
+          {
+            "hotel_id": 16478,
+            "accessibilityLabel": "Dusit Thani LakeView Cairo.\n5 out of 5 stars.\nThis is a Preferred property.\n8.6 Excellent 2482 reviews.\n‎New Cairo City‬ • ‎21.3 km from downtown‬.\n Hotel room : 1 bed.\nPrice for 3 nights, 2 adults.\n876 USD.\n+133 USD taxes and charges.",
+            "property": {
+              "currency": "USD",
+              "blockIds": [
+                "1647802_95141166_2_2_0_459298"
+              ],
+              "name": "Dusit Thani LakeView Cairo",
+              "reviewScoreWord": "Excellent",
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/728181233.jpg?k=0e6a7cdfc1fd60c4904d29fec58ebd1cd562f470ca5d76c98a6277707675198e&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/728181233.jpg?k=0e6a7cdfc1fd60c4904d29fec58ebd1cd562f470ca5d76c98a6277707675198e&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/728181233.jpg?k=0e6a7cdfc1fd60c4904d29fec58ebd1cd562f470ca5d76c98a6277707675198e&o="
+              ],
+              "position": 13,
+              "isFirstPage": true,
+              "accuratePropertyClass": 5,
+              "wishlistName": "Cairo",
+              "qualityClass": 0,
+              "latitude": 30.0255285937813,
+              "ufi": -290692,
+              "isPreferred": true,
+              "longitude": 31.4560782909393,
+              "reviewScore": 8.6,
+              "mainPhotoId": 728181233,
+              "checkinDate": "2026-11-19",
+              "propertyClass": 5,
+              "recommendedUnitsConfigurationLabel": "<b>Hotel room</b>: 1 bed",
+              "checkoutDate": "2026-11-22",
+              "checkout": {
+                "fromTime": "00:00",
+                "untilTime": "12:00"
+              },
+              "rankingPosition": 13,
+              "checkin": {
+                "fromTime": "15:00",
+                "untilTime": "00:00"
+              },
+              "priceBreakdown": {
+                "taxExceptions": [],
+                "grossPrice": {
+                  "amountRounded": "$876",
+                  "currency": "USD",
+                  "value": 875.84
+                },
+                "excludedPrice": {
+                  "currency": "USD",
+                  "value": 132.6022
+                },
+                "benefitBadges": []
+              },
+              "id": 16478,
+              "reviewCount": 2482,
+              "countryCode": "eg",
+              "optOutFromGalleryChanges": 1
+            }
+          },
+          {
+            "hotel_id": 16031,
+            "accessibilityLabel": "Pyramisa Hotel Cairo.\n5 out of 5 stars.\nThis is a Preferred property.\n8.7 Excellent 13076 reviews.\n‎1.8 km from downtown‬.\nLate Escape Deal.\n Private suite : 1 bed.\nPrice for 3 nights, 2 adults.\nOriginal price 851 USD. Current price 723 USD..\n+108 USD taxes and charges.\nFree cancellation.\nNo prepayment needed.",
+            "property": {
+              "rankingPosition": 14,
+              "checkin": {
+                "fromTime": "15:00",
+                "untilTime": "00:00"
+              },
+              "priceBreakdown": {
+                "benefitBadges": [
+                  {
+                    "variant": "constructive",
+                    "explanation": "Late Escape Deal",
+                    "identifier": "Late Escape Campaign",
+                    "text": "Late Escape Deal"
+                  }
+                ],
+                "grossPrice": {
+                  "currency": "USD",
+                  "value": 723.1952,
+                  "amountRounded": "$723"
+                },
+                "excludedPrice": {
+                  "currency": "USD",
+                  "value": 108.4793
+                },
+                "taxExceptions": [],
+                "strikethroughPrice": {
+                  "value": 850.8192,
+                  "currency": "USD",
+                  "amountRounded": "$851"
+                }
+              },
+              "id": 16031,
+              "reviewCount": 13076,
+              "countryCode": "eg",
+              "optOutFromGalleryChanges": 0,
+              "qualityClass": 0,
+              "latitude": 30.0377689111787,
+              "ufi": -290692,
+              "isPreferred": true,
+              "reviewScore": 8.7,
+              "longitude": 31.2186479299635,
+              "mainPhotoId": 116989077,
+              "checkinDate": "2026-11-19",
+              "recommendedUnitsConfigurationLabel": "<b>Private suite</b>: 1 bed",
+              "propertyClass": 5,
+              "checkoutDate": "2026-11-22",
+              "checkout": {
+                "fromTime": "00:00",
+                "untilTime": "12:00"
+              },
+              "name": "Pyramisa Hotel Cairo",
+              "reviewScoreWord": "Excellent",
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/116989077.jpg?k=5fd5f30992ce2e69deb83b78cde63b6469b611b75a52e68c99805f6d247ae4cf&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/116989077.jpg?k=5fd5f30992ce2e69deb83b78cde63b6469b611b75a52e68c99805f6d247ae4cf&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/116989077.jpg?k=5fd5f30992ce2e69deb83b78cde63b6469b611b75a52e68c99805f6d247ae4cf&o="
+              ],
+              "position": 14,
+              "isFirstPage": true,
+              "accuratePropertyClass": 5,
+              "wishlistName": "Cairo",
+              "currency": "USD",
+              "blockIds": [
+                "1603102_244505030_2_42_0"
+              ]
+            }
+          },
+          {
+            "hotel_id": 17443327,
+            "accessibilityLabel": "Cairo Downtown Boutiques.\nThis is a Preferred property.\n10 Exceptional 3 reviews.\n‎Downtown Cairo‬ • ‎400 m from downtown‬.\nBreakfast included.\n Hotel room : 1 bed.\nPrice for 3 nights, 2 adults.\n246 USD.\n+2 USD taxes and charges.\nFree cancellation.\nNo prepayment needed.",
+            "property": {
+              "blockIds": [
+                "1744332701_445845335_2_1_0"
+              ],
+              "currency": "USD",
+              "accuratePropertyClass": 0,
+              "wishlistName": "Cairo",
+              "name": "Cairo Downtown Boutiques",
+              "reviewScoreWord": "Exceptional",
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/930543302.jpg?k=397cafbff552856c8bfdcff3578e1e123a3d314192c202a42128431115c91972&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/930543302.jpg?k=397cafbff552856c8bfdcff3578e1e123a3d314192c202a42128431115c91972&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/930543302.jpg?k=397cafbff552856c8bfdcff3578e1e123a3d314192c202a42128431115c91972&o="
+              ],
+              "position": 15,
+              "isFirstPage": true,
+              "mainPhotoId": 930543302,
+              "checkinDate": "2026-11-19",
+              "recommendedUnitsConfigurationLabel": "<b>Hotel room</b>: 1 bed",
+              "propertyClass": 0,
+              "checkoutDate": "2026-11-22",
+              "checkout": {
+                "untilTime": "12:00",
+                "fromTime": "11:30"
+              },
+              "qualityClass": 0,
+              "ufi": -290692,
+              "latitude": 30.048101405773,
+              "isPreferred": true,
+              "longitude": 31.236227058099,
+              "reviewScore": 10,
+              "reviewCount": 3,
+              "countryCode": "eg",
+              "optOutFromGalleryChanges": 0,
+              "rankingPosition": 15,
+              "checkin": {
+                "fromTime": "11:30",
+                "untilTime": "12:00"
+              },
+              "priceBreakdown": {
+                "grossPrice": {
+                  "amountRounded": "$246",
+                  "currency": "USD",
+                  "value": 246
+                },
+                "excludedPrice": {
+                  "currency": "USD",
+                  "value": 2.46000000000009
+                },
+                "benefitBadges": [],
+                "taxExceptions": []
+              },
+              "id": 17443327
+            }
+          },
+          {
+            "hotel_id": 16063,
+            "accessibilityLabel": "Golden Carven Hotel.\n3 out of 5 stars.\nThis is a Preferred property.\n7.5 Good 1013 reviews.\n‎Heliopolis‬ • ‎11 km from downtown‬.\nMobile-only price.\n Hotel room : 2 beds.\nPrice for 3 nights, 2 adults.\nOriginal price 182 USD. Current price 115 USD..\n+17 USD taxes and charges.",
+            "property": {
+              "wishlistName": "Cairo",
+              "accuratePropertyClass": 3,
+              "position": 16,
+              "isFirstPage": true,
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/682032882.jpg?k=2d038414c48c4bcfc128174af9267123c2dba0ca108212693d0ba4c26be52676&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/682032882.jpg?k=2d038414c48c4bcfc128174af9267123c2dba0ca108212693d0ba4c26be52676&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/682032882.jpg?k=2d038414c48c4bcfc128174af9267123c2dba0ca108212693d0ba4c26be52676&o="
+              ],
+              "name": "Golden Carven Hotel",
+              "reviewScoreWord": "Good",
+              "blockIds": [
+                "1606302_422260507_2_2_0"
+              ],
+              "currency": "USD",
+              "optOutFromGalleryChanges": 0,
+              "reviewCount": 1013,
+              "countryCode": "eg",
+              "id": 16063,
+              "priceBreakdown": {
+                "taxExceptions": [],
+                "strikethroughPrice": {
+                  "amountRounded": "$182",
+                  "value": 181.944,
+                  "currency": "USD"
+                },
+                "excludedPrice": {
+                  "value": 17.2486000000001,
+                  "currency": "USD"
+                },
+                "grossPrice": {
+                  "amountRounded": "$115",
+                  "currency": "USD",
+                  "value": 114.9904
+                },
+                "benefitBadges": [
+                  {
+                    "variant": "constructive",
+                    "explanation": "Mobile-only price",
+                    "identifier": "Mobile Rate",
+                    "text": "Mobile-only price"
+                  }
+                ]
+              },
+              "rankingPosition": 16,
+              "checkin": {
+                "fromTime": "11:00",
+                "untilTime": "23:30"
+              },
+              "propertyClass": 3,
+              "recommendedUnitsConfigurationLabel": "<b>Hotel room</b>: 2 beds",
+              "checkout": {
+                "fromTime": "12:00",
+                "untilTime": "13:00"
+              },
+              "checkoutDate": "2026-11-22",
+              "checkinDate": "2026-11-19",
+              "mainPhotoId": 682032882,
+              "isPreferred": true,
+              "reviewScore": 7.5,
+              "longitude": 31.3386948271864,
+              "qualityClass": 0,
+              "ufi": -290692,
+              "latitude": 30.0881822297843
+            }
+          },
+          {
+            "hotel_id": 12556380,
+            "accessibilityLabel": "Logistics 5 Stars.\n7.8 Good 701 reviews.\n‎Nasr City‬ • ‎11.1 km from downtown‬.\nBreakfast included.\n2 beds.\nPrice for 3 nights, 2 adults.\n163 USD.\n+27 USD taxes and charges.",
+            "property": {
+              "reviewScoreWord": "Good",
+              "name": "Logistics 5 Stars",
+              "position": 17,
+              "isFirstPage": true,
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/857551482.jpg?k=2b3e78e675da4e88bded13e650ba586a96c9b960703b0eee68a48577f7d7f812&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/857551482.jpg?k=2b3e78e675da4e88bded13e650ba586a96c9b960703b0eee68a48577f7d7f812&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/857551482.jpg?k=2b3e78e675da4e88bded13e650ba586a96c9b960703b0eee68a48577f7d7f812&o="
+              ],
+              "wishlistName": "Cairo",
+              "isTPI": true,
+              "accuratePropertyClass": 0,
+              "currency": "USD",
+              "blockIds": [
+                "0_0_2_1_0"
+              ],
+              "checkin": {
+                "fromTime": "14:00",
+                "untilTime": "23:00"
+              },
+              "rankingPosition": 17,
+              "id": 12556380,
+              "priceBreakdown": {
+                "excludedPrice": {
+                  "value": 26.8500000000001,
+                  "currency": "USD"
+                },
+                "grossPrice": {
+                  "value": 162.54,
+                  "currency": "USD",
+                  "amountRounded": "$163"
+                },
+                "benefitBadges": [],
+                "taxExceptions": []
+              },
+              "countryCode": "eg",
+              "reviewCount": 701,
+              "optOutFromGalleryChanges": 0,
+              "latitude": 30.06994020804,
+              "ufi": -290692,
+              "qualityClass": 0,
+              "longitude": 31.34751254063,
+              "reviewScore": 7.8,
+              "checkinDate": "2026-11-19",
+              "mainPhotoId": 857551482,
+              "checkout": {
+                "fromTime": "11:00",
+                "untilTime": "12:00"
+              },
+              "checkoutDate": "2026-11-22",
+              "propertyClass": 0,
+              "recommendedUnitsConfigurationLabel": "2 beds"
+            }
+          },
+          {
+            "hotel_id": 16176,
+            "accessibilityLabel": "Swiss Inn Nile Hotel.\n4 out of 5 stars.\n6.9 Pleasant 1285 reviews.\n‎Giza‬ • ‎5.9 km from downtown‬.\n Hotel room : 2 beds.\nPrice for 3 nights, 2 adults.\n227 USD.\n+34 USD taxes and charges.",
+            "property": {
+              "accuratePropertyClass": 4,
+              "wishlistName": "Cairo",
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/610517808.jpg?k=fc895d82b7926a918e70afdd9c429ad572b30d7619028e7edabe760ba856c0a6&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/610517808.jpg?k=fc895d82b7926a918e70afdd9c429ad572b30d7619028e7edabe760ba856c0a6&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/610517808.jpg?k=fc895d82b7926a918e70afdd9c429ad572b30d7619028e7edabe760ba856c0a6&o="
+              ],
+              "position": 18,
+              "isFirstPage": true,
+              "name": "Swiss Inn Nile Hotel",
+              "reviewScoreWord": "Pleasant",
+              "blockIds": [
+                "1617603_123207550_0_42_0"
+              ],
+              "currency": "USD",
+              "optOutFromGalleryChanges": 0,
+              "reviewCount": 1285,
+              "countryCode": "eg",
+              "priceBreakdown": {
+                "benefitBadges": [],
+                "excludedPrice": {
+                  "value": 34.1158000000001,
+                  "currency": "USD"
+                },
+                "grossPrice": {
+                  "amountRounded": "$227",
+                  "currency": "USD",
+                  "value": 227.4384
+                },
+                "taxExceptions": []
+              },
+              "id": 16176,
+              "rankingPosition": 18,
+              "checkin": {
+                "fromTime": "14:00",
+                "untilTime": "18:00"
+              },
+              "propertyClass": 4,
+              "recommendedUnitsConfigurationLabel": "<b>Hotel room</b>: 2 beds",
+              "checkoutDate": "2026-11-22",
+              "checkout": {
+                "fromTime": "08:30",
+                "untilTime": "12:00"
+              },
+              "mainPhotoId": 610517808,
+              "checkinDate": "2026-11-19",
+              "reviewScore": 6.9,
+              "longitude": 31.2151764200462,
+              "qualityClass": 0,
+              "ufi": -290692,
+              "latitude": 29.994333580165
+            }
+          },
+          {
+            "hotel_id": 235262,
+            "accessibilityLabel": "Fairmont Nile City.\n5 out of 5 stars.\nThis is a Preferred property.\n8.5 Very Good 4879 reviews.\n‎3.1 km from downtown‬\n‎Sustainability certification‬.\n Hotel room : 2 beds.\nPrice for 3 nights, 2 adults.\n1210 USD.\n+183 USD taxes and charges.\nFree cancellation.\nNo prepayment needed.",
+            "property": {
+              "accuratePropertyClass": 5,
+              "wishlistName": "Cairo",
+              "photoUrls": [
+                "https://cf.bstatic.com/xdata/images/hotel/square500/914966156.jpg?k=376d77b09c43c875914511c7aea9069c9368794fe4abe9e4581532426b797c6e&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square1024/914966156.jpg?k=376d77b09c43c875914511c7aea9069c9368794fe4abe9e4581532426b797c6e&o=",
+                "https://cf.bstatic.com/xdata/images/hotel/square2000/914966156.jpg?k=376d77b09c43c875914511c7aea9069c9368794fe4abe9e4581532426b797c6e&o="
+              ],
+              "isFirstPage": true,
+              "position": 19,
+              "reviewScoreWord": "Very Good",
+              "name": "Fairmont Nile City",
+              "blockIds": [
+                "23526232_411357634_2_2_0"
+              ],
+              "currency": "USD",
+              "optOutFromGalleryChanges": 0,
+              "countryCode": "eg",
+              "reviewCount": 4879,
+              "priceBreakdown": {
+                "grossPrice": {
+                  "currency": "USD",
+                  "value": 1209.6,
+                  "amountRounded": "$1,210"
+                },
+                "excludedPrice": {
+                  "value": 183.1335,
+                  "currency": "USD"
+                },
+                "benefitBadges": [],
+                "taxExceptions": []
+              },
+              "id": 235262,
+              "checkin": {
+                "untilTime": "00:00",
+                "fromTime": "15:00"
+              },
+              "rankingPosition": 19,
+              "checkoutDate": "2026-11-22",
+              "checkout": {
+                "fromTime": "00:00",
+                "untilTime": "12:00"
+              },
+              "recommendedUnitsConfigurationLabel": "<b>Hotel room</b>: 2 beds",
+              "propertyClass": 5,
+              "mainPhotoId": 914966156,
+              "checkinDate": "2026-11-19",
+              "longitude": 31.2274172902107,
+              "reviewScore": 8.5,
+              "isPreferred": true,
+              "latitude": 30.0714732090877,
+              "ufi": -290692,
+              "qualityClass": 0
+            }
+          }
+        ],
+        "meta": [
+          {
+            "title": "5714 properties"
+          }
+        ],
+        "appear": [
+          {
+            "id": "cma",
+            "component": {
+              "props": {
+                "content": {
+                  "props": {
+                    "items": [
+                      {
+                        "props": {
+                          "component": {
+                            "props": {
+                              "items": [
+                                {
+                                  "props": {
+                                    "text": [
+                                      {
+                                        "text": "Read more on how payments affect the order of listed properties",
+                                        "font": "body_2"
+                                      },
+                                      {
+                                        "font": "strong_2",
+                                        "text": "  ",
+                                        "color": "foreground"
+                                      },
+                                      {
+                                        "linkActions": [
+                                          {
+                                            "props": {
+                                              "url": "booking://webview?url=https%3A%2F%2Fm.booking.com%2Fgeneral.en-us.html%3Faid%3D332731%3Btmpl%3Ddocs%2Fterms-and-conditions"
+                                            }
+                                          }
+                                        ],
+                                        "text": "Learn more",
+                                        "color": "action_foreground",
+                                        "font": "body_2"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ],
+                              "spacing": "spacing_half"
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "props": {}
+                      },
+                      {
+                        "props": {
+                          "component": {
+                            "props": {
+                              "icon": "close",
+                              "tertiaryTintedColor": "foreground",
+                              "accessibilityLabel": "Close",
+                              "variant": "tertiary_tinted"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "fitContentWidth": true
+                  }
+                },
+                "fill": true
+              }
+            }
+          },
+          {
+            "id": "banner_qualityrating",
+            "component": {
+              "props": {
+                "title": "",
+                "text": "Properties with these icons have been awarded Booking.com's quality rating for homes"
+              }
+            }
+          },
+          {
+            "contentUrl": "https://mobile-apps.booking.com/json/mobile.saba?route_path=saba-chat-entrypoint&arrival_date=2026-11-19&categories_filter_additional_data=&departure_date=2026-11-22&dest_ids=-290692&exposure_api_version=2.59&flex_window=0&generate_map_bounding_box=1&guest_qty=2&include_bh_quality_classification=1&include_genius_badge=1&include_rtb=1&include_ski_information=1&location_source=autocomplete&mobile_saba_variant=1&outcome=search_results&reason=new_search&room_qty=1&sb_calendar_open=1&search_type=city&selected_filter_sources=&sort_by=auto&sort_by_source=sort_options&source=startup_page&travel_purpose=&units=metric&offset=0&affiliate_id=332731&attribution_affiliate_id=332731&currency_code=USD&device_id=273805cb41984326bce0560231169fbd&distance_unit=metric&languagecode=en-us&min_saba_version=31&network_type=wifi&notification_auth_status=3&saba_version=179&screen_density=3&temperature_unit=c&user_os=26.6&user_version=69.4-iphone&categories_filter=price%3A%3AUSD-min-max&page=search-results"
+          },
+          {
+            "id": "flight_cross_sell_banner",
+            "component": {
+              "props": {
+                "contentUrl": "https://mobile-apps.booking.com/json/mobile.saba?route_path=cross-sell&arrival_date=2026-11-19&categories_filter_additional_data=&departure_date=2026-11-22&dest_ids=-290692&exposure_api_version=2.59&flex_window=0&generate_map_bounding_box=1&guest_qty=2&include_bh_quality_classification=1&include_genius_badge=1&include_rtb=1&include_ski_information=1&location_source=autocomplete&mobile_saba_variant=1&outcome=search_results&reason=new_search&room_qty=1&sb_calendar_open=1&search_type=city&selected_filter_sources=&sort_by=auto&sort_by_source=sort_options&source=startup_page&travel_purpose=&units=metric&offset=0&affiliate_id=332731&attribution_affiliate_id=332731&currency_code=USD&device_id=273805cb41984326bce0560231169fbd&distance_unit=metric&languagecode=en-us&min_saba_version=31&network_type=wifi&notification_auth_status=3&saba_version=179&screen_density=3&temperature_unit=c&user_os=26.6&user_version=69.4-iphone&categories_filter=price%3A%3AUSD-min-max&component_id=flight_cross_sell_banner",
+                "payload": {
+                  "currency_code": "USD",
+                  "screen_width": 1,
+                  "language_code": "en-us",
+                  "placements": [
+                    {
+                      "client_id": "c027b182-c0a3-4f85-bd04-0815779fac65",
+                      "page": "ACCOMMODATION_SEARCH_RESULTS",
+                      "accommodation_context": {
+                        "children": [],
+                        "check_in": "2026-11-19",
+                        "check_out": "2026-11-22",
+                        "adults": 2
+                      },
+                      "placement_name": "IN_FEED_BANNER",
+                      "destination_location": {
+                        "ufi": -290692,
+                        "cc1": "eg"
+                      }
+                    }
+                  ],
+                  "display_mode": "STANDARD",
+                  "header_override": {
+                    "X-Booking-CCXP-Version": "2.59",
+                    "X-Booking-Affiliate-Id": 332731,
+                    "X-Booking-Deeplink-Affiliate-Id": 0
+                  }
+                },
+                "method": "post"
+              }
+            }
+          },
+          {
+            "component": {
+              "props": {
+                "text": "Get instant access to our Genius loyalty program and enjoy discounts at properties worldwide.",
+                "title": "Sign in and save money"
+              }
+            },
+            "id": "signin_now"
+          },
+          {
+            "component": {
+              "props": {
+                "id": "attractions_cross_sell",
+                "component": {
+                  "props": {
+                    "contentUrl": "https://mobile-apps.booking.com/json/mobile.saba?route_path=cross-sell&arrival_date=2026-11-19&categories_filter_additional_data=&departure_date=2026-11-22&dest_ids=-290692&exposure_api_version=2.59&flex_window=0&generate_map_bounding_box=1&guest_qty=2&include_bh_quality_classification=1&include_genius_badge=1&include_rtb=1&include_ski_information=1&location_source=autocomplete&mobile_saba_variant=1&outcome=search_results&reason=new_search&room_qty=1&sb_calendar_open=1&search_type=city&selected_filter_sources=&sort_by=auto&sort_by_source=sort_options&source=startup_page&travel_purpose=&units=metric&offset=0&affiliate_id=332731&attribution_affiliate_id=332731&currency_code=USD&device_id=273805cb41984326bce0560231169fbd&distance_unit=metric&languagecode=en-us&min_saba_version=31&network_type=wifi&notification_auth_status=3&saba_version=179&screen_density=3&temperature_unit=c&user_os=26.6&user_version=69.4-iphone&categories_filter=price%3A%3AUSD-min-max&component_id=attractions_cross_sell",
+                    "method": "post",
+                    "payload": {
+                      "language_code": "en-us",
+                      "placements": [
+                        {
+                          "accommodation_context": {
+                            "children": [],
+                            "adults": 2,
+                            "check_out": "2026-11-22",
+                            "check_in": "2026-11-19"
+                          },
+                          "placement_name": "IN_FEED_ATTRACTION_BANNER",
+                          "destination_location": {
+                            "cc1": "eg",
+                            "ufi": -290692
+                          },
+                          "page": "ACCOMMODATION_SEARCH_RESULTS",
+                          "client_id": "ca12b4f7-70f3-46a8-aeca-71a4b9153ab6"
+                        }
+                      ],
+                      "screen_width": 1,
+                      "currency_code": "USD",
+                      "header_override": {
+                        "X-Booking-Deeplink-Affiliate-Id": 0,
+                        "X-Booking-Affiliate-Id": 332731,
+                        "X-Booking-CCXP-Version": "2.59"
+                      },
+                      "display_mode": "STANDARD"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]
