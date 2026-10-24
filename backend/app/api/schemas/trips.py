@@ -16,8 +16,8 @@ class GenerateTripRequest(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    departure_city: StrictStr = Field(min_length=1)
-    destination_city: StrictStr = Field(min_length=1)
+    departure_city: StrictStr = Field(min_length=1, max_length=200)
+    destination_city: StrictStr = Field(min_length=1, max_length=200)
     start_date: date
     return_date: date
     adults: StrictInt = Field(ge=1, le=4)

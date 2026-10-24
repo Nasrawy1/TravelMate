@@ -132,6 +132,68 @@ def test_country_qualifier_city_passes_phase1_validation() -> None:
     assert_error(response, status_code=501, code="NOT_IMPLEMENTED")
 
 
+def test_empty_city_returns_validation_error() -> None:
+    with make_client(authenticated=True) as client:
+        response = client.post(
+            "/api/v1/trips/generate",
+            json=request_payload(departure_city=""),
+        )
+
+    body = assert_error(response, status_code=422, code="VALIDATION_ERROR")
+    assert "departure_city" in {
+        item["field"] for item in body["error"]["details"]["fields"]
+    }
+
+
+def test_whitespace_only_city_returns_validation_error() -> None:
+    with make_client(authenticated=True) as client:
+        response = client.post(
+            "/api/v1/trips/generate",
+            json=request_payload(destination_city="   "),
+        )
+
+    body = assert_error(response, status_code=422, code="VALIDATION_ERROR")
+    assert "destination_city" in {
+        item["field"] for item in body["error"]["details"]["fields"]
+    }
+
+
+def test_201_char_city_returns_validation_error() -> None:
+    with make_client(authenticated=True) as client:
+        response = client.post(
+            "/api/v1/trips/generate",
+            json=request_payload(destination_city="A" * 201),
+        )
+
+    body = assert_error(response, status_code=422, code="VALIDATION_ERROR")
+    assert "destination_city" in {
+        item["field"] for item in body["error"]["details"]["fields"]
+    }
+
+
+def test_200_char_city_passes_phase1_validation() -> None:
+    with make_client(authenticated=True) as client:
+        response = client.post(
+            "/api/v1/trips/generate",
+            json=request_payload(destination_city="A" * 200),
+        )
+
+    assert_error(response, status_code=501, code="NOT_IMPLEMENTED")
+
+
+def test_malformed_date_returns_validation_error() -> None:
+    with make_client(authenticated=True) as client:
+        response = client.post(
+            "/api/v1/trips/generate",
+            json=request_payload(start_date="2026-13-40"),
+        )
+
+    body = assert_error(response, status_code=422, code="VALIDATION_ERROR")
+    assert "start_date" in {
+        item["field"] for item in body["error"]["details"]["fields"]
+    }
+
+
 def test_past_start_date_returns_400() -> None:
     yesterday = datetime.now(timezone.utc).date() - timedelta(days=1)
     with make_client(authenticated=True) as client:
@@ -293,3 +355,5 @@ def test_health_still_returns_200() -> None:
 
     assert response.status_code == 200
     assert response.json() == {"status": "ok", "service": "travelmate-api"}
+    assert "X-Request-ID" in response.headers
+    assert len(response.headers["X-Request-ID"]) >= 8
