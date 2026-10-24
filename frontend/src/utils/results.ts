@@ -12,6 +12,7 @@ export function formatMoney(value: number | null): string {
   return value === null || !Number.isFinite(value) ? 'Unknown' : money.format(value)
 }
 export function providerLabel(context: ResultsContext): string {
+  if (context.data_mode === 'offline_demo') return 'Demo price'
   // Fixture mode always wins, even if an invalid caller supplied live_evidence=true.
   return context.data_mode === 'structural_mock' ? 'Sample price' : context.live_evidence === true ? 'Live' : 'Unverified price'
 }
@@ -54,7 +55,7 @@ export function expenseLabel(item: CostItem, response: TripResult): string {
     const activity = response.itinerary[dayIndex]?.activities.find(activity => activity.order === item.activity_ref?.order)
     if (activity) return `${activity.name} · Day ${dayIndex + 1}`
   }
-  const labels: Record<string, string> = { flight: 'Round-trip flights', hotel: 'Hotel stay', food: 'Food', transport: 'Local transport', 'hotel-tax': 'Hotel taxes and fees' }
+  const labels: Record<string, string> = { flight: 'Round-trip flights', hotel: 'Hotel stay', food: 'Food', transport: 'Local transport', 'hotel-tax': 'Hotel taxes and fees', 'flight-tax': 'Flight taxes and fees' }
   return Object.hasOwn(labels, item.label) ? labels[item.label] : item.label
 }
 export function warningTitle(code: string): string {

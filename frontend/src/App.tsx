@@ -31,8 +31,8 @@ export default function App() {
         <Route path="forgot-password" element={<ForgotPasswordPage />} />
         <Route path="reset-password" element={<ResetPasswordPage />} />
       </Route>
+      <Route path="offline-demo" element={<OfflineDemoPage />} />
       <Route element={<AppLayout />}>
-        <Route path="offline-demo" element={<OfflineDemoPage />} />
         <Route path="*" element={<PlaceholderPage title="Page not found">Use the navigation to return to a TravelMate page.</PlaceholderPage>} />
       </Route>
     </Routes>

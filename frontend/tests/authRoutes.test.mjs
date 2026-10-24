@@ -25,7 +25,12 @@ const { default: App } = await import(pathToFileURL(fileURLToPath(compiled)).hre
 const render = path => renderToStaticMarkup(createElement(MemoryRouter, { initialEntries: [path] }, createElement(App)))
 
 test('configured direct Offline Demo renders without creating the Auth client', () => {
-  assert.match(render('/offline-demo'), /No fixtures are loaded yet/)
+  for (const trip of ['rome', 'paris', 'barcelona']) {
+    const html = render(`/offline-demo?trip=${trip}`)
+    assert.match(html, /DEMO TRIP · SAMPLE DATA/)
+    assert.match(html, /Demo price/)
+    assert.ok(!/>Live</.test(html))
+  }
 })
 test('unknown routes do not initialize online Auth', () => {
   assert.match(render('/unknown'), /Page not found/)

@@ -1,0 +1,309 @@
+{
+  "id": "barcelona",
+  "label": "Dubai → Barcelona",
+  "provenance": {
+    "label": "DEMO",
+    "data_mode": "offline_demo",
+    "live_evidence": false,
+    "contract_version": "0.4",
+    "validation_today_utc": "2026-10-15",
+    "source_archive": "docs/design/des-02/TravelMate-design-source.zip",
+    "source_entry": "TravelMate-design-source/screens/DemoTrip.dc.html",
+    "notice": "Sample trip for preview. Prices are examples, not live, and nothing is sent or saved."
+  },
+  "request": {
+    "departure_city": "Dubai",
+    "destination_city": "Barcelona",
+    "start_date": "2027-01-15",
+    "return_date": "2027-01-19",
+    "adults": 3,
+    "budget_usd": 2500
+  },
+  "response": {
+    "generation_status": "complete",
+    "live_integration_status": "price_received",
+    "trip": {
+      "departure_city": "Dubai",
+      "destination_city": "Barcelona",
+      "start_date": "2027-01-15",
+      "return_date": "2027-01-19",
+      "adults": 3,
+      "nights": 4
+    },
+    "itinerary": [
+      {
+        "date": "2027-01-15",
+        "empty_day_reason": null,
+        "activities": [
+          {
+            "order": 1,
+            "name": "Gothic Quarter walk",
+            "area": "Barri Gòtic",
+            "description": "Narrow lanes and tapas.",
+            "cost": {
+              "amount_usd": 0,
+              "kind": "estimate",
+              "coverage": "all_travelers"
+            }
+          }
+        ]
+      },
+      {
+        "date": "2027-01-16",
+        "empty_day_reason": null,
+        "activities": [
+          {
+            "order": 1,
+            "name": "Sagrada Família",
+            "area": "Eixample",
+            "description": "Timed tickets; allow two hours.",
+            "cost": {
+              "amount_usd": 105,
+              "kind": "estimate",
+              "coverage": "all_travelers"
+            }
+          }
+        ]
+      },
+      {
+        "date": "2027-01-17",
+        "empty_day_reason": null,
+        "activities": [
+          {
+            "order": 1,
+            "name": "Park Güell",
+            "area": "Gràcia",
+            "description": "Monumental zone needs a ticket.",
+            "cost": {
+              "amount_usd": 45,
+              "kind": "estimate",
+              "coverage": "all_travelers"
+            }
+          }
+        ]
+      },
+      {
+        "date": "2027-01-18",
+        "empty_day_reason": null,
+        "activities": [
+          {
+            "order": 1,
+            "name": "La Boqueria market",
+            "area": "La Rambla",
+            "description": "Breakfast at a market bar.",
+            "cost": {
+              "amount_usd": 35,
+              "kind": "estimate",
+              "coverage": "all_travelers"
+            }
+          },
+          {
+            "order": 2,
+            "name": "Barceloneta beach",
+            "area": "Barceloneta",
+            "description": "Seafront walk.",
+            "cost": {
+              "amount_usd": 0,
+              "kind": "estimate",
+              "coverage": "all_travelers"
+            }
+          }
+        ]
+      },
+      {
+        "date": "2027-01-19",
+        "empty_day_reason": "Travel day: transfer to the airport and fly home.",
+        "activities": []
+      }
+    ],
+    "travel_options": {
+      "flights": {
+        "status": "live",
+        "offers": [
+          {
+            "id": "demo-bcn-flight",
+            "source": "demo-sample",
+            "retrieved_at": "2026-10-15T09:00:00Z",
+            "price": {
+              "amount_usd": 1350,
+              "kind": "provider",
+              "coverage": "entire_trip_all_travelers"
+            },
+            "taxes": {
+              "status": "unknown",
+              "additional_amount_usd": null
+            },
+            "airline": "Example Wings",
+            "departure_airport_code": "DXB",
+            "arrival_airport_code": "BCN",
+            "outbound_departure_at": "2027-01-15T03:15:00Z",
+            "return_departure_at": "2027-01-19T13:40:00Z",
+            "adults": 3
+          }
+        ]
+      },
+      "hotels": {
+        "status": "unavailable",
+        "offers": []
+      }
+    },
+    "budget": {
+      "budget_usd": 2500,
+      "selected_flight_offer_id": "demo-bcn-flight",
+      "selected_hotel_offer_id": null,
+      "cost_items": [
+        {
+          "id": "flight",
+          "category": "flights",
+          "label": "flight",
+          "amount_usd": 1350,
+          "kind": "provider",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Selected sample round-trip quote for all adults.",
+          "source_offer_id": "demo-bcn-flight",
+          "activity_ref": null
+        },
+        {
+          "id": "hotel",
+          "category": "accommodation",
+          "label": "hotel",
+          "amount_usd": null,
+          "kind": "unknown",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "No comparable hotel quote.",
+          "source_offer_id": null,
+          "activity_ref": null
+        },
+        {
+          "id": "flight-tax",
+          "category": "taxes_fees",
+          "label": "flight-tax",
+          "amount_usd": null,
+          "kind": "unknown",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Additional mandatory flight fees could not be established.",
+          "source_offer_id": "demo-bcn-flight",
+          "activity_ref": null
+        },
+        {
+          "id": "activity-2027-01-15-1",
+          "category": "activities",
+          "label": "activity-2027-01-15-1",
+          "amount_usd": 0,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample whole-group activity estimate.",
+          "source_offer_id": null,
+          "activity_ref": {
+            "date": "2027-01-15",
+            "order": 1
+          }
+        },
+        {
+          "id": "activity-2027-01-16-1",
+          "category": "activities",
+          "label": "activity-2027-01-16-1",
+          "amount_usd": 105,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample whole-group activity estimate.",
+          "source_offer_id": null,
+          "activity_ref": {
+            "date": "2027-01-16",
+            "order": 1
+          }
+        },
+        {
+          "id": "activity-2027-01-17-1",
+          "category": "activities",
+          "label": "activity-2027-01-17-1",
+          "amount_usd": 45,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample whole-group activity estimate.",
+          "source_offer_id": null,
+          "activity_ref": {
+            "date": "2027-01-17",
+            "order": 1
+          }
+        },
+        {
+          "id": "activity-2027-01-18-1",
+          "category": "activities",
+          "label": "activity-2027-01-18-1",
+          "amount_usd": 35,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample whole-group activity estimate.",
+          "source_offer_id": null,
+          "activity_ref": {
+            "date": "2027-01-18",
+            "order": 1
+          }
+        },
+        {
+          "id": "activity-2027-01-18-2",
+          "category": "activities",
+          "label": "activity-2027-01-18-2",
+          "amount_usd": 0,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample whole-group activity estimate.",
+          "source_offer_id": null,
+          "activity_ref": {
+            "date": "2027-01-18",
+            "order": 2
+          }
+        },
+        {
+          "id": "food",
+          "category": "food",
+          "label": "food",
+          "amount_usd": 480,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample estimate: about USD 40 per adult per day.",
+          "source_offer_id": null,
+          "activity_ref": null
+        },
+        {
+          "id": "transport",
+          "category": "local_transport",
+          "label": "transport",
+          "amount_usd": 60,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample estimate for metro and airport bus.",
+          "source_offer_id": null,
+          "activity_ref": null
+        }
+      ],
+      "provider_subtotal_usd": 1350.0,
+      "estimated_subtotal_usd": 725.0,
+      "projected_total_usd": null,
+      "status": "uncertain",
+      "missing_categories": [
+        "accommodation",
+        "taxes_fees"
+      ],
+      "notes": [
+        "Some taxes and fees are unknown.",
+        "Significant costs are missing."
+      ]
+    },
+    "warnings": [
+      {
+        "code": "HOTELS_UNAVAILABLE",
+        "message": "No sample hotel offer matched this trip."
+      },
+      {
+        "code": "TAXES_UNKNOWN",
+        "message": "Some mandatory taxes and fees are unknown."
+      },
+      {
+        "code": "BUDGET_INCOMPLETE",
+        "message": "Some significant costs are missing."
+      }
+    ]
+  }
+}

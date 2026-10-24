@@ -1,0 +1,325 @@
+{
+  "id": "rome",
+  "label": "Istanbul → Rome",
+  "provenance": {
+    "label": "DEMO",
+    "data_mode": "offline_demo",
+    "live_evidence": false,
+    "contract_version": "0.4",
+    "validation_today_utc": "2026-10-15",
+    "source_archive": "docs/design/des-02/TravelMate-design-source.zip",
+    "source_entry": "TravelMate-design-source/screens/DemoTrip.dc.html",
+    "notice": "Sample trip for preview. Prices are examples, not live, and nothing is sent or saved."
+  },
+  "request": {
+    "departure_city": "Istanbul",
+    "destination_city": "Rome",
+    "start_date": "2026-11-10",
+    "return_date": "2026-11-13",
+    "adults": 2,
+    "budget_usd": 1200
+  },
+  "response": {
+    "generation_status": "complete",
+    "live_integration_status": "price_received",
+    "trip": {
+      "departure_city": "Istanbul",
+      "destination_city": "Rome",
+      "start_date": "2026-11-10",
+      "return_date": "2026-11-13",
+      "adults": 2,
+      "nights": 3
+    },
+    "itinerary": [
+      {
+        "date": "2026-11-10",
+        "empty_day_reason": null,
+        "activities": [
+          {
+            "order": 1,
+            "name": "Monti evening walk",
+            "area": "Monti",
+            "description": "Lanes, piazzas and a first dinner nearby.",
+            "cost": {
+              "amount_usd": 0,
+              "kind": "estimate",
+              "coverage": "all_travelers"
+            }
+          }
+        ]
+      },
+      {
+        "date": "2026-11-11",
+        "empty_day_reason": null,
+        "activities": [
+          {
+            "order": 1,
+            "name": "Colosseum and Roman Forum",
+            "area": "Centro Storico",
+            "description": "Timed entry; arrive early.",
+            "cost": {
+              "amount_usd": 70,
+              "kind": "estimate",
+              "coverage": "all_travelers"
+            }
+          },
+          {
+            "order": 2,
+            "name": "Trastevere at dusk",
+            "area": "Trastevere",
+            "description": "Walk across the river for dinner.",
+            "cost": {
+              "amount_usd": 0,
+              "kind": "estimate",
+              "coverage": "all_travelers"
+            }
+          }
+        ]
+      },
+      {
+        "date": "2026-11-12",
+        "empty_day_reason": null,
+        "activities": [
+          {
+            "order": 1,
+            "name": "Vatican Museums",
+            "area": "Vatican City",
+            "description": "Book ahead; allow about three hours.",
+            "cost": {
+              "amount_usd": 80,
+              "kind": "estimate",
+              "coverage": "all_travelers"
+            }
+          },
+          {
+            "order": 2,
+            "name": "Trevi Fountain",
+            "area": "Tridente",
+            "description": "Quieter after dark.",
+            "cost": {
+              "amount_usd": 0,
+              "kind": "estimate",
+              "coverage": "all_travelers"
+            }
+          }
+        ]
+      },
+      {
+        "date": "2026-11-13",
+        "empty_day_reason": "Travel day: check out and fly home.",
+        "activities": []
+      }
+    ],
+    "travel_options": {
+      "flights": {
+        "status": "live",
+        "offers": [
+          {
+            "id": "demo-rome-flight-a",
+            "source": "demo-sample",
+            "retrieved_at": "2026-10-15T09:00:00Z",
+            "price": {
+              "amount_usd": 380,
+              "kind": "provider",
+              "coverage": "entire_trip_all_travelers"
+            },
+            "taxes": {
+              "status": "included",
+              "additional_amount_usd": 0
+            },
+            "airline": "Sample Air",
+            "departure_airport_code": "IST",
+            "arrival_airport_code": "FCO",
+            "outbound_departure_at": "2026-11-10T06:30:00Z",
+            "return_departure_at": "2026-11-13T15:45:00Z",
+            "adults": 2
+          },
+          {
+            "id": "demo-rome-flight-b",
+            "source": "demo-sample",
+            "retrieved_at": "2026-10-15T09:00:00Z",
+            "price": {
+              "amount_usd": 360,
+              "kind": "provider",
+              "coverage": "entire_trip_all_travelers"
+            },
+            "taxes": {
+              "status": "additional_known",
+              "additional_amount_usd": 45
+            },
+            "airline": "Example Wings",
+            "departure_airport_code": "IST",
+            "arrival_airport_code": "FCO",
+            "outbound_departure_at": "2026-11-10T09:10:00Z",
+            "return_departure_at": "2026-11-13T18:20:00Z",
+            "adults": 2
+          }
+        ]
+      },
+      "hotels": {
+        "status": "live",
+        "offers": [
+          {
+            "id": "demo-rome-hotel",
+            "source": "demo-sample",
+            "retrieved_at": "2026-10-15T09:00:00Z",
+            "price": {
+              "amount_usd": 390,
+              "kind": "provider",
+              "coverage": "entire_trip_all_travelers"
+            },
+            "taxes": {
+              "status": "additional_known",
+              "additional_amount_usd": 24
+            },
+            "name": "Sample Hotel Monti",
+            "area": "Monti",
+            "check_in": "2026-11-10",
+            "check_out": "2026-11-13",
+            "occupancy_adults": 2,
+            "room_qty": 1
+          }
+        ]
+      }
+    },
+    "budget": {
+      "budget_usd": 1200,
+      "selected_flight_offer_id": "demo-rome-flight-a",
+      "selected_hotel_offer_id": "demo-rome-hotel",
+      "cost_items": [
+        {
+          "id": "flight",
+          "category": "flights",
+          "label": "flight",
+          "amount_usd": 380,
+          "kind": "provider",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Selected sample round-trip quote for all adults.",
+          "source_offer_id": "demo-rome-flight-a",
+          "activity_ref": null
+        },
+        {
+          "id": "hotel",
+          "category": "accommodation",
+          "label": "hotel",
+          "amount_usd": 390,
+          "kind": "provider",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Selected sample quote for all nights and adults.",
+          "source_offer_id": "demo-rome-hotel",
+          "activity_ref": null
+        },
+        {
+          "id": "hotel-tax",
+          "category": "taxes_fees",
+          "label": "hotel-tax",
+          "amount_usd": 24,
+          "kind": "provider",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Additional mandatory hotel fees excluded from the selected base quote.",
+          "source_offer_id": "demo-rome-hotel",
+          "activity_ref": null
+        },
+        {
+          "id": "activity-2026-11-10-1",
+          "category": "activities",
+          "label": "activity-2026-11-10-1",
+          "amount_usd": 0,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample whole-group activity estimate.",
+          "source_offer_id": null,
+          "activity_ref": {
+            "date": "2026-11-10",
+            "order": 1
+          }
+        },
+        {
+          "id": "activity-2026-11-11-1",
+          "category": "activities",
+          "label": "activity-2026-11-11-1",
+          "amount_usd": 70,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample whole-group activity estimate.",
+          "source_offer_id": null,
+          "activity_ref": {
+            "date": "2026-11-11",
+            "order": 1
+          }
+        },
+        {
+          "id": "activity-2026-11-11-2",
+          "category": "activities",
+          "label": "activity-2026-11-11-2",
+          "amount_usd": 0,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample whole-group activity estimate.",
+          "source_offer_id": null,
+          "activity_ref": {
+            "date": "2026-11-11",
+            "order": 2
+          }
+        },
+        {
+          "id": "activity-2026-11-12-1",
+          "category": "activities",
+          "label": "activity-2026-11-12-1",
+          "amount_usd": 80,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample whole-group activity estimate.",
+          "source_offer_id": null,
+          "activity_ref": {
+            "date": "2026-11-12",
+            "order": 1
+          }
+        },
+        {
+          "id": "activity-2026-11-12-2",
+          "category": "activities",
+          "label": "activity-2026-11-12-2",
+          "amount_usd": 0,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample whole-group activity estimate.",
+          "source_offer_id": null,
+          "activity_ref": {
+            "date": "2026-11-12",
+            "order": 2
+          }
+        },
+        {
+          "id": "food",
+          "category": "food",
+          "label": "food",
+          "amount_usd": 200,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample estimate: about USD 25 per adult per day.",
+          "source_offer_id": null,
+          "activity_ref": null
+        },
+        {
+          "id": "transport",
+          "category": "local_transport",
+          "label": "transport",
+          "amount_usd": 40,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample estimate for metro and airport train.",
+          "source_offer_id": null,
+          "activity_ref": null
+        }
+      ],
+      "provider_subtotal_usd": 794.0,
+      "estimated_subtotal_usd": 390.0,
+      "projected_total_usd": 1184.0,
+      "status": "within_budget",
+      "missing_categories": [],
+      "notes": []
+    },
+    "warnings": []
+  }
+}
