@@ -34,6 +34,47 @@ def make_client(*, authenticated: bool = False) -> TestClient:
     )
 
 
+@pytest.fixture(autouse=True)
+def offline_generation_adapters(monkeypatch) -> None:
+    """Keep request-policy tests offline while exercising the real response path."""
+    from app.api.routes import trips
+
+    def search(_trip_request, **_kwargs):
+        unavailable = {"status": "unavailable", "public_offers": [], "offers": []}
+        return {
+            "status": "ok", "flights": unavailable, "hotels": unavailable,
+            "report_slice": {"flights_data": {}, "hotels_data": []},
+            "flight_candidates": [], "hotel_candidates": [], "warnings": [],
+        }
+
+    def itinerary(trip_request, *_args, **_kwargs):
+        start = date.fromisoformat(trip_request["start_date"])
+        nights = (date.fromisoformat(trip_request["return_date"]) - start).days
+        days, activities = [], []
+        for offset in range(nights + 1):
+            current = start + timedelta(days=offset)
+            travel_day = offset in (0, nights)
+            day_activities = [] if travel_day else [{
+                "order": 1, "name": "Museum", "area": "Center",
+                "description": "Visit the museum.",
+                "cost": {"amount_usd": None, "kind": "unknown", "coverage": None},
+            }]
+            days.append({
+                "date": current.isoformat(), "activities": day_activities,
+                "empty_day_reason": "Travel day." if travel_day else None,
+            })
+            if day_activities:
+                activities.append({
+                    "label": "Museum", "kind": "unknown", "amount_usd": None,
+                    "activity_ref": {"date": current.isoformat(), "order": 1},
+                    "basis": "No structured activity price was supplied.",
+                })
+        return {"status": "ok", "itinerary": days, "budget_activities": activities, "warnings": []}
+
+    monkeypatch.setattr(trips, "search_travel", search)
+    monkeypatch.setattr(trips, "generate_itinerary", itinerary)
+
+
 def assert_error(response, *, status_code: int, code: str) -> dict:
     assert response.status_code == status_code
     body = response.json()
@@ -44,7 +85,7 @@ def assert_error(response, *, status_code: int, code: str) -> dict:
     return body
 
 
-def test_valid_request_with_auth_returns_temporary_501() -> None:
+def test_valid_request_with_auth_returns_generation_response() -> None:
     with make_client(authenticated=True) as client:
         response = client.post(
             "/api/v1/trips/generate",
@@ -52,10 +93,8 @@ def test_valid_request_with_auth_returns_temporary_501() -> None:
             headers={"Authorization": "Bearer test-token"},
         )
 
-    body = assert_error(response, status_code=501, code="NOT_IMPLEMENTED")
-    assert body["error"]["message"] == (
-        "Adapter and AI integration pending (API-04 / API-05)."
-    )
+    assert response.status_code == 200
+    assert response.json()["generation_status"] == "complete"
 
 
 def test_exactly_one_night_passes() -> None:
@@ -66,7 +105,7 @@ def test_exactly_one_night_passes() -> None:
             json=request_payload(return_date=(start + timedelta(days=1)).isoformat()),
         )
 
-    assert_error(response, status_code=501, code="NOT_IMPLEMENTED")
+    assert response.status_code == 200
 
 
 def test_exactly_seven_nights_passes() -> None:
@@ -77,7 +116,7 @@ def test_exactly_seven_nights_passes() -> None:
             json=request_payload(return_date=(start + timedelta(days=7)).isoformat()),
         )
 
-    assert_error(response, status_code=501, code="NOT_IMPLEMENTED")
+    assert response.status_code == 200
 
 
 def test_missing_required_adults_returns_validation_error() -> None:
@@ -109,7 +148,7 @@ def test_unrecognized_city_passes_phase1_validation() -> None:
             json=request_payload(destination_city="Atlantis"),
         )
 
-    assert_error(response, status_code=501, code="NOT_IMPLEMENTED")
+    assert response.status_code == 200
 
 
 def test_unicode_city_passes_phase1_validation() -> None:
@@ -119,7 +158,7 @@ def test_unicode_city_passes_phase1_validation() -> None:
             json=request_payload(destination_city="العلا"),
         )
 
-    assert_error(response, status_code=501, code="NOT_IMPLEMENTED")
+    assert response.status_code == 200
 
 
 def test_country_qualifier_city_passes_phase1_validation() -> None:
@@ -129,7 +168,7 @@ def test_country_qualifier_city_passes_phase1_validation() -> None:
             json=request_payload(destination_city="Paris, France"),
         )
 
-    assert_error(response, status_code=501, code="NOT_IMPLEMENTED")
+    assert response.status_code == 200
 
 
 def test_empty_city_returns_validation_error() -> None:
@@ -178,7 +217,7 @@ def test_200_char_city_passes_phase1_validation() -> None:
             json=request_payload(destination_city="A" * 200),
         )
 
-    assert_error(response, status_code=501, code="NOT_IMPLEMENTED")
+    assert response.status_code == 200
 
 
 def test_malformed_date_returns_validation_error() -> None:
@@ -328,7 +367,7 @@ def test_positive_subcent_budget_rounds_to_cents_and_passes() -> None:
             headers={"Content-Type": "application/json"},
         )
 
-    assert_error(response, status_code=501, code="NOT_IMPLEMENTED")
+    assert response.status_code == 200
 
 
 def test_missing_authorization_returns_401_with_request_id() -> None:

@@ -60,21 +60,10 @@ python -m pytest
 
 ## BE-03 — Generate Endpoint
 
-### Phase 1 (this branch, complete)
+### Integrated endpoint
 
-- `POST /api/v1/trips/generate` requires a Supabase bearer token verified by BE-02.
-- Request validation covers `departure_city` and `destination_city` (1–200 characters), future UTC dates, 1–7 nights, 1–4 adults, and a positive Decimal budget.
-- `trip_type`, `one_way`, `currency`, and all other extra fields are rejected with `422 VALIDATION_ERROR`.
-- Valid requests currently return `501 NOT_IMPLEMENTED` with the standard error envelope and `X-Request-ID`. This is a temporary scaffold code and is not listed in `api-contracts.md` §5.
-- City resolution, including the adapter's fixed 80-city allowlist and ambiguity rejection, belongs to Ziyad's `search_travel` / `generate_itinerary` adapter flow, not BE-03 Phase 1 validation.
+`POST /api/v1/trips/generate` requires a Supabase bearer token verified by BE-02. It validates the six public request fields, calls the travel and itinerary adapters in worker threads with request and deadline context, selects eligible offers, and uses BE-04 `calculate_budget` as the authoritative ledger and total calculator. Successful responses follow `docs/api-contracts.md` §4. The endpoint does not persist a trip or return a trip ID.
 
-### Phase 2 (pending `details.fields` fix)
+Adapter errors are mapped to the common error envelope without forwarding raw adapter messages. Unsupported locations map to `400 UNSUPPORTED_LOCATION`, adapter input errors to `422 VALIDATION_ERROR`, timeouts to `504 GENERATION_TIMEOUT`, provider unavailability to `503 PROVIDER_UNAVAILABLE`, rate limits to `429 RATE_LIMITED`, and invalid AI output to `502 AI_GENERATION_FAILED`. If AI succeeds while travel categories are unavailable, generation returns 200 with unavailable categories and warnings.
 
-The travel and AI adapters from PR #25 are already merged on `main`; Phase 2 integration is pending the adapter `details.fields` fix. The generation endpoint will:
-
-- Call `search_travel` and `generate_itinerary` through `run_in_threadpool`, passing `deadline_at` and `request_id`.
-- Call BE-04 `calculate_budget` for the authoritative expense ledger and totals.
-- Build the complete HTTP 200 response defined by `api-contracts.md` §4.
-- Map adapter errors: `unsupported_search` → `400 UNSUPPORTED_LOCATION`, `invalid_input` → `422 VALIDATION_ERROR`, `timeout` → `504`, `unavailable` → `503`, and `rate_limited` → `429`.
-- Preserve partial success: return 200 with warnings when AI generation succeeds despite unavailable travel categories.
-- Add end-to-end tests for the integrated generation path and its failure cases.
+The travel adapter may write its local cache file (`travelmate_cache.json`) even when `save_report=False`. This cache side effect is outside the trip-persistence boundary; generation does not write to Supabase.
