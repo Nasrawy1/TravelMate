@@ -1,0 +1,83 @@
+{
+  "request_id": "tm-20261020001307-906a0090",
+  "generated_at": "2026-10-20T00:13:25Z",
+  "chain_checks": {
+    "final_status": "success",
+    "final_error_code": null,
+    "hotel_offers_match_dates": true,
+    "hotel_offers_match_adults_and_rooms": true,
+    "hotel_offers_count": 20,
+    "flight_date_parameter_honored": false,
+    "eligible_exact_date_flights": 0,
+    "ai_itinerary_status": "success",
+    "ai_itinerary_dates": [
+      "2026-11-19",
+      "2026-11-20",
+      "2026-11-21",
+      "2026-11-22"
+    ],
+    "provider_calls": [
+      {
+        "service": "skyscanner_route",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "retrieved_at": "2026-10-20T00:13:11Z",
+        "rate_limit": {
+          "x-ratelimit-requests-limit": "20",
+          "x-ratelimit-requests-remaining": "2",
+          "x-ratelimit-requests-reset": "2211745",
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499982",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2211745"
+        }
+      },
+      {
+        "service": "exchange_rates",
+        "cache_status": "refresh",
+        "http_status": null,
+        "retrieved_at": "2026-10-20T00:13:11Z",
+        "rate_limit": null
+      },
+      {
+        "service": "skyscanner_route",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "retrieved_at": "2026-10-20T00:13:18Z",
+        "rate_limit": {
+          "x-ratelimit-requests-limit": "20",
+          "x-ratelimit-requests-remaining": "1",
+          "x-ratelimit-requests-reset": "2211738",
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499981",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2211738"
+        }
+      },
+      {
+        "service": "booking_hotels",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "retrieved_at": "2026-10-20T00:13:21Z",
+        "rate_limit": {
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499986",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2211774",
+          "x-ratelimit-premium-limit": "50",
+          "x-ratelimit-premium-remaining": "50",
+          "x-ratelimit-premium-reset": "2211774",
+          "x-ratelimit-requests-limit": "20",
+          "x-ratelimit-requests-remaining": "6",
+          "x-ratelimit-requests-reset": "2211774"
+        }
+      }
+    ]
+  },
+  "files": {
+    "01_inputs.json": "63f7aceba74940e6884041c6747b4f91dc6a351ef35c2b63d64bf7ff81dbc819",
+    "02_raw_provider_data.json": "f8cb24423cc6c21e07d1a45426d30436bf1e0040c71e8b171c4a6b3e9eabbcb7",
+    "03_normalized_context.json": "4e15e9616a7456b61712ca8437544296a23b327b758468d820c61004c5e23c88",
+    "04_ai_input.json": "17b56e0cf383f11d9f247a3c70a406d047ab3370113a3c079a0579d2ebe35739",
+    "05_ai_raw_output.json": "05c29e27256ff7094e23217b6dc0df84a96e30b22a90f5286744661665b6a79d",
+    "06_validated_ai_output.json": "ac5b0f46dc1d0fc986f98c8a555b34d901c185a78fb3ac4ca721b845c414950a",
+    "07_final_response.json": "aa4141f238644b31c28301e38f6844d831fd944f6fbd0758993942ee7c7fc98b"
+  }
+}

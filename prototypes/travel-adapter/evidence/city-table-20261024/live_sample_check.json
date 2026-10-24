@@ -1,0 +1,114 @@
+{
+ "Kuwait City": {
+  "wikidata_id": "/m/0fq5j",
+  "google_id": "/m/0fq5j",
+  "source": "verified_lookup",
+  "match": true,
+  "google_area_airports": {
+   "KWI": "Kuwait City"
+  }
+ },
+ "Manama": {
+  "wikidata_id": "/m/054jj",
+  "google_id": "BAH",
+  "source": "fallback_main_airport (provider_error)",
+  "match": false,
+  "google_area_airports": {}
+ },
+ "New York": {
+  "wikidata_id": "/m/02_286",
+  "google_id": "/m/02_286",
+  "source": "verified_lookup",
+  "match": true,
+  "google_area_airports": {
+   "JFK": "New York",
+   "LGA": "New York",
+   "EWR": "Newark"
+  }
+ },
+ "Tokyo": {
+  "wikidata_id": "/m/07dfk",
+  "google_id": "/m/07dfk",
+  "source": "verified_lookup",
+  "match": true,
+  "google_area_airports": {
+   "HND": "Tokyo",
+   "NRT": "Tokyo",
+   "/m/07dfk": "Tokyo"
+  }
+ },
+ "Bangkok": {
+  "wikidata_id": "/m/0fn2g",
+  "google_id": "/m/0fn2g",
+  "source": "verified_lookup",
+  "match": true,
+  "google_area_airports": {
+   "BKK": "Bangkok",
+   "DMK": "Bangkok"
+  }
+ },
+ "Milan": {
+  "wikidata_id": "/m/0947l",
+  "google_id": "/m/0947l",
+  "source": "verified_lookup",
+  "match": true,
+  "google_area_airports": {
+   "MXP": "Milan",
+   "LIN": "Milan",
+   "BGY": "Milan",
+   "/m/0947l": "Milan"
+  }
+ },
+ "Alexandria": {
+  "wikidata_id": "/m/013g3",
+  "google_id": "HBE",
+  "source": "fallback_main_airport (provider_error)",
+  "match": false,
+  "google_area_airports": {}
+ },
+ "Stockholm": {
+  "wikidata_id": "/m/06mxs",
+  "google_title": "Stockholm, Sweden",
+  "google_area_airports": {
+   "ARN": "Stockholm",
+   "NYO": "Stockholm"
+  },
+  "all_our_airports_in_area": false
+ },
+ "Seoul": {
+  "wikidata_id": "/m/0hsqf",
+  "google_title": "Seoul, South Korea",
+  "google_area_airports": {
+   "GMP": "Seoul",
+   "ICN": "Seoul"
+  },
+  "all_our_airports_in_area": true
+ },
+ "Beijing": {
+  "wikidata_id": "/m/01914",
+  "google_title": "Beijing, China",
+  "google_area_airports": {
+   "PEK": "Beijing",
+   "PKX": "Beijing"
+  },
+  "all_our_airports_in_area": true
+ },
+ "Shanghai": {
+  "wikidata_id": "/m/06wjf",
+  "google_title": "Shanghai, China",
+  "google_area_airports": {
+   "PVG": "Shanghai",
+   "SHA": "Shanghai"
+  },
+  "all_our_airports_in_area": true
+ },
+ "Toronto": {
+  "wikidata_id": "/m/0h7h6",
+  "google_title": "Toronto, Ontario, Canada",
+  "google_area_airports": {
+   "YYZ": "Toronto",
+   "YTZ": "Toronto"
+  },
+  "all_our_airports_in_area": true
+ }
+}

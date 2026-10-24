@@ -1,0 +1,257 @@
+{
+  "status": "ok",
+  "itinerary": [
+    {
+      "date": "2026-11-20",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Check‑in at Cairo Nile HK Hotel",
+          "area": "Cairo City Center",
+          "description": "Arrive, settle into the hotel and drop luggage before heading out.",
+          "cost": {
+            "amount_usd": 0.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        },
+        {
+          "order": 2,
+          "name": "Explore Khan El Khalili Bazaar",
+          "area": "Islamic Cairo",
+          "description": "Wander through the historic market, browse souvenirs and experience local hustle.",
+          "cost": {
+            "amount_usd": 20.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-11-21",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Egyptian Museum visit",
+          "area": "Tahrir Square",
+          "description": "See the ancient artifacts including Tutankhamun's treasures.",
+          "cost": {
+            "amount_usd": 30.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        },
+        {
+          "order": 2,
+          "name": "Al‑Azhar Park stroll",
+          "area": "Al‑Azhar",
+          "description": "Enjoy landscaped gardens and panoramic city views.",
+          "cost": {
+            "amount_usd": 0.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        },
+        {
+          "order": 3,
+          "name": "Nile dinner cruise",
+          "area": "Nile River",
+          "description": "Relax on a boat with dinner and live entertainment while sailing the Nile.",
+          "cost": {
+            "amount_usd": 0.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Giza Pyramid Complex tour",
+          "area": "Giza Plateau",
+          "description": "Visit the Great Pyramid, the Sphinx and learn about ancient engineering.",
+          "cost": {
+            "amount_usd": 50.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        },
+        {
+          "order": 2,
+          "name": "Saqqara Ancient Site",
+          "area": "Saqqara",
+          "description": "Explore the Step Pyramid of Djoser and surrounding tombs.",
+          "cost": {
+            "amount_usd": 40.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        },
+        {
+          "order": 3,
+          "name": "Relax at hotel pool",
+          "area": "Cairo Nile HK Hotel",
+          "description": "Unwind by the pool after a day of sightseeing.",
+          "cost": {
+            "amount_usd": 0.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-11-23",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Coptic Museum visit",
+          "area": "Coptic Cairo",
+          "description": "Discover early Christian artifacts and historic churches.",
+          "cost": {
+            "amount_usd": 15.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        },
+        {
+          "order": 2,
+          "name": "Pack and transfer to airport",
+          "area": "Hotel",
+          "description": "Prepare luggage and travel to the airport for the evening flight.",
+          "cost": {
+            "amount_usd": 0.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        }
+      ]
+    }
+  ],
+  "ancillary_estimates": {
+    "food": {
+      "amount_usd": null,
+      "kind": "unknown",
+      "basis": "No approved estimation policy.",
+      "policy_id": null
+    },
+    "local_transport": {
+      "amount_usd": null,
+      "kind": "unknown",
+      "basis": "No approved estimation policy.",
+      "policy_id": null
+    }
+  },
+  "budget_activities": [
+    {
+      "label": "Check‑in at Cairo Nile HK Hotel",
+      "kind": "estimate",
+      "amount_usd": 0.0,
+      "activity_ref": {
+        "date": "2026-11-20",
+        "order": 1
+      },
+      "basis": "AI estimate for all travelers (not a provider price)."
+    },
+    {
+      "label": "Explore Khan El Khalili Bazaar",
+      "kind": "estimate",
+      "amount_usd": 20.0,
+      "activity_ref": {
+        "date": "2026-11-20",
+        "order": 2
+      },
+      "basis": "AI estimate for all travelers (not a provider price)."
+    },
+    {
+      "label": "Egyptian Museum visit",
+      "kind": "estimate",
+      "amount_usd": 30.0,
+      "activity_ref": {
+        "date": "2026-11-21",
+        "order": 1
+      },
+      "basis": "AI estimate for all travelers (not a provider price)."
+    },
+    {
+      "label": "Al‑Azhar Park stroll",
+      "kind": "estimate",
+      "amount_usd": 0.0,
+      "activity_ref": {
+        "date": "2026-11-21",
+        "order": 2
+      },
+      "basis": "AI estimate for all travelers (not a provider price)."
+    },
+    {
+      "label": "Nile dinner cruise",
+      "kind": "estimate",
+      "amount_usd": 0.0,
+      "activity_ref": {
+        "date": "2026-11-21",
+        "order": 3
+      },
+      "basis": "Meal cost is covered by the food category (not counted as an activity)."
+    },
+    {
+      "label": "Giza Pyramid Complex tour",
+      "kind": "estimate",
+      "amount_usd": 50.0,
+      "activity_ref": {
+        "date": "2026-11-22",
+        "order": 1
+      },
+      "basis": "AI estimate for all travelers (not a provider price)."
+    },
+    {
+      "label": "Saqqara Ancient Site",
+      "kind": "estimate",
+      "amount_usd": 40.0,
+      "activity_ref": {
+        "date": "2026-11-22",
+        "order": 2
+      },
+      "basis": "AI estimate for all travelers (not a provider price)."
+    },
+    {
+      "label": "Relax at hotel pool",
+      "kind": "estimate",
+      "amount_usd": 0.0,
+      "activity_ref": {
+        "date": "2026-11-22",
+        "order": 3
+      },
+      "basis": "AI estimate for all travelers (not a provider price)."
+    },
+    {
+      "label": "Coptic Museum visit",
+      "kind": "estimate",
+      "amount_usd": 15.0,
+      "activity_ref": {
+        "date": "2026-11-23",
+        "order": 1
+      },
+      "basis": "AI estimate for all travelers (not a provider price)."
+    },
+    {
+      "label": "Pack and transfer to airport",
+      "kind": "estimate",
+      "amount_usd": 0.0,
+      "activity_ref": {
+        "date": "2026-11-23",
+        "order": 2
+      },
+      "basis": "AI estimate for all travelers (not a provider price)."
+    }
+  ],
+  "price_explanation": "The outbound flight with Air Cairo on 2026-11-20 costs $272.0 for two travelers. The return flight with EgyptAir on 2026-11-23 costs $223.0 for two travelers. The selected hotel, Cairo Nile HK Hotel, is priced at $65.75 total for the 3‑night stay, including taxes and fees.",
+  "error": null
+}

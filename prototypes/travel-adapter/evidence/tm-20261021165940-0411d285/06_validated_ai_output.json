@@ -1,0 +1,257 @@
+{
+  "status": "ok",
+  "itinerary": [
+    {
+      "date": "2026-11-20",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Check-in at Cairo Nile HK Hotel",
+          "area": "Hotel",
+          "description": "Arrive, check in, freshen up and rest after the flight.",
+          "cost": {
+            "amount_usd": 0.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        },
+        {
+          "order": 2,
+          "name": "Evening stroll along the Nile",
+          "area": "Nile Corniche",
+          "description": "Walk along the riverfront, enjoy views of the city lights.",
+          "cost": {
+            "amount_usd": 0.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-11-21",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Visit the Great Pyramid of Giza",
+          "area": "Giza Plateau",
+          "description": "Explore the iconic pyramids and the Sphinx, learn about ancient Egyptian history.",
+          "cost": {
+            "amount_usd": null,
+            "kind": "unknown",
+            "coverage": null
+          }
+        },
+        {
+          "order": 2,
+          "name": "Lunch at a local restaurant",
+          "area": "Giza",
+          "description": "Enjoy traditional Egyptian dishes.",
+          "cost": {
+            "amount_usd": 0.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        },
+        {
+          "order": 3,
+          "name": "Egyptian Museum",
+          "area": "Tahrir Square",
+          "description": "See the extensive collection of ancient artifacts, including Tutankhamun's treasures.",
+          "cost": {
+            "amount_usd": null,
+            "kind": "unknown",
+            "coverage": null
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Visit Islamic Cairo",
+          "area": "Al-Muizz Street",
+          "description": "Wander through historic mosques and medieval streets, admire architecture.",
+          "cost": {
+            "amount_usd": null,
+            "kind": "unknown",
+            "coverage": null
+          }
+        },
+        {
+          "order": 2,
+          "name": "Lunch at a café",
+          "area": "Al-Muizz Street",
+          "description": "Sample local snacks and drinks.",
+          "cost": {
+            "amount_usd": 0.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        },
+        {
+          "order": 3,
+          "name": "Relax at Al-Azhar Park",
+          "area": "Al-Azhar Park",
+          "description": "Enjoy gardens, city views, and a peaceful atmosphere.",
+          "cost": {
+            "amount_usd": 0.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-11-23",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Morning visit to Khan El Khalili Bazaar",
+          "area": "Khan El Khalili",
+          "description": "Shop for souvenirs, experience bustling market atmosphere.",
+          "cost": {
+            "amount_usd": null,
+            "kind": "unknown",
+            "coverage": null
+          }
+        },
+        {
+          "order": 2,
+          "name": "Return to hotel, collect luggage",
+          "area": "Hotel",
+          "description": "Prepare for departure.",
+          "cost": {
+            "amount_usd": 0.0,
+            "kind": "estimate",
+            "coverage": "all_travelers"
+          }
+        }
+      ]
+    }
+  ],
+  "ancillary_estimates": {
+    "food": {
+      "amount_usd": null,
+      "kind": "unknown",
+      "basis": "No approved estimation policy.",
+      "policy_id": null
+    },
+    "local_transport": {
+      "amount_usd": null,
+      "kind": "unknown",
+      "basis": "No approved estimation policy.",
+      "policy_id": null
+    }
+  },
+  "budget_activities": [
+    {
+      "label": "Check-in at Cairo Nile HK Hotel",
+      "kind": "estimate",
+      "amount_usd": 0.0,
+      "activity_ref": {
+        "date": "2026-11-20",
+        "order": 1
+      },
+      "basis": "AI estimate for all travelers (not a provider price)."
+    },
+    {
+      "label": "Evening stroll along the Nile",
+      "kind": "estimate",
+      "amount_usd": 0.0,
+      "activity_ref": {
+        "date": "2026-11-20",
+        "order": 2
+      },
+      "basis": "AI estimate for all travelers (not a provider price)."
+    },
+    {
+      "label": "Visit the Great Pyramid of Giza",
+      "kind": "unknown",
+      "amount_usd": null,
+      "activity_ref": {
+        "date": "2026-11-21",
+        "order": 1
+      },
+      "basis": "AI could not estimate this cost."
+    },
+    {
+      "label": "Lunch at a local restaurant",
+      "kind": "estimate",
+      "amount_usd": 0.0,
+      "activity_ref": {
+        "date": "2026-11-21",
+        "order": 2
+      },
+      "basis": "Meal cost is covered by the food category (not counted as an activity)."
+    },
+    {
+      "label": "Egyptian Museum",
+      "kind": "unknown",
+      "amount_usd": null,
+      "activity_ref": {
+        "date": "2026-11-21",
+        "order": 3
+      },
+      "basis": "AI could not estimate this cost."
+    },
+    {
+      "label": "Visit Islamic Cairo",
+      "kind": "unknown",
+      "amount_usd": null,
+      "activity_ref": {
+        "date": "2026-11-22",
+        "order": 1
+      },
+      "basis": "AI could not estimate this cost."
+    },
+    {
+      "label": "Lunch at a café",
+      "kind": "estimate",
+      "amount_usd": 0.0,
+      "activity_ref": {
+        "date": "2026-11-22",
+        "order": 2
+      },
+      "basis": "Meal cost is covered by the food category (not counted as an activity)."
+    },
+    {
+      "label": "Relax at Al-Azhar Park",
+      "kind": "estimate",
+      "amount_usd": 0.0,
+      "activity_ref": {
+        "date": "2026-11-22",
+        "order": 3
+      },
+      "basis": "AI estimate for all travelers (not a provider price)."
+    },
+    {
+      "label": "Morning visit to Khan El Khalili Bazaar",
+      "kind": "unknown",
+      "amount_usd": null,
+      "activity_ref": {
+        "date": "2026-11-23",
+        "order": 1
+      },
+      "basis": "AI could not estimate this cost."
+    },
+    {
+      "label": "Return to hotel, collect luggage",
+      "kind": "estimate",
+      "amount_usd": 0.0,
+      "activity_ref": {
+        "date": "2026-11-23",
+        "order": 2
+      },
+      "basis": "AI estimate for all travelers (not a provider price)."
+    }
+  ],
+  "price_explanation": "The round‑trip flight for both travelers costs $495.0, taxes included. The hotel stay for three nights totals $65.75, covering base price and taxes. Both prices are provided by live providers.",
+  "error": null
+}

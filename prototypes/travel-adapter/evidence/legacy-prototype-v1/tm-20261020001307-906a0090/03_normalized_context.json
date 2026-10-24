@@ -1,0 +1,2254 @@
+{
+  "search_travel": {
+    "request_id": "tm-20261020001307-906a0090",
+    "status": "success",
+    "error": null,
+    "mandatory_category": "hotels",
+    "search_parameters": {
+      "trip_type": "round_trip",
+      "trip_type_label": "Round-Trip (2-Way)",
+      "origin": "IST",
+      "destination_city": "Cairo",
+      "check_in_date": "2026-11-19",
+      "check_out_date": "2026-11-22",
+      "nights": 3,
+      "adults": 2,
+      "budget_usd": 1500.0,
+      "currency": "USD"
+    },
+    "flights": {
+      "category": "flights",
+      "status": "no_results",
+      "reason": "no_exact_date_quote",
+      "error": {
+        "code": "no_results",
+        "message": "No outbound / return flight quote exists for the exact requested date. Alternative dates are listed separately and are not eligible.",
+        "category": "flights",
+        "retryable": false,
+        "retry_after_seconds": null,
+        "details": {
+          "directions": [
+            "outbound",
+            "return"
+          ]
+        }
+      },
+      "price_authority": "indicative",
+      "capabilities": {
+        "supports_requested_date": false,
+        "supports_adult_count": false,
+        "supports_currency_parameter": false,
+        "data_type": "cached_route_quotes",
+        "price_basis": "single_adult_one_way_quote",
+        "group_total_method": "price_per_adult_usd x adults (unverified for adults > 1)",
+        "departure_times_available": false,
+        "price_authority": "indicative"
+      },
+      "outbound_flights": [],
+      "return_flights": [],
+      "alternative_date_flights": {
+        "outbound": [
+          {
+            "offer_id": "{bl}:202610191915*D*IST*CAI*20261125*ctuk*SM",
+            "direction": "outbound",
+            "airline": "Air Cairo",
+            "carrier_codes": [
+              "SM"
+            ],
+            "origin_airport": "IST",
+            "destination_airport": "CAI",
+            "origin_timezone": "Europe/Istanbul",
+            "destination_timezone": "Africa/Cairo",
+            "flight_date": "2026-11-25",
+            "flight_date_basis": "local departure date at origin_timezone",
+            "departure_time_local": null,
+            "arrival_time_local": null,
+            "requested_date": "2026-11-19",
+            "days_from_requested_date": 6,
+            "is_direct": true,
+            "stops": 0,
+            "transit_airports": [],
+            "stops_label": "Direct",
+            "price_per_adult_usd": 130.61,
+            "adults": 2,
+            "group_total_usd": 261.22,
+            "price_basis": "single_adult_one_way_quote",
+            "group_price_verified": false,
+            "price_authority": "indicative",
+            "original_price": 98.0,
+            "original_currency": "GBP",
+            "booking_link": "https://www.skyscanner.net/transport/flights/IST/CAI/20261125?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610191915%2AD%2AIST%2ACAI%2A20261125%2Actuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=98",
+            "eligibility": {
+              "eligible": false,
+              "reason": "date_mismatch",
+              "checks": {
+                "route_match": true,
+                "date_match": false,
+                "adult_occupancy_verified": false
+              }
+            },
+            "provenance": {
+              "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+              "integration_type": "rapidapi_third_party",
+              "endpoint": "GET /v1/skyscanner/route",
+              "retrieved_at": "2026-10-20T00:13:11Z",
+              "cache_status": "refresh",
+              "provider_offer_id": "{bl}:202610191915*D*IST*CAI*20261125*ctuk*SM",
+              "quoted_at": "2026-10-19T19:15Z",
+              "currency_conversion": {
+                "status": "converted",
+                "original_amount": 98.0,
+                "original_currency": "GBP",
+                "rate_per_usd": 0.750306,
+                "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+                "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+                "rate_retrieved_at": "2026-10-20T00:13:11Z"
+              }
+            }
+          },
+          {
+            "offer_id": "{bl}:202610191059*I*IST*CAI*20261130*s1uk*TK",
+            "direction": "outbound",
+            "airline": "Turkish Airlines",
+            "carrier_codes": [
+              "TK"
+            ],
+            "origin_airport": "IST",
+            "destination_airport": "CAI",
+            "origin_timezone": "Europe/Istanbul",
+            "destination_timezone": "Africa/Cairo",
+            "flight_date": "2026-11-30",
+            "flight_date_basis": "local departure date at origin_timezone",
+            "departure_time_local": null,
+            "arrival_time_local": null,
+            "requested_date": "2026-11-19",
+            "days_from_requested_date": 11,
+            "is_direct": false,
+            "stops": null,
+            "transit_airports": [],
+            "stops_label": "With stops (count and transit airports not provided by provider)",
+            "price_per_adult_usd": 118.62,
+            "adults": 2,
+            "group_total_usd": 237.24,
+            "price_basis": "single_adult_one_way_quote",
+            "group_price_verified": false,
+            "price_authority": "indicative",
+            "original_price": 89.0,
+            "original_currency": "GBP",
+            "booking_link": "https://www.skyscanner.net/transport/flights/IST/CAI/20261130?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610191059%2AI%2AIST%2ACAI%2A20261130%2As1uk%2ATK&pq_prevCurrency=GBP&pq_prevPrice=89",
+            "eligibility": {
+              "eligible": false,
+              "reason": "date_mismatch",
+              "checks": {
+                "route_match": true,
+                "date_match": false,
+                "adult_occupancy_verified": false
+              }
+            },
+            "provenance": {
+              "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+              "integration_type": "rapidapi_third_party",
+              "endpoint": "GET /v1/skyscanner/route",
+              "retrieved_at": "2026-10-20T00:13:11Z",
+              "cache_status": "refresh",
+              "provider_offer_id": "{bl}:202610191059*I*IST*CAI*20261130*s1uk*TK",
+              "quoted_at": "2026-10-19T10:59Z",
+              "currency_conversion": {
+                "status": "converted",
+                "original_amount": 89.0,
+                "original_currency": "GBP",
+                "rate_per_usd": 0.750306,
+                "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+                "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+                "rate_retrieved_at": "2026-10-20T00:13:11Z"
+              }
+            }
+          },
+          {
+            "offer_id": "{bl}:202610182020*I*IST*CAI*20261029*bcuk*SM",
+            "direction": "outbound",
+            "airline": "Air Cairo",
+            "carrier_codes": [
+              "SM"
+            ],
+            "origin_airport": "IST",
+            "destination_airport": "CAI",
+            "origin_timezone": "Europe/Istanbul",
+            "destination_timezone": "Africa/Cairo",
+            "flight_date": "2026-10-29",
+            "flight_date_basis": "local departure date at origin_timezone",
+            "departure_time_local": null,
+            "arrival_time_local": null,
+            "requested_date": "2026-11-19",
+            "days_from_requested_date": 21,
+            "is_direct": false,
+            "stops": null,
+            "transit_airports": [],
+            "stops_label": "With stops (count and transit airports not provided by provider)",
+            "price_per_adult_usd": 125.28,
+            "adults": 2,
+            "group_total_usd": 250.56,
+            "price_basis": "single_adult_one_way_quote",
+            "group_price_verified": false,
+            "price_authority": "indicative",
+            "original_price": 94.0,
+            "original_currency": "GBP",
+            "booking_link": "https://www.skyscanner.net/transport/flights/IST/CAI/20261029?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610182020%2AI%2AIST%2ACAI%2A20261029%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=94",
+            "eligibility": {
+              "eligible": false,
+              "reason": "date_mismatch",
+              "checks": {
+                "route_match": true,
+                "date_match": false,
+                "adult_occupancy_verified": false
+              }
+            },
+            "provenance": {
+              "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+              "integration_type": "rapidapi_third_party",
+              "endpoint": "GET /v1/skyscanner/route",
+              "retrieved_at": "2026-10-20T00:13:11Z",
+              "cache_status": "refresh",
+              "provider_offer_id": "{bl}:202610182020*I*IST*CAI*20261029*bcuk*SM",
+              "quoted_at": "2026-10-18T20:20Z",
+              "currency_conversion": {
+                "status": "converted",
+                "original_amount": 94.0,
+                "original_currency": "GBP",
+                "rate_per_usd": 0.750306,
+                "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+                "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+                "rate_retrieved_at": "2026-10-20T00:13:11Z"
+              }
+            }
+          },
+          {
+            "offer_id": "{bl}:202610190914*D*IST*CAI*20261210*ctuk*SM",
+            "direction": "outbound",
+            "airline": "Air Cairo",
+            "carrier_codes": [
+              "SM"
+            ],
+            "origin_airport": "IST",
+            "destination_airport": "CAI",
+            "origin_timezone": "Europe/Istanbul",
+            "destination_timezone": "Africa/Cairo",
+            "flight_date": "2026-12-10",
+            "flight_date_basis": "local departure date at origin_timezone",
+            "departure_time_local": null,
+            "arrival_time_local": null,
+            "requested_date": "2026-11-19",
+            "days_from_requested_date": 21,
+            "is_direct": true,
+            "stops": 0,
+            "transit_airports": [],
+            "stops_label": "Direct",
+            "price_per_adult_usd": 129.28,
+            "adults": 2,
+            "group_total_usd": 258.56,
+            "price_basis": "single_adult_one_way_quote",
+            "group_price_verified": false,
+            "price_authority": "indicative",
+            "original_price": 97.0,
+            "original_currency": "GBP",
+            "booking_link": "https://www.skyscanner.net/transport/flights/IST/CAI/20261210?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610190914%2AD%2AIST%2ACAI%2A20261210%2Actuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=97",
+            "eligibility": {
+              "eligible": false,
+              "reason": "date_mismatch",
+              "checks": {
+                "route_match": true,
+                "date_match": false,
+                "adult_occupancy_verified": false
+              }
+            },
+            "provenance": {
+              "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+              "integration_type": "rapidapi_third_party",
+              "endpoint": "GET /v1/skyscanner/route",
+              "retrieved_at": "2026-10-20T00:13:11Z",
+              "cache_status": "refresh",
+              "provider_offer_id": "{bl}:202610190914*D*IST*CAI*20261210*ctuk*SM",
+              "quoted_at": "2026-10-19T09:14Z",
+              "currency_conversion": {
+                "status": "converted",
+                "original_amount": 97.0,
+                "original_currency": "GBP",
+                "rate_per_usd": 0.750306,
+                "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+                "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+                "rate_retrieved_at": "2026-10-20T00:13:11Z"
+              }
+            }
+          },
+          {
+            "offer_id": "{bl}:202610191935*D*IST*CAI*20261028*ctuk*TK",
+            "direction": "outbound",
+            "airline": "Turkish Airlines",
+            "carrier_codes": [
+              "TK"
+            ],
+            "origin_airport": "IST",
+            "destination_airport": "CAI",
+            "origin_timezone": "Europe/Istanbul",
+            "destination_timezone": "Africa/Cairo",
+            "flight_date": "2026-10-28",
+            "flight_date_basis": "local departure date at origin_timezone",
+            "departure_time_local": null,
+            "arrival_time_local": null,
+            "requested_date": "2026-11-19",
+            "days_from_requested_date": 22,
+            "is_direct": true,
+            "stops": 0,
+            "transit_airports": [],
+            "stops_label": "Direct",
+            "price_per_adult_usd": 143.94,
+            "adults": 2,
+            "group_total_usd": 287.88,
+            "price_basis": "single_adult_one_way_quote",
+            "group_price_verified": false,
+            "price_authority": "indicative",
+            "original_price": 108.0,
+            "original_currency": "GBP",
+            "booking_link": "https://www.skyscanner.net/transport/flights/IST/CAI/20261028?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610191935%2AD%2AIST%2ACAI%2A20261028%2Actuk%2ATK&pq_prevCurrency=GBP&pq_prevPrice=108",
+            "eligibility": {
+              "eligible": false,
+              "reason": "date_mismatch",
+              "checks": {
+                "route_match": true,
+                "date_match": false,
+                "adult_occupancy_verified": false
+              }
+            },
+            "provenance": {
+              "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+              "integration_type": "rapidapi_third_party",
+              "endpoint": "GET /v1/skyscanner/route",
+              "retrieved_at": "2026-10-20T00:13:11Z",
+              "cache_status": "refresh",
+              "provider_offer_id": "{bl}:202610191935*D*IST*CAI*20261028*ctuk*TK",
+              "quoted_at": "2026-10-19T19:35Z",
+              "currency_conversion": {
+                "status": "converted",
+                "original_amount": 108.0,
+                "original_currency": "GBP",
+                "rate_per_usd": 0.750306,
+                "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+                "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+                "rate_retrieved_at": "2026-10-20T00:13:11Z"
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "offer_id": "{bl}:202610160814*D*CAI*IST*20261111*bcuk*SM",
+            "direction": "return",
+            "airline": "Air Cairo",
+            "carrier_codes": [
+              "SM"
+            ],
+            "origin_airport": "CAI",
+            "destination_airport": "IST",
+            "origin_timezone": "Africa/Cairo",
+            "destination_timezone": "Europe/Istanbul",
+            "flight_date": "2026-11-11",
+            "flight_date_basis": "local departure date at origin_timezone",
+            "departure_time_local": null,
+            "arrival_time_local": null,
+            "requested_date": "2026-11-22",
+            "days_from_requested_date": 11,
+            "is_direct": true,
+            "stops": 0,
+            "transit_airports": [],
+            "stops_label": "Direct",
+            "price_per_adult_usd": 74.64,
+            "adults": 2,
+            "group_total_usd": 149.28,
+            "price_basis": "single_adult_one_way_quote",
+            "group_price_verified": false,
+            "price_authority": "indicative",
+            "original_price": 56.0,
+            "original_currency": "GBP",
+            "booking_link": "https://www.skyscanner.net/transport/flights/CAI/IST/20261111?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610160814%2AD%2ACAI%2AIST%2A20261111%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=56",
+            "eligibility": {
+              "eligible": false,
+              "reason": "date_mismatch",
+              "checks": {
+                "route_match": true,
+                "date_match": false,
+                "adult_occupancy_verified": false
+              }
+            },
+            "provenance": {
+              "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+              "integration_type": "rapidapi_third_party",
+              "endpoint": "GET /v1/skyscanner/route",
+              "retrieved_at": "2026-10-20T00:13:18Z",
+              "cache_status": "refresh",
+              "provider_offer_id": "{bl}:202610160814*D*CAI*IST*20261111*bcuk*SM",
+              "quoted_at": "2026-10-16T08:14Z",
+              "currency_conversion": {
+                "status": "converted",
+                "original_amount": 56.0,
+                "original_currency": "GBP",
+                "rate_per_usd": 0.750306,
+                "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+                "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+                "rate_retrieved_at": "2026-10-20T00:13:11Z"
+              }
+            }
+          },
+          {
+            "offer_id": "{bl}:202610170907*D*CAI*IST*20261206*bcuk*SM",
+            "direction": "return",
+            "airline": "Air Cairo",
+            "carrier_codes": [
+              "SM"
+            ],
+            "origin_airport": "CAI",
+            "destination_airport": "IST",
+            "origin_timezone": "Africa/Cairo",
+            "destination_timezone": "Europe/Istanbul",
+            "flight_date": "2026-12-06",
+            "flight_date_basis": "local departure date at origin_timezone",
+            "departure_time_local": null,
+            "arrival_time_local": null,
+            "requested_date": "2026-11-22",
+            "days_from_requested_date": 14,
+            "is_direct": true,
+            "stops": 0,
+            "transit_airports": [],
+            "stops_label": "Direct",
+            "price_per_adult_usd": 81.3,
+            "adults": 2,
+            "group_total_usd": 162.6,
+            "price_basis": "single_adult_one_way_quote",
+            "group_price_verified": false,
+            "price_authority": "indicative",
+            "original_price": 61.0,
+            "original_currency": "GBP",
+            "booking_link": "https://www.skyscanner.net/transport/flights/CAI/IST/20261206?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610170907%2AD%2ACAI%2AIST%2A20261206%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=61",
+            "eligibility": {
+              "eligible": false,
+              "reason": "date_mismatch",
+              "checks": {
+                "route_match": true,
+                "date_match": false,
+                "adult_occupancy_verified": false
+              }
+            },
+            "provenance": {
+              "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+              "integration_type": "rapidapi_third_party",
+              "endpoint": "GET /v1/skyscanner/route",
+              "retrieved_at": "2026-10-20T00:13:18Z",
+              "cache_status": "refresh",
+              "provider_offer_id": "{bl}:202610170907*D*CAI*IST*20261206*bcuk*SM",
+              "quoted_at": "2026-10-17T09:07Z",
+              "currency_conversion": {
+                "status": "converted",
+                "original_amount": 61.0,
+                "original_currency": "GBP",
+                "rate_per_usd": 0.750306,
+                "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+                "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+                "rate_retrieved_at": "2026-10-20T00:13:11Z"
+              }
+            }
+          },
+          {
+            "offer_id": "{bl}:202610181620*D*CAI*IST*20261023*bcuk*SM",
+            "direction": "return",
+            "airline": "Air Cairo",
+            "carrier_codes": [
+              "SM"
+            ],
+            "origin_airport": "CAI",
+            "destination_airport": "IST",
+            "origin_timezone": "Africa/Cairo",
+            "destination_timezone": "Europe/Istanbul",
+            "flight_date": "2026-10-23",
+            "flight_date_basis": "local departure date at origin_timezone",
+            "departure_time_local": null,
+            "arrival_time_local": null,
+            "requested_date": "2026-11-22",
+            "days_from_requested_date": 30,
+            "is_direct": true,
+            "stops": 0,
+            "transit_airports": [],
+            "stops_label": "Direct",
+            "price_per_adult_usd": 90.63,
+            "adults": 2,
+            "group_total_usd": 181.26,
+            "price_basis": "single_adult_one_way_quote",
+            "group_price_verified": false,
+            "price_authority": "indicative",
+            "original_price": 68.0,
+            "original_currency": "GBP",
+            "booking_link": "https://www.skyscanner.net/transport/flights/CAI/IST/20261023?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610181620%2AD%2ACAI%2AIST%2A20261023%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=68",
+            "eligibility": {
+              "eligible": false,
+              "reason": "date_mismatch",
+              "checks": {
+                "route_match": true,
+                "date_match": false,
+                "adult_occupancy_verified": false
+              }
+            },
+            "provenance": {
+              "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+              "integration_type": "rapidapi_third_party",
+              "endpoint": "GET /v1/skyscanner/route",
+              "retrieved_at": "2026-10-20T00:13:18Z",
+              "cache_status": "refresh",
+              "provider_offer_id": "{bl}:202610181620*D*CAI*IST*20261023*bcuk*SM",
+              "quoted_at": "2026-10-18T16:20Z",
+              "currency_conversion": {
+                "status": "converted",
+                "original_amount": 68.0,
+                "original_currency": "GBP",
+                "rate_per_usd": 0.750306,
+                "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+                "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+                "rate_retrieved_at": "2026-10-20T00:13:11Z"
+              }
+            }
+          },
+          {
+            "offer_id": "{bl}:202610171917*D*CAI*IST*20270109*bcuk*SM",
+            "direction": "return",
+            "airline": "Air Cairo",
+            "carrier_codes": [
+              "SM"
+            ],
+            "origin_airport": "CAI",
+            "destination_airport": "IST",
+            "origin_timezone": "Africa/Cairo",
+            "destination_timezone": "Europe/Istanbul",
+            "flight_date": "2027-01-09",
+            "flight_date_basis": "local departure date at origin_timezone",
+            "departure_time_local": null,
+            "arrival_time_local": null,
+            "requested_date": "2026-11-22",
+            "days_from_requested_date": 48,
+            "is_direct": true,
+            "stops": 0,
+            "transit_airports": [],
+            "stops_label": "Direct",
+            "price_per_adult_usd": 118.62,
+            "adults": 2,
+            "group_total_usd": 237.24,
+            "price_basis": "single_adult_one_way_quote",
+            "group_price_verified": false,
+            "price_authority": "indicative",
+            "original_price": 89.0,
+            "original_currency": "GBP",
+            "booking_link": "https://www.skyscanner.net/transport/flights/CAI/IST/20270109?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610171917%2AD%2ACAI%2AIST%2A20270109%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=89",
+            "eligibility": {
+              "eligible": false,
+              "reason": "date_mismatch",
+              "checks": {
+                "route_match": true,
+                "date_match": false,
+                "adult_occupancy_verified": false
+              }
+            },
+            "provenance": {
+              "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+              "integration_type": "rapidapi_third_party",
+              "endpoint": "GET /v1/skyscanner/route",
+              "retrieved_at": "2026-10-20T00:13:18Z",
+              "cache_status": "refresh",
+              "provider_offer_id": "{bl}:202610171917*D*CAI*IST*20270109*bcuk*SM",
+              "quoted_at": "2026-10-17T19:17Z",
+              "currency_conversion": {
+                "status": "converted",
+                "original_amount": 89.0,
+                "original_currency": "GBP",
+                "rate_per_usd": 0.750306,
+                "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+                "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+                "rate_retrieved_at": "2026-10-20T00:13:11Z"
+              }
+            }
+          },
+          {
+            "offer_id": "{bl}:202610191231*D*CAI*IST*20270218*bcuk*SM",
+            "direction": "return",
+            "airline": "Air Cairo",
+            "carrier_codes": [
+              "SM"
+            ],
+            "origin_airport": "CAI",
+            "destination_airport": "IST",
+            "origin_timezone": "Africa/Cairo",
+            "destination_timezone": "Europe/Istanbul",
+            "flight_date": "2027-02-18",
+            "flight_date_basis": "local departure date at origin_timezone",
+            "departure_time_local": null,
+            "arrival_time_local": null,
+            "requested_date": "2026-11-22",
+            "days_from_requested_date": 88,
+            "is_direct": true,
+            "stops": 0,
+            "transit_airports": [],
+            "stops_label": "Direct",
+            "price_per_adult_usd": 118.62,
+            "adults": 2,
+            "group_total_usd": 237.24,
+            "price_basis": "single_adult_one_way_quote",
+            "group_price_verified": false,
+            "price_authority": "indicative",
+            "original_price": 89.0,
+            "original_currency": "GBP",
+            "booking_link": "https://www.skyscanner.net/transport/flights/CAI/IST/20270218?locale=en-GB&market=UK&currency=GBP&priceSourceId=taps-taps&priceTrace=%7Bbl%7D%3A202610191231%2AD%2ACAI%2AIST%2A20270218%2Abcuk%2ASM&pq_prevCurrency=GBP&pq_prevPrice=89",
+            "eligibility": {
+              "eligible": false,
+              "reason": "date_mismatch",
+              "checks": {
+                "route_match": true,
+                "date_match": false,
+                "adult_occupancy_verified": false
+              }
+            },
+            "provenance": {
+              "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+              "integration_type": "rapidapi_third_party",
+              "endpoint": "GET /v1/skyscanner/route",
+              "retrieved_at": "2026-10-20T00:13:18Z",
+              "cache_status": "refresh",
+              "provider_offer_id": "{bl}:202610191231*D*CAI*IST*20270218*bcuk*SM",
+              "quoted_at": "2026-10-19T12:31Z",
+              "currency_conversion": {
+                "status": "converted",
+                "original_amount": 89.0,
+                "original_currency": "GBP",
+                "rate_per_usd": 0.750306,
+                "rate_source": "ExchangeRate-API open access (open.er-api.com)",
+                "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+                "rate_retrieved_at": "2026-10-20T00:13:11Z"
+              }
+            }
+          }
+        ]
+      },
+      "coverage": {
+        "outbound": {
+          "deals_returned": 16,
+          "eligible_exact_date": 0,
+          "alternative_dates": 16,
+          "excluded": {
+            "route_mismatch": 0,
+            "invalid_price": 0,
+            "unconvertible_currency": 0,
+            "malformed": 0
+          },
+          "requested_date": "2026-11-19",
+          "returned_date_range": [
+            "2026-10-28",
+            "2027-08-09"
+          ],
+          "date_parameter_honored": false,
+          "requested_currency": "USD",
+          "returned_currency": "GBP",
+          "currency_parameter_honored": false,
+          "provider_usage_note": "Fares are Skyscanner's cached quotes for this pair, not a live search: each deal states `quoted_at` on every leg, and `deep_link_path` names the exact airports and date the quote belongs to. There is no pagination -- the page returns its whole set in one response, 13-16 deals measured across seven city pairs. `origin.sky_code` and `destination.sky_code`, and every `nearby_airports[].sky_code`, are"
+        },
+        "return": {
+          "deals_returned": 13,
+          "eligible_exact_date": 0,
+          "alternative_dates": 13,
+          "excluded": {
+            "route_mismatch": 0,
+            "invalid_price": 0,
+            "unconvertible_currency": 0,
+            "malformed": 0
+          },
+          "requested_date": "2026-11-22",
+          "returned_date_range": [
+            "2026-10-23",
+            "2027-10-10"
+          ],
+          "date_parameter_honored": false,
+          "requested_currency": "USD",
+          "returned_currency": "GBP",
+          "currency_parameter_honored": false,
+          "provider_usage_note": "Fares are Skyscanner's cached quotes for this pair, not a live search: each deal states `quoted_at` on every leg, and `deep_link_path` names the exact airports and date the quote belongs to. There is no pagination -- the page returns its whole set in one response, 13-16 deals measured across seven city pairs. `origin.sky_code` and `destination.sky_code`, and every `nearby_airports[].sky_code`, are"
+        }
+      },
+      "provenance": {
+        "outbound": {
+          "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+          "integration_type": "rapidapi_third_party",
+          "upstream_source": "skyscanner.net route pages (cached fare quotes, not a live fare search)",
+          "endpoint": "GET /v1/skyscanner/route",
+          "query_parameters": {
+            "origin": "ist",
+            "destination": "cai",
+            "date": "2026-11-19",
+            "adults": "2",
+            "currency": "USD",
+            "market": "US",
+            "locale": "en-US"
+          },
+          "retrieved_at": "2026-10-20T00:13:11Z",
+          "cache_status": "refresh",
+          "http_status": 200,
+          "key_slot": 1,
+          "attempts": 1,
+          "rate_limit": {
+            "x-ratelimit-requests-limit": "20",
+            "x-ratelimit-requests-remaining": "2",
+            "x-ratelimit-requests-reset": "2211745",
+            "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+            "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499982",
+            "x-ratelimit-rapid-free-plans-hard-limit-reset": "2211745"
+          }
+        },
+        "return": {
+          "provider": "Skyscanner Scraper API (RapidAPI marketplace)",
+          "integration_type": "rapidapi_third_party",
+          "upstream_source": "skyscanner.net route pages (cached fare quotes, not a live fare search)",
+          "endpoint": "GET /v1/skyscanner/route",
+          "query_parameters": {
+            "origin": "cai",
+            "destination": "ist",
+            "date": "2026-11-22",
+            "adults": "2",
+            "currency": "USD",
+            "market": "US",
+            "locale": "en-US"
+          },
+          "retrieved_at": "2026-10-20T00:13:18Z",
+          "cache_status": "refresh",
+          "http_status": 200,
+          "key_slot": 1,
+          "attempts": 1,
+          "rate_limit": {
+            "x-ratelimit-requests-limit": "20",
+            "x-ratelimit-requests-remaining": "1",
+            "x-ratelimit-requests-reset": "2211738",
+            "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+            "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499981",
+            "x-ratelimit-rapid-free-plans-hard-limit-reset": "2211738"
+          }
+        }
+      },
+      "limitations": [
+        "Cached quotes: the provider does not perform a live search for the requested date.",
+        "Group totals multiply a single-adult quote by the adult count (unverified for adults > 1).",
+        "No departure/arrival times are provided; only local departure dates.",
+        "Adopting an alternative date requires a NEW request with fresh hotel search and calculations."
+      ]
+    },
+    "hotels": {
+      "category": "hotels",
+      "status": "available",
+      "reason": null,
+      "error": null,
+      "price_authority": "live_provider_quote",
+      "offers": [
+        {
+          "offer_id": "booking:17410709:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 17410709,
+          "name": "Cairo Nile HK Hotel",
+          "star_rating": 3,
+          "star_rating_source": "official_star_rating",
+          "review_score": null,
+          "review_word": "",
+          "review_count": 0,
+          "distance_from_center_km": 0.6,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 61.75,
+          "taxes_and_fees_usd": 4.0,
+          "taxes_status": "known",
+          "total_price_usd": 65.75,
+          "price_per_night_usd": 21.92,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/926656594.jpg?k=6841fe2d81a716d710b85c74a8f2a2147d4256a2c11e68cf96e74db1f68cbc9d&o=",
+          "latitude": 30.0429271,
+          "longitude": 31.241277,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 17410709,
+            "block_ids": [
+              "1741070902_445607051_2_1_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Hotel room",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "D",
+          "tier_name": "Class D - Economy (Best Value)",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:17306376:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 17306376,
+          "name": "السفارات للخدمات الفندقيه الشامله بمدينه نصر",
+          "star_rating": null,
+          "star_rating_source": null,
+          "review_score": 8.4,
+          "review_word": "Very Good",
+          "review_count": 18,
+          "distance_from_center_km": 10.8,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 83.16,
+          "taxes_and_fees_usd": 0.83,
+          "taxes_status": "known",
+          "total_price_usd": 83.99,
+          "price_per_night_usd": 28.0,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/921577779.jpg?k=d0e57d6a0aa37051b763c74607a938455e8483db9ccd1f35400059896f8008c3&o=",
+          "latitude": 30.0685278,
+          "longitude": 31.3443056,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 17306376,
+            "block_ids": [
+              "1730637601_444682936_4_0_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Entire apartment – 150 m²",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "D",
+          "tier_name": "Class D - Economy (Best Value)",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:16063:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 16063,
+          "name": "Golden Carven Hotel",
+          "star_rating": 3,
+          "star_rating_source": "official_star_rating",
+          "review_score": 7.5,
+          "review_word": "Good",
+          "review_count": 1013,
+          "distance_from_center_km": 11.0,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 114.99,
+          "taxes_and_fees_usd": 17.25,
+          "taxes_status": "known",
+          "total_price_usd": 132.24,
+          "price_per_night_usd": 44.08,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/682032882.jpg?k=2d038414c48c4bcfc128174af9267123c2dba0ca108212693d0ba4c26be52676&o=",
+          "latitude": 30.0881822297843,
+          "longitude": 31.3386948271864,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 16063,
+            "block_ids": [
+              "1606302_422260507_2_2_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Hotel room",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "D",
+          "tier_name": "Class D - Economy (Best Value)",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:17251639:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 17251639,
+          "name": "The Square Boutique Hotel By SK",
+          "star_rating": null,
+          "star_rating_source": null,
+          "review_score": 9.4,
+          "review_word": "Wonderful",
+          "review_count": 19,
+          "distance_from_center_km": 0.45,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 135.0,
+          "taxes_and_fees_usd": 1.35,
+          "taxes_status": "known",
+          "total_price_usd": 136.35,
+          "price_per_night_usd": 45.45,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/922331553.jpg?k=386abc8c8c963de87a23c1a303667f131c204804baa3765dbcc6fdd4cd28404d&o=",
+          "latitude": 30.0474465193776,
+          "longitude": 31.2385503981476,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 17251639,
+            "block_ids": [
+              "1725163902_444175694_2_1_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Private room",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "D",
+          "tier_name": "Class D - Economy (Best Value)",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:14449343:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 14449343,
+          "name": "Khashaba Residence",
+          "star_rating": 4,
+          "star_rating_source": "booking_quality_rating",
+          "review_score": null,
+          "review_word": "",
+          "review_count": 0,
+          "distance_from_center_km": 3.4,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 121.5,
+          "taxes_and_fees_usd": 18.23,
+          "taxes_status": "known",
+          "total_price_usd": 139.73,
+          "price_per_night_usd": 46.58,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/702934918.jpg?k=f5566d01e998fe78d1d215bd9f5cac5af22f57e5c4b17826dd7f139c03a4bfa7&o=",
+          "latitude": 30.0496977,
+          "longitude": 31.2010351,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 14449343,
+            "block_ids": [
+              "1444934302_415907030_2_0_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Entire apartment – 40 m²",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "D",
+          "tier_name": "Class D - Economy (Best Value)",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:17427572:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 17427572,
+          "name": "Stylish 1BR Studio l Delta Towers , Nasr City Cairo",
+          "star_rating": 4,
+          "star_rating_source": "booking_quality_rating",
+          "review_score": null,
+          "review_word": "",
+          "review_count": 0,
+          "distance_from_center_km": 11.1,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 156.73,
+          "taxes_and_fees_usd": 1.57,
+          "taxes_status": "known",
+          "total_price_usd": 158.3,
+          "price_per_night_usd": 52.77,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/927402923.jpg?k=47ef4b2c74dcbe445b09e29ae056fda9cb558f5026ef2008644cedf3d0a9665b&o=",
+          "latitude": 30.0695470281633,
+          "longitude": 31.3469128742818,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 17427572,
+            "block_ids": [
+              "1742757201_445727695_2_0_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Entire studio – 80 m²",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "C",
+          "tier_name": "Class C - Comfort",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:245740:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 245740,
+          "name": "Aura Inn Hotel Cairo",
+          "star_rating": 3,
+          "star_rating_source": "official_star_rating",
+          "review_score": 7.4,
+          "review_word": "Good",
+          "review_count": 314,
+          "distance_from_center_km": 3.7,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 135.88,
+          "taxes_and_fees_usd": 22.77,
+          "taxes_status": "known",
+          "total_price_usd": 158.65,
+          "price_per_night_usd": 52.88,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/668827057.jpg?k=8a3bfb65da1a1ae8d8f2cac877481568c1aea72c980eac43ee4b8a54226bbeb6&o=",
+          "latitude": 30.0515856074874,
+          "longitude": 31.1983662843704,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": null,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 245740,
+            "block_ids": [
+              "0_0_2_0_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": null,
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "C",
+          "tier_name": "Class C - Comfort",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:16089863:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 16089863,
+          "name": "شقه راقيه مريحه المهندسين اطلاله مباشره",
+          "star_rating": null,
+          "star_rating_source": null,
+          "review_score": null,
+          "review_word": "",
+          "review_count": 0,
+          "distance_from_center_km": 3.9,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 140.4,
+          "taxes_and_fees_usd": 21.06,
+          "taxes_status": "known",
+          "total_price_usd": 161.46,
+          "price_per_night_usd": 53.82,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/845005244.jpg?k=c98a4870ca0a71c0165bec31b2126ec1450ecd94972941ca509d4b503c91b320&o=",
+          "latitude": 30.0654003,
+          "longitude": 31.2031079,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 16089863,
+            "block_ids": [
+              "1608986301_431809443_5_0_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Entire apartment – 180 m²",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "C",
+          "tier_name": "Class C - Comfort",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:12556380:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 12556380,
+          "name": "Logistics 5 Stars",
+          "star_rating": null,
+          "star_rating_source": null,
+          "review_score": 7.8,
+          "review_word": "Good",
+          "review_count": 701,
+          "distance_from_center_km": 11.1,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 162.54,
+          "taxes_and_fees_usd": 26.85,
+          "taxes_status": "known",
+          "total_price_usd": 189.39,
+          "price_per_night_usd": 63.13,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/857551482.jpg?k=2b3e78e675da4e88bded13e650ba586a96c9b960703b0eee68a48577f7d7f812&o=",
+          "latitude": 30.06994020804,
+          "longitude": 31.34751254063,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": null,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 12556380,
+            "block_ids": [
+              "0_0_2_1_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": null,
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "C",
+          "tier_name": "Class C - Comfort",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:17443327:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 17443327,
+          "name": "Cairo Downtown Boutiques",
+          "star_rating": null,
+          "star_rating_source": null,
+          "review_score": 10,
+          "review_word": "Exceptional",
+          "review_count": 3,
+          "distance_from_center_km": 0.4,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 246.0,
+          "taxes_and_fees_usd": 2.46,
+          "taxes_status": "known",
+          "total_price_usd": 248.46,
+          "price_per_night_usd": 82.82,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/930543302.jpg?k=397cafbff552856c8bfdcff3578e1e123a3d314192c202a42128431115c91972&o=",
+          "latitude": 30.048101405773,
+          "longitude": 31.236227058099,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 17443327,
+            "block_ids": [
+              "1744332701_445845335_2_1_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Hotel room",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "C",
+          "tier_name": "Class C - Comfort",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:8217560:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 8217560,
+          "name": "Stay Inn Cairo Hotel",
+          "star_rating": 4,
+          "star_rating_source": "official_star_rating",
+          "review_score": 8.3,
+          "review_word": "Very Good",
+          "review_count": 559,
+          "distance_from_center_km": 4.0,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 214.83,
+          "taxes_and_fees_usd": 34.45,
+          "taxes_status": "known",
+          "total_price_usd": 249.28,
+          "price_per_night_usd": 83.09,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/923523835.jpg?k=43ba100f4df82885aa09c25c4b0b10552a984fcf0baa22e0c576b3fd30a078a8&o=",
+          "latitude": 30.0526960703426,
+          "longitude": 31.1948653015785,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 8217560,
+            "block_ids": [
+              "821756007_344921236_2_1_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Hotel room",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "B",
+          "tier_name": "Class B - Premium",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:16176:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 16176,
+          "name": "Swiss Inn Nile Hotel",
+          "star_rating": 4,
+          "star_rating_source": "official_star_rating",
+          "review_score": 6.9,
+          "review_word": "Pleasant",
+          "review_count": 1285,
+          "distance_from_center_km": 5.9,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 227.44,
+          "taxes_and_fees_usd": 34.12,
+          "taxes_status": "known",
+          "total_price_usd": 261.56,
+          "price_per_night_usd": 87.19,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/610517808.jpg?k=fc895d82b7926a918e70afdd9c429ad572b30d7619028e7edabe760ba856c0a6&o=",
+          "latitude": 29.994333580165,
+          "longitude": 31.2151764200462,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 16176,
+            "block_ids": [
+              "1617603_123207550_0_42_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Hotel room",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "B",
+          "tier_name": "Class B - Premium",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:17468579:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 17468579,
+          "name": "Family-Friendly 3BR Apartment l Nasr City, Cairo",
+          "star_rating": 4,
+          "star_rating_source": "booking_quality_rating",
+          "review_score": null,
+          "review_word": "",
+          "review_count": 0,
+          "distance_from_center_km": 10.8,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 278.28,
+          "taxes_and_fees_usd": 2.78,
+          "taxes_status": "known",
+          "total_price_usd": 281.06,
+          "price_per_night_usd": 93.69,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/929345508.jpg?k=e497beb59bae81c19a3fd90aef5aa43f2a0c2d171f79754742caebfab5c53e05&o=",
+          "latitude": 30.0679457,
+          "longitude": 31.344603,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 17468579,
+            "block_ids": [
+              "1746857901_446047851_6_0_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Entire apartment – 160 m²",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "B",
+          "tier_name": "Class B - Premium",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:17469303:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 17469303,
+          "name": "Lorenda House",
+          "star_rating": null,
+          "star_rating_source": null,
+          "review_score": 10,
+          "review_word": "Exceptional",
+          "review_count": 1,
+          "distance_from_center_km": 0.5,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 252.0,
+          "taxes_and_fees_usd": 37.8,
+          "taxes_status": "known",
+          "total_price_usd": 289.8,
+          "price_per_night_usd": 96.6,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/929379216.jpg?k=73b31499c5bbcb823268a57d893260e9f3e4a5e430e0507167434bb9abe83a7e&o=",
+          "latitude": 30.044673972838,
+          "longitude": 31.2406099225191,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 17469303,
+            "block_ids": [
+              "1746930301_446069321_4_0_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Entire apartment – 180 m²",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "B",
+          "tier_name": "Class B - Premium",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:676629:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 676629,
+          "name": "Le Meridien Cairo Airport",
+          "star_rating": 5,
+          "star_rating_source": "official_star_rating",
+          "review_score": 8.9,
+          "review_word": "Excellent",
+          "review_count": 5278,
+          "distance_from_center_km": 17.2,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 671.16,
+          "taxes_and_fees_usd": 101.63,
+          "taxes_status": "known",
+          "total_price_usd": 772.79,
+          "price_per_night_usd": 257.6,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/630067390.jpg?k=b6ebd266698b1d5285191e433cbffc0859423bffb298abcd5ad579a8cab7e6a5&o=",
+          "latitude": 30.1136448155254,
+          "longitude": 31.3953396677971,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 676629,
+            "block_ids": [
+              "67662908_94500331_2_42_0_1121292"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Hotel room",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "B",
+          "tier_name": "Class B - Premium",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:16031:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 16031,
+          "name": "Pyramisa Hotel Cairo",
+          "star_rating": 5,
+          "star_rating_source": "official_star_rating",
+          "review_score": 8.7,
+          "review_word": "Excellent",
+          "review_count": 13076,
+          "distance_from_center_km": 1.8,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 723.2,
+          "taxes_and_fees_usd": 108.48,
+          "taxes_status": "known",
+          "total_price_usd": 831.68,
+          "price_per_night_usd": 277.23,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/116989077.jpg?k=5fd5f30992ce2e69deb83b78cde63b6469b611b75a52e68c99805f6d247ae4cf&o=",
+          "latitude": 30.0377689111787,
+          "longitude": 31.2186479299635,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 16031,
+            "block_ids": [
+              "1603102_244505030_2_42_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Private suite",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "A",
+          "tier_name": "Class A - Luxury",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:348358:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 348358,
+          "name": "Hilton Cairo Grand Nile",
+          "star_rating": 5,
+          "star_rating_source": "official_star_rating",
+          "review_score": 8.1,
+          "review_word": "Very Good",
+          "review_count": 11569,
+          "distance_from_center_km": 1.4,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 820.36,
+          "taxes_and_fees_usd": 123.05,
+          "taxes_status": "known",
+          "total_price_usd": 943.41,
+          "price_per_night_usd": 314.47,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/838276800.jpg?k=0f2c6592cd12e80ee659493f2e4080b2411bd2a90906e8ac9dca5cfab7e4d0d2&o=",
+          "latitude": 30.0338326597725,
+          "longitude": 31.2270069122314,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 348358,
+            "block_ids": [
+              "34835850_404461023_2_2_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Hotel room",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "A",
+          "tier_name": "Class A - Luxury",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:16478:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 16478,
+          "name": "Dusit Thani LakeView Cairo",
+          "star_rating": 5,
+          "star_rating_source": "official_star_rating",
+          "review_score": 8.6,
+          "review_word": "Excellent",
+          "review_count": 2482,
+          "distance_from_center_km": 21.3,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 875.84,
+          "taxes_and_fees_usd": 132.6,
+          "taxes_status": "known",
+          "total_price_usd": 1008.44,
+          "price_per_night_usd": 336.15,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/728181233.jpg?k=0e6a7cdfc1fd60c4904d29fec58ebd1cd562f470ca5d76c98a6277707675198e&o=",
+          "latitude": 30.0255285937813,
+          "longitude": 31.4560782909393,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 16478,
+            "block_ids": [
+              "1647802_95141166_2_2_0_459298"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Hotel room",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "A",
+          "tier_name": "Class A - Luxury",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:16018:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 16018,
+          "name": "Sheraton Cairo Hotel & Casino",
+          "star_rating": 5,
+          "star_rating_source": "official_star_rating",
+          "review_score": 8.7,
+          "review_word": "Excellent",
+          "review_count": 3019,
+          "distance_from_center_km": 1.6,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 997.92,
+          "taxes_and_fees_usd": 149.69,
+          "taxes_status": "known",
+          "total_price_usd": 1147.61,
+          "price_per_night_usd": 382.54,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/808087476.jpg?k=daeead329e27186c2df2108769cc5764d593fdd23a76a56c6323f918b64469f0&o=",
+          "latitude": 30.0392522202216,
+          "longitude": 31.219899058342,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 16018,
+            "block_ids": [
+              "1601829_344147944_2_2_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Hotel room",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "A",
+          "tier_name": "Class A - Luxury",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        },
+        {
+          "offer_id": "booking:235262:2026-11-19:2026-11-22:2a1r",
+          "hotel_id": 235262,
+          "name": "Fairmont Nile City",
+          "star_rating": 5,
+          "star_rating_source": "official_star_rating",
+          "review_score": 8.5,
+          "review_word": "Very Good",
+          "review_count": 4879,
+          "distance_from_center_km": 3.1,
+          "check_in_date": "2026-11-19",
+          "check_out_date": "2026-11-22",
+          "nights": 3,
+          "adults": 2,
+          "rooms": 1,
+          "base_price_usd": 1209.6,
+          "taxes_and_fees_usd": 183.13,
+          "taxes_status": "known",
+          "total_price_usd": 1392.73,
+          "price_per_night_usd": 464.24,
+          "price_scope": "whole stay, all adults, all rooms",
+          "price_authority": "live_provider_quote",
+          "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/914966156.jpg?k=376d77b09c43c875914511c7aea9069c9368794fe4abe9e4581532426b797c6e&o=",
+          "latitude": 30.0714732090877,
+          "longitude": 31.2274172902107,
+          "eligibility": {
+            "eligible": true,
+            "reason": null,
+            "checks": {
+              "dates_match": true,
+              "adults_verified": true,
+              "rooms_verified": true,
+              "destination_verified": true
+            }
+          },
+          "provenance": {
+            "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+            "integration_type": "rapidapi_third_party",
+            "endpoint": "GET /api/v1/hotels/searchHotels",
+            "retrieved_at": "2026-10-20T00:13:21Z",
+            "cache_status": "refresh",
+            "provider_offer_id": 235262,
+            "block_ids": [
+              "23526232_411357634_2_2_0"
+            ],
+            "occupancy_evidence": "Price for 3 nights, 2 adults",
+            "rooms_evidence": "Hotel room",
+            "currency_conversion": {
+              "base": {
+                "status": "not_required",
+                "original_currency": "USD"
+              },
+              "taxes": {
+                "status": "not_required",
+                "original_currency": "USD"
+              }
+            }
+          },
+          "tier_code": "A",
+          "tier_name": "Class A - Luxury",
+          "tier_basis": "price_ordering",
+          "fits_budget": true
+        }
+      ],
+      "coverage": {
+        "hotels_returned": 20,
+        "eligible": 20,
+        "excluded": {
+          "date_mismatch": 0,
+          "occupancy_mismatch": 0,
+          "occupancy_unverified": 0,
+          "destination_mismatch": 0,
+          "destination_unverified": 0,
+          "invalid_price": 0,
+          "unconvertible_currency": 0,
+          "malformed": 0
+        },
+        "page_number": 1,
+        "coverage_radius_km": 60
+      },
+      "provenance": {
+        "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+        "integration_type": "rapidapi_third_party",
+        "upstream_source": "booking.com live hotel availability search",
+        "endpoint": "GET /api/v1/hotels/searchHotels",
+        "query_parameters": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-19",
+          "departure_date": "2026-11-22",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "retrieved_at": "2026-10-20T00:13:21Z",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "key_slot": 1,
+        "attempts": 1,
+        "rate_limit": {
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499986",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2211774",
+          "x-ratelimit-premium-limit": "50",
+          "x-ratelimit-premium-remaining": "50",
+          "x-ratelimit-premium-reset": "2211774",
+          "x-ratelimit-requests-limit": "20",
+          "x-ratelimit-requests-remaining": "6",
+          "x-ratelimit-requests-reset": "2211774"
+        }
+      },
+      "destination_mapping": {
+        "dest_id": "-290692",
+        "search_type": "CITY",
+        "source": "pinned_mapping"
+      }
+    },
+    "exchange_rates": {
+      "available": true,
+      "source": "ExchangeRate-API open access (open.er-api.com)",
+      "rate_timestamp": "Mon, 19 Oct 2026 00:02:32 +0000",
+      "retrieved_at": "2026-10-20T00:13:11Z",
+      "provenance": {
+        "provider": "ExchangeRate-API open access (open.er-api.com)",
+        "integration_type": "direct_public_api",
+        "endpoint": "GET /v6/latest/USD",
+        "query_parameters": {},
+        "retrieved_at": "2026-10-20T00:13:11Z",
+        "cache_status": "refresh"
+      }
+    },
+    "data_mode": "live",
+    "warnings": []
+  },
+  "budget_summary": {
+    "basis": "hotel_only_flight_price_unavailable",
+    "budget_usd": 1500.0,
+    "flight_subtotal_usd": null,
+    "flight_price_authority": "unavailable",
+    "hotel_price_authority": "live_provider_quote",
+    "scope_note": "Flight-plus-hotel subtotal only. Excludes food, activities, local transport and every other expense. The authoritative trip budget is calculated by the backend (BE-04 #19).",
+    "recalculation_note": "Changing the selected flight or hotel requires the backend to recalculate these subtotals."
+  },
+  "budget_tiers_within_limit": [
+    {
+      "tier_code": "D",
+      "tier_name": "Class D - Economy (Best Value)",
+      "tier_basis": "price_ordering",
+      "hotel_offer_id": "booking:17306376:2026-11-19:2026-11-22:2a1r",
+      "hotel_id": 17306376,
+      "hotel_name": "السفارات للخدمات الفندقيه الشامله بمدينه نصر",
+      "star_rating": null,
+      "review_score": 8.4,
+      "distance_from_center_km": 10.8,
+      "outbound_flight_offer_id": null,
+      "return_flight_offer_id": null,
+      "flight_subtotal_usd": null,
+      "hotel_total_usd": 83.99,
+      "flight_hotel_subtotal_usd": null,
+      "budget_usd": 1500.0,
+      "remaining_after_flight_hotel_usd": null,
+      "remaining_after_hotel_only_usd": 1416.01,
+      "subtotal_basis": "hotel_only_flight_price_unavailable",
+      "subtotal_is_indicative": false,
+      "affordable_hotels_in_tier": 5
+    },
+    {
+      "tier_code": "C",
+      "tier_name": "Class C - Comfort",
+      "tier_basis": "price_ordering",
+      "hotel_offer_id": "booking:17443327:2026-11-19:2026-11-22:2a1r",
+      "hotel_id": 17443327,
+      "hotel_name": "Cairo Downtown Boutiques",
+      "star_rating": null,
+      "review_score": 10,
+      "distance_from_center_km": 0.4,
+      "outbound_flight_offer_id": null,
+      "return_flight_offer_id": null,
+      "flight_subtotal_usd": null,
+      "hotel_total_usd": 248.46,
+      "flight_hotel_subtotal_usd": null,
+      "budget_usd": 1500.0,
+      "remaining_after_flight_hotel_usd": null,
+      "remaining_after_hotel_only_usd": 1251.54,
+      "subtotal_basis": "hotel_only_flight_price_unavailable",
+      "subtotal_is_indicative": false,
+      "affordable_hotels_in_tier": 5
+    },
+    {
+      "tier_code": "B",
+      "tier_name": "Class B - Premium",
+      "tier_basis": "price_ordering",
+      "hotel_offer_id": "booking:17469303:2026-11-19:2026-11-22:2a1r",
+      "hotel_id": 17469303,
+      "hotel_name": "Lorenda House",
+      "star_rating": null,
+      "review_score": 10,
+      "distance_from_center_km": 0.5,
+      "outbound_flight_offer_id": null,
+      "return_flight_offer_id": null,
+      "flight_subtotal_usd": null,
+      "hotel_total_usd": 289.8,
+      "flight_hotel_subtotal_usd": null,
+      "budget_usd": 1500.0,
+      "remaining_after_flight_hotel_usd": null,
+      "remaining_after_hotel_only_usd": 1210.2,
+      "subtotal_basis": "hotel_only_flight_price_unavailable",
+      "subtotal_is_indicative": false,
+      "affordable_hotels_in_tier": 5
+    },
+    {
+      "tier_code": "A",
+      "tier_name": "Class A - Luxury",
+      "tier_basis": "price_ordering",
+      "hotel_offer_id": "booking:16031:2026-11-19:2026-11-22:2a1r",
+      "hotel_id": 16031,
+      "hotel_name": "Pyramisa Hotel Cairo",
+      "star_rating": 5,
+      "review_score": 8.7,
+      "distance_from_center_km": 1.8,
+      "outbound_flight_offer_id": null,
+      "return_flight_offer_id": null,
+      "flight_subtotal_usd": null,
+      "hotel_total_usd": 831.68,
+      "flight_hotel_subtotal_usd": null,
+      "budget_usd": 1500.0,
+      "remaining_after_flight_hotel_usd": null,
+      "remaining_after_hotel_only_usd": 668.32,
+      "subtotal_basis": "hotel_only_flight_price_unavailable",
+      "subtotal_is_indicative": false,
+      "affordable_hotels_in_tier": 5
+    }
+  ],
+  "budget_tiers_excluded": [],
+  "selected_offers": {
+    "outbound_flight": null,
+    "return_flight": null,
+    "hotel": {
+      "offer_id": "booking:17443327:2026-11-19:2026-11-22:2a1r",
+      "hotel_id": 17443327,
+      "name": "Cairo Downtown Boutiques",
+      "star_rating": null,
+      "star_rating_source": null,
+      "review_score": 10,
+      "review_word": "Exceptional",
+      "review_count": 3,
+      "distance_from_center_km": 0.4,
+      "check_in_date": "2026-11-19",
+      "check_out_date": "2026-11-22",
+      "nights": 3,
+      "adults": 2,
+      "rooms": 1,
+      "base_price_usd": 246.0,
+      "taxes_and_fees_usd": 2.46,
+      "taxes_status": "known",
+      "total_price_usd": 248.46,
+      "price_per_night_usd": 82.82,
+      "price_scope": "whole stay, all adults, all rooms",
+      "price_authority": "live_provider_quote",
+      "photo_url": "https://cf.bstatic.com/xdata/images/hotel/square500/930543302.jpg?k=397cafbff552856c8bfdcff3578e1e123a3d314192c202a42128431115c91972&o=",
+      "latitude": 30.048101405773,
+      "longitude": 31.236227058099,
+      "eligibility": {
+        "eligible": true,
+        "reason": null,
+        "checks": {
+          "dates_match": true,
+          "adults_verified": true,
+          "rooms_verified": true,
+          "destination_verified": true
+        }
+      },
+      "provenance": {
+        "provider": "Booking COM booking-com15 (RapidAPI marketplace)",
+        "integration_type": "rapidapi_third_party",
+        "endpoint": "GET /api/v1/hotels/searchHotels",
+        "retrieved_at": "2026-10-20T00:13:21Z",
+        "cache_status": "refresh",
+        "provider_offer_id": 17443327,
+        "block_ids": [
+          "1744332701_445845335_2_1_0"
+        ],
+        "occupancy_evidence": "Price for 3 nights, 2 adults",
+        "rooms_evidence": "Hotel room",
+        "currency_conversion": {
+          "base": {
+            "status": "not_required",
+            "original_currency": "USD"
+          },
+          "taxes": {
+            "status": "not_required",
+            "original_currency": "USD"
+          }
+        }
+      },
+      "tier_code": "C",
+      "tier_name": "Class C - Comfort",
+      "tier_basis": "price_ordering",
+      "fits_budget": true
+    },
+    "selection_basis": "prototype_default (backend owns final selection)"
+  }
+}

@@ -1,0 +1,275 @@
+{
+  "id": "paris",
+  "label": "London → Paris",
+  "provenance": {
+    "label": "DEMO",
+    "data_mode": "offline_demo",
+    "live_evidence": false,
+    "contract_version": "0.4",
+    "validation_today_utc": "2026-10-15",
+    "source_archive": "docs/design/des-02/TravelMate-design-source.zip",
+    "source_entry": "TravelMate-design-source/screens/DemoTrip.dc.html",
+    "notice": "Sample trip for preview. Prices are examples, not live, and nothing is sent or saved."
+  },
+  "request": {
+    "departure_city": "London",
+    "destination_city": "Paris",
+    "start_date": "2026-12-04",
+    "return_date": "2026-12-06",
+    "adults": 1,
+    "budget_usd": 600
+  },
+  "response": {
+    "generation_status": "complete",
+    "live_integration_status": "price_received",
+    "trip": {
+      "departure_city": "London",
+      "destination_city": "Paris",
+      "start_date": "2026-12-04",
+      "return_date": "2026-12-06",
+      "adults": 1,
+      "nights": 2
+    },
+    "itinerary": [
+      {
+        "date": "2026-12-04",
+        "empty_day_reason": null,
+        "activities": [
+          {
+            "order": 1,
+            "name": "Place des Vosges",
+            "area": "Le Marais",
+            "description": "Arcades and cafés at dusk.",
+            "cost": {
+              "amount_usd": 0,
+              "kind": "estimate",
+              "coverage": "all_travelers"
+            }
+          }
+        ]
+      },
+      {
+        "date": "2026-12-05",
+        "empty_day_reason": null,
+        "activities": [
+          {
+            "order": 1,
+            "name": "Musée d’Orsay",
+            "area": "Saint-Germain",
+            "description": "Book a time slot.",
+            "cost": {
+              "amount_usd": 20,
+              "kind": "estimate",
+              "coverage": "all_travelers"
+            }
+          },
+          {
+            "order": 2,
+            "name": "Seine walk to Notre-Dame",
+            "area": "Île de la Cité",
+            "description": "Bookstalls along the river.",
+            "cost": {
+              "amount_usd": 0,
+              "kind": "estimate",
+              "coverage": "all_travelers"
+            }
+          }
+        ]
+      },
+      {
+        "date": "2026-12-06",
+        "empty_day_reason": null,
+        "activities": [
+          {
+            "order": 1,
+            "name": "Montmartre and Sacré-Cœur",
+            "area": "18th arrondissement",
+            "description": "Morning views before the flight.",
+            "cost": {
+              "amount_usd": 0,
+              "kind": "estimate",
+              "coverage": "all_travelers"
+            }
+          }
+        ]
+      }
+    ],
+    "travel_options": {
+      "flights": {
+        "status": "live",
+        "offers": [
+          {
+            "id": "demo-paris-flight",
+            "source": "demo-sample",
+            "retrieved_at": "2026-10-15T09:00:00Z",
+            "price": {
+              "amount_usd": 210,
+              "kind": "provider",
+              "coverage": "entire_trip_all_travelers"
+            },
+            "taxes": {
+              "status": "included",
+              "additional_amount_usd": 0
+            },
+            "airline": "Sample Air",
+            "departure_airport_code": "LHR",
+            "arrival_airport_code": "CDG",
+            "outbound_departure_at": "2026-12-04T08:00:00Z",
+            "return_departure_at": "2026-12-06T17:30:00Z",
+            "adults": 1
+          }
+        ]
+      },
+      "hotels": {
+        "status": "live",
+        "offers": [
+          {
+            "id": "demo-paris-hotel",
+            "source": "demo-sample",
+            "retrieved_at": "2026-10-15T09:00:00Z",
+            "price": {
+              "amount_usd": 300,
+              "kind": "provider",
+              "coverage": "entire_trip_all_travelers"
+            },
+            "taxes": {
+              "status": "additional_known",
+              "additional_amount_usd": 15
+            },
+            "name": "Sample Hotel Marais",
+            "area": "Le Marais",
+            "check_in": "2026-12-04",
+            "check_out": "2026-12-06",
+            "occupancy_adults": 1,
+            "room_qty": 1
+          }
+        ]
+      }
+    },
+    "budget": {
+      "budget_usd": 600,
+      "selected_flight_offer_id": "demo-paris-flight",
+      "selected_hotel_offer_id": "demo-paris-hotel",
+      "cost_items": [
+        {
+          "id": "flight",
+          "category": "flights",
+          "label": "flight",
+          "amount_usd": 210,
+          "kind": "provider",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Selected sample round-trip quote for all adults.",
+          "source_offer_id": "demo-paris-flight",
+          "activity_ref": null
+        },
+        {
+          "id": "hotel",
+          "category": "accommodation",
+          "label": "hotel",
+          "amount_usd": 300,
+          "kind": "provider",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Selected sample quote for all nights and adults.",
+          "source_offer_id": "demo-paris-hotel",
+          "activity_ref": null
+        },
+        {
+          "id": "hotel-tax",
+          "category": "taxes_fees",
+          "label": "hotel-tax",
+          "amount_usd": 15,
+          "kind": "provider",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Additional mandatory hotel fees excluded from the selected base quote.",
+          "source_offer_id": "demo-paris-hotel",
+          "activity_ref": null
+        },
+        {
+          "id": "activity-2026-12-04-1",
+          "category": "activities",
+          "label": "activity-2026-12-04-1",
+          "amount_usd": 0,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample whole-group activity estimate.",
+          "source_offer_id": null,
+          "activity_ref": {
+            "date": "2026-12-04",
+            "order": 1
+          }
+        },
+        {
+          "id": "activity-2026-12-05-1",
+          "category": "activities",
+          "label": "activity-2026-12-05-1",
+          "amount_usd": 20,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample whole-group activity estimate.",
+          "source_offer_id": null,
+          "activity_ref": {
+            "date": "2026-12-05",
+            "order": 1
+          }
+        },
+        {
+          "id": "activity-2026-12-05-2",
+          "category": "activities",
+          "label": "activity-2026-12-05-2",
+          "amount_usd": 0,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample whole-group activity estimate.",
+          "source_offer_id": null,
+          "activity_ref": {
+            "date": "2026-12-05",
+            "order": 2
+          }
+        },
+        {
+          "id": "activity-2026-12-06-1",
+          "category": "activities",
+          "label": "activity-2026-12-06-1",
+          "amount_usd": 0,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample whole-group activity estimate.",
+          "source_offer_id": null,
+          "activity_ref": {
+            "date": "2026-12-06",
+            "order": 1
+          }
+        },
+        {
+          "id": "food",
+          "category": "food",
+          "label": "food",
+          "amount_usd": 90,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample estimate: about USD 30 per day.",
+          "source_offer_id": null,
+          "activity_ref": null
+        },
+        {
+          "id": "transport",
+          "category": "local_transport",
+          "label": "transport",
+          "amount_usd": 35,
+          "kind": "estimate",
+          "coverage": "entire_trip_all_travelers",
+          "basis": "Sample estimate for metro and RER.",
+          "source_offer_id": null,
+          "activity_ref": null
+        }
+      ],
+      "provider_subtotal_usd": 525.0,
+      "estimated_subtotal_usd": 145.0,
+      "projected_total_usd": 670.0,
+      "status": "over_budget",
+      "missing_categories": [],
+      "notes": []
+    },
+    "warnings": []
+  }
+}

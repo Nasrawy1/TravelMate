@@ -1,0 +1,17 @@
+/* Ali's DES-02 demo chrome; result cards retain their shared responsive styles. */
+.offline-demo { --tm-font-display: Georgia, 'Times New Roman', serif; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; }
+.offline-demo .welcome-logo { font-family: var(--tm-font-display); }
+.demo-banner { position: sticky; top: 0; z-index: 10; padding: 10px 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 14px; background: var(--res-peach); color: var(--tm-ink); text-align: center; font-size: 15px; }
+.demo-banner strong { padding: 3px 10px; border-radius: 999px; background: var(--tm-ink); color: var(--tm-surface); font-size: 13px; letter-spacing: 0.08em; }
+.offline-demo .tp-nav .demo-create-account { background: var(--tm-terracotta); color: var(--tm-surface); padding: 12px 20px; border-radius: 14px; }
+.demo-trip-picker { display: flex; flex-wrap: wrap; gap: 10px; }
+.demo-trip-picker button { min-height: 48px; max-width: 100%; padding: 12px 18px; border: 1.5px solid var(--tm-line); border-radius: 14px; background: var(--tm-surface); color: var(--tm-ink); font: inherit; font-weight: 700; cursor: pointer; overflow-wrap: anywhere; }
+.demo-trip-picker button[aria-pressed="true"] { border-color: var(--tm-ink); background: var(--tm-ink); color: var(--tm-surface); }
+.demo-trip-picker button:hover { border-color: var(--tm-terracotta); }
+.offline-demo #demo-results { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.demo-selection-status { color: var(--tm-muted); font-size: 14px; }
+.offline-demo .skip-link { z-index: 20; }
+@media (max-width: 600px) {
+  .demo-trip-picker button { flex: 1 1 220px; }
+  .offline-demo :is(a, button, [tabindex]) { scroll-margin-top: 180px; }
+}

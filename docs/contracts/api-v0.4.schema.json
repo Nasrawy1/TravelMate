@@ -7,11 +7,17 @@
       "properties": {
         "departure_city": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 200,
+          "pattern": "\\S",
+          "description": "Free-text city name, optionally qualified by country/region. Trim surrounding whitespace before validation; resolve unambiguously on the backend without a fixed allowlist. See api-contracts.md section 3 (approved 2026-10-24)."
         },
         "destination_city": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 200,
+          "pattern": "\\S",
+          "description": "Free-text city name, optionally qualified by country/region. Trim surrounding whitespace before validation; resolve unambiguously on the backend without a fixed allowlist. See api-contracts.md section 3 (approved 2026-10-24)."
         },
         "start_date": {
           "type": "string",

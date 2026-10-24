@@ -1,0 +1,46 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://google-flights2.p.rapidapi.com/api/v1/getBookingDetails",
+    "params": {
+      "booking_token": "<sha256:c8d434502c64c5d5>",
+      "currency": "USD",
+      "language_code": "en-US",
+      "country_code": "US"
+    },
+    "headers": {
+      "x-rapidapi-host": "google-flights2.p.rapidapi.com",
+      "x-rapidapi-key": "<redacted>"
+    }
+  },
+  "requested_at": "2026-10-23T06:59:02Z",
+  "elapsed_ms": 4752,
+  "http_status": 200,
+  "rate_limit": {
+    "X-RateLimit-Requests-Limit": "150",
+    "X-RateLimit-Requests-Remaining": "124",
+    "X-RateLimit-Requests-Reset": "2540312",
+    "X-RateLimit-rapid-free-plans-hard-limit-Limit": "500000",
+    "X-RateLimit-rapid-free-plans-hard-limit-Remaining": "499974",
+    "X-RateLimit-rapid-free-plans-hard-limit-Reset": "2540312"
+  },
+  "response": {
+    "status": true,
+    "message": "Success",
+    "timestamp": 1792738731346,
+    "bag_info": null,
+    "data": [
+      {
+        "id": "SM",
+        "title": "Air Cairo",
+        "website": "aircairo.com",
+        "price": 200,
+        "meta": null,
+        "is_airline": true,
+        "individualBooking": false,
+        "token": "AAcRjHJkKCjRyWscqp8GB1AH20lvVvR5YtD-ji2_65NjzJ8IUz3EXurymBaG_WbqHvov1GtvTwVj4SUnLTUGxZTkne1aLFfPlgbllQCiaS8MMplIBbqwjebbxCS2rDolmwY7F5rqwIg4JHNR0KclFPlWri8hQeLX2kT9vzJ8fX1v4zBLfXKwcHN3Ap_a2JvqOb0obieBVFRcRbIKt_0qnM3_qc4Q0aACgjC-khMRgTSr5meJUz36iu4DXWJ0AArjkTPCQoTpQ9A3qtP5QzmcGii7TDnUxFozc6I3_XrJ92mXVrzlY8VDHsVmTjX4AS-NUJKKB--Eeg8CXJx3anEkYhP8qyNmc2duKbZgwJ4LZikuwjMEHWEGtcFz7xIJJc8ouuJNzaDJPgjkZjYtin0fq_TTuCoGaFeCAsCDNyPQwrTLnju4vpEXfVRCY0zdcv0HEpV8NN296aMG6BNYt6JChA_ArdTgYQdnWGBIZk9ad-vgABzeGAxttRphmtOEdWA3qZ1TinIfXJTiY3E4RldtBqaPdqRv1_qX-F4qtFl7wylat2P6l7V4mXZgTJ7fk2NZuYZNMy-5VEC5r39OhxwxdIVnbIj9V5WvFADUNsRl04YnCtINQzLinyjlaDFle0iIr1WhvGBUMO0lijZv1U7_PDLxrIwkaGxLzqg9yF1EMT-_WPvuxceZzuUJXnie8SYLyOAzeHMt6NmwM13EvCVqgocnReuxvPtc5hanDzuLRGNIzWfN2tdYSMTfi0ZRN8T8b2Rw5ONtOy6oUOykUlF6ukAzDCKvsFLK71bVqOPPQRZR4JquWT4Lkya9vZa89z1JaqoigkGxQgpP4NNcHwEXi6l-9lp1kEGlU2HkpnzPawTR3idUHk7mnR0MGvG3Y9BW14qOu5ERqI1oesZtYNwIpzV_3h4hBTOEi9Kv61Zxj1Odnj9kPdlOfVscoW28KXgoEZbVkU5N1i53K5LCbdnmJbhUY5cScm7lPXwoH2HMp0jkuQXra16OtCz0bxakVVdwdPO9q2BB2fChsHqyf-i-v8R0UIXiqvO0-M7gZLpn70LyeBaX69fberTUM1fX-aAcAlGQAwZCBkM_cxDL6ny4D2nWalXBbMBWpoq50Wp32oFZ7MIDUllIpUODsZ_2lQ67bBt5v46GwGqtf6eVV7jW2nU6U3pbXbevv_zPggrf2d3He3utXXF6otHMrTggo7WfEINwAZXDMpHVCm1OY_-Il5-O6deIco4fax_FvVoKj1PPHNbc8Dssmag0jTvA0ZyalIkGlJPPfvWDpGgjjBSW_0YiR9XZnzdrtEWLauLpt2HEk1sRpcvylxqA-XeCA2at-oCu7AYG5I3wr6LA0IN3Z9NH3z3MXk7zt_wjpRxc1iBlHjo3m_LCFwrdqi6p3WcA0BIhIuiwuU1T-eOjQO0LUsPPDvpRgcVeCGsDZjj8l1QDNqKYcb_PWYv3ctaVG1wYO_XdH3tJcSzeoFklz7OWJo_7FQRw0Pv8wWwXXbLhDJOxTUIiydXe9-vr8sHgd5Fxa_gjSWvlXCbaphtOASavGn8dagqX8ris6knSfv1kX_Pszs-iwzkh232P5ZuFitfsJ5nrfRXCfVaenblL1UEH89TOp0XC9y7EfG5KGZOldYS1mODUkRo-c5mavcFnu8GHxAbP1rAJnSF1Rj2ORW8SMoffe6H_Mmr7E84cXfzWloxNRJq9o8scfeapErVGTHGC1D3FwSCZhgsVIrVCYZ9bEKVSgMjlXaESQHOLv_we2RUljqs92arYPRuX-0Fv-k6HV-1jytrT9RBGu-qlceMbHbhMXWC75RhmuVmA3HwaXqVpzEOkNn8-cFWJdhXaX92KXZSPC8CHai0gHQXqzx_lfVYZB-yl9y2FkNo-1tQ2sC51fO7q4ElLRuXCUe2EI8h5NyOskqZdQbAXQGVM47CfVki6o9YGD18KYxYOEA-1FPdWXf6AGlntlKNDg2ToIki34lDyTGMnSuxZ4xJALbVBjHoETbWXxHzk8z6igHUSAfHWFjPrUoydlAdAWpmHimqQ34ML3fsFBFzdiXw8GYegkLLRjA8CJ5tupBmvy12vx3Yuk5CAPNok1Ucu9tC1JNo0-022aTe2Ct4Yd7Yt-YYKci1rMufbFH1e_anPpROENipbZ_PFIAj3o-afo6jiqLHaBmCsNhYCHeXFrYqNhovhQ-F6kl9qddeeKnCOV5RLlIdwe_NjUV2rK4ZT7_90yjidgg48MEofNjTnjYKEkL6u_1Gi1RjKqZnbJUpLYAietw53bzrPOdToddNsDhJBG5XgOXXOMtHIMmOVxinw3H0Ma6paV2D37Q-oK_0S1N9Fg-0vCNjeJVXfGg9xFN-3caaHMhfwsUQwqdcqbeTR02zj9IFQ4_hDIzIGBSMj0FjRuuthA2bsZW9SM3WNnI7tEY9Ne7k18GMi_md9UkrV3eyxmdDjt621bmSXCDBgg3YN1d8df8dRrXH3-wTs-XXSJQ4Lqwyu8c65C2stViwJN8Idyt_wR0Wr9lltCpAhAX07Udc9eK-AhoHz4DDguKvnaUCVVzeglOqZHmFZfATXSjbG7PpkKsgBPSVkLWLz8qk3LLLkJDWJPH6XVXTVLStDFDA0PmIKPiNqI2MY8sJKAofUZufAKvrmLKmgHsEpFkHikbVUiF1JS9KYxvkGYRb3Hd1U4j9Mq8DrqoIqUfi59xpRefFuPVnE77Ymyg1BdbEibG-07xIj8h2rEzu9KYiEcljbWLgLh6fsSEiU2fTS69-tk6DHX9mOZq42w9iYBXm_zDDfyOfso_JH-6LjrIKB_vDhQLegI9HrTwGblJEJFS3n5lhi6cmyLWLRjUKagINqWd2uuv2l-Stz4A06MauY4nGUrnaclHcg9jwj3vvrZd7MZyBKL56VCiLn0lWn8EuHqOMYqpURotUahhAV_5Vrw8Nd5Eg4N23J_PvvpdObMXs4NN0HEIaTr07PZhQA5sO4gZgJNchIqnCRgAaJwHtCO4uBMAYI74NUB6_LrAW7J8bkSngpg1v8g5bDpC0GnGzUfWKmRcXFn0367IEwc9ZH2FooJVFJB5gydRRLsr5XybGkbm69aC6Ne24-V9YQQHrgebeMcfCIWApqIqZ-qKpnxh39HPHpYzEjK8IJT6t33zkPiTQVGTAR5Wo7eT_E4zU-zTzxB0pC5u9jxpN6_zj8TGKrlvatVhaUBiPwsDEREiRoeWWFVjN3_T5bhbUro9kRRUjuEDaSfx-7L3wXB82J5nsEeurLpW8tFytTdvAtXgwPk-joKyqH9jcjsjxcdvs7dFxZ-Zdqa3ht6Dk55p-2anTGyClRNnxEKBG96sApsAoK78RI0FLyrvh-LjttdbmRKQK-rAy5sLhT5mw3eFY1gqK8K2F41d_EUqbduPgDn0PxDPV1uBvQbo2oX4HhG0Gji-rF7cP8azTFWITPAnhipUnVOenJv0XVfvoXh0W2AP-4C1zrAyDRk9RGJVbHSQ7KUhrdowwWEY1D4ZTlqQaB3NJjLEqQH8paNLpY5AmWJDidJrOfY7p5DKpQIUa4f6w5o78_78KeQ4BpFGdWLMe4zxzT3374i2QNEFkVsKT2hQkJyrJKigAS3Xi5mEhhX1YOpQK3bq3s97-HyvZ417ndqUHMUPAyD_9MRMWGy8I4vWuqtgMx9ckpfcZkdWxqwN5vIAKF2S0lSG0sxViRrpkJ7p20R5jQ5-JTrUD_ytw3cMnuQxGQeuE9JLoA5F0Ufeq-1lcjXUzp_vYfEM0ESKm9PEsq7YRVm3qd_S_DjayfbzyzgUZIxqPvbKgYsysWh4jeLqYl0NnTEEG8mdJcK1JRFd-Efpi_lyvXtBayDA8Pj4rbhWVW_HNkQxkjqLZVQnk4fE_v0pFbQoAaF6RRFDIQLlrZsIV2mmj6oQeV8fmS-vlcdNqkWPrFGxEga6EzZYJnZH7847FmoiTkltRS7j9EZSHOAPUA4TLRJgM1Tbelg39REKZztNpfIrteyCvtGHzOX3cuR3SOi9bOgssoldT2lxjbgD0626fS5RDtmZBY6zUTgjMKE-umHOabL5z95xw8v-DprLB7Dfty3szqARMItCmGxyYuRH11gdQ5kvYmHVlvw670isD24-bUo1pYwXQOBdnteeYiIRp4YjhnhNsg1i7fLP0tcMs63xSETz78XWhqppTkEI0RQWb5w0Wczt4KrRFr65hvk4ExSxW5miOXcCpgqFmsPTtujvPqp0zGA9SanCaLqcOaXN-ITMBNT__EQPXXoZsqW-9HJDBAzy7-ZEk6pSvJa6_tC_T7DB0qWHmyPbU5O3wPDdNSMF8htaswJ_l_JzDHwD-nDbauaP2i510tldh7IE-oNIIVtYxPWZf2dUCAy9ENDW7E7Z-XCOr--AXnuAlE1RCZ4uiMLGV4wWnMq6vlA6bUAilziGEyRSuN4igTcevNP-zj3xNG3CFROg2DU4g2JoKJRD52EwgsSgFQQNveizhoGPwXKF89jkFctcJNNjwvyzp5qqKJDntMrck9u_CfQYgZe08BI-dtQmv4Av3SPUskJE-SBsXGLqVRlhGYh4ap4sGQduPdeVgW4erYCKARvZ697lzu8ny1cei4ufqGBGGa2I70fW1kv0-Jpe1XgWwxmWw9gDP12M7x_wDCxid82R4F2BmjAPzXj2cCZBvV8KygOZRs9a5s5jRjndXFG0jPyqtYZhgfqVY2mQLN76EvcjdMSskGSfzB4Ck7d4sXXxVloByx0rGvj84q9huHi2XlLc_socpuep0pU3oBIoL3FZ74B5nV-zCNA_rPw41WygWk7MAr7KhfJCfOzDL-lCD0Yin8UkJSiBP36iw3EfpdqThCpU95y_JFRjjI28AwCCGNnH3GfE95T7PzyjArDuCAzQUaejrnsX8BlcaUweLw7MDrEON4IoRve3WQk2xUMKjHbz8DIG6kQI_rjK5DFCBvB6jNnQeLXSzexkrfS_3mqHbQAHfz1Q",
+        "bookings": []
+      }
+    ]
+  }
+}

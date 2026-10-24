@@ -1,0 +1,175 @@
+{
+  "request": {
+    "path": "/api/v1/searchAirport",
+    "params": {
+      "query": "Paris",
+      "language_code": "en-US",
+      "country_code": "US"
+    },
+    "headers": {
+      "x-rapidapi-key": "<redacted>"
+    }
+  },
+  "retrieved_at": "2026-10-23T14:33:46Z",
+  "http_status": 200,
+  "rate_limit": {
+    "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+    "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499943",
+    "x-ratelimit-rapid-free-plans-hard-limit-reset": "2513029",
+    "x-ratelimit-requests-limit": "150",
+    "x-ratelimit-requests-remaining": "93",
+    "x-ratelimit-requests-reset": "2513029"
+  },
+  "response": {
+    "status": true,
+    "message": "Success",
+    "timestamp": 1792766014368,
+    "data": [
+      {
+        "id": "/m/05qtj",
+        "type": "other",
+        "title": "Paris, France",
+        "subtitle": "Capital of France",
+        "city": "Paris",
+        "distance": null,
+        "list": [
+          {
+            "id": "CDG",
+            "type": "airport",
+            "title": "Aéroport de Paris-Charles de Gaulle",
+            "subtitle": "14 mi to destination",
+            "city": "Paris",
+            "distance": "14 mi"
+          },
+          {
+            "id": "ORY",
+            "type": "airport",
+            "title": "Paris Orly Airport",
+            "subtitle": "9 mi to destination",
+            "city": "Paris",
+            "distance": "9 mi"
+          },
+          {
+            "id": "BVA",
+            "type": "airport",
+            "title": "Paris Beauvais Airport",
+            "subtitle": "42 mi to destination",
+            "city": "Paris",
+            "distance": "42 mi"
+          },
+          {
+            "id": "/m/05qtj",
+            "type": "other",
+            "title": "Gare de l'Est",
+            "subtitle": "1 mi to destination",
+            "city": "Paris",
+            "distance": "1 mi"
+          },
+          {
+            "id": "/m/05qtj",
+            "type": "other",
+            "title": "Gare du Nord",
+            "subtitle": "1 mi to destination",
+            "city": "Paris",
+            "distance": "1 mi"
+          }
+        ]
+      },
+      {
+        "id": "XCR",
+        "type": "airport",
+        "title": "Paris-Vatry Airport",
+        "subtitle": "International airport in France",
+        "city": "Paris",
+        "distance": null,
+        "list": []
+      },
+      {
+        "id": "/m/0gfgglz",
+        "type": "other",
+        "title": "Paris, Texas",
+        "subtitle": "City in Texas",
+        "city": "Paris",
+        "distance": null,
+        "list": [
+          {
+            "id": "DFW",
+            "type": "airport",
+            "title": "Dallas Fort Worth International Airport",
+            "subtitle": "100 mi to destination",
+            "city": "Dallas",
+            "distance": "100 mi"
+          },
+          {
+            "id": "DAL",
+            "type": "airport",
+            "title": "Dallas Love Field",
+            "subtitle": "93 mi to destination",
+            "city": "Dallas",
+            "distance": "93 mi"
+          },
+          {
+            "id": "DTX",
+            "type": "airport",
+            "title": "McKinney National Airport",
+            "subtitle": "68 mi to destination",
+            "city": "Dallas",
+            "distance": "68 mi"
+          }
+        ]
+      },
+      {
+        "id": "/m/06qrcv",
+        "type": "other",
+        "title": "St. James Parish, Jamaica",
+        "subtitle": null,
+        "city": "St. James Parish",
+        "distance": null,
+        "list": [
+          {
+            "id": "MBJ",
+            "type": "airport",
+            "title": "Sangster International Airport",
+            "subtitle": null,
+            "city": "Montego Bay",
+            "distance": ""
+          }
+        ]
+      },
+      {
+        "id": "/m/01ky4n",
+        "type": "other",
+        "title": "Paris, Ontario, Canada",
+        "subtitle": "Ontario",
+        "city": "Paris",
+        "distance": null,
+        "list": [
+          {
+            "id": "YYZ",
+            "type": "airport",
+            "title": "Toronto Pearson International Airport",
+            "subtitle": "50 mi to destination",
+            "city": "Toronto",
+            "distance": "50 mi"
+          },
+          {
+            "id": "YHM",
+            "type": "airport",
+            "title": "John C. Munro Hamilton International Airport",
+            "subtitle": "23 mi to destination",
+            "city": "Hamilton",
+            "distance": "23 mi"
+          },
+          {
+            "id": "YKF",
+            "type": "airport",
+            "title": "Region of Waterloo International Airport",
+            "subtitle": "17 mi to destination",
+            "city": "Waterloo",
+            "distance": "17 mi"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "request_id": "tm-20261019233725-6f31e191",
+  "generated_at": "2026-10-19T23:37:38Z",
+  "chain_checks": {
+    "hotel_offers_match_dates": null,
+    "hotel_offers_match_adults_and_rooms": null,
+    "hotel_offers_count": 0,
+    "flight_date_parameter_honored": false,
+    "eligible_exact_date_flights": 0,
+    "ai_itinerary_status": "not_run",
+    "ai_itinerary_dates": [],
+    "provider_calls": [
+      {
+        "service": "skyscanner_route",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "retrieved_at": "2026-10-19T23:37:28Z",
+        "rate_limit": {
+          "x-ratelimit-requests-limit": "20",
+          "x-ratelimit-requests-remaining": "4",
+          "x-ratelimit-requests-reset": "2213888",
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499984",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2213888"
+        }
+      },
+      {
+        "service": "exchange_rates",
+        "cache_status": "refresh",
+        "http_status": null,
+        "retrieved_at": "2026-10-19T23:37:29Z",
+        "rate_limit": null
+      },
+      {
+        "service": "skyscanner_route",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "retrieved_at": "2026-10-19T23:37:37Z",
+        "rate_limit": {
+          "x-ratelimit-requests-limit": "20",
+          "x-ratelimit-requests-remaining": "3",
+          "x-ratelimit-requests-reset": "2213879",
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499983",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2213879"
+        }
+      }
+    ],
+    "final_status": "error",
+    "final_error_code": "rate_limited"
+  },
+  "files": {
+    "01_inputs.json": "443600b311f9abee519c5a2d5d2fa0497965e1c5d5cbdb51c8677e35cb524c07",
+    "02_raw_provider_data.json": "b62ef3b768babdf3c90cfa21cfb5344aa495a389d533ab5e5534d52b1bd77adb",
+    "03_normalized_context.json": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "04_ai_input.json": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "05_ai_raw_output.json": "6eb705dbb0222beaf9ab503c4de95b17a43d9793d60417bfd570d4ae0d555625",
+    "06_validated_ai_output.json": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "07_final_response.json": "a7bbaa3c4cff585f054e0251b60209d807f86a51dc0f7194634ef5f67ee1239a"
+  },
+  "note": "Manifest summary recomputed after fixing vacuous checks; evidence files 01-07 unchanged (hashes above)."
+}

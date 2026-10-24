@@ -1,0 +1,183 @@
+{
+  "request": {
+    "path": "/api/v1/searchAirport",
+    "params": {
+      "query": "Amman",
+      "language_code": "en-US",
+      "country_code": "US"
+    },
+    "headers": {
+      "x-rapidapi-key": "<redacted>"
+    }
+  },
+  "retrieved_at": "2026-10-23T14:33:38Z",
+  "http_status": 200,
+  "rate_limit": {
+    "x-ratelimit-requests-limit": "150",
+    "x-ratelimit-requests-remaining": "97",
+    "x-ratelimit-requests-reset": "2513037",
+    "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+    "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499947",
+    "x-ratelimit-rapid-free-plans-hard-limit-reset": "2513037"
+  },
+  "response": {
+    "status": true,
+    "message": "Success",
+    "timestamp": 1792766006753,
+    "data": [
+      {
+        "id": "/m/0c7zf",
+        "type": "other",
+        "title": "Amman, Jordan",
+        "subtitle": "Capital of Jordan",
+        "city": "Amman",
+        "distance": null,
+        "list": [
+          {
+            "id": "AMM",
+            "type": "airport",
+            "title": "Queen Alia International Airport",
+            "subtitle": "16 mi to destination",
+            "city": "Amman",
+            "distance": "16 mi"
+          }
+        ]
+      },
+      {
+        "id": "ADJ",
+        "type": "airport",
+        "title": "Amman City Airport",
+        "subtitle": "Airstrip in Amman, Jordan",
+        "city": "Amman",
+        "distance": null,
+        "list": []
+      },
+      {
+        "id": "/m/02qh_x",
+        "type": "other",
+        "title": "Ammanford, United Kingdom",
+        "subtitle": "Town in Wales",
+        "city": "Ammanford",
+        "distance": null,
+        "list": [
+          {
+            "id": "BRS",
+            "type": "airport",
+            "title": "Bristol Airport",
+            "subtitle": "61 mi to destination",
+            "city": "Bristol",
+            "distance": "61 mi"
+          },
+          {
+            "id": "CWL",
+            "type": "airport",
+            "title": "Cardiff Airport",
+            "subtitle": "39 mi to destination",
+            "city": "Cardiff",
+            "distance": "39 mi"
+          },
+          {
+            "id": "/m/0ck6r",
+            "type": "other",
+            "title": "Swansea railway station",
+            "subtitle": "11 mi to destination",
+            "city": "Swansea",
+            "distance": "11 mi"
+          },
+          {
+            "id": "/m/01xr6x",
+            "type": "other",
+            "title": "Newport",
+            "subtitle": "44 mi to destination",
+            "city": "Newport",
+            "distance": "44 mi"
+          }
+        ]
+      },
+      {
+        "id": "/m/0g562s",
+        "type": "other",
+        "title": "Lohn-Ammannsegg, Switzerland",
+        "subtitle": "Municipality in Switzerland",
+        "city": "Lohn-Ammannsegg",
+        "distance": null,
+        "list": [
+          {
+            "id": "BSL",
+            "type": "airport",
+            "title": "EuroAirport Basel-Mulhouse-Freiburg",
+            "subtitle": "29 mi to destination",
+            "city": "Basel",
+            "distance": "29 mi"
+          },
+          {
+            "id": "BRN",
+            "type": "airport",
+            "title": "Bern Airport",
+            "subtitle": "17 mi to destination",
+            "city": "Bern",
+            "distance": "17 mi"
+          },
+          {
+            "id": "/m/02h_4f",
+            "type": "other",
+            "title": "Biel/Bienne",
+            "subtitle": "13 mi to destination",
+            "city": "Biel/Bienne",
+            "distance": "13 mi"
+          },
+          {
+            "id": "/m/0d6nx",
+            "type": "other",
+            "title": "Bern",
+            "subtitle": "16 mi to destination",
+            "city": "Bern",
+            "distance": "16 mi"
+          },
+          {
+            "id": "/m/025379",
+            "type": "other",
+            "title": "Thun Railway Station",
+            "subtitle": "29 mi to destination",
+            "city": "Thun",
+            "distance": "29 mi"
+          },
+          {
+            "id": "/m/015trb",
+            "type": "other",
+            "title": "Fribourg",
+            "subtitle": "31 mi to destination",
+            "city": "Fribourg",
+            "distance": "31 mi"
+          },
+          {
+            "id": "/m/01k4f",
+            "type": "other",
+            "title": "Basel",
+            "subtitle": "26 mi to destination",
+            "city": "Basel",
+            "distance": "26 mi"
+          }
+        ]
+      },
+      {
+        "id": "/m/0407fsv",
+        "type": "other",
+        "title": "Ammannsville, Texas",
+        "subtitle": "Unincorporated community in Texas",
+        "city": "Ammannsville",
+        "distance": null,
+        "list": [
+          {
+            "id": "AUS",
+            "type": "airport",
+            "title": "Austin-Bergstrom International Airport",
+            "subtitle": "56 mi to destination",
+            "city": "Austin",
+            "distance": "56 mi"
+          }
+        ]
+      }
+    ]
+  }
+}

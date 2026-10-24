@@ -1,0 +1,32 @@
+{
+  "request_data": {
+    "trip_type": "round_trip",
+    "origin": "IST",
+    "destination_city": "Cairo",
+    "check_in_date": "2026-11-19",
+    "check_out_date": "2026-11-22",
+    "adults": 2,
+    "budget_usd": 1500,
+    "rooms": 1
+  },
+  "validated_trip": {
+    "trip_type": "round_trip",
+    "trip_type_label": "Round-Trip (2-Way)",
+    "origin": "IST",
+    "destination_city": "Cairo",
+    "check_in_date": "2026-11-19",
+    "check_out_date": "2026-11-22",
+    "nights": 3,
+    "adults": 2,
+    "budget_usd": 1500.0,
+    "currency": "USD",
+    "adapter": {
+      "city_id": "cairo",
+      "destination_airport": "CAI",
+      "rooms": 1,
+      "rooms_source": "request"
+    }
+  },
+  "deadline_at": "2026-10-19T23:39:55.337892+00:00",
+  "estimation_policy": null
+}

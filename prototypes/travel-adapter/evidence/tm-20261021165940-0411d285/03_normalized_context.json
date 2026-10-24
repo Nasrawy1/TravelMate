@@ -1,0 +1,2137 @@
+{
+  "search_travel": {
+    "request_id": "tm-20261021165940-0411d285",
+    "status": "ok",
+    "trip_request": {
+      "departure_city": "Istanbul",
+      "destination_city": "Cairo",
+      "start_date": "2026-11-20",
+      "return_date": "2026-11-23",
+      "adults": 2,
+      "budget_usd": 1500.0
+    },
+    "flights": {
+      "status": "available",
+      "reason_code": null,
+      "price_authority": "live_provider_quote",
+      "selected_outbound_flight": null,
+      "selected_return_flight": null,
+      "offers": {
+        "outbound": [],
+        "return": []
+      },
+      "alternative_date_offers": {
+        "outbound": [],
+        "return": []
+      },
+      "round_trip_offers": [
+        {
+          "id": "gf:SM304:2026-11-20__MS745:2026-11-23",
+          "source": "Google Flights (google-flights2, RapidAPI)",
+          "retrieved_at": "2026-10-21T17:00:01Z",
+          "price": {
+            "amount_usd": 495.0,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "included",
+            "additional_amount_usd": 0.0
+          },
+          "airline": "Air Cairo / EgyptAir",
+          "departure_airport_code": "IST",
+          "arrival_airport_code": "CAI",
+          "outbound_departure_at": "2026-11-20T09:15:00Z",
+          "return_departure_at": "2026-11-23T21:20:00Z",
+          "adults": 2
+        },
+        {
+          "id": "gf:SM304:2026-11-20__SM303:2026-11-23",
+          "source": "Google Flights (google-flights2, RapidAPI)",
+          "retrieved_at": "2026-10-21T17:00:01Z",
+          "price": {
+            "amount_usd": 501.0,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "included",
+            "additional_amount_usd": 0.0
+          },
+          "airline": "Air Cairo",
+          "departure_airport_code": "IST",
+          "arrival_airport_code": "CAI",
+          "outbound_departure_at": "2026-11-20T09:15:00Z",
+          "return_departure_at": "2026-11-23T06:00:00Z",
+          "adults": 2
+        },
+        {
+          "id": "gf:SM304:2026-11-20__TK755:2026-11-23",
+          "source": "Google Flights (google-flights2, RapidAPI)",
+          "retrieved_at": "2026-10-21T17:00:01Z",
+          "price": {
+            "amount_usd": 637.0,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "included",
+            "additional_amount_usd": 0.0
+          },
+          "airline": "Air Cairo / Turkish Airlines",
+          "departure_airport_code": "IST",
+          "arrival_airport_code": "CAI",
+          "outbound_departure_at": "2026-11-20T09:15:00Z",
+          "return_departure_at": "2026-11-23T13:30:00Z",
+          "adults": 2
+        }
+      ],
+      "selected_offer": {
+        "id": "gf:SM304:2026-11-20__MS745:2026-11-23",
+        "source": "Google Flights (google-flights2, RapidAPI)",
+        "retrieved_at": "2026-10-21T17:00:01Z",
+        "price": {
+          "amount_usd": 495.0,
+          "kind": "provider",
+          "coverage": "entire_trip_all_travelers"
+        },
+        "taxes": {
+          "status": "included",
+          "additional_amount_usd": 0.0
+        },
+        "airline": "Air Cairo / EgyptAir",
+        "departure_airport_code": "IST",
+        "arrival_airport_code": "CAI",
+        "outbound_departure_at": "2026-11-20T09:15:00Z",
+        "return_departure_at": "2026-11-23T21:20:00Z",
+        "adults": 2
+      },
+      "coverage": {
+        "provider_calls": 2,
+        "outbound_options_returned": 63,
+        "outbound_eligible": 62,
+        "return_options_returned": 9,
+        "return_eligible": 9,
+        "excluded": {
+          "route_mismatch": 0,
+          "date_mismatch": 0,
+          "invalid_price": 1,
+          "self_transfer": 0,
+          "unknown_timezone": 0,
+          "malformed": 0
+        },
+        "requested_currency": "USD",
+        "currency_evidence": "currency parameter verified 2026-10-21 (EUR comparison); response has no currency field"
+      }
+    },
+    "hotels": {
+      "status": "available",
+      "reason_code": null,
+      "offers": [
+        {
+          "hotel_id": 17427572,
+          "name": "Stylish 1BR Studio l Delta Towers , Nasr City Cairo",
+          "star_rating": 4,
+          "review_score": null,
+          "nights": 3,
+          "base_price_usd": 158.27,
+          "taxes_and_fees_usd": 1.58,
+          "total_price_usd": 159.85,
+          "price_per_night_usd": 53.28,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 17410709,
+          "name": "Cairo Nile HK Hotel",
+          "star_rating": 3,
+          "review_score": null,
+          "nights": 3,
+          "base_price_usd": 61.75,
+          "taxes_and_fees_usd": 4.0,
+          "total_price_usd": 65.75,
+          "price_per_night_usd": 21.92,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 14449343,
+          "name": "Khashaba Residence",
+          "star_rating": 4,
+          "review_score": null,
+          "nights": 3,
+          "base_price_usd": 121.5,
+          "taxes_and_fees_usd": 18.23,
+          "total_price_usd": 139.73,
+          "price_per_night_usd": 46.58,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 17469303,
+          "name": "Lorenda House",
+          "star_rating": null,
+          "review_score": 10.0,
+          "nights": 3,
+          "base_price_usd": 252.0,
+          "taxes_and_fees_usd": 37.8,
+          "total_price_usd": 289.8,
+          "price_per_night_usd": 96.6,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 16089863,
+          "name": "شقه راقيه مريحه المهندسين اطلاله مباشره",
+          "star_rating": null,
+          "review_score": null,
+          "nights": 3,
+          "base_price_usd": 140.4,
+          "taxes_and_fees_usd": 21.06,
+          "total_price_usd": 161.46,
+          "price_per_night_usd": 53.82,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 17468579,
+          "name": "Family-Friendly 3BR Apartment l Nasr City, Cairo",
+          "star_rating": 4,
+          "review_score": null,
+          "nights": 3,
+          "base_price_usd": 274.86,
+          "taxes_and_fees_usd": 2.75,
+          "total_price_usd": 277.61,
+          "price_per_night_usd": 92.54,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 17251639,
+          "name": "The Square Boutique Hotel By SK",
+          "star_rating": null,
+          "review_score": 9.4,
+          "nights": 3,
+          "base_price_usd": 135.0,
+          "taxes_and_fees_usd": 1.35,
+          "total_price_usd": 136.35,
+          "price_per_night_usd": 45.45,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 17306376,
+          "name": "السفارات للخدمات الفندقيه الشامله بمدينه نصر",
+          "star_rating": null,
+          "review_score": 8.1,
+          "nights": 3,
+          "base_price_usd": 83.16,
+          "taxes_and_fees_usd": 0.83,
+          "total_price_usd": 83.99,
+          "price_per_night_usd": 28.0,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 676629,
+          "name": "Le Meridien Cairo Airport",
+          "star_rating": 5,
+          "review_score": 8.9,
+          "nights": 3,
+          "base_price_usd": 671.16,
+          "taxes_and_fees_usd": 101.63,
+          "total_price_usd": 772.79,
+          "price_per_night_usd": 257.6,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 245740,
+          "name": "Aura Inn Hotel Cairo",
+          "star_rating": 3,
+          "review_score": 7.4,
+          "nights": 3,
+          "base_price_usd": 131.95,
+          "taxes_and_fees_usd": 21.81,
+          "total_price_usd": 153.76,
+          "price_per_night_usd": 51.25,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 348358,
+          "name": "Hilton Cairo Grand Nile",
+          "star_rating": 5,
+          "review_score": 8.1,
+          "nights": 3,
+          "base_price_usd": 786.15,
+          "taxes_and_fees_usd": 117.92,
+          "total_price_usd": 904.07,
+          "price_per_night_usd": 301.36,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 16018,
+          "name": "Sheraton Cairo Hotel & Casino",
+          "star_rating": 5,
+          "review_score": 8.7,
+          "nights": 3,
+          "base_price_usd": 1018.08,
+          "taxes_and_fees_usd": 152.71,
+          "total_price_usd": 1170.79,
+          "price_per_night_usd": 390.26,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 8217560,
+          "name": "Stay Inn Cairo Hotel",
+          "star_rating": 4,
+          "review_score": 8.3,
+          "nights": 3,
+          "base_price_usd": 193.92,
+          "taxes_and_fees_usd": 31.1,
+          "total_price_usd": 225.02,
+          "price_per_night_usd": 75.01,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 16478,
+          "name": "Dusit Thani LakeView Cairo",
+          "star_rating": 5,
+          "review_score": 8.6,
+          "nights": 3,
+          "base_price_usd": 856.8,
+          "taxes_and_fees_usd": 129.72,
+          "total_price_usd": 986.52,
+          "price_per_night_usd": 328.84,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 16031,
+          "name": "Pyramisa Hotel Cairo",
+          "star_rating": 5,
+          "review_score": 8.7,
+          "nights": 3,
+          "base_price_usd": 723.2,
+          "taxes_and_fees_usd": 108.48,
+          "total_price_usd": 831.68,
+          "price_per_night_usd": 277.23,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 17443327,
+          "name": "Cairo Downtown Boutiques",
+          "star_rating": null,
+          "review_score": 10.0,
+          "nights": 3,
+          "base_price_usd": 177.12,
+          "taxes_and_fees_usd": 1.77,
+          "total_price_usd": 178.89,
+          "price_per_night_usd": 59.63,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 16063,
+          "name": "Golden Carven Hotel",
+          "star_rating": 3,
+          "review_score": 7.5,
+          "nights": 3,
+          "base_price_usd": 114.99,
+          "taxes_and_fees_usd": 17.25,
+          "total_price_usd": 132.24,
+          "price_per_night_usd": 44.08,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 12556380,
+          "name": "Logistics 5 Stars",
+          "star_rating": null,
+          "review_score": 7.8,
+          "nights": 3,
+          "base_price_usd": 172.53,
+          "taxes_and_fees_usd": 25.88,
+          "total_price_usd": 198.41,
+          "price_per_night_usd": 66.14,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 16176,
+          "name": "Swiss Inn Nile Hotel",
+          "star_rating": 4,
+          "review_score": 6.9,
+          "nights": 3,
+          "base_price_usd": 216.07,
+          "taxes_and_fees_usd": 32.41,
+          "total_price_usd": 248.48,
+          "price_per_night_usd": 82.83,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 235262,
+          "name": "Fairmont Nile City",
+          "star_rating": 5,
+          "review_score": 8.5,
+          "nights": 3,
+          "base_price_usd": 1211.84,
+          "taxes_and_fees_usd": 183.47,
+          "total_price_usd": 1395.31,
+          "price_per_night_usd": 465.1,
+          "fits_budget": null
+        }
+      ],
+      "public_offers": [
+        {
+          "id": "17427572",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 158.27,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 1.58
+          },
+          "name": "Stylish 1BR Studio l Delta Towers , Nasr City Cairo",
+          "area": "Nasr City",
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "17410709",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 61.75,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 4.0
+          },
+          "name": "Cairo Nile HK Hotel",
+          "area": null,
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "14449343",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 121.5,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 18.23
+          },
+          "name": "Khashaba Residence",
+          "area": "Dokki",
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "17469303",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 252.0,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 37.8
+          },
+          "name": "Lorenda House",
+          "area": null,
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "16089863",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 140.4,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 21.06
+          },
+          "name": "شقه راقيه مريحه المهندسين اطلاله مباشره",
+          "area": null,
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "17468579",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 274.86,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 2.75
+          },
+          "name": "Family-Friendly 3BR Apartment l Nasr City, Cairo",
+          "area": "Nasr City",
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "17251639",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 135.0,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 1.35
+          },
+          "name": "The Square Boutique Hotel By SK",
+          "area": null,
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "17306376",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 83.16,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 0.83
+          },
+          "name": "السفارات للخدمات الفندقيه الشامله بمدينه نصر",
+          "area": "Nasr City",
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "676629",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 671.16,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 101.63
+          },
+          "name": "Le Meridien Cairo Airport",
+          "area": "Heliopolis",
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "245740",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 131.95,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 21.81
+          },
+          "name": "Aura Inn Hotel Cairo",
+          "area": "Mohandesin",
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": null
+        },
+        {
+          "id": "348358",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 786.15,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 117.92
+          },
+          "name": "Hilton Cairo Grand Nile",
+          "area": null,
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "16018",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 1018.08,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 152.71
+          },
+          "name": "Sheraton Cairo Hotel & Casino",
+          "area": null,
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "8217560",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 193.92,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 31.1
+          },
+          "name": "Stay Inn Cairo Hotel",
+          "area": "Mohandesin",
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "16478",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 856.8,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 129.72
+          },
+          "name": "Dusit Thani LakeView Cairo",
+          "area": "New Cairo City",
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "16031",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 723.2,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 108.48
+          },
+          "name": "Pyramisa Hotel Cairo",
+          "area": null,
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "17443327",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 177.12,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 1.77
+          },
+          "name": "Cairo Downtown Boutiques",
+          "area": "Downtown Cairo",
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "16063",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 114.99,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 17.25
+          },
+          "name": "Golden Carven Hotel",
+          "area": "Heliopolis",
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "12556380",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 172.53,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 25.88
+          },
+          "name": "Logistics 5 Stars",
+          "area": "Nasr City",
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "16176",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 216.07,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 32.41
+          },
+          "name": "Swiss Inn Nile Hotel",
+          "area": "Giza",
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        },
+        {
+          "id": "235262",
+          "source": "Booking COM booking-com15 (RapidAPI)",
+          "retrieved_at": "2026-10-21T16:59:43Z",
+          "price": {
+            "amount_usd": 1211.84,
+            "kind": "provider",
+            "coverage": "entire_trip_all_travelers"
+          },
+          "taxes": {
+            "status": "additional_known",
+            "additional_amount_usd": 183.47
+          },
+          "name": "Fairmont Nile City",
+          "area": null,
+          "check_in": "2026-11-20",
+          "check_out": "2026-11-23",
+          "occupancy_adults": 2,
+          "room_qty": 1
+        }
+      ],
+      "coverage": {
+        "hotels_returned": 20,
+        "eligible": 20,
+        "excluded": {
+          "date_mismatch": 0,
+          "occupancy_mismatch": 0,
+          "occupancy_unverified": 0,
+          "destination_mismatch": 0,
+          "destination_unverified": 0,
+          "invalid_price": 0,
+          "unconvertible_currency": 0,
+          "malformed": 0,
+          "duplicate": 0
+        },
+        "page_number": 1,
+        "coverage_radius_km": 60
+      },
+      "destination_mapping": {
+        "dest_id": "-290692",
+        "search_type": "CITY",
+        "source": "pinned_mapping"
+      }
+    },
+    "report_slice": {
+      "flights_data": {
+        "selected_outbound_flight": null,
+        "selected_return_flight": null
+      },
+      "hotels_data": [
+        {
+          "hotel_id": 17427572,
+          "name": "Stylish 1BR Studio l Delta Towers , Nasr City Cairo",
+          "star_rating": 4,
+          "review_score": null,
+          "nights": 3,
+          "base_price_usd": 158.27,
+          "taxes_and_fees_usd": 1.58,
+          "total_price_usd": 159.85,
+          "price_per_night_usd": 53.28,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 17410709,
+          "name": "Cairo Nile HK Hotel",
+          "star_rating": 3,
+          "review_score": null,
+          "nights": 3,
+          "base_price_usd": 61.75,
+          "taxes_and_fees_usd": 4.0,
+          "total_price_usd": 65.75,
+          "price_per_night_usd": 21.92,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 14449343,
+          "name": "Khashaba Residence",
+          "star_rating": 4,
+          "review_score": null,
+          "nights": 3,
+          "base_price_usd": 121.5,
+          "taxes_and_fees_usd": 18.23,
+          "total_price_usd": 139.73,
+          "price_per_night_usd": 46.58,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 17469303,
+          "name": "Lorenda House",
+          "star_rating": null,
+          "review_score": 10.0,
+          "nights": 3,
+          "base_price_usd": 252.0,
+          "taxes_and_fees_usd": 37.8,
+          "total_price_usd": 289.8,
+          "price_per_night_usd": 96.6,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 16089863,
+          "name": "شقه راقيه مريحه المهندسين اطلاله مباشره",
+          "star_rating": null,
+          "review_score": null,
+          "nights": 3,
+          "base_price_usd": 140.4,
+          "taxes_and_fees_usd": 21.06,
+          "total_price_usd": 161.46,
+          "price_per_night_usd": 53.82,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 17468579,
+          "name": "Family-Friendly 3BR Apartment l Nasr City, Cairo",
+          "star_rating": 4,
+          "review_score": null,
+          "nights": 3,
+          "base_price_usd": 274.86,
+          "taxes_and_fees_usd": 2.75,
+          "total_price_usd": 277.61,
+          "price_per_night_usd": 92.54,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 17251639,
+          "name": "The Square Boutique Hotel By SK",
+          "star_rating": null,
+          "review_score": 9.4,
+          "nights": 3,
+          "base_price_usd": 135.0,
+          "taxes_and_fees_usd": 1.35,
+          "total_price_usd": 136.35,
+          "price_per_night_usd": 45.45,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 17306376,
+          "name": "السفارات للخدمات الفندقيه الشامله بمدينه نصر",
+          "star_rating": null,
+          "review_score": 8.1,
+          "nights": 3,
+          "base_price_usd": 83.16,
+          "taxes_and_fees_usd": 0.83,
+          "total_price_usd": 83.99,
+          "price_per_night_usd": 28.0,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 676629,
+          "name": "Le Meridien Cairo Airport",
+          "star_rating": 5,
+          "review_score": 8.9,
+          "nights": 3,
+          "base_price_usd": 671.16,
+          "taxes_and_fees_usd": 101.63,
+          "total_price_usd": 772.79,
+          "price_per_night_usd": 257.6,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 245740,
+          "name": "Aura Inn Hotel Cairo",
+          "star_rating": 3,
+          "review_score": 7.4,
+          "nights": 3,
+          "base_price_usd": 131.95,
+          "taxes_and_fees_usd": 21.81,
+          "total_price_usd": 153.76,
+          "price_per_night_usd": 51.25,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 348358,
+          "name": "Hilton Cairo Grand Nile",
+          "star_rating": 5,
+          "review_score": 8.1,
+          "nights": 3,
+          "base_price_usd": 786.15,
+          "taxes_and_fees_usd": 117.92,
+          "total_price_usd": 904.07,
+          "price_per_night_usd": 301.36,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 16018,
+          "name": "Sheraton Cairo Hotel & Casino",
+          "star_rating": 5,
+          "review_score": 8.7,
+          "nights": 3,
+          "base_price_usd": 1018.08,
+          "taxes_and_fees_usd": 152.71,
+          "total_price_usd": 1170.79,
+          "price_per_night_usd": 390.26,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 8217560,
+          "name": "Stay Inn Cairo Hotel",
+          "star_rating": 4,
+          "review_score": 8.3,
+          "nights": 3,
+          "base_price_usd": 193.92,
+          "taxes_and_fees_usd": 31.1,
+          "total_price_usd": 225.02,
+          "price_per_night_usd": 75.01,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 16478,
+          "name": "Dusit Thani LakeView Cairo",
+          "star_rating": 5,
+          "review_score": 8.6,
+          "nights": 3,
+          "base_price_usd": 856.8,
+          "taxes_and_fees_usd": 129.72,
+          "total_price_usd": 986.52,
+          "price_per_night_usd": 328.84,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 16031,
+          "name": "Pyramisa Hotel Cairo",
+          "star_rating": 5,
+          "review_score": 8.7,
+          "nights": 3,
+          "base_price_usd": 723.2,
+          "taxes_and_fees_usd": 108.48,
+          "total_price_usd": 831.68,
+          "price_per_night_usd": 277.23,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 17443327,
+          "name": "Cairo Downtown Boutiques",
+          "star_rating": null,
+          "review_score": 10.0,
+          "nights": 3,
+          "base_price_usd": 177.12,
+          "taxes_and_fees_usd": 1.77,
+          "total_price_usd": 178.89,
+          "price_per_night_usd": 59.63,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 16063,
+          "name": "Golden Carven Hotel",
+          "star_rating": 3,
+          "review_score": 7.5,
+          "nights": 3,
+          "base_price_usd": 114.99,
+          "taxes_and_fees_usd": 17.25,
+          "total_price_usd": 132.24,
+          "price_per_night_usd": 44.08,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 12556380,
+          "name": "Logistics 5 Stars",
+          "star_rating": null,
+          "review_score": 7.8,
+          "nights": 3,
+          "base_price_usd": 172.53,
+          "taxes_and_fees_usd": 25.88,
+          "total_price_usd": 198.41,
+          "price_per_night_usd": 66.14,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 16176,
+          "name": "Swiss Inn Nile Hotel",
+          "star_rating": 4,
+          "review_score": 6.9,
+          "nights": 3,
+          "base_price_usd": 216.07,
+          "taxes_and_fees_usd": 32.41,
+          "total_price_usd": 248.48,
+          "price_per_night_usd": 82.83,
+          "fits_budget": null
+        },
+        {
+          "hotel_id": 235262,
+          "name": "Fairmont Nile City",
+          "star_rating": 5,
+          "review_score": 8.5,
+          "nights": 3,
+          "base_price_usd": 1211.84,
+          "taxes_and_fees_usd": 183.47,
+          "total_price_usd": 1395.31,
+          "price_per_night_usd": 465.1,
+          "fits_budget": null
+        }
+      ]
+    },
+    "flight_candidates": [
+      {
+        "id": "gf:SM304:2026-11-20__MS745:2026-11-23",
+        "base_usd": 495.0,
+        "additional_fees_usd": null,
+        "included_in_base": true
+      },
+      {
+        "id": "gf:SM304:2026-11-20__SM303:2026-11-23",
+        "base_usd": 501.0,
+        "additional_fees_usd": null,
+        "included_in_base": true
+      },
+      {
+        "id": "gf:SM304:2026-11-20__TK755:2026-11-23",
+        "base_usd": 637.0,
+        "additional_fees_usd": null,
+        "included_in_base": true
+      }
+    ],
+    "hotel_candidates": [
+      {
+        "id": "17427572",
+        "base_usd": 158.27,
+        "additional_fees_usd": 1.58,
+        "included_in_base": false
+      },
+      {
+        "id": "17410709",
+        "base_usd": 61.75,
+        "additional_fees_usd": 4.0,
+        "included_in_base": false
+      },
+      {
+        "id": "14449343",
+        "base_usd": 121.5,
+        "additional_fees_usd": 18.23,
+        "included_in_base": false
+      },
+      {
+        "id": "17469303",
+        "base_usd": 252.0,
+        "additional_fees_usd": 37.8,
+        "included_in_base": false
+      },
+      {
+        "id": "16089863",
+        "base_usd": 140.4,
+        "additional_fees_usd": 21.06,
+        "included_in_base": false
+      },
+      {
+        "id": "17468579",
+        "base_usd": 274.86,
+        "additional_fees_usd": 2.75,
+        "included_in_base": false
+      },
+      {
+        "id": "17251639",
+        "base_usd": 135.0,
+        "additional_fees_usd": 1.35,
+        "included_in_base": false
+      },
+      {
+        "id": "17306376",
+        "base_usd": 83.16,
+        "additional_fees_usd": 0.83,
+        "included_in_base": false
+      },
+      {
+        "id": "676629",
+        "base_usd": 671.16,
+        "additional_fees_usd": 101.63,
+        "included_in_base": false
+      },
+      {
+        "id": "245740",
+        "base_usd": 131.95,
+        "additional_fees_usd": 21.81,
+        "included_in_base": false
+      },
+      {
+        "id": "348358",
+        "base_usd": 786.15,
+        "additional_fees_usd": 117.92,
+        "included_in_base": false
+      },
+      {
+        "id": "16018",
+        "base_usd": 1018.08,
+        "additional_fees_usd": 152.71,
+        "included_in_base": false
+      },
+      {
+        "id": "8217560",
+        "base_usd": 193.92,
+        "additional_fees_usd": 31.1,
+        "included_in_base": false
+      },
+      {
+        "id": "16478",
+        "base_usd": 856.8,
+        "additional_fees_usd": 129.72,
+        "included_in_base": false
+      },
+      {
+        "id": "16031",
+        "base_usd": 723.2,
+        "additional_fees_usd": 108.48,
+        "included_in_base": false
+      },
+      {
+        "id": "17443327",
+        "base_usd": 177.12,
+        "additional_fees_usd": 1.77,
+        "included_in_base": false
+      },
+      {
+        "id": "16063",
+        "base_usd": 114.99,
+        "additional_fees_usd": 17.25,
+        "included_in_base": false
+      },
+      {
+        "id": "12556380",
+        "base_usd": 172.53,
+        "additional_fees_usd": 25.88,
+        "included_in_base": false
+      },
+      {
+        "id": "16176",
+        "base_usd": 216.07,
+        "additional_fees_usd": 32.41,
+        "included_in_base": false
+      },
+      {
+        "id": "235262",
+        "base_usd": 1211.84,
+        "additional_fees_usd": 183.47,
+        "included_in_base": false
+      }
+    ],
+    "warnings": [],
+    "provenance": [
+      {
+        "offer_id": "gf:SM304:2026-11-20__MS745:2026-11-23",
+        "category": "flights",
+        "source": "Google Flights (google-flights2, RapidAPI)",
+        "provider_offer_id": "ba22f636436a39d4",
+        "retrieved_at": "2026-10-21T17:00:01Z",
+        "cache_status": {
+          "outbound": "refresh",
+          "return": "refresh"
+        },
+        "original_currency": "USD",
+        "original_amount": 495.0,
+        "quote_timestamp": "2026-10-21T16:59:51Z",
+        "conversion": null,
+        "provider_query": {
+          "outbound": {
+            "departure_id": "IST",
+            "arrival_id": "CAI",
+            "outbound_date": "2026-11-20",
+            "return_date": "2026-11-23",
+            "travel_class": "ECONOMY",
+            "adults": "2",
+            "show_hidden": "1",
+            "currency": "USD",
+            "language_code": "en-US",
+            "country_code": "US",
+            "search_type": "best"
+          },
+          "return": {
+            "next_token_sha256": "0c570c43b78c399a",
+            "currency": "USD"
+          }
+        },
+        "coverage_evidence": "Provider round-trip total for 2 adult(s) (not multiplied by the adapter): outbound SM 304 2026-11-20 12:15 local, return MS 745 2026-11-23 23:20 local. Google Flights shows total fares including required taxes and fees (provider convention); checked bags and optional extras are not included.",
+        "fees": {
+          "status": "included",
+          "included_in_base": true,
+          "additional_fees_usd": null
+        },
+        "price_authority": "live_provider_quote",
+        "itinerary": {
+          "outbound": {
+            "airline": "Air Cairo",
+            "flight_numbers": [
+              "SM 304"
+            ],
+            "departure_airport": "IST",
+            "arrival_airport": "CAI",
+            "departure_local": "2026-11-20 12:15",
+            "arrival_local": "2026-11-20 13:20",
+            "departure_utc": "2026-11-20T09:15:00Z",
+            "arrival_utc": "2026-11-20T11:20:00Z",
+            "stops": 0,
+            "transit_airports": [],
+            "stops_label": "Direct",
+            "duration_minutes": 125,
+            "checked_bags_included": 0
+          },
+          "return": {
+            "airline": "EgyptAir",
+            "flight_numbers": [
+              "MS 745"
+            ],
+            "departure_airport": "CAI",
+            "arrival_airport": "IST",
+            "departure_local": "2026-11-23 23:20",
+            "arrival_local": "2026-11-24 02:50",
+            "departure_utc": "2026-11-23T21:20:00Z",
+            "arrival_utc": "2026-11-23T23:50:00Z",
+            "stops": 0,
+            "transit_airports": [],
+            "stops_label": "Direct",
+            "duration_minutes": 150,
+            "checked_bags_included": 0
+          }
+        },
+        "airport_timezones": {
+          "departure": "Europe/Istanbul",
+          "destination": "Africa/Cairo"
+        }
+      },
+      {
+        "offer_id": "gf:SM304:2026-11-20__SM303:2026-11-23",
+        "category": "flights",
+        "source": "Google Flights (google-flights2, RapidAPI)",
+        "provider_offer_id": "db452fadeddaf461",
+        "retrieved_at": "2026-10-21T17:00:01Z",
+        "cache_status": {
+          "outbound": "refresh",
+          "return": "refresh"
+        },
+        "original_currency": "USD",
+        "original_amount": 501.0,
+        "quote_timestamp": "2026-10-21T16:59:51Z",
+        "conversion": null,
+        "provider_query": {
+          "outbound": {
+            "departure_id": "IST",
+            "arrival_id": "CAI",
+            "outbound_date": "2026-11-20",
+            "return_date": "2026-11-23",
+            "travel_class": "ECONOMY",
+            "adults": "2",
+            "show_hidden": "1",
+            "currency": "USD",
+            "language_code": "en-US",
+            "country_code": "US",
+            "search_type": "best"
+          },
+          "return": {
+            "next_token_sha256": "0c570c43b78c399a",
+            "currency": "USD"
+          }
+        },
+        "coverage_evidence": "Provider round-trip total for 2 adult(s) (not multiplied by the adapter): outbound SM 304 2026-11-20 12:15 local, return SM 303 2026-11-23 08:00 local. Google Flights shows total fares including required taxes and fees (provider convention); checked bags and optional extras are not included.",
+        "fees": {
+          "status": "included",
+          "included_in_base": true,
+          "additional_fees_usd": null
+        },
+        "price_authority": "live_provider_quote",
+        "itinerary": {
+          "outbound": {
+            "airline": "Air Cairo",
+            "flight_numbers": [
+              "SM 304"
+            ],
+            "departure_airport": "IST",
+            "arrival_airport": "CAI",
+            "departure_local": "2026-11-20 12:15",
+            "arrival_local": "2026-11-20 13:20",
+            "departure_utc": "2026-11-20T09:15:00Z",
+            "arrival_utc": "2026-11-20T11:20:00Z",
+            "stops": 0,
+            "transit_airports": [],
+            "stops_label": "Direct",
+            "duration_minutes": 125,
+            "checked_bags_included": 0
+          },
+          "return": {
+            "airline": "Air Cairo",
+            "flight_numbers": [
+              "SM 303"
+            ],
+            "departure_airport": "CAI",
+            "arrival_airport": "IST",
+            "departure_local": "2026-11-23 08:00",
+            "arrival_local": "2026-11-23 11:15",
+            "departure_utc": "2026-11-23T06:00:00Z",
+            "arrival_utc": "2026-11-23T08:15:00Z",
+            "stops": 0,
+            "transit_airports": [],
+            "stops_label": "Direct",
+            "duration_minutes": 135,
+            "checked_bags_included": 0
+          }
+        },
+        "airport_timezones": {
+          "departure": "Europe/Istanbul",
+          "destination": "Africa/Cairo"
+        }
+      },
+      {
+        "offer_id": "gf:SM304:2026-11-20__TK755:2026-11-23",
+        "category": "flights",
+        "source": "Google Flights (google-flights2, RapidAPI)",
+        "provider_offer_id": "f0cdf4de7a8046de",
+        "retrieved_at": "2026-10-21T17:00:01Z",
+        "cache_status": {
+          "outbound": "refresh",
+          "return": "refresh"
+        },
+        "original_currency": "USD",
+        "original_amount": 637.0,
+        "quote_timestamp": "2026-10-21T16:59:51Z",
+        "conversion": null,
+        "provider_query": {
+          "outbound": {
+            "departure_id": "IST",
+            "arrival_id": "CAI",
+            "outbound_date": "2026-11-20",
+            "return_date": "2026-11-23",
+            "travel_class": "ECONOMY",
+            "adults": "2",
+            "show_hidden": "1",
+            "currency": "USD",
+            "language_code": "en-US",
+            "country_code": "US",
+            "search_type": "best"
+          },
+          "return": {
+            "next_token_sha256": "0c570c43b78c399a",
+            "currency": "USD"
+          }
+        },
+        "coverage_evidence": "Provider round-trip total for 2 adult(s) (not multiplied by the adapter): outbound SM 304 2026-11-20 12:15 local, return TK 755 2026-11-23 15:30 local. Google Flights shows total fares including required taxes and fees (provider convention); checked bags and optional extras are not included.",
+        "fees": {
+          "status": "included",
+          "included_in_base": true,
+          "additional_fees_usd": null
+        },
+        "price_authority": "live_provider_quote",
+        "itinerary": {
+          "outbound": {
+            "airline": "Air Cairo",
+            "flight_numbers": [
+              "SM 304"
+            ],
+            "departure_airport": "IST",
+            "arrival_airport": "CAI",
+            "departure_local": "2026-11-20 12:15",
+            "arrival_local": "2026-11-20 13:20",
+            "departure_utc": "2026-11-20T09:15:00Z",
+            "arrival_utc": "2026-11-20T11:20:00Z",
+            "stops": 0,
+            "transit_airports": [],
+            "stops_label": "Direct",
+            "duration_minutes": 125,
+            "checked_bags_included": 0
+          },
+          "return": {
+            "airline": "Turkish Airlines",
+            "flight_numbers": [
+              "TK 755"
+            ],
+            "departure_airport": "CAI",
+            "arrival_airport": "IST",
+            "departure_local": "2026-11-23 15:30",
+            "arrival_local": "2026-11-23 19:05",
+            "departure_utc": "2026-11-23T13:30:00Z",
+            "arrival_utc": "2026-11-23T16:05:00Z",
+            "stops": 0,
+            "transit_airports": [],
+            "stops_label": "Direct",
+            "duration_minutes": 155,
+            "checked_bags_included": 0
+          }
+        },
+        "airport_timezones": {
+          "departure": "Europe/Istanbul",
+          "destination": "Africa/Cairo"
+        }
+      },
+      {
+        "offer_id": "17427572",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 17427572,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 158.27,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Entire studio – 80 m²'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 1.58
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 11.1,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "17410709",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 17410709,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 61.7500000000001,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Hotel room'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 4.0
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 0.6,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "14449343",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 14449343,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 121.5,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Entire apartment – 40 m²'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 18.23
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 3.4,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "17469303",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 17469303,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 252.0,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Entire apartment – 180 m²'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 37.8
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 0.5,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "16089863",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 16089863,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 140.4,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Entire apartment – 180 m²'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 21.06
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 3.9,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "17468579",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 17468579,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 274.86,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Entire apartment – 160 m²'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 2.75
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 10.8,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "17251639",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 17251639,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 135.0,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Private room'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 1.35
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 0.45,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "17306376",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 17306376,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 83.1600000000001,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Entire apartment – 150 m²'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 0.83
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 10.8,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "676629",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 676629,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 671.16,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Hotel room'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 101.63
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 17.2,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "245740",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 245740,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 131.95,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' (unit count not stated); check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 21.81
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 3.7,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "348358",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 348358,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 786.1504,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Hotel room'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 117.92
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 1.4,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "16018",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 16018,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 1018.08,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Hotel room'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 152.71
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 1.6,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "8217560",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 8217560,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 193.9168,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Hotel room'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 31.1
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 4.0,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "16478",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 16478,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 856.8,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Hotel room'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 129.72
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 21.3,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "16031",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 16031,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 723.1952,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Private suite'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 108.48
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 1.8,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "17443327",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 17443327,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 177.12,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Hotel room'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 1.77
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 0.4,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "16063",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 16063,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 114.9904,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Hotel room'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 17.25
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 11.0,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "12556380",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 12556380,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 172.53,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Hotel room'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 25.88
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 11.1,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "16176",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 16176,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 216.0704,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Hotel room'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 32.41
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 5.9,
+        "airport_timezones": null
+      },
+      {
+        "offer_id": "235262",
+        "category": "hotels",
+        "source": "Booking COM booking-com15 (RapidAPI)",
+        "provider_offer_id": 235262,
+        "retrieved_at": "2026-10-21T16:59:43Z",
+        "cache_status": "refresh",
+        "original_currency": "USD",
+        "original_amount": 1211.84,
+        "quote_timestamp": null,
+        "conversion": null,
+        "taxes_conversion": null,
+        "provider_query": {
+          "dest_id": "-290692",
+          "search_type": "CITY",
+          "arrival_date": "2026-11-20",
+          "departure_date": "2026-11-23",
+          "adults": "2",
+          "room_qty": "1",
+          "page_number": "1",
+          "units": "metric",
+          "temperature_unit": "c",
+          "languagecode": "en-us",
+          "currency_code": "USD"
+        },
+        "coverage_evidence": "Provider label 'Price for 3 nights, 2 adults' and 'Hotel room'; check-in 2026-11-20 / check-out 2026-11-23; excludedPrice reported as additional taxes and fees, counted once.",
+        "fees": {
+          "status": "additional_known",
+          "included_in_base": false,
+          "additional_fees_usd": 183.47
+        },
+        "price_authority": "live_provider_quote",
+        "distance_from_center_km": 3.1,
+        "airport_timezones": null
+      }
+    ],
+    "data_mode": "live"
+  },
+  "selected_hotel_offer_id": "17410709",
+  "selected_flight_offer_id": "gf:SM304:2026-11-20__MS745:2026-11-23"
+}

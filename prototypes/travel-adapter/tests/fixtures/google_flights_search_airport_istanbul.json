@@ -1,0 +1,59 @@
+{
+ "status": true,
+ "message": "Success",
+ "timestamp": 1792600868259,
+ "data": [
+  {
+   "id": "/m/09949m",
+   "type": "other",
+   "title": "Istanbul, Türkiye",
+   "subtitle": "City in Turkey",
+   "city": "Istanbul",
+   "distance": null,
+   "list": [
+    {
+     "id": "SAW",
+     "type": "airport",
+     "title": "Sabiha Gökçen International Airport",
+     "subtitle": "19 mi to destination",
+     "city": "Istanbul",
+     "distance": "19 mi"
+    },
+    {
+     "id": "IST",
+     "type": "airport",
+     "title": "Istanbul Airport",
+     "subtitle": "21 mi to destination",
+     "city": "Istanbul",
+     "distance": "21 mi"
+    }
+   ]
+  },
+  {
+   "id": "/g/121x295d",
+   "type": "other",
+   "title": "İstanbuldere, Türkiye",
+   "subtitle": null,
+   "city": "İstanbuldere",
+   "distance": null,
+   "list": [
+    {
+     "id": "SAW",
+     "type": "airport",
+     "title": "Sabiha Gökçen International Airport",
+     "subtitle": "52 mi to destination",
+     "city": "Istanbul",
+     "distance": "52 mi"
+    },
+    {
+     "id": "YEI",
+     "type": "airport",
+     "title": "Bursa Yenişehir Airport",
+     "subtitle": "47 mi to destination",
+     "city": "Bursa",
+     "distance": "47 mi"
+    }
+   ]
+  }
+ ]
+}

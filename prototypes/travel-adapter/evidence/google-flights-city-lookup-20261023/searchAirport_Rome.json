@@ -1,0 +1,142 @@
+{
+  "request": {
+    "path": "/api/v1/searchAirport",
+    "params": {
+      "query": "Rome",
+      "language_code": "en-US",
+      "country_code": "US"
+    },
+    "headers": {
+      "x-rapidapi-key": "<redacted>"
+    }
+  },
+  "retrieved_at": "2026-10-23T14:33:47Z",
+  "http_status": 200,
+  "rate_limit": {
+    "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+    "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499942",
+    "x-ratelimit-rapid-free-plans-hard-limit-reset": "2513028",
+    "x-ratelimit-requests-limit": "150",
+    "x-ratelimit-requests-remaining": "92",
+    "x-ratelimit-requests-reset": "2513028"
+  },
+  "response": {
+    "status": true,
+    "message": "Success",
+    "timestamp": 1792766015644,
+    "data": [
+      {
+        "id": "/m/06c62",
+        "type": "other",
+        "title": "Rome, Italy",
+        "subtitle": "Capital of Italy",
+        "city": "Rome",
+        "distance": null,
+        "list": [
+          {
+            "id": "FCO",
+            "type": "airport",
+            "title": "Leonardo da Vinci International Airport",
+            "subtitle": "14 mi to destination",
+            "city": "Rome",
+            "distance": "14 mi"
+          },
+          {
+            "id": "CIA",
+            "type": "airport",
+            "title": "Giovan Battista Pastine International Airport",
+            "subtitle": "9 mi to destination",
+            "city": "Rome",
+            "distance": "9 mi"
+          },
+          {
+            "id": "/m/06c62",
+            "type": "other",
+            "title": "Roma Termini",
+            "subtitle": null,
+            "city": "Rome",
+            "distance": ""
+          },
+          {
+            "id": "/m/06c62",
+            "type": "other",
+            "title": "Rome Tiburtina",
+            "subtitle": "2 mi to destination",
+            "city": "Rome",
+            "distance": "2 mi"
+          }
+        ]
+      },
+      {
+        "id": "YQM",
+        "type": "airport",
+        "title": "Greater Moncton Roméo LeBlanc International Airport",
+        "subtitle": "International airport in Dieppe, New Brunswick",
+        "city": "Moncton",
+        "distance": null,
+        "list": []
+      },
+      {
+        "id": "SAL",
+        "type": "airport",
+        "title": "El Salvador International Airport Saint Óscar Arnulfo Romero y Galdámez",
+        "subtitle": "International airport in El Salvador",
+        "city": "San Salvador",
+        "distance": null,
+        "list": []
+      },
+      {
+        "id": "/m/0rwgm",
+        "type": "other",
+        "title": "Rome, Georgia",
+        "subtitle": "City in Georgia",
+        "city": "Rome",
+        "distance": null,
+        "list": [
+          {
+            "id": "ATL",
+            "type": "airport",
+            "title": "Hartsfield-Jackson Atlanta International Airport",
+            "subtitle": "60 mi to destination",
+            "city": "Atlanta",
+            "distance": "60 mi"
+          },
+          {
+            "id": "CHA",
+            "type": "airport",
+            "title": "Chattanooga Metropolitan Airport",
+            "subtitle": "53 mi to destination",
+            "city": "Chattanooga",
+            "distance": "53 mi"
+          }
+        ]
+      },
+      {
+        "id": "/m/097xtf",
+        "type": "other",
+        "title": "Font-Romeu-Odeillo-Via, France",
+        "subtitle": "Commune in France",
+        "city": "Font-Romeu-Odeillo-Via",
+        "distance": null,
+        "list": [
+          {
+            "id": "BCN",
+            "type": "airport",
+            "title": "Josep Tarradellas Barcelona-El Prat Airport",
+            "subtitle": "84 mi to destination",
+            "city": "Barcelona",
+            "distance": "84 mi"
+          },
+          {
+            "id": "LEU",
+            "type": "airport",
+            "title": "Andorra–La Seu d’Urgell Airport",
+            "subtitle": "34 mi to destination",
+            "city": "La Seu d'Urgell",
+            "distance": "34 mi"
+          }
+        ]
+      }
+    ]
+  }
+}

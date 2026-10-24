@@ -1,0 +1,169 @@
+{
+  "available": true,
+  "report_slice_valid": true,
+  "budget_output": {
+    "budget_usd": "1500.00",
+    "selected_flight_offer_id": "Air Cairo-2026-11-23-IST-CAI__Air Cairo-2026-11-26-CAI-IST",
+    "selected_hotel_offer_id": "17306376",
+    "provider_subtotal_usd": "435.99",
+    "estimated_subtotal_usd": "0.00",
+    "projected_total_usd": null,
+    "status": "uncertain",
+    "missing_categories": [
+      "activities",
+      "food",
+      "local_transport"
+    ],
+    "notes": [
+      "Flight offer ID is synthetic: outbound-airline-date-origin-destination__return-airline-date-origin-destination.",
+      "provider_subtotal_usd and estimated_subtotal_usd include only categories with priced entries; unknown categories are excluded and listed in missing_categories. These subtotals are not the complete trip cost or remaining balance.",
+      "Flight selection mode: caller-provided selected flight legs.",
+      "Hotel selection mode: caller-provided selected hotel.",
+      "activities includes unknown costs; projected total is incomplete.",
+      "food includes unknown costs; projected total is incomplete.",
+      "local_transport includes unknown costs; projected total is incomplete."
+    ],
+    "cost_items": [
+      {
+        "id": "flights",
+        "category": "flights",
+        "label": "Selected round-trip flights",
+        "amount_usd": "352.00",
+        "kind": "provider",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "Sum of selected normalized outbound and return totals; each already covers all travelers.",
+        "source_offer_id": "Air Cairo-2026-11-23-IST-CAI__Air Cairo-2026-11-26-CAI-IST",
+        "activity_ref": null
+      },
+      {
+        "id": "accommodation",
+        "category": "accommodation",
+        "label": "السفارات للخدمات الفندقيه الشامله بمدينه نصر base price",
+        "amount_usd": "83.16",
+        "kind": "provider",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "Selected hotel base price for the entire stay; the hotel total already includes taxes and fees.",
+        "source_offer_id": "17306376",
+        "activity_ref": null
+      },
+      {
+        "id": "hotel-taxes-fees",
+        "category": "taxes_fees",
+        "label": "السفارات للخدمات الفندقيه الشامله بمدينه نصر taxes and fees",
+        "amount_usd": "0.83",
+        "kind": "provider",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "Selected hotel taxes_and_fees_usd, counted once; not added again to the already inclusive total.",
+        "source_offer_id": "17306376",
+        "activity_ref": null
+      },
+      {
+        "id": "activity-2026-11-24-1",
+        "category": "activities",
+        "label": "Egyptian Museum Visit",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "AI could not estimate this cost.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-24",
+          "order": 1
+        }
+      },
+      {
+        "id": "activity-2026-11-24-2",
+        "category": "activities",
+        "label": "Khan El Khalili Bazaar",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "AI could not estimate this cost.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-24",
+          "order": 2
+        }
+      },
+      {
+        "id": "activity-2026-11-24-3",
+        "category": "activities",
+        "label": "Al-Azhar Park Relaxation",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "AI could not estimate this cost.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-24",
+          "order": 3
+        }
+      },
+      {
+        "id": "activity-2026-11-25-1",
+        "category": "activities",
+        "label": "Giza Pyramid Complex",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "AI could not estimate this cost.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-25",
+          "order": 1
+        }
+      },
+      {
+        "id": "activity-2026-11-25-2",
+        "category": "activities",
+        "label": "The Great Sphinx",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "AI could not estimate this cost.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-25",
+          "order": 2
+        }
+      },
+      {
+        "id": "activity-2026-11-25-3",
+        "category": "activities",
+        "label": "Saqqara Necropolis",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "AI could not estimate this cost.",
+        "source_offer_id": null,
+        "activity_ref": {
+          "date": "2026-11-25",
+          "order": 3
+        }
+      },
+      {
+        "id": "food",
+        "category": "food",
+        "label": "Food",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "No structured whole-trip cost was supplied.",
+        "source_offer_id": null,
+        "activity_ref": null
+      },
+      {
+        "id": "local_transport",
+        "category": "local_transport",
+        "label": "Local Transport",
+        "amount_usd": null,
+        "kind": "unknown",
+        "coverage": "entire_trip_all_travelers",
+        "basis": "No structured whole-trip cost was supplied.",
+        "source_offer_id": null,
+        "activity_ref": null
+      }
+    ]
+  },
+  "error": null
+}

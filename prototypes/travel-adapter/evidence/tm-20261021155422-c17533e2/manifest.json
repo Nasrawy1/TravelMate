@@ -1,0 +1,67 @@
+{
+  "request_id": "tm-20261021155422-c17533e2",
+  "generated_at": "2026-10-21T15:54:30Z",
+  "adapter_schema": "v2 (BE-04 report slice)",
+  "chain_checks": {
+    "final_status": "success",
+    "final_error_code": null,
+    "live_integration_status": "price_received",
+    "flight_mode": "disabled",
+    "flights_status": "unavailable",
+    "flights_reason_code": "not_configured",
+    "flight_date_flags_consistent": null,
+    "hotel_offers_count": 20,
+    "hotel_offers_match_dates": true,
+    "hotel_offers_match_adults": true,
+    "hotel_room_qty_values": [
+      1,
+      null
+    ],
+    "selected_hotel_offer_id": "17410709",
+    "ai_status": "ok",
+    "ai_latency_ms": 4507,
+    "ai_itinerary_dates": [
+      "2026-11-20",
+      "2026-11-21",
+      "2026-11-22",
+      "2026-11-23"
+    ],
+    "be04": {
+      "available": true,
+      "report_slice_valid": true,
+      "error": null,
+      "status": "uncertain",
+      "selected_hotel_offer_id": "17410709"
+    },
+    "provider_calls": [
+      {
+        "service": "booking_hotels",
+        "cache_status": "refresh",
+        "http_status": 200,
+        "attempts": 1,
+        "retrieved_at": "2026-10-21T15:54:24Z",
+        "rate_limit": {
+          "x-ratelimit-requests-limit": "20",
+          "x-ratelimit-requests-remaining": "1",
+          "x-ratelimit-requests-reset": "2068911",
+          "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+          "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499981",
+          "x-ratelimit-rapid-free-plans-hard-limit-reset": "2068911",
+          "x-ratelimit-premium-limit": "50",
+          "x-ratelimit-premium-remaining": "50",
+          "x-ratelimit-premium-reset": "2068911"
+        }
+      }
+    ]
+  },
+  "files": {
+    "01_inputs.json": "6c1b6e9457ffd8ad895d1c0cebeea8edfd8d74adaae605cda8fbbafea3d40001",
+    "02_raw_provider_data.json": "abba9d1adc53530b5cd7ec07de5a23ac3f5ce9ee34fb93dcedce2cb38c438677",
+    "03_normalized_context.json": "9ad7ca59fbc61d5e6a5efe657c3cd0599a266d35f7556f3c7ba4b77cc3a47263",
+    "04_ai_input.json": "7adf66903aa7cdf9be7aa6623b7f7e56a1960bc912df5ceec4c8430c21cab190",
+    "05_ai_raw_output.json": "0514b08109acf985e72f077c929cb9d2c97a741287cf992f5e5350c2c4e585f8",
+    "06_validated_ai_output.json": "06da2cee67e391bb31d956eb154c961b98a46c8f7fffd445147115fd2e572e10",
+    "07_final_response.json": "c5e3e1aa0a04856342780a81cfda58e91503b23aa2dab6e285e423f622822908",
+    "08_be04_budget_output.json": "05b575f41cf003aa84abc6d9aa5172454235b806b4cf7fceb3cdd64f8062d53d"
+  }
+}

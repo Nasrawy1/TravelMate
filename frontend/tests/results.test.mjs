@@ -143,7 +143,10 @@ test('timestamps stay in UTC independently of the local device timezone', () => 
 test('current production assets exclude Results/generation fixtures and development controls', async () => {
   const production = await build({ root, logLevel: 'silent', build: { write: false } })
   const assets = production.output.map(item => item.type === 'chunk' ? item.code : String(item.source)).join('\n')
-  for (const marker of ['fixture-provider', 'fixture-flight-1', 'within-budget.json', 'unknown-taxes.json', 'Results fixture preview', 'Inspect MOCK state', 'generation-preview-scenario', 'MOCK result scenario', '2026-10-15', 'Run JWT probe', '/api/v1/auth/probe', 'dev/auth-probe']) assert.ok(!assets.includes(marker), marker)
+  // FE-03 intentionally ships local demo samples (including their fixed dates),
+  // while the development fixture adapters and JWT probe must remain excluded.
+  for (const marker of ['demo-rome-flight', 'demo-paris-flight', 'demo-bcn-flight', 'Demo data notice']) assert.ok(assets.includes(marker), marker)
+  for (const marker of ['fixture-provider', 'fixture-flight-1', 'within-budget.json', 'unknown-taxes.json', 'Results fixture preview', 'Inspect MOCK state', 'generation-preview-scenario', 'MOCK result scenario', 'Run JWT probe', '/api/v1/auth/probe', 'dev/auth-probe']) assert.ok(!assets.includes(marker), marker)
 })
 
 test('direct production Results navigation renders an honest empty state without fixtures', async () => {

@@ -5,7 +5,7 @@ import ResultPrice from './ResultPrice'
 export default function BudgetExpenses({ response, context }: ResultsData) {
   const { budget } = response
   const display = budgetDisplay(budget)
-  const rows = [['Your budget', display.budget], [context.data_mode === 'structural_mock' ? 'Sample travel prices' : context.live_evidence ? 'Live travel prices' : 'Unverified travel prices', display.provider], ['Estimates', display.estimated], ['Projected total', display.total]]
+  const rows = [['Your budget', display.budget], [context.data_mode !== 'validated_api' ? 'Sample travel prices' : context.live_evidence ? 'Live travel prices' : 'Unverified travel prices', display.provider], ['Estimates', display.estimated], ['Projected total', display.total]]
   return <aside className="res-costs" aria-label="Budget and expenses">
     <section className="res-budget res-card" aria-labelledby="res-budget-heading">
       <div className="res-section-heading"><h2 id="res-budget-heading">Budget check</h2><span className={`res-budget-status res-status-${budget.status}`}>{display.status}</span></div>
@@ -13,7 +13,7 @@ export default function BudgetExpenses({ response, context }: ResultsData) {
       <dl>{rows.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
       {budget.missing_categories.length > 0 && <div className="res-missing"><strong>Missing:</strong>{budget.missing_categories.map(category => <span key={category}>{CATEGORY_LABELS[category]}</span>)}</div>}
       {budget.notes.map((note, index) => <p className="res-small" key={index}>{note}</p>)}
-      <p className="res-small">An estimate, not a booking price. Totals and status are supplied by TravelMate; the browser does not calculate them.{context.data_mode === 'structural_mock' ? ' These are synthetic test values.' : ''}</p>
+      <p className="res-small">{context.data_mode === 'offline_demo' ? 'Demo numbers, not real offers. Totals and status are supplied by the sample data; the browser does not calculate them.' : <>An estimate, not a booking price. Totals and status are supplied by TravelMate; the browser does not calculate them.{context.data_mode === 'structural_mock' ? ' These are synthetic test values.' : ''}</>}</p>
     </section>
     <section className="res-expenses res-card" aria-labelledby="res-expenses-heading">
       <h2 id="res-expenses-heading">Itemized expenses</h2>
