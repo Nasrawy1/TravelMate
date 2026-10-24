@@ -13,7 +13,13 @@ Input (all fields required):
 - deadline_at: absolute UTC ISO timestamp from Adel's overall deadline.
 - request_id: sanitized log correlation ID, never an access token.
 
-Ziyad validates configured canonical-city-to-provider mappings and constructs provider queries using request dates and adults. Adel validates supported public inputs first.
+Under the approved 2026-10-24 amendment, Adel first validates city text (trimmed, nonblank, at most 200 characters), dates, adults and budget; he must not enforce a fixed city allowlist. Ziyad resolves free-text cities, including country/region qualifiers, through provider location search and constructs queries using resolved provider IDs plus the requested dates and adults. Static mappings may assist resolution but must not exclude otherwise resolvable cities.
+
+Resolution must precede dependent searches and AI generation. Preserve submitted trimmed city text for the public response and retain canonical identity, country/region, provider IDs and matching evidence internally. Flight and hotel lookups must agree on the intended city. Never select the first ambiguous match or silently substitute another city. Adel compares resolved city identities to reject identical departure/destination aliases.
+
+Unknown/ambiguous city resolution is surfaced to Adel for 400 UNSUPPORTED_LOCATION with safe field details; it is not merely a category with no offers. Resolver timeout, rate limit or outage must remain distinguishable and map to the public errors in api-contracts.md section 3 when resolution cannot complete. Use existing typed failure handling; Adel and Ziyad document the concrete resolver handoff before integration. Successful resolution with no quotes uses no_results; a category without coverage uses unsupported_search. Resolution and any retries share deadline_at and existing bounded-execution rules.
+
+FE-04 may start with non-authoritative local suggestions and free entry. If live autocomplete is supplied, Adel exposes an agreed backend lookup interface backed by Ziyad's resolver; Diyar never accesses provider credentials or raw provider responses. No new public endpoint is specified by this amendment.
 
 Output:
 - flights and hotels: each {status, offers, reason_code}.
@@ -89,3 +95,7 @@ Nasrawy approved the following limited decisions:
 - Retain configured API-key rotation in the project, including switching to another configured key after quota exhaustion. This supersedes earlier project instructions requiring removal of that mechanism. Existing secret-handling, deadline and bounded-execution requirements remain applicable.
 - These searches implement the existing round-trip scope. A public `one_way` option or `trip_type` field is not approved by this decision.
 - Provider adoption does not certify passenger coverage, currency or mandatory-fee completeness. Their evidence, exclusion of indicative prices from authoritative budgeting, adapter handoff and integration tests remain required. This is not blanket approval of v0.4 or completion of #17/#18.
+
+## Team-lead decision — 2026-10-24: free-text cities
+
+Public cities are validated free text, not a fixed allowlist. Apply api-contracts.md section 3 for resolution, ambiguity, identical-city validation and errors. Travel offers and BE-04 calculation structures remain unchanged; BE-03 validation and resolver integration must be aligned. Provider coverage is still evidenced per search, not promised globally.
