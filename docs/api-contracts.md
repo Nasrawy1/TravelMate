@@ -46,14 +46,26 @@ Supabase Auth SDK provides signup/signin/signout and session management. Do not 
 
 | Field | Type | Constraint |
 |---|---|---|
-| departure_city | string | Canonical supported city label |
-| destination_city | string | Canonical supported label; distinct from departure |
+| departure_city | string | Free-text city name, optionally qualified by country/region; 1–200 characters after trimming; must resolve unambiguously |
+| destination_city | string | Same city-text rules; must resolve to a different city from departure |
 | start_date | date string | Future UTC calendar date under validation convention above |
 | return_date | date string | 1–7 nights after start_date |
 | adults | integer | 1–4 adults; reject booleans, fractions and numeric strings |
 | budget_usd | number | Positive whole-trip, all-adult budget |
 
-No currency selector, one-way switch or client user_id. Reject unsupported cities with 400 UNSUPPORTED_LOCATION. Provider adapters map canonical labels to provider IDs. A supported city pair with no offers is distinct from an unsupported city input. The actual supported list and identifier mapping remain pending feasibility; fixture cities do not establish coverage.
+No currency selector, one-way switch or client user_id. City fields remain strings; there is no fixed public city allowlist and no new required country, airport or provider-ID field.
+
+### City resolution — approved 2026-10-24
+
+- Accept Unicode city names, including spaces, accents, hyphens and country/region qualifiers. Trim surrounding whitespace; reject wrong types, blank text or more than 200 characters with 422 VALIDATION_ERROR and field details. Do not reject a city merely because it is absent from local suggestions or a static mapping.
+- Ziyad's adapter resolves the supplied text through provider location search to an unambiguous city and internal provider identifiers. Local mappings may be a cache/optimization, never the public acceptance list. Confirm that flight and hotel locations refer to the same intended city; do not silently substitute a nearby or similarly named city.
+- Unknown or ambiguous locations return 400 UNSUPPORTED_LOCATION with details.fields identifying the affected field and a safe message asking for a country/region qualifier when needed. Never automatically select the first ambiguous match.
+- Adel rejects identical resolved departure/destination cities with 422 VALIDATION_ERROR, even when spelling, case or aliases differ. All provider and AI context must refer to the resolved cities.
+- Response trip city strings echo the trimmed submitted text; resolved canonical labels, country/region and provider IDs remain internal. Other request/response fields and BE-04 budget rules are unchanged.
+- A resolved city with no travel offers is not an invalid location: preserve existing unavailable-category/no-results behavior. A category lacking provider coverage uses unsupported_search. A provider outage, timeout or rate limit is not proof that a city is unknown. If no reliable resolution is possible because the resolver failed, use 503 PROVIDER_UNAVAILABLE, 504 GENERATION_TIMEOUT or 429 RATE_LIMITED as applicable; do not invent location context. Once locations are resolved, existing partial-success travel rules apply.
+- Location resolution counts toward the overall generation deadline. Provider keys and raw supplier responses remain server-side.
+
+FE-04 implements editable city inputs with accessible autocomplete. Suggestions show city and country/region, but choosing from them is optional: manually entered text is still validated by the backend. Local suggestions may be used initially and must not claim live verification. Live suggestions require an agreed backend lookup interface implemented by Adel with Ziyad; this amendment does not invent or claim delivery of a new HTTP endpoint. Lookup loading, no matches and service failure must be distinguishable. Suggestions never guarantee availability or prices.
 
 ## 4. Successful response and required fields
 
@@ -63,7 +75,7 @@ HTTP 200 requires a complete, validated itinerary, even when travel prices are u
 |---|---|
 | generation_status | Always complete on HTTP 200; partial is not supported |
 | live_integration_status | price_received if at least one valid live flight/hotel offer exists, otherwise no_price |
-| trip | departure_city, destination_city, start_date, return_date, adults match request; nights equals date difference |
+| trip | City strings match trimmed request text; start_date, return_date and adults match request; nights equals date difference |
 | itinerary | Exactly nights + 1 entries, ordered, one per date inclusive |
 | travel_options | Both flights and hotels objects always present |
 | budget | Original budget, selected offer IDs, itemized costs, subtotals, projected total, status, missing categories and notes |
@@ -211,7 +223,7 @@ Still pending:
 - [ ] Diyar confirms forms/results/errors/demo context against these fixtures.
 - [ ] Adel confirms schemas, ledger rules, UTC validation reference, error mappings and adapter boundary.
 - [ ] Ziyad confirms provider normalization, AI output contract, route timezone handling and fee/occupancy evidence.
-- [ ] Select the mandatory provider and verify supported cities/routes; confirm canonical labels suffice.
+- [ ] Select the mandatory provider and verify dynamic city resolution, ambiguity handling and actual route/category coverage under the approved 2026-10-24 city rules.
 - [ ] Approve a food/local-transport estimation policy; until then these remain unknown in real output. Fixture rates are illustrative, not an approved policy.
 - [ ] Approve a conversion method or keep non-USD quotes unavailable.
 - [ ] Confirm fee-aware selection and timeout defaults using actual provider evidence.
@@ -227,3 +239,7 @@ Nasrawy approved the following limited decisions:
 - Retain configured API-key rotation in the project, including switching to another configured key after quota exhaustion. This supersedes earlier project instructions requiring removal of that mechanism. Existing secret-handling, deadline and bounded-execution requirements remain applicable.
 - These searches implement the existing round-trip scope. A public `one_way` option or `trip_type` field is not approved by this decision.
 - Provider adoption does not certify passenger coverage, currency or mandatory-fee completeness. Their evidence, exclusion of indicative prices from authoritative budgeting, adapter handoff and integration tests remain required. This is not blanket approval of v0.4 or completion of #17/#18.
+
+## Team-lead decision — 2026-10-24: free-text cities
+
+Nasrawy approved the city-resolution rules in section 3 and their FE-04 implementation. This supersedes fixed canonical-city allowlist requirements for public input. Adel must align BE-03 input validation and error handling with Ziyad's resolver; unchanged result fields do not imply unchanged validation. This limited amendment does not approve unrelated pending v0.4 decisions or certify provider coverage.
