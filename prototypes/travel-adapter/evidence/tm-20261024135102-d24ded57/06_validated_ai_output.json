@@ -1,0 +1,171 @@
+{
+  "status": "ok",
+  "itinerary": [
+    {
+      "date": "2026-11-23",
+      "empty_day_reason": "Travel day: outbound flight to Cairo",
+      "activities": []
+    },
+    {
+      "date": "2026-11-24",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Egyptian Museum Visit",
+          "area": "Downtown Cairo",
+          "description": "Explore ancient Egyptian artifacts, including the Royal Mummy Room and extensive collections of antiquities.",
+          "cost": {
+            "amount_usd": null,
+            "kind": "unknown",
+            "coverage": null
+          }
+        },
+        {
+          "order": 2,
+          "name": "Khan El Khalili Bazaar",
+          "area": "Islamic Cairo",
+          "description": "Wander through the historic market, shop for souvenirs, and experience local craftsmanship.",
+          "cost": {
+            "amount_usd": null,
+            "kind": "unknown",
+            "coverage": null
+          }
+        },
+        {
+          "order": 3,
+          "name": "Al-Azhar Park Relaxation",
+          "area": "Al-Azhar Park",
+          "description": "Enjoy panoramic city views, stroll gardens, and unwind in a peaceful setting.",
+          "cost": {
+            "amount_usd": null,
+            "kind": "unknown",
+            "coverage": null
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-11-25",
+      "empty_day_reason": null,
+      "activities": [
+        {
+          "order": 1,
+          "name": "Giza Pyramid Complex",
+          "area": "Giza Plateau",
+          "description": "Visit the Great Pyramid of Khufu, the Pyramid of Khafre, and the Pyramid of Menkaure, marveling at ancient engineering.",
+          "cost": {
+            "amount_usd": null,
+            "kind": "unknown",
+            "coverage": null
+          }
+        },
+        {
+          "order": 2,
+          "name": "The Great Sphinx",
+          "area": "Giza Plateau",
+          "description": "See the iconic Sphinx statue, learn about its history and significance.",
+          "cost": {
+            "amount_usd": null,
+            "kind": "unknown",
+            "coverage": null
+          }
+        },
+        {
+          "order": 3,
+          "name": "Saqqara Necropolis",
+          "area": "Saqqara",
+          "description": "Explore the Step Pyramid of Djoser and surrounding tombs, an early example of Egyptian pyramid architecture.",
+          "cost": {
+            "amount_usd": null,
+            "kind": "unknown",
+            "coverage": null
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-11-26",
+      "empty_day_reason": "Travel day: return flight to Istanbul",
+      "activities": []
+    }
+  ],
+  "ancillary_estimates": {
+    "food": {
+      "amount_usd": null,
+      "kind": "unknown",
+      "basis": "No approved estimation policy.",
+      "policy_id": null
+    },
+    "local_transport": {
+      "amount_usd": null,
+      "kind": "unknown",
+      "basis": "No approved estimation policy.",
+      "policy_id": null
+    }
+  },
+  "budget_activities": [
+    {
+      "label": "Egyptian Museum Visit",
+      "kind": "unknown",
+      "amount_usd": null,
+      "activity_ref": {
+        "date": "2026-11-24",
+        "order": 1
+      },
+      "basis": "AI could not estimate this cost."
+    },
+    {
+      "label": "Khan El Khalili Bazaar",
+      "kind": "unknown",
+      "amount_usd": null,
+      "activity_ref": {
+        "date": "2026-11-24",
+        "order": 2
+      },
+      "basis": "AI could not estimate this cost."
+    },
+    {
+      "label": "Al-Azhar Park Relaxation",
+      "kind": "unknown",
+      "amount_usd": null,
+      "activity_ref": {
+        "date": "2026-11-24",
+        "order": 3
+      },
+      "basis": "AI could not estimate this cost."
+    },
+    {
+      "label": "Giza Pyramid Complex",
+      "kind": "unknown",
+      "amount_usd": null,
+      "activity_ref": {
+        "date": "2026-11-25",
+        "order": 1
+      },
+      "basis": "AI could not estimate this cost."
+    },
+    {
+      "label": "The Great Sphinx",
+      "kind": "unknown",
+      "amount_usd": null,
+      "activity_ref": {
+        "date": "2026-11-25",
+        "order": 2
+      },
+      "basis": "AI could not estimate this cost."
+    },
+    {
+      "label": "Saqqara Necropolis",
+      "kind": "unknown",
+      "amount_usd": null,
+      "activity_ref": {
+        "date": "2026-11-25",
+        "order": 3
+      },
+      "basis": "AI could not estimate this cost."
+    }
+  ],
+  "price_explanation": "The outbound flight on 2026-11-23 with Air Cairo costs $200.00 for both travelers. The return flight on 2026-11-26 with Air Cairo costs $152.00 for both travelers. The selected hotel costs $83.99 for the 3-night stay. All prices include taxes as noted.",
+  "error": null
+}

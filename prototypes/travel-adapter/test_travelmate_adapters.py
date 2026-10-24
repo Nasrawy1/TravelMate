@@ -363,7 +363,7 @@ class TestProviderFailures(AdapterTestCase):
     def test_missing_credentials(self):
         with mock.patch.dict(os.environ, {"BOOKING_RAPIDAPI_KEYS": ""}):
             result = tm.search_travel(dict(BASE_REQUEST), cache_mode="off")
-        self.assertEqual(result["hotels"]["reason_code"], "auth_error")
+        self.assertEqual(result["hotels"]["reason_code"], "not_configured")  # adapter-contracts.md: no key = not configured
 
     def test_flights_disabled_by_default_makes_no_flight_calls(self):
         result = self.run_engine()
@@ -377,6 +377,37 @@ class TestProviderFailures(AdapterTestCase):
 # ==========================================
 class TestFlightDates(AdapterTestCase):
     """Indicative mode (Skyscanner cached quotes): information only, never selected or budgeted (PR #25 review, item 1)."""
+    def setUp(self):
+        super().setUp()
+        # Skyscanner returns GBP: these tests opt in to conversion explicitly (SIMULATED rates); it is off by default
+        fx_on = mock.patch.object(tm, "FX_CONVERSION_ENABLED", True)
+        fx_on.start()
+        self.addCleanup(fx_on.stop)
+
+    def test_non_usd_quotes_are_excluded_when_conversion_is_off(self):
+        # PR #25 review, item 4: no automatic conversion until a policy is approved
+        with mock.patch.object(tm, "FX_CONVERSION_ENABLED", False), self.indicative_flights():
+            result = self.run_engine()
+        self.assertEqual(self.all_quotes(result), [])
+        self.assertFalse(self.router.calls_for("fx"))  # No exchange-rate request at all
+        coverage = result["travel"]["flights"]["coverage"]["outbound"]
+        self.assertEqual(coverage["excluded"]["unconvertible_currency"], coverage["deals_returned"])
+        messages = [w["message"] for w in result["warnings"] if w["code"] == "CURRENCY_UNAVAILABLE"]
+        self.assertTrue(messages and all("conversion is disabled" in m for m in messages))
+
+    def test_non_usd_hotel_price_is_excluded_and_unknown_tax_stays_unknown(self):
+        hotels = self.router.hotels["1"]["data"]["hotels"]
+        hotels[0]["property"]["priceBreakdown"]["grossPrice"]["currency"] = "EUR"     # SIMULATED non-USD base
+        hotels[1]["property"]["priceBreakdown"]["excludedPrice"]["currency"] = "EUR"  # SIMULATED non-USD tax only
+        with mock.patch.object(tm, "FX_CONVERSION_ENABLED", False):
+            travel = tm.search_travel(dict(BASE_REQUEST), cache_mode="off")
+        ids = [o["hotel_id"] for o in travel["hotels"]["offers"]]
+        self.assertNotIn(hotels[0]["hotel_id"], ids)
+        kept = next(o for o in travel["hotels"]["offers"] if o["hotel_id"] == hotels[1]["hotel_id"])
+        self.assertEqual((kept["taxes_and_fees_usd"], kept["total_price_usd"]), (None, None))  # Unknown, never 0
+        self.assertIn("CURRENCY_UNAVAILABLE", [w["code"] for w in travel["warnings"]])
+        self.assertFalse(self.router.calls_for("fx"))
+
     def quotes(self, result):
         return result["travel"]["flights"]["indicative_quotes"]
 
@@ -516,19 +547,24 @@ class TestLiveFlights(AdapterTestCase):
         result = self.run_live()
         be04 = result["be04_budget_input"]
         self.assertNotIn("flight_candidates", be04)  # Round trips use the real legs, not candidate mode
-        selected_id = result["selected_offers"]["selected_flight_offer_id"]
-        self.assertEqual(selected_id, tm.round_trip_offer_id(be04["flights_data"]["selected_outbound_flight"],
-                                                             be04["flights_data"]["selected_return_flight"]))
+        selected = result["selected_offers"]
+        self.assertEqual(selected["selected_flight_offer_id"], result["travel"]["flights"]["selected_offer"]["id"])
+        be04_id = tm.round_trip_offer_id(be04["flights_data"]["selected_outbound_flight"],
+                                         be04["flights_data"]["selected_return_flight"])
+        self.assertEqual(selected["be04_flight_offer_id"], be04_id)
+        # The adapter ID names the exact flights: BE-04's synthetic leg IDs + flight numbers + local departure times
+        self.assertEqual(selected["selected_flight_offer_id"],
+                         "Air Cairo-2026-11-20-IST-CAI-SM304-1215__EgyptAir-2026-11-23-CAI-IST-MS745-2320")
         if BE04_AVAILABLE:
             budget = self.assert_be04_accepts(result)
             line = next(c for c in budget.cost_items if c.category == "flights")
-            self.assertEqual((line.kind, float(line.amount_usd), line.source_offer_id), ("provider", 495.0, selected_id))
+            self.assertEqual((line.kind, float(line.amount_usd), line.source_offer_id), ("provider", 495.0, be04_id))
             self.assertFalse([c for c in budget.cost_items if c.id == "flight-taxes-fees"])
-            self.assertEqual(budget.selected_flight_offer_id, selected_id)
+            self.assertEqual(budget.selected_flight_offer_id, be04_id)
 
     def test_round_trip_public_offers_match_schema_and_local_dates(self):
         result = self.run_live()
-        offers = result["travel"]["flights"]["round_trip_offers"]
+        offers = result["travel"]["flights"]["offers"]
         self.assertTrue(offers)
         self.assertEqual(len({o["id"] for o in offers}), len(offers))  # Unique offer IDs
         self.assertEqual([o["id"] for o in offers], [c["id"] for c in result["travel"]["flight_candidates"]])
@@ -559,10 +595,82 @@ class TestLiveFlights(AdapterTestCase):
         top = self.router.google["IST"]["data"]["itineraries"]["topFlights"]
         top.append(dict(copy.deepcopy(top[0]), price=top[0]["price"] + 40))  # SIMULATED same flight, other fare
         result = self.run_live()
-        outbound = result["travel"]["flights"]["offers"]["outbound"]
+        outbound = result["travel"]["flights"]["legs"]["outbound"]
         self.assertEqual(len({tm.flight_leg_id(l) + str(l["total_price_usd"]) for l in outbound}), len(outbound))
         self.assertEqual(outbound[0]["total_price_usd"], 272.0)
         self.assertGreaterEqual(result["travel"]["flights"]["coverage"]["outbound"]["excluded"]["duplicate"], 1)
+
+    def add_same_airline_flight(self, number, departure, arrival, price):
+        """SIMULATED: a second Air Cairo IST->CAI flight on the same day (same BE-04 synthetic leg ID)."""
+        top = self.router.google["IST"]["data"]["itineraries"]["topFlights"]
+        other = copy.deepcopy(top[0])
+        other.update(price=price, booking_token=f"SIMULATED-{number}")
+        other["flights"][0].update(flight_number=number)
+        other["flights"][0]["departure_airport"]["time"] = f"2026-11-20 {departure}"
+        other["flights"][0]["arrival_airport"]["time"] = f"2026-11-20 {arrival}"
+        top.append(other)
+
+    def assert_offers_match_their_flights(self, result):
+        """Every offer's price, times and evidence belong to the same real flights its ID names."""
+        flights = result["travel"]["flights"]
+        entries = {e["offer_id"]: e for e in result["travel"]["provenance"] if e["category"] == "flights"}
+        for offer in flights["offers"]:
+            legs = entries[offer["id"]]["itinerary"]
+            self.assertEqual(offer["id"], f"{legs['outbound']['leg_id']}__{legs['return']['leg_id']}")
+            self.assertEqual(offer["price"]["amount_usd"],
+                             tm.round_money(legs["outbound"]["original_amount"] + legs["return"]["original_amount"]))
+            self.assertEqual(entries[offer["id"]]["original_amount"], offer["price"]["amount_usd"])
+            self.assertEqual(offer["outbound_departure_at"], legs["outbound"]["departure_utc"])
+            self.assertEqual(offer["return_departure_at"], legs["return"]["departure_utc"])
+        selected, schedule = flights["selected_offer"], flights["schedule"]
+        self.assertEqual(selected["id"], f"{schedule['outbound']['leg_id']}__{schedule['return']['leg_id']}")
+        for direction, leg in (("outbound", flights["selected_outbound_flight"]), ("return", flights["selected_return_flight"])):
+            self.assertEqual(leg["total_price_usd"], schedule[direction]["original_amount"])
+            self.assertEqual(tm.flight_leg_id(leg), schedule[direction]["be04_leg_id"])
+        self.assertEqual(selected["price"]["amount_usd"], tm.round_money(
+            flights["selected_outbound_flight"]["total_price_usd"] + flights["selected_return_flight"]["total_price_usd"]))
+
+    def test_same_airline_same_day_flights_get_distinct_ids(self):
+        # PR #25 review: two flights shared one ID, so a $542 offer was linked to $546 evidence
+        self.add_same_airline_flight("SM 306", "18:40", "19:45", 274)
+        result = self.run_live()
+        outbound = [e["itinerary"]["outbound"] for e in result["travel"]["provenance"] if e["category"] == "flights"]
+        cairo = {s["leg_id"]: s for s in outbound if s["be04_leg_id"] == "Air Cairo-2026-11-20-IST-CAI"}
+        self.assertEqual(set(cairo), {"Air Cairo-2026-11-20-IST-CAI-SM304-1215", "Air Cairo-2026-11-20-IST-CAI-SM306-1840"})
+        self.assertEqual({s["leg_id"]: s["original_amount"] for s in cairo.values()},
+                         {"Air Cairo-2026-11-20-IST-CAI-SM304-1215": 272, "Air Cairo-2026-11-20-IST-CAI-SM306-1840": 274})
+        self.assertEqual(cairo["Air Cairo-2026-11-20-IST-CAI-SM306-1840"]["departure_local"], "2026-11-20 18:40")
+        self.assert_offers_match_their_flights(result)
+        self.assertEqual(result["travel"]["flights"]["schedule"]["outbound"]["flight_numbers"], ["SM 304"])
+
+    def test_cheaper_later_flight_brings_its_own_times_and_evidence(self):
+        # The cheaper of two same-ID flights is selected WITH its own schedule (no mix of price and times)
+        self.add_same_airline_flight("SM 306", "18:40", "19:45", 268)
+        result = self.run_live()
+        flights = result["travel"]["flights"]
+        self.assertEqual(flights["selected_outbound_flight"]["total_price_usd"], 268)
+        self.assertEqual(flights["schedule"]["outbound"]["flight_numbers"], ["SM 306"])
+        self.assertEqual(flights["schedule"]["outbound"]["departure_local"], "2026-11-20 18:40")
+        self.assertTrue(flights["selected_offer"]["id"].startswith("Air Cairo-2026-11-20-IST-CAI-SM306-1840__"))
+        self.assert_offers_match_their_flights(result)
+        if BE04_AVAILABLE:
+            line = next(c for c in self.assert_be04_accepts(result).cost_items if c.category == "flights")
+            self.assertEqual(float(line.amount_usd), flights["selected_offer"]["price"]["amount_usd"])
+
+    def test_ai_rejects_schedule_of_another_flight(self):
+        self.add_same_airline_flight("SM 306", "18:40", "19:45", 274)
+        travel = tm.search_travel(dict(LIVE_REQUEST), cache_mode="off")
+        flights = travel["flights"]
+        other = next(e["itinerary"]["outbound"] for e in travel["provenance"]
+                     if e["category"] == "flights" and e["itinerary"]["outbound"]["flight_numbers"] == ["SM 306"])
+        mixed = {"selected_outbound_flight": flights["selected_outbound_flight"],
+                 "selected_return_flight": flights["selected_return_flight"],
+                 "schedule": {"outbound": other, "return": flights["schedule"]["return"]}}  # SIMULATED mix-up
+        ai = tm.generate_itinerary(dict(LIVE_REQUEST), {"flight": mixed, "hotel": None},
+                                   {"flights": "live", "hotels": "unavailable"})
+        self.assertEqual(ai["status"], "ok")
+        self.assertIn("FLIGHT_DATE_MISMATCH_EXCLUDED", [w["code"] for w in ai["warnings"]])
+        self.assertNotIn("18:40", self.groq_client.last_kwargs["messages"][1]["content"])
 
     def test_unpadded_provider_dates_are_normalized(self):
         option = copy.deepcopy(self.options("IST")[0])
@@ -692,7 +800,7 @@ class TestNearbyAirports(AdapterTestCase):
         strict = [o["price"] for o in self.return_options() if o["flights"][-1]["arrival_airport"]["airport_code"] in ("DXB", "DWC")]
         self.assertEqual(returning["total_price_usd"], min(strict))  # Cheapest from ANY Istanbul airport to Dubai
         self.assertEqual(returning["origin_airport"], "SAW")         # Found only because the whole city is searched
-        for offer in result["travel"]["flights"]["round_trip_offers"]:
+        for offer in result["travel"]["flights"]["offers"]:
             self.assertNotIn("SHJ", offer["id"])
         if BE04_AVAILABLE:
             self.assert_be04_accepts(result)
@@ -734,9 +842,49 @@ class TestNearbyAirports(AdapterTestCase):
         self.assertEqual(result["travel"]["flights"]["nearby_airport_alternatives"]["return"][0]["destination_city"], "Sharjah")
 
     def test_all_supported_cities_have_pinned_city_ids(self):
+        first_twelve = ["Istanbul", "Cairo", "Rome", "Riyadh", "Jeddah", "Dubai", "Doha", "Amman", "Baghdad", "Erbil",
+                        "London", "Paris"]
         for label, city in tm.SUPPORTED_CITIES.items():
-            self.assertRegex(city.get("google_city_id") or "", r"^/[mg]/", label)  # No lookup request per city
+            search_id = city.get("google_city_id") or ""
+            if label in first_twelve or len(city["airports"]) > 1:
+                self.assertRegex(search_id, r"^/[mg]/", label)  # Verified Google city ID
+            else:
+                self.assertEqual(search_id, city["airports"][0], label)  # Single airport: searched by its code
         self.assertIn("SEN", tm.SUPPORTED_CITIES["London"]["airports"])
+
+    def test_city_table_is_consistent(self):
+        from zoneinfo import ZoneInfo
+        self.assertGreaterEqual(len(tm.SUPPORTED_CITIES), 80)
+        names = [n for label, c in tm.SUPPORTED_CITIES.items() for n in [label.lower(), *c["aliases"]]]
+        self.assertEqual(len(names), len(set(names)))  # Every name and alias points to one city
+        airports = [a for c in tm.SUPPORTED_CITIES.values() for a in c["airports"]]
+        self.assertEqual(len(airports), len(set(airports)))
+        for label, city in tm.SUPPORTED_CITIES.items():
+            ZoneInfo(city["timezone"])
+            self.assertTrue(-90 <= city["center"][0] <= 90 and -180 <= city["center"][1] <= 180, label)
+            self.assertRegex(city["country_code"], r"^[a-z]{2}$")
+        for name, label in (("Bangkok", "Bangkok"), ("NYC", "New York"), ("marrakech", "Marrakesh"), ("Kuwait", "Kuwait City")):
+            self.assertEqual(tm.resolve_supported_city(name)[0], label)
+
+    def test_single_airport_city_is_searched_by_airport_code_without_lookup(self):
+        travel = tm.search_travel(dict(DUBAI_REQUEST, departure_city="Istanbul", destination_city="Bangkok"),
+                                  categories=("flights",), cache_mode="off")
+        self.assertEqual(travel["status"], "ok")
+        calls = sorted(self.router.calls_for("gflights"), key=lambda c: c["params"]["outbound_date"])
+        self.assertEqual([(c["params"]["departure_id"], c["params"]["arrival_id"]) for c in calls],
+                         [("/m/09949m", "/m/0fn2g"), ("/m/0fn2g", "/m/09949m")])  # Bangkok: BKK + DMK city ID
+        self.router.calls.clear()
+        tm.search_travel(dict(DUBAI_REQUEST, departure_city="Phuket", destination_city="Istanbul"),
+                         categories=("flights",), cache_mode="off")
+        self.assertEqual(sorted(c["params"]["departure_id"] for c in self.router.calls_for("gflights")), ["/m/09949m", "HKT"])
+        self.assertFalse(self.router.calls_for("gflights_airport"))
+
+    def test_booking_lookup_accepts_alias_spelling(self):
+        payload = {"status": True, "data": [{"dest_type": "city", "cc1": "ma", "name": "Marrakech", "dest_id": "-38833"}]}
+        self.router.overrides["destination"] = lambda p, h: FakeResponse(200, payload)  # SIMULATED lookup response
+        mapping = tm.resolve_booking_destination("Marrakesh", tm.SUPPORTED_CITIES["Marrakesh"],
+                                                 datetime.now(timezone.utc) + timedelta(seconds=30), cache_mode="off")
+        self.assertEqual((mapping["dest_id"], mapping["source"]), ("-38833", "verified_lookup"))
 
     def test_nearby_label_uses_real_city_not_google_area_name(self):
         # Google's "Paris" area lists BVA with city "Paris"; the label must still name Beauvais
@@ -1180,6 +1328,177 @@ class TestKeyPruning(AdapterTestCase):
 # ==========================================
 # 7. SECURITY, ERROR SAFETY & CACHE
 # ==========================================
+TRAVEL_REASON_CODES = {"not_configured", "not_requested", "unsupported_search", "no_results", "rate_limited", "timeout",
+                       "auth_error", "provider_error", "invalid_response"}
+TRAVEL_TOP_LEVEL = {"request_id", "status", "trip_request", "flights", "hotels", "report_slice", "flight_candidates",
+                    "hotel_candidates", "warnings", "provenance", "data_mode"}
+FLIGHT_KEYS = {"status", "reason_code", "price_authority", "offers", "public_offers", "selected_offer",
+               "selected_outbound_flight", "selected_return_flight", "schedule", "legs", "nearby_airport_alternatives",
+               "indicative_quotes", "coverage"}
+HOTEL_KEYS = {"status", "reason_code", "offers", "public_offers", "coverage", "destination_mapping"}
+
+class TestAdapterContract(AdapterTestCase):
+    """PR #25 review, item 2: the WHOLE search_travel / generate_itinerary response follows one shape in every state."""
+    def assert_travel_contract(self, travel):
+        json.dumps(travel)  # Plain JSON only
+        self.assertEqual(set(travel), TRAVEL_TOP_LEVEL)
+        self.assertEqual(travel["status"], "ok")
+        for name, keys in (("flights", FLIGHT_KEYS), ("hotels", HOTEL_KEYS)):
+            category = travel[name]
+            self.assertIsInstance(category, dict, name)  # Never null, even when not requested
+            self.assertEqual(set(category), keys, name)
+            self.assertIn(category["status"], ("available", "unavailable"))
+            self.assertIsInstance(category["offers"], list)
+            self.assertIsInstance(category["public_offers"], list)
+            if category["status"] == "available":
+                self.assertIsNone(category["reason_code"])
+                self.assertTrue(category["offers"] and category["public_offers"])
+            else:
+                self.assertIn(category["reason_code"], TRAVEL_REASON_CODES, name)
+                self.assertEqual((category["offers"], category["public_offers"]), ([], []), name)
+            if CONTRACT_SCHEMA is not None:
+                for offer in category["public_offers"]:
+                    self.assertEqual(schema_errors("flight" if name == "flights" else "hotel", offer), [])
+        flights, hotels = travel["flights"], travel["hotels"]
+        if flights["status"] == "unavailable":
+            self.assertEqual([flights[k] for k in ("selected_offer", "selected_outbound_flight", "selected_return_flight",
+                                                   "schedule")], [None] * 4)
+            self.assertEqual(travel["flight_candidates"], [])
+        else:
+            self.assertEqual(flights["selected_offer"], flights["offers"][0])
+        if hotels["status"] == "unavailable":
+            self.assertEqual(travel["hotel_candidates"], [])
+        # One provenance object per returned offer (indicative quotes are marked information only)
+        for name in ("flights", "hotels"):
+            entries = [e for e in travel["provenance"] if e["category"] == name and not e.get("informational_only")]
+            self.assertEqual([e["offer_id"] for e in entries], [o["id"] for o in travel[name]["public_offers"]])
+            for entry in entries:
+                for field in ("original_currency", "original_amount", "quote_timestamp", "conversion", "provider_query",
+                              "airport_timezones"):
+                    self.assertIn(field, entry)
+                self.assertTrue(entry["coverage_evidence"])
+        for warning in travel["warnings"]:
+            self.assertEqual(set(warning), {"code", "message"})
+        self.assertEqual(travel["report_slice"], {
+            "flights_data": {"selected_outbound_flight": flights["selected_outbound_flight"],
+                             "selected_return_flight": flights["selected_return_flight"]},
+            "hotels_data": hotels["offers"]})
+        if BE04_AVAILABLE:
+            ZiyadReportSlice.model_validate(dict(travel["report_slice"], ai_recommendation_report=""))
+
+    def assert_itinerary_contract(self, ai, nights):
+        json.dumps(ai)
+        if ai["status"] == "error":
+            self.assertEqual(set(ai["error"]), {"code", "message"})
+            self.assertIn(ai["error"]["code"], ("timeout", "rate_limited", "unavailable", "invalid_output",
+                                                "invalid_input", "internal_error"))
+            self.assertNotIn("itinerary", ai)  # A failed generation is never published as an itinerary
+            return
+        self.assertEqual(ai["status"], "ok")
+        self.assertEqual(len(ai["itinerary"]), nights + 1)
+        if CONTRACT_SCHEMA is not None:
+            for day in ai["itinerary"]:
+                self.assertEqual(schema_errors("day", day), [])
+        self.assertEqual(set(ai["ancillary_estimates"]), {"food", "local_transport"})
+        for estimate in ai["ancillary_estimates"].values():
+            self.assertEqual(set(estimate), {"amount_usd", "kind", "basis", "policy_id"})
+            self.assertTrue(estimate["basis"])
+            if estimate["kind"] == "unknown":
+                self.assertEqual((estimate["amount_usd"], estimate["policy_id"]), (None, None))
+        for item in ai["budget_activities"]:
+            if BE04_AVAILABLE:
+                from app.services.models import ActivityItem
+                ActivityItem.model_validate(item)
+        for warning in ai["warnings"]:
+            self.assertEqual(set(warning), {"code", "message"})
+
+    def live(self):
+        mode = mock.patch.object(tm, "FLIGHT_MODE", "live")
+        mode.start()
+        self.addCleanup(mode.stop)
+        # SIMULATED: the recorded Cairo hotels (2026-11-01 -> 11-05) moved onto the recorded flight dates (11-20 -> 11-23)
+        text = json.dumps(self.router.hotels["1"]).replace("2026-11-01", "2026-11-20").replace("2026-11-05", "2026-11-23")
+        self.router.hotels["1"] = json.loads(text.replace("Price for 4 nights", "Price for 3 nights"))
+
+    def test_both_categories_available(self):
+        self.live()
+        travel = tm.search_travel(dict(LIVE_REQUEST), cache_mode="off")
+        self.assert_travel_contract(travel)
+        self.assertEqual((travel["flights"]["status"], travel["hotels"]["status"]), ("available", "available"))
+
+    def test_hotels_only_returns_explicit_unavailable_flights(self):
+        self.live()
+        travel = tm.search_travel(dict(LIVE_REQUEST), categories=("hotels",), cache_mode="off")
+        self.assert_travel_contract(travel)
+        self.assertEqual((travel["flights"]["status"], travel["flights"]["reason_code"]), ("unavailable", "not_requested"))
+        self.assertEqual(travel["hotels"]["status"], "available")
+        self.assertFalse(self.router.calls_for("gflights"))
+
+    def test_flights_only_returns_explicit_unavailable_hotels(self):
+        self.live()
+        travel = tm.search_travel(dict(LIVE_REQUEST), categories=["flights"], cache_mode="off")
+        self.assert_travel_contract(travel)
+        self.assertEqual((travel["hotels"]["status"], travel["hotels"]["reason_code"]), ("unavailable", "not_requested"))
+        self.assertFalse(self.router.calls_for("hotels"))
+
+    def test_disabled_and_indicative_flights_follow_the_contract(self):
+        self.assert_travel_contract(tm.search_travel(dict(BASE_REQUEST), cache_mode="off"))
+        with self.indicative_flights():
+            travel = tm.search_travel(dict(BASE_REQUEST), cache_mode="off")
+        self.assert_travel_contract(travel)
+        self.assertEqual(travel["flights"]["reason_code"], "not_configured")
+
+    def test_provider_failures_follow_the_contract(self):
+        self.live()
+        self.router.overrides["gflights"] = lambda p, h: FakeResponse(500, {"message": "down"})  # SIMULATED
+        self.router.overrides["hotels"] = lambda p, h: FakeResponse(429, {"message": "quota"})   # SIMULATED
+        travel = tm.search_travel(dict(LIVE_REQUEST), cache_mode="off")
+        self.assert_travel_contract(travel)
+        self.assertEqual((travel["flights"]["reason_code"], travel["hotels"]["reason_code"]), ("provider_error", "rate_limited"))
+
+    def test_unexpected_category_error_becomes_a_warning(self):
+        self.live()
+        with mock.patch.object(tm, "search_google_flights", side_effect=RuntimeError("SIMULATED bug")):
+            travel = tm.search_travel(dict(LIVE_REQUEST), cache_mode="off")
+        self.assert_travel_contract(travel)
+        self.assertEqual(travel["flights"]["reason_code"], "provider_error")
+        self.assertEqual(travel["hotels"]["status"], "available")  # The other category is unaffected
+        self.assertIn("FLIGHTS_UNAVAILABLE", [w["code"] for w in travel["warnings"]])
+
+    def test_invalid_categories_are_rejected(self):
+        for categories in ((), ("cars",), "flights,hotels"):
+            result = tm.search_travel(dict(BASE_REQUEST), categories=categories, cache_mode="off")
+            self.assertEqual((result["status"], result["error"]["code"]), ("error", "invalid_input"))
+        self.assertFalse(self.router.calls)
+
+    def test_itinerary_contract_success_and_failures(self):
+        self.groq_client.content = json.dumps(valid_ai_output())
+        ok = tm.generate_itinerary(dict(BASE_REQUEST), {"flight": None, "hotel": None},
+                                   {"flights": "unavailable", "hotels": "unavailable"})
+        self.assert_itinerary_contract(ok, nights=4)
+        self.groq_client.content = "not json"  # SIMULATED malformed output
+        self.assert_itinerary_contract(tm.generate_itinerary(dict(BASE_REQUEST), {}, {}), nights=4)
+        self.groq_client.error = groq_status_error(groq.RateLimitError, 429)  # SIMULATED
+        failed = tm.generate_itinerary(dict(BASE_REQUEST), {}, {})
+        self.assert_itinerary_contract(failed, nights=4)
+        self.assertEqual(failed["error"]["code"], "rate_limited")
+
+    def test_live_search_feeds_generate_itinerary_end_to_end(self):
+        self.live()
+        self.groq_client.content = json.dumps(valid_ai_output(dates=LIVE_AI_DATES))
+        travel = tm.search_travel(dict(LIVE_REQUEST), cache_mode="off")
+        self.assert_travel_contract(travel)
+        flights = travel["flights"]
+        selected = {"flight": {"selected_outbound_flight": flights["selected_outbound_flight"],
+                               "selected_return_flight": flights["selected_return_flight"],
+                               "schedule": flights["schedule"]},
+                    "hotel": travel["hotels"]["offers"][0]}
+        ai = tm.generate_itinerary(dict(LIVE_REQUEST), selected, {"flights": "live", "hotels": "live"},
+                                   request_id=travel["request_id"])
+        self.assert_itinerary_contract(ai, nights=3)
+        self.assertEqual(ai["request_id"], travel["request_id"])
+        self.assertNotIn("FLIGHT_DATE_MISMATCH_EXCLUDED", [w["code"] for w in ai["warnings"]])
+
 class TestSecurityAndCache(AdapterTestCase):
     def test_credentials_are_redacted_from_logs(self):
         stream = []
@@ -1282,7 +1601,16 @@ def write_live_evidence():
     public_offers = (result["travel"] or {}).get("hotels", {}).get("public_offers", [])
     flights = (result["travel"] or {}).get("flights") or {}
     legs = [l for l in (flights.get("selected_outbound_flight"), flights.get("selected_return_flight")) if l]
-    legs += [l for group in (flights.get("alternative_date_offers") or {}).values() for l in group]
+    flight_entries = {e["offer_id"]: e for e in ((result["travel"] or {}).get("provenance") or [])
+                      if e.get("category") == "flights" and not e.get("informational_only")}
+
+    def offer_matches_evidence(offer):
+        """PR #25 review: an offer's price and times must come from the same flights its ID names."""
+        legs_ev = flight_entries[offer["id"]]["itinerary"]
+        return (offer["id"] == f"{legs_ev['outbound']['leg_id']}__{legs_ev['return']['leg_id']}"
+                and offer["price"]["amount_usd"] == tm.round_money(sum(l["original_amount"] for l in legs_ev.values()))
+                and offer["outbound_departure_at"] == legs_ev["outbound"]["departure_utc"]
+                and offer["return_departure_at"] == legs_ev["return"]["departure_utc"])
     chain_checks = {
         "total_response_seconds": total_seconds,
         "deadline_seconds": tm.DEFAULT_DEADLINE_SECONDS,
@@ -1294,7 +1622,7 @@ def write_live_evidence():
         "flights_reason_code": flights.get("reason_code"),
         "flight_date_flags_consistent": all(l["date_matches_request"] == (l["flight_date"] == l["requested_date"])
                                             for l in legs) if legs else None,
-        "live_round_trip_offers": len(flights.get("round_trip_offers") or []),
+        "live_round_trip_offers": len(flights.get("offers") or []),
         "selected_leg_totals_usd": [l["total_price_usd"] for l in (flights.get("selected_outbound_flight"),
                                                                     flights.get("selected_return_flight")) if l],
         "leg_date_flags_consistent": all(l["date_matches_request"] == (l["flight_date"] == l["requested_date"])
@@ -1304,10 +1632,15 @@ def write_live_evidence():
         "live_offers_match_local_dates": all(
             tm.utc_to_local_date(o["outbound_departure_at"], o["departure_airport_code"]) == request_data["start_date"]
             and tm.utc_to_local_date(o["return_departure_at"], o["arrival_airport_code"]) == request_data["return_date"]
-            for o in flights["round_trip_offers"]) if flights.get("round_trip_offers") else None,
-        "live_offers_match_adults": all(o["adults"] == request_data["adults"] for o in flights["round_trip_offers"])
-        if flights.get("round_trip_offers") else None,
+            for o in flights["offers"]) if flights.get("offers") else None,
+        "live_offers_match_adults": all(o["adults"] == request_data["adults"] for o in flights["offers"])
+        if flights.get("offers") else None,
+        "flight_offer_ids_unique": len({o["id"] for o in flights.get("offers") or []}) == len(flights.get("offers") or [])
+        if flights.get("offers") else None,
+        "flight_offers_match_their_evidence": all(offer_matches_evidence(o) for o in flights["offers"])
+        if flights.get("offers") else None,
         "selected_flight_offer_id": (result["selected_offers"] or {}).get("selected_flight_offer_id"),
+        "be04_flight_offer_id": (result["selected_offers"] or {}).get("be04_flight_offer_id"),
         "selected_flight_total_usd": ((flights.get("selected_offer") or {}).get("price") or {}).get("amount_usd"),
         "hotel_offers_count": len(public_offers),
         # None = nothing to check (no offers), never a vacuous True

@@ -3,3 +3,8 @@ starlette==1.8.0
 uvicorn==0.54.0
 pydantic==2.14.1
 PyJWT[crypto]==2.15.1
+# TravelMate travel / AI adapters (app/adapters/travelmate.py)
+requests==2.34.2
+groq==1.7.0
+python-dotenv==1.2.2
+tzdata==2026.3
