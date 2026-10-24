@@ -1205,10 +1205,17 @@ def validate_request(request_data, require_budget=True, rooms=None, origin_airpo
 
     origin_label, origin_city = resolve_supported_city(departure_city)
     destination_label, destination_record = resolve_supported_city(destination_city)
-    unsupported = [name for name, city in ((departure_city, origin_city), (destination_city, destination_record)) if city is None]
+    unsupported = [(field, name) for field, name, city in (("departure_city", departure_city, origin_city),
+                                                           ("destination_city", destination_city, destination_record))
+                   if city is None]
     if unsupported:
-        raise TravelMateError("unsupported_search", f"Unsupported city: {', '.join(unsupported)}.",
-                              {"reason": "city_not_in_coverage", "supported_cities": sorted(SUPPORTED_CITIES)})
+        # details.fields names each unsupported field, so BE-03 can build the 400 UNSUPPORTED_LOCATION details
+        raise TravelMateError("unsupported_search", f"Unsupported city: {', '.join(name for _, name in unsupported)}.",
+                              {"reason": "city_not_in_coverage",
+                               "fields": [{"field": field, "message": f"{field} is not a supported city. "
+                                                                     "Choose one of the supported cities."}
+                                          for field, _ in unsupported],
+                               "supported_cities": sorted(SUPPORTED_CITIES)})
     if origin_label == destination_label:
         raise TravelMateError("invalid_input", details={"fields": [{
             "field": "destination_city", "message": "destination_city must be different from departure_city."}]})

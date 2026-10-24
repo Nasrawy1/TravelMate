@@ -95,7 +95,7 @@ The adapter reads keys from environment variables; `.env` is loaded from `TRAVEL
 cd prototypes/travel-adapter
 pip install -r requirements.txt          # requests, groq, python-dotenv (+ jsonschema, pydantic for tests)
 cp .env.example .env                     # then fill in your own keys (never commit .env)
-python test_travelmate_adapters.py       # 120 offline tests, no API quota used
+python test_travelmate_adapters.py       # 121 offline tests, no API quota used
 python travalmate.py                     # interactive CLI
 ```
 
@@ -257,7 +257,15 @@ Excluded offers are counted by reason in `travel.hotels.coverage.excluded`.
 - Airports come from this mapping (always 3 letters), so they are never public fields.
 - **Flights need no lookup request:** the original 12 cities and multi-airport cities use verified Google city IDs; single-airport cities are searched by their airport code (same flights). How each ID was verified: `evidence/city-table-20261024/README.md`.
 - Booking IDs: Cairo `-290692` and Bangkok `-3414440` are pinned. Others are looked up once on first use, verified (type `city`, same country code, same name or alias) and cached for 30 days; that first lookup costs one Booking request. If it cannot be verified, hotels are `unavailable` / `unsupported_search` with a warning, and flights still work.
-- Any other city returns `unsupported_search` before any provider call.
+- Any other city returns `unsupported_search` before any provider call (from both `search_travel` and `generate_itinerary`), with one entry per unsupported field for BE-03's 400 `UNSUPPORTED_LOCATION` details:
+  ```json
+  {"status": "error", "error": {"code": "unsupported_search", "message": "Unsupported city: Porto."},
+   "diagnostics": {"reason": "city_not_in_coverage",
+                   "fields": [{"field": "departure_city", "message": "departure_city is not a supported city. Choose one of the supported cities."}],
+                   "supported_cities": ["Abu Dhabi", "..."]}}
+  ```
+- The same city under two names (e.g., `NYC` and `new york`) is `invalid_input` on `destination_city` (422 `VALIDATION_ERROR`).
+- UI city list: `sorted(SUPPORTED_CITIES)` from `app.adapters.travelmate` (also returned in `diagnostics.supported_cities`).
 
 ### Currency conversion policy
 
@@ -668,7 +676,7 @@ These are **suggested mappings that require alignment with the project database 
 ## 10. Tests and Evidence
 
 ```bash
-python test_travelmate_adapters.py                  # 120 offline tests (0 API quota)
+python test_travelmate_adapters.py                  # 121 offline tests (0 API quota)
 cd ../../backend && python -m pytest                # backend suite incl. tests/test_travel_adapters.py (0 API quota)
 python test_travelmate_adapters.py --live-evidence  # ONE real run -> evidence/<request_id>/
 ```
