@@ -46,26 +46,28 @@ Supabase Auth SDK provides signup/signin/signout and session management. Do not 
 
 | Field | Type | Constraint |
 |---|---|---|
-| departure_city | string | Free-text city name, optionally qualified by country/region; 1–200 characters after trimming; must resolve unambiguously |
-| destination_city | string | Same city-text rules; must resolve to a different city from departure |
+| departure_city | string | City name supported by the adapter's approved 80-city mapping; 1–200 characters after trimming |
+| destination_city | string | Same city-text rules; must map to a different city from departure |
 | start_date | date string | Future UTC calendar date under validation convention above |
 | return_date | date string | 1–7 nights after start_date |
 | adults | integer | 1–4 adults; reject booleans, fractions and numeric strings |
 | budget_usd | number | Positive whole-trip, all-adult budget |
 
-No currency selector, one-way switch or client user_id. City fields remain strings; there is no fixed public city allowlist and no new required country, airport or provider-ID field.
+No currency selector, one-way switch or client user_id. City fields remain strings, validated against the adapter's approved fixed 80-city mapping. No new required country, airport or provider-ID field is added.
 
-### City resolution — approved 2026-10-24
+### City validation — approved reconciliation 2026-10-25
 
-- Accept Unicode city names, including spaces, accents, hyphens and country/region qualifiers. Trim surrounding whitespace; reject wrong types, blank text or more than 200 characters with 422 VALIDATION_ERROR and field details. Do not reject a city merely because it is absent from local suggestions or a static mapping.
-- Ziyad's adapter resolves the supplied text through provider location search to an unambiguous city and internal provider identifiers. Local mappings may be a cache/optimization, never the public acceptance list. Confirm that flight and hotel locations refer to the same intended city; do not silently substitute a nearby or similarly named city.
-- Unknown or ambiguous locations return 400 UNSUPPORTED_LOCATION with details.fields identifying the affected field and a safe message asking for a country/region qualifier when needed. Never automatically select the first ambiguous match.
-- Adel rejects identical resolved departure/destination cities with 422 VALIDATION_ERROR, even when spelling, case or aliases differ. All provider and AI context must refer to the resolved cities.
-- Response trip city strings echo the trimmed submitted text; resolved canonical labels, country/region and provider IDs remain internal. Other request/response fields and BE-04 budget rules are unchanged.
-- A resolved city with no travel offers is not an invalid location: preserve existing unavailable-category/no-results behavior. A category lacking provider coverage uses unsupported_search. A provider outage, timeout or rate limit is not proof that a city is unknown. If no reliable resolution is possible because the resolver failed, use 503 PROVIDER_UNAVAILABLE, 504 GENERATION_TIMEOUT or 429 RATE_LIMITED as applicable; do not invent location context. Once locations are resolved, existing partial-success travel rules apply.
-- Location resolution counts toward the overall generation deadline. Provider keys and raw supplier responses remain server-side.
+Nasrawy approved the fixed 80-city adapter mapping as the current city-validation baseline, superseding the 2026-10-24 free-text/dynamic resolver amendment. The adapter owns the supported set and its name normalization; BE-03 must reuse it rather than maintain a second allowlist. Dynamic resolver integration, acceptance of cities outside that set, ambiguity handling and resolver-outage tests are superseded scope, not completed features. Live autocomplete is optional and is not a BE-03 completion requirement. Unrelated integration, provider-evidence and contract-adoption gates remain unchanged.
 
-FE-04 implements editable city inputs with accessible autocomplete. Suggestions show city and country/region, but choosing from them is optional: manually entered text is still validated by the backend. Local suggestions may be used initially and must not claim live verification. Live suggestions require an agreed backend lookup interface implemented by Adel with Ziyad; this amendment does not invent or claim delivery of a new HTTP endpoint. Lookup loading, no matches and service failure must be distinguishable. Suggestions never guarantee availability or prices.
+- Trim surrounding whitespace; reject wrong types, blank text or more than 200 characters with 422 VALIDATION_ERROR and field details. Unicode is valid text, but aliases and country/region qualifiers are supported only when the adapter maps them to a supported city.
+- The adapter owns the 80-city mapping and supported name normalization. Reuse it in BE-03; do not duplicate or widen the accepted set independently. No dynamic provider location resolver is required.
+- Cities outside that set return 400 UNSUPPORTED_LOCATION, even if another service could resolve them. Preserve safe field diagnostics when the adapter supplies them; details may be null when none are supplied.
+- Identical mapped departure/destination cities return 422 VALIDATION_ERROR, including supported aliases/case variants. Flight, hotel and AI context must refer to the same intended mapped cities; never substitute another city.
+- Response trip city strings echo trimmed submitted text; canonical identifiers/provider metadata stay internal. Other request/response fields and BE-04 budget rules remain unchanged.
+- A supported city with no quotes uses category no_results; missing category coverage uses category unsupported_search. These do not automatically invalidate the city. Existing partial-success, provider/AI failure, deadline and bounded-execution rules remain in force.
+- Separate dynamic ambiguity and resolver-outage tests are superseded, not completed features. General provider/AI failure tests remain required.
+
+FE-04 provides accessible search/autocomplete aligned with the supported mapping. Local suggestions are sufficient and must not claim live verification. Live autocomplete is optional and requires an agreed backend interface before use; no new lookup endpoint is required by BE-03. Suggestions do not guarantee prices or coverage.
 
 ## 4. Successful response and required fields
 
@@ -240,6 +242,6 @@ Nasrawy approved the following limited decisions:
 - These searches implement the existing round-trip scope. A public `one_way` option or `trip_type` field is not approved by this decision.
 - Provider adoption does not certify passenger coverage, currency or mandatory-fee completeness. Their evidence, exclusion of indicative prices from authoritative budgeting, adapter handoff and integration tests remain required. This is not blanket approval of v0.4 or completion of #17/#18.
 
-## Team-lead decision — 2026-10-24: free-text cities
+## Team-lead decision — 2026-10-25: fixed 80-city baseline
 
-Nasrawy approved the city-resolution rules in section 3 and their FE-04 implementation. This supersedes fixed canonical-city allowlist requirements for public input. Adel must align BE-03 input validation and error handling with Ziyad's resolver; unchanged result fields do not imply unchanged validation. This limited amendment does not approve unrelated pending v0.4 decisions or certify provider coverage.
+Nasrawy approved the fixed 80-city adapter mapping as the current city-validation baseline, superseding the 2026-10-24 free-text/dynamic resolver amendment. The adapter owns the supported set and its name normalization; BE-03 must reuse it rather than maintain a second allowlist. Dynamic resolver integration, acceptance of cities outside that set, ambiguity handling and resolver-outage tests are superseded scope, not completed features. Live autocomplete is optional and is not a BE-03 completion requirement. Unrelated integration, provider-evidence and contract-adoption gates remain unchanged.
