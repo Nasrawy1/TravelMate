@@ -10,14 +10,14 @@
           "minLength": 1,
           "maxLength": 200,
           "pattern": "\\S",
-          "description": "Free-text city name, optionally qualified by country/region. Trim surrounding whitespace before validation; resolve unambiguously on the backend without a fixed allowlist. See api-contracts.md section 3 (approved 2026-10-24)."
+          "description": "City name supported by the adapter's approved fixed 80-city mapping and name normalization. Trim surrounding whitespace before validation. Unsupported cities return 400 UNSUPPORTED_LOCATION; identical mapped cities return 422 VALIDATION_ERROR. Membership is semantic validation owned by the adapter, not a duplicated schema enum. See api-contracts.md section 3 (approved reconciliation 2026-10-25)."
         },
         "destination_city": {
           "type": "string",
           "minLength": 1,
           "maxLength": 200,
           "pattern": "\\S",
-          "description": "Free-text city name, optionally qualified by country/region. Trim surrounding whitespace before validation; resolve unambiguously on the backend without a fixed allowlist. See api-contracts.md section 3 (approved 2026-10-24)."
+          "description": "City name supported by the adapter's approved fixed 80-city mapping and name normalization. Trim surrounding whitespace before validation. Unsupported cities return 400 UNSUPPORTED_LOCATION; identical mapped cities return 422 VALIDATION_ERROR. Membership is semantic validation owned by the adapter, not a duplicated schema enum. See api-contracts.md section 3 (approved reconciliation 2026-10-25)."
         },
         "start_date": {
           "type": "string",
