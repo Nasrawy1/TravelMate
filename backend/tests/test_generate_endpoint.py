@@ -389,3 +389,70 @@ def test_malformed_diagnostics_missing_field_key_returns_null(monkeypatch):
     body = response.json()
     assert body["error"]["code"] == "UNSUPPORTED_LOCATION"
     assert body["error"]["details"] is None
+
+
+def test_identical_cities_through_endpoint_returns_422(monkeypatch):
+    payload = request_payload(
+        departure_city="Istanbul",
+        destination_city="Istanbul",
+    )
+    fields = [{
+        "field": "destination_city",
+        "message": "destination_city must be different from departure_city.",
+    }]
+    from app.api.routes import trips
+    monkeypatch.setattr(trips, "search_travel", lambda *a, **k: {
+        "status": "error",
+        "error": {"code": "invalid_input"},
+        "diagnostics": {"fields": fields},
+    })
+
+    with make_client() as client:
+        response = client.post("/api/v1/trips/generate", json=payload)
+
+    body = response.json()
+    assert response.status_code == 422
+    assert body["error"]["code"] == "VALIDATION_ERROR"
+    assert body["error"]["details"]["fields"] == fields
+    assert response.headers["X-Request-ID"] == body["request_id"]
+
+
+def test_alias_city_through_endpoint_is_accepted(monkeypatch):
+    payload = request_payload(destination_city="NYC")
+    from app.api.routes import trips
+    monkeypatch.setattr(trips, "search_travel", lambda *a, **k: travel_success(payload))
+    monkeypatch.setattr(trips, "generate_itinerary", lambda *a, **k: ai_success(payload))
+
+    with make_client() as client:
+        response = client.post("/api/v1/trips/generate", json=payload)
+
+    body = response.json()
+    assert response.status_code == 200
+    assert body["trip"]["destination_city"] == "NYC"
+    assert "NYC" in response.text
+    assert "New York" not in response.text
+    assert "JFK" not in response.text
+    assert "LGA" not in response.text
+
+
+def test_unsupported_city_returns_400_with_copied_fields(monkeypatch):
+    payload = request_payload()
+    fields = [{
+        "field": "departure_city",
+        "message": "departure_city is not a supported city.",
+    }]
+    from app.api.routes import trips
+    monkeypatch.setattr(trips, "search_travel", lambda *a, **k: {
+        "status": "error",
+        "error": {"code": "unsupported_search"},
+        "diagnostics": {"fields": fields},
+    })
+
+    with make_client() as client:
+        response = client.post("/api/v1/trips/generate", json=payload)
+
+    body = response.json()
+    assert response.status_code == 400
+    assert body["error"]["code"] == "UNSUPPORTED_LOCATION"
+    assert body["error"]["details"]["fields"] == fields
+    assert response.headers["X-Request-ID"] == body["request_id"]
