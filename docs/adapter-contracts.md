@@ -13,13 +13,13 @@ Input (all fields required):
 - deadline_at: absolute UTC ISO timestamp from Adel's overall deadline.
 - request_id: sanitized log correlation ID, never an access token.
 
-Under the approved 2026-10-24 amendment, Adel first validates city text (trimmed, nonblank, at most 200 characters), dates, adults and budget; he must not enforce a fixed city allowlist. Ziyad resolves free-text cities, including country/region qualifiers, through provider location search and constructs queries using resolved provider IDs plus the requested dates and adults. Static mappings may assist resolution but must not exclude otherwise resolvable cities.
+Under the approved 2026-10-25 reconciliation, Adel validates city text (trimmed, nonblank, at most 200 characters), dates, adults and budget. Supported locations and name normalization come from the adapter's existing 80-city mapping, not a separate Backend allowlist or dynamic provider location search.
 
-Resolution must precede dependent searches and AI generation. Preserve submitted trimmed city text for the public response and retain canonical identity, country/region, provider IDs and matching evidence internally. Flight and hotel lookups must agree on the intended city. Never select the first ambiguous match or silently substitute another city. Adel compares resolved city identities to reject identical departure/destination aliases.
+The adapter validates mapped city identities before dependent searches and AI generation, rejecting identical mapped cities with invalid_input for public 422 VALIDATION_ERROR. Preserve trimmed submitted text for the response and provider IDs internally. Queries for flights, hotels and AI must refer to the same intended cities.
 
-Unknown/ambiguous city resolution is surfaced to Adel for 400 UNSUPPORTED_LOCATION with safe field details; it is not merely a category with no offers. Resolver timeout, rate limit or outage must remain distinguishable and map to the public errors in api-contracts.md section 3 when resolution cannot complete. Use existing typed failure handling; Adel and Ziyad document the concrete resolver handoff before integration. Successful resolution with no quotes uses no_results; a category without coverage uses unsupported_search. Resolution and any retries share deadline_at and existing bounded-execution rules.
+An unsupported city produces a top-level unsupported_search for public 400 UNSUPPORTED_LOCATION. Safe field diagnostics are preserved when supplied; public details may be null otherwise. Category-level unsupported_search for coverage limitations and no_results for missing quotes remain distinct from invalid-city rejection. Existing provider/AI failures, partial success, deadline_at and bounded execution remain unchanged.
 
-FE-04 may start with non-authoritative local suggestions and free entry. If live autocomplete is supplied, Adel exposes an agreed backend lookup interface backed by Ziyad's resolver; Diyar never accesses provider credentials or raw provider responses. No new public endpoint is specified by this amendment.
+FE-04 uses suggestions aligned with the approved mapping. Live autocomplete is optional, requires an agreed backend interface, and must keep credentials server-side. Separate resolver integration, ambiguity and resolver-outage tests are superseded, not delivered.
 
 Output:
 - flights and hotels: each {status, offers, reason_code}.
@@ -96,6 +96,6 @@ Nasrawy approved the following limited decisions:
 - These searches implement the existing round-trip scope. A public `one_way` option or `trip_type` field is not approved by this decision.
 - Provider adoption does not certify passenger coverage, currency or mandatory-fee completeness. Their evidence, exclusion of indicative prices from authoritative budgeting, adapter handoff and integration tests remain required. This is not blanket approval of v0.4 or completion of #17/#18.
 
-## Team-lead decision — 2026-10-24: free-text cities
+## Team-lead decision — 2026-10-25: fixed 80-city baseline
 
-Public cities are validated free text, not a fixed allowlist. Apply api-contracts.md section 3 for resolution, ambiguity, identical-city validation and errors. Travel offers and BE-04 calculation structures remain unchanged; BE-03 validation and resolver integration must be aligned. Provider coverage is still evidenced per search, not promised globally.
+Nasrawy approved the fixed 80-city adapter mapping as the current city-validation baseline, superseding the 2026-10-24 free-text/dynamic resolver amendment. The adapter owns the supported set and its name normalization; BE-03 must reuse it rather than maintain a second allowlist. Dynamic resolver integration, acceptance of cities outside that set, ambiguity handling and resolver-outage tests are superseded scope, not completed features. Live autocomplete is optional and is not a BE-03 completion requirement. Unrelated integration, provider-evidence and contract-adoption gates remain unchanged.
