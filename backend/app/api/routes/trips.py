@@ -5,6 +5,7 @@ The travel adapter may write its local ``travelmate_cache.json`` even when
 boundary. Generation does not write trips to Supabase.
 """
 
+import asyncio
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from typing import Any
@@ -247,6 +248,12 @@ def _warnings(*sources: object) -> list[dict[str, str]]:
     return result
 
 
+def _consume_background_task_exception(task: asyncio.Task[Any]) -> None:
+    """Retrieve exceptions from an adapter task that outlived its request deadline."""
+    if not task.cancelled():
+        task.exception()
+
+
 @router.post("/trips/generate")
 async def generate_trip(
     payload: GenerateTripRequest,
@@ -267,12 +274,22 @@ async def generate_trip(
         "budget_usd": float(payload.budget_usd),
     }
 
-    travel = await run_in_threadpool(
+    remaining = (overall_deadline - datetime.now(timezone.utc)).total_seconds()
+    if remaining <= 0:
+        return _error(request, 504, "GENERATION_TIMEOUT", "Trip generation timed out.")
+    travel_task = asyncio.create_task(run_in_threadpool(
         search_travel,
         trip_request,
         deadline_at=travel_deadline,
         request_id=request_id,
-    )
+    ))
+    try:
+        # Shield lets the request stop waiting; the worker thread itself keeps running.
+        # The adapter's deadline_at and bounded retries limit that background work.
+        travel = await asyncio.wait_for(asyncio.shield(travel_task), timeout=remaining)
+    except asyncio.TimeoutError:
+        travel_task.add_done_callback(_consume_background_task_exception)
+        return _error(request, 504, "GENERATION_TIMEOUT", "Trip generation timed out.")
     if datetime.now(timezone.utc) >= overall_deadline:
         return _error(request, 504, "GENERATION_TIMEOUT", "Trip generation timed out.")
     if not isinstance(travel, dict) or travel.get("status") == "error":
@@ -302,7 +319,10 @@ async def generate_trip(
         "hotels": "live" if hotels_available else "unavailable",
     }
 
-    ai = await run_in_threadpool(
+    remaining = (overall_deadline - datetime.now(timezone.utc)).total_seconds()
+    if remaining <= 0:
+        return _error(request, 504, "GENERATION_TIMEOUT", "Trip generation timed out.")
+    ai_task = asyncio.create_task(run_in_threadpool(
         generate_itinerary,
         trip_request,
         {"flight": flight_context, "hotel": hotel_context},
@@ -310,7 +330,13 @@ async def generate_trip(
         ESTIMATION_POLICY,
         deadline_at=overall_deadline,
         request_id=request_id,
-    )
+    ))
+    try:
+        # Cancellation stops waiting, not the worker; generate_itinerary also receives its deadline.
+        ai = await asyncio.wait_for(asyncio.shield(ai_task), timeout=remaining)
+    except asyncio.TimeoutError:
+        ai_task.add_done_callback(_consume_background_task_exception)
+        return _error(request, 504, "GENERATION_TIMEOUT", "Trip generation timed out.")
     if datetime.now(timezone.utc) >= overall_deadline:
         return _error(request, 504, "GENERATION_TIMEOUT", "Trip generation timed out.")
     if not isinstance(ai, dict) or ai.get("status") == "error":

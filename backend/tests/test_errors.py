@@ -29,6 +29,10 @@ def client() -> Iterator[TestClient]:
                 f"private-exception-secret {query_secret} {authorization}"
             )
 
+        @api.get("/api/v1/__test/unhandled-secret-message")
+        async def test_unhandled_secret_message() -> None:
+            raise RuntimeError("SECRET_TOKEN_ABC123")
+
     test_app = create_app(configure_api=add_test_routes)
     with TestClient(test_app, raise_server_exceptions=False) as test_client:
         yield test_client
@@ -152,4 +156,24 @@ def test_500_does_not_log_exception_query_or_authorization_secrets(
     assert "path=/api/v1/__test/unhandled-sensitive" in logs
     assert "status=500" in logs
     assert "duration_ms=" in logs
+    assert f"request_id={response.headers['X-Request-ID']}" in logs
+
+
+def test_500_logs_do_not_leak_exception_details(
+    client: TestClient, caplog: pytest.LogCaptureFixture
+) -> None:
+    error_logger = logging.getLogger("travelmate.errors")
+    error_logger.addHandler(caplog.handler)
+    try:
+        response = client.get("/api/v1/__test/unhandled-secret-message")
+    finally:
+        error_logger.removeHandler(caplog.handler)
+
+    assert_error_envelope(response, status_code=500, code="INTERNAL_ERROR")
+    assert "SECRET_TOKEN_ABC123" not in response.text
+    assert "SECRET_TOKEN_ABC123" not in str(response.headers)
+    logs = caplog.text
+    assert "SECRET_TOKEN_ABC123" not in logs
+    assert "RuntimeError(" not in logs
+    assert "type=RuntimeError" in logs
     assert f"request_id={response.headers['X-Request-ID']}" in logs

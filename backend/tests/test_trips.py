@@ -233,6 +233,73 @@ def test_malformed_date_returns_validation_error() -> None:
     }
 
 
+def test_start_date_rejects_unix_timestamp() -> None:
+    with make_client(authenticated=True) as client:
+        response = client.post(
+            "/api/v1/trips/generate",
+            json=request_payload(start_date=1234567890),
+        )
+
+    body = assert_error(response, status_code=422, code="VALIDATION_ERROR")
+    assert "start_date" in {
+        item["field"] for item in body["error"]["details"]["fields"]
+    }
+
+
+def test_start_date_rejects_datetime_string() -> None:
+    with make_client(authenticated=True) as client:
+        response = client.post(
+            "/api/v1/trips/generate",
+            json=request_payload(
+                start_date="2026-12-01T00:00:00Z",
+                return_date="2026-12-04",
+            ),
+        )
+
+    body = assert_error(response, status_code=422, code="VALIDATION_ERROR")
+    assert "start_date" in {
+        item["field"] for item in body["error"]["details"]["fields"]
+    }
+
+
+def test_start_date_rejects_boolean() -> None:
+    with make_client(authenticated=True) as client:
+        response = client.post(
+            "/api/v1/trips/generate", json=request_payload(start_date=True)
+        )
+
+    body = assert_error(response, status_code=422, code="VALIDATION_ERROR")
+    assert "start_date" in {
+        item["field"] for item in body["error"]["details"]["fields"]
+    }
+
+
+def test_return_date_rejects_unix_timestamp() -> None:
+    with make_client(authenticated=True) as client:
+        response = client.post(
+            "/api/v1/trips/generate",
+            json=request_payload(return_date=1234567890),
+        )
+
+    body = assert_error(response, status_code=422, code="VALIDATION_ERROR")
+    assert "return_date" in {
+        item["field"] for item in body["error"]["details"]["fields"]
+    }
+
+
+def test_valid_yyyy_mm_dd_accepted() -> None:
+    with make_client(authenticated=True) as client:
+        response = client.post(
+            "/api/v1/trips/generate",
+            json=request_payload(
+                start_date="2026-12-01",
+                return_date="2026-12-04",
+            ),
+        )
+
+    assert response.status_code == 200
+
+
 def test_past_start_date_returns_400() -> None:
     yesterday = datetime.now(timezone.utc).date() - timedelta(days=1)
     with make_client(authenticated=True) as client:
@@ -368,6 +435,30 @@ def test_positive_subcent_budget_rounds_to_cents_and_passes() -> None:
         )
 
     assert response.status_code == 200
+
+
+def assert_huge_budget_rejected(budget: object) -> None:
+    with make_client(authenticated=True) as client:
+        response = client.post(
+            "/api/v1/trips/generate", json=request_payload(budget_usd=budget)
+        )
+
+    body = assert_error(response, status_code=422, code="VALIDATION_ERROR")
+    assert "budget_usd" in {
+        item["field"] for item in body["error"]["details"]["fields"]
+    }
+
+
+def test_budget_usd_rejects_1e28() -> None:
+    assert_huge_budget_rejected(1e28)
+
+
+def test_budget_usd_rejects_1e100() -> None:
+    assert_huge_budget_rejected(1e100)
+
+
+def test_budget_usd_rejects_huge_int() -> None:
+    assert_huge_budget_rejected(10**30)
 
 
 def test_missing_authorization_returns_401_with_request_id() -> None:

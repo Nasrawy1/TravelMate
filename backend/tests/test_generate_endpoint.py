@@ -1,4 +1,5 @@
 from datetime import date, datetime, timedelta, timezone
+import time
 from unittest.mock import MagicMock
 
 import pytest
@@ -389,6 +390,56 @@ def test_malformed_diagnostics_missing_field_key_returns_null(monkeypatch):
     body = response.json()
     assert body["error"]["code"] == "UNSUPPORTED_LOCATION"
     assert body["error"]["details"] is None
+
+
+def test_travel_timeout_returns_504_without_waiting_for_adapter(monkeypatch):
+    payload = request_payload()
+    from app.api.routes import trips
+    monkeypatch.setattr(trips, "GENERATION_TIMEOUT_SECONDS", 0.3)
+    monkeypatch.setattr(trips, "AI_RESERVE_SECONDS", 0)
+    itinerary_calls = []
+
+    def slow_search(*_args, **_kwargs):
+        time.sleep(2)
+        return travel_success(payload)
+
+    monkeypatch.setattr(trips, "search_travel", slow_search)
+    monkeypatch.setattr(
+        trips, "generate_itinerary", lambda *_a, **_k: itinerary_calls.append(True)
+    )
+
+    with make_client() as client:
+        started = time.perf_counter()
+        response = client.post("/api/v1/trips/generate", json=payload)
+        elapsed = time.perf_counter() - started
+
+    assert response.status_code == 504
+    assert response.json()["error"]["code"] == "GENERATION_TIMEOUT"
+    assert elapsed < 0.5
+    assert itinerary_calls == []
+
+
+def test_ai_timeout_returns_504_without_waiting_for_adapter(monkeypatch):
+    payload = request_payload()
+    from app.api.routes import trips
+    monkeypatch.setattr(trips, "GENERATION_TIMEOUT_SECONDS", 0.3)
+    monkeypatch.setattr(trips, "AI_RESERVE_SECONDS", 0)
+
+    def slow_itinerary(*_args, **_kwargs):
+        time.sleep(2)
+        return ai_success(payload)
+
+    monkeypatch.setattr(trips, "search_travel", lambda *_a, **_k: travel_success(payload))
+    monkeypatch.setattr(trips, "generate_itinerary", slow_itinerary)
+
+    with make_client() as client:
+        started = time.perf_counter()
+        response = client.post("/api/v1/trips/generate", json=payload)
+        elapsed = time.perf_counter() - started
+
+    assert response.status_code == 504
+    assert response.json()["error"]["code"] == "GENERATION_TIMEOUT"
+    assert elapsed < 0.5
 
 
 def test_identical_cities_through_endpoint_returns_422(monkeypatch):
