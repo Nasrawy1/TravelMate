@@ -101,7 +101,11 @@ def _map_adapter_error(request: Request, result: object, *, source: str) -> JSON
     status, public_code, message = mappings.get(
         code, (500, "INTERNAL_ERROR", "An unexpected error occurred.")
     )
-    return _error(request, status, public_code, message)
+    response = _error(request, status, public_code, message)
+    if source == "ai" and code == "rate_limited":
+        # The AI adapter does not provide a retry hint, so use a fixed 60-second default.
+        response.headers["Retry-After"] = "60"
+    return response
 
 
 def _candidate_list(value: object) -> list[OfferCandidate]:

@@ -353,9 +353,15 @@ def test_ai_rate_limited_returns_429(monkeypatch):
         "status": "error", "error": {"code": "rate_limited"},
     })
     with make_client() as client:
-        response = client.post("/api/v1/trips/generate", json=payload)
+        response = client.post(
+            "/api/v1/trips/generate",
+            json=payload,
+            headers={"Origin": "http://localhost:5173"},
+        )
     assert response.status_code == 429
     assert response.json()["error"]["code"] == "RATE_LIMITED"
+    assert response.headers["Retry-After"] == "60"
+    assert "Retry-After" in response.headers["Access-Control-Expose-Headers"]
 
 
 def test_response_trip_echoes_trimmed_cities(monkeypatch):
