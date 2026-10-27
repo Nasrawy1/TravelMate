@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "TravelMate API 0.4 candidate",
+  "title": "TravelMate API 0.4",
   "$defs": {
     "request": {
       "type": "object",

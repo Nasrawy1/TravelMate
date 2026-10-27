@@ -1,22 +1,22 @@
 # TravelMate — API Contracts
 
-**Version:** 0.4 (complete contract and fixture review candidate)  
-**Status:** Draft — prepared with team-lead authorization on 2026-10-15; pending Diyar/Adel/Ziyad review and provider feasibility sign-off.  
-**Scope authority:** Team-lead-approved scope v1.3 and architecture v1.2. PLAN-01 approval does not approve this integration contract.
+**Version:** 0.4 (approved public integration baseline)  
+**Status:** Approved by Nasrawy on 2026-10-27 as the public integration baseline, including the fixed 80-city reconciliation approved on 2026-10-25. This records contract adoption, not completion of implementation or live acceptance tests.  
+**Scope authority:** Team-lead-approved scope v1.3 and architecture v1.2. Public contract adoption is recorded under PLAN-02 (#11) by the 2026-10-27 decision below.
 
 ## 1. Purpose and authoritative artifacts
 
 This contract defines React ↔ FastAPI HTTP messages. [Internal adapter contracts](adapter-contracts.md) define FastAPI ↔ Ziyad's adapters. [JSON Schema](contracts/api-v0.4.schema.json) is the normative field/type/required/nullability definition; the semantic rules below are also mandatory. [Fixtures](fixtures/README.md) demonstrate valid shapes and arithmetic, not real prices or provider feasibility.
 
-v0.4 changes the response: required `budget.cost_items`, offer `taxes`, nullable hotel `room_qty`, and daily `empty_day_reason` are added. Request fields, endpoints and status enums are unchanged from v0.3. Coordinate adoption before integrating branches. Do not silently validate v0.4 using v0.3 models.
+v0.4 changes the response: required `budget.cost_items`, offer `taxes`, nullable hotel `room_qty`, and daily `empty_day_reason` are added. Request fields, endpoints and status enums are unchanged from v0.3. Use this adopted v0.4 baseline when integrating branches. Do not silently validate v0.4 using v0.3 models.
 
 ## 2. HTTP and conventions
 
 - Local base: `http://localhost:8000/api/v1`; JSON bodies; public fields use snake_case.
 - Currency: USD only; budget and totals cover all adults and the entire trip. Server arithmetic uses decimal-safe amounts and rounds each normalized ledger item to cents before summing; display two decimals. Reject NaN/infinity.
-- Calendar dates: YYYY-MM-DD. Proposed validation reference is today's **UTC calendar date**, consistently in client tests and server validation; start_date must be strictly later. This is a validation convention, not a conversion of destination travel dates.
+- Calendar dates: YYYY-MM-DD. The validation reference is today's **UTC calendar date**, consistently in client tests and server validation; start_date must be strictly later. This is a validation convention, not a conversion of destination travel dates.
 - Travel dates refer to local dates at the relevant departure airport/hotel. UTC offer timestamps end in Z. The flight adapter retains airport timezone information internally to verify that UTC departures correspond to the requested local travel dates.
-- Every schema property is required unless its enclosing object is absent by design; unknown allowed values are explicit nulls. Arrays such as warnings, notes and offers are always present, including when empty. Unknown properties are rejected for this candidate.
+- Every schema property is required unless its enclosing object is absent by design; unknown allowed values are explicit nulls. Arrays such as warnings, notes and offers are always present, including when empty. Unknown properties are rejected.
 - Schema format checks must be enabled. Cross-field/date/reference/arithmetic rules require additional semantic validation.
 
 | Method | Path | Auth | Scope |
@@ -57,7 +57,7 @@ No currency selector, one-way switch or client user_id. City fields remain strin
 
 ### City validation — approved reconciliation 2026-10-25
 
-Nasrawy approved the fixed 80-city adapter mapping as the current city-validation baseline, superseding the 2026-10-24 free-text/dynamic resolver amendment. The adapter owns the supported set and its name normalization; BE-03 must reuse it rather than maintain a second allowlist. Dynamic resolver integration, acceptance of cities outside that set, ambiguity handling and resolver-outage tests are superseded scope, not completed features. Live autocomplete is optional and is not a BE-03 completion requirement. Unrelated integration, provider-evidence and contract-adoption gates remain unchanged.
+Nasrawy approved the fixed 80-city adapter mapping as the current city-validation baseline, superseding the 2026-10-24 free-text/dynamic resolver amendment. The adapter owns the supported set and its name normalization; BE-03 must reuse it rather than maintain a second allowlist. Dynamic resolver integration, acceptance of cities outside that set, ambiguity handling and resolver-outage tests are superseded scope, not completed features. Live autocomplete is optional and is not a BE-03 completion requirement. Implementation and provider-evidence gates remain required. Public contract adoption is recorded by the 2026-10-27 decision below.
 
 - Trim surrounding whitespace; reject wrong types, blank text or more than 200 characters with 422 VALIDATION_ERROR and field details. Unicode is valid text, but aliases and country/region qualifiers are supported only when the adapter maps them to a supported city.
 - The adapter owns the 80-city mapping and supported name normalization. Reuse it in BE-03; do not duplicate or widen the accepted set independently. No dynamic provider location resolver is required.
@@ -107,7 +107,7 @@ Each offer has taxes:
 - unknown: additional_amount_usd = null; fee completeness cannot be established. A known base quote can remain visible, but the budget must disclose missing taxes_fees and cannot claim a complete projected total.
 - Where fees are partly known, normalize the known portion into price with internal evidence, then mark remaining fee uncertainty unknown. Never discard known charges.
 
-**Proposed selection rule:** Prefer comparable offers with known fee totals (included/additional_known); choose the lowest base + additional total, tie-break by ID. If all eligible offers have unknown fees, choose lowest known base, warn that this is not a verified cheapest final total. Select exactly one offer per available category, or null when no valid offer exists. Diyar highlights the backend selection and never selects independently. This refines the provisional v0.3 rule and needs team review.
+**Selection rule:** Prefer comparable offers with known fee totals (included/additional_known); choose the lowest base + additional total, tie-break by ID. If all eligible offers have unknown fees, choose lowest known base, warn that this is not a verified cheapest final total. Select exactly one offer per available category, or null when no valid offer exists. Diyar highlights the backend selection and never selects independently. This replaces the provisional v0.3 selection rule in the adopted v0.4 baseline.
 
 ### Itemized budget
 
@@ -126,12 +126,12 @@ budget.cost_items is the only source for budget arithmetic. Each entry has:
 | activity_ref | {date, order} for activity entries; otherwise null |
 
 Ledger rules:
-1. Include exactly one base line for flights and one for accommodation. If no valid selected offer exists, use unknown; this candidate does not invent estimates for missing flights/hotels.
+1. Include exactly one base line for flights and one for accommodation. If no valid selected offer exists, use unknown; this contract does not invent estimates for missing flights/hotels.
 2. Provider base lines equal the selected offer's base price. Non-selected alternatives never enter the ledger.
 3. Add exactly one provider taxes_fees line for each selected offer with additional_known fees; add one unknown taxes_fees line for each with unknown fees. Included fees require no extra line.
 4. Include one activities entry per itinerary activity; preserve its amount/kind and activity_ref. No duplicate activity references. These are whole-group one-occurrence costs, counted once.
 5. Include one food and one local_transport entry for the whole trip. Use an estimate only when a reviewed estimation policy exists; otherwise unknown. Do not multiply by days or adults again after normalization.
-6. For this candidate, provider ledger entries come only from selected flight/hotel quotes and their fees. Activity/food/transport expenses are estimates or unknown. Extra categories or supplier activity offers require a contract revision.
+6. For this contract, provider ledger entries come only from selected flight/hotel quotes and their fees. Activity/food/transport expenses are estimates or unknown. Extra categories or supplier activity offers require a contract revision.
 7. Core material categories are flights, accommodation, activities, food and local_transport. taxes_fees is material when a selected offer has additional/unknown charges. missing_categories is the unique set of categories containing unknown entries. For a two-day travel-only itinerary with no activities, no activity cost is missing merely because there is no planned activity.
 8. Unknown entries have amount null; provider/estimate entries have nonnegative amounts. A zero subtotal means there are no known costs of that kind, not that unknown travel is free.
 
@@ -217,21 +217,21 @@ See [adapter-contracts.md](adapter-contracts.md) for input/output objects, failu
 
 F-09 remains deferred. Generate never writes to the database. Saved-trip HTTP payloads are not finalized here. If prioritized, follow database-schema.md: React uses Auth only; FastAPI alone accesses public.trips through its server-only elevated client and enforces verified user ownership explicitly because that client bypasses RLS. Snapshots remain unverified historical user-submitted copies. Validate against the actual adopted contract version; do not execute a migration under PLAN-02.
 
-## 9. Review gates before PLAN-02 Done
+## 9. Contract adoption and implementation evidence
 
-Prepared in this revision: field schema, expense ledger, adapter boundary proposal, structural examples and semantic checks.
+Nasrawy approved this public v0.4 integration baseline on 2026-10-27. The fixed 80-city adapter mapping is authoritative; the superseded dynamic resolver, ambiguity and resolver-outage requirements are not acceptance requirements.
 
-Still pending:
-- [ ] Diyar confirms forms/results/errors/demo context against these fixtures.
-- [ ] Adel confirms schemas, ledger rules, UTC validation reference, error mappings and adapter boundary.
-- [ ] Ziyad confirms provider normalization, AI output contract, route timezone handling and fee/occupancy evidence.
-- [ ] Select the mandatory provider and verify dynamic city resolution, ambiguity handling and actual route/category coverage under the approved 2026-10-24 city rules.
-- [ ] Approve a food/local-transport estimation policy; until then these remain unknown in real output. Fixture rates are illustrative, not an approved policy.
-- [ ] Approve a conversion method or keep non-USD quotes unavailable.
-- [ ] Confirm fee-aware selection and timeout defaults using actual provider evidence.
-- [ ] Record team-lead integration approval after the above reviews.
+The adopted baseline retains:
+- Google Flights through the approved RapidAPI service as the mandatory live-price provider, with two real directional searches forming a round-trip offer.
+- Fee-aware selection and deterministic BE-04 ledger arithmetic.
+- UTC calendar-date input validation and the existing overall deadline/error rules.
+- Unknown food/local-transport costs until a separate estimation policy is approved.
+- Exclusion of non-USD quotes when no approved conversion method exists.
+- Unchanged response fields, authentication requirements, partial-success behavior and no trip persistence during generation.
 
-Provider-independent scaffolding and mock UI may proceed. This document does not claim a live provider has passed acceptance or that team review is complete.
+Contract approval does not certify implementation or attribute individual sign-off to Diyar, Adel or Ziyad. Their frontend/backend/provider verification remains evidence to record against the relevant implementation issues. Existing provider coverage, fee/occupancy evidence and failure-path checks remain required.
+
+BE-03 (#9) / PR #34 still requires one successful, consistent evidence chain using a real Supabase bearer token without overriding authentication: authenticated request → real travel provider → AI → BE-04 budget → HTTP 200 response. Separate authenticated failure and authentication-bypassed success runs do not by themselves satisfy that chain. This documentation approval does not merge PR #34 or close BE-03.
 
 ## Team-lead decisions — 2026-10-22
 
@@ -245,3 +245,11 @@ Nasrawy approved the following limited decisions:
 ## Team-lead decision — 2026-10-25: fixed 80-city baseline
 
 Nasrawy approved the fixed 80-city adapter mapping as the current city-validation baseline, superseding the 2026-10-24 free-text/dynamic resolver amendment. The adapter owns the supported set and its name normalization; BE-03 must reuse it rather than maintain a second allowlist. Dynamic resolver integration, acceptance of cities outside that set, ambiguity handling and resolver-outage tests are superseded scope, not completed features. Live autocomplete is optional and is not a BE-03 completion requirement. Unrelated integration, provider-evidence and contract-adoption gates remain unchanged.
+
+## Team-lead decision — 2026-10-27: public v0.4 adoption
+
+Nasrawy authorized alignment of the contract with the fixed 80-city decision and recording final public integration-contract adoption. This supersedes the earlier Draft/candidate status and the outstanding public contract-adoption gate in the historical notes above. It does not retroactively claim individual developer reviews or provider acceptance.
+
+Section 3 and the JSON Schema use the adapter-owned supported set and name normalization. City text remains a string, unsupported cities return 400 UNSUPPORTED_LOCATION, and identical mapped cities return 422 VALIDATION_ERROR. No new resolver, public lookup endpoint or response fields are introduced. Live autocomplete remains optional.
+
+Implementation acceptance, especially the authenticated live success run for BE-03, remains separate from this contract decision.
