@@ -7,6 +7,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from app.adapters.travelmate import FLIGHT_MODE
 from app.api.error_mapping import TripRequestError, trip_request_error_handler
 from app.api.routes.health import router as health_router
 from app.api.routes.auth_probe import router as auth_probe_router
@@ -62,6 +63,7 @@ configure_application_logging()
 def create_app(
     configure_api: Callable[[FastAPI], None] | None = None,
 ) -> CORSMiddleware:
+    logging.getLogger("travelmate.request").info("TRAVELMATE_FLIGHT_MODE=%s", FLIGHT_MODE)
     api = FastAPI()
 
     api.add_exception_handler(StarletteHTTPException, http_exception_handler)
