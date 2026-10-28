@@ -21,7 +21,9 @@
 .res-empty h1 { font-size: clamp(34px, 4vw, 48px); }
 .trip-results .res-action { padding: 16px 24px; border-radius: 16px; min-height: 56px; background: var(--tm-terracotta); color: var(--tm-surface); text-decoration: none; font-weight: 700; }
 .res-trip-summary { position: relative; overflow: hidden; background: var(--tm-ink); color: var(--tm-surface); border-radius: 28px; padding: clamp(24px, 3.5vw, 40px); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px; }
-.res-decoration { position: absolute; right: -20px; top: -20px; opacity: 0.35; }
+/* Full-colour Riviera illustration stays inside the clipped summary card. */
+.res-decoration { position: absolute; right: 0; bottom: 0; pointer-events: none; }
+.trip-results .res-trip-summary > a { margin-right: 300px; }
 .res-trip-summary > div { position: relative; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .res-eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; color: var(--res-peach); }
 .res-trip-summary h1 { font-size: clamp(34px, 4.6vw, 60px); line-height: 1.05; font-weight: 800; letter-spacing: -0.02em; }
@@ -57,7 +59,6 @@
 .res-source, .res-small { color: var(--tm-muted); font-size: 14px; line-height: 1.5; }
 .res-source { overflow-wrap: anywhere; }
 .res-unavailable { display: flex; flex-direction: column; gap: 8px; color: var(--tm-muted); }
-.res-unavailable > strong { font-size: 26px; }
 .res-day { padding: 22px 24px; }
 .res-day-heading { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin-bottom: 10px; }
 .res-day-heading > span { padding: 6px 12px; border-radius: 12px; background: var(--res-tint); color: var(--tm-terracotta); font-weight: 700; font-size: 14px; }
@@ -85,17 +86,21 @@
 .res-expense-group h3 { font: 700 14px 'Figtree', system-ui, sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tm-muted); }
 .res-expense-group ul { margin: 0; padding: 0; list-style: none; }
 .res-expense-group li { padding: 8px 0; }
-.res-expense-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 10px; }
-.res-expense-row h4 { font-size: 16px; }
-.res-expense-row .res-price { margin-left: auto; }
+/* Keep labels and amounts aligned, with provenance tags under the label. */
+.res-expense-row { display: grid; grid-template-columns: minmax(0, 1fr) fit-content(55%); align-items: baseline; gap: 6px 12px; }
+.res-expense-row h4 { font-size: 16px; grid-column: 1; grid-row: 1; }
+.res-expense-row .res-price { display: contents; }
+.res-expense-row .res-price > strong { grid-column: 2; grid-row: 1; text-align: right; min-width: 0; overflow-wrap: anywhere; }
+.res-expense-row .res-price-tag { grid-column: 1; grid-row: 2; justify-self: start; font-size: 13px; }
+.res-expense-group li + li { border-top: 1px solid var(--tm-line); }
+.res-expense-group li > .res-small { margin-top: 6px; }
 .trip-results :is(p, h4, dt, dd, .res-price) { overflow-wrap: anywhere; }
 @media (max-width: 960px) {
   .res-columns { grid-template-columns: minmax(0, 1fr); }
   .res-costs { grid-column: 1; grid-row: 1; }
   .res-main-column { grid-column: 1; grid-row: 2; }
 }
-@media (max-width: 600px) {
+@media (max-width: 1100px) {
   .res-decoration { display: none; }
-  .res-expense-row { flex-direction: column; align-items: flex-start; }
-  .res-expense-row .res-price { margin-left: 0; }
+  .trip-results .res-trip-summary > a { margin-right: 0; }
 }

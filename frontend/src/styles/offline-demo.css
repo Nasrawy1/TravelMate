@@ -1,5 +1,5 @@
 /* Ali's DES-02 demo chrome; result cards retain their shared responsive styles. */
-.offline-demo { --tm-font-display: Georgia, 'Times New Roman', serif; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; }
+.offline-demo { --tm-font-display: 'Fraunces', Georgia, 'Times New Roman', serif; font-family: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif; }
 .offline-demo .welcome-logo { font-family: var(--tm-font-display); }
 .demo-banner { position: sticky; top: 0; z-index: 10; padding: 10px 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 14px; background: var(--res-peach); color: var(--tm-ink); text-align: center; font-size: 15px; }
 .demo-banner strong { padding: 3px 10px; border-radius: 999px; background: var(--tm-ink); color: var(--tm-surface); font-size: 13px; letter-spacing: 0.08em; }

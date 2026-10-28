@@ -145,3 +145,13 @@ test('Trip Planner and Results share account navigation without changing trip be
     assert.ok(!render(page, 'checking').includes('>Sign in</a>'))
   }
 })
+
+test('Planner presentation describes real retrieved pricing and keeps city coverage caveat accessible', () => {
+  const html = render('TripPlannerPage', 'authenticated')
+  assert.ok(html.includes('Choose your destination, dates, and budget to plan your trip.'))
+  assert.ok(html.includes('Supported cities do not guarantee available offers.'))
+  assert.ok(html.includes('Retrieved prices'))
+  assert.ok(html.includes('availability and final prices can change.'))
+  assert.ok(!html.includes('When pricing is connected'))
+  assert.ok(!html.includes('Generate Trip sends your details'))
+})

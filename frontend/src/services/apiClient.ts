@@ -31,6 +31,8 @@ export class ApiError extends Error {
 }
 
 export interface ApiRequestOptions {
+  /** Endpoint adapters may inspect untrusted HTTP errors before safe normalization. */
+  responseMode?: 'json' | 'endpoint'
   /** Protected by default. Public calls never initialize Supabase or attach a token. */
   auth?: 'required' | 'none'
   method?: 'GET' | 'POST'
@@ -39,6 +41,7 @@ export interface ApiRequestOptions {
 }
 
 export interface ApiResponse {
+  headers?: Readonly<Record<string, string>>
   status: number
   /** Transport JSON only. An endpoint adapter must validate before use. */
   body: unknown
@@ -123,6 +126,16 @@ export function createApiClient(dependencies: {
       // Do not interpret followed redirects or opaque responses as API success.
       if (response.redirected || response.type === 'opaqueredirect') throw new ApiError('INVALID_RESPONSE')
       const reference = response.headers.get('X-Request-ID')
+      if (options.responseMode === 'endpoint') {
+        const headers: Record<string, string> = {}
+        if (reference && /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(reference)) headers['X-Request-ID'] = reference
+        const retry = response.headers.get('Retry-After')
+        if (retry && retry.length <= 128) headers['Retry-After'] = retry
+        let body: unknown = null
+        try { body = await response.json() } catch { checkAbort() }
+        checkAbort()
+        return { status: response.status, body, headers }
+      }
       const requestId = reference && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(reference) ? reference : undefined
       // Status takes precedence even when an error envelope is absent or malformed.
       if (response.status === 401) throw new ApiError('UNAUTHORIZED', 401, requestId)

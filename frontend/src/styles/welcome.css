@@ -1,4 +1,4 @@
-/* No remote font import: use the existing Georgia/system-ui fallback stacks. */
+/* Local Riviera fonts with Georgia/system-ui fallbacks; no remote font import. */
 /* Riviera tokens and geometry from Ali's Main.dc.html. Scoped to Welcome. */
 .welcome {
   --sand: #f6ebdd;
@@ -102,6 +102,22 @@
 @media (max-width: 959px) {
   .welcome-postcards { order: -1; flex-basis: 100%; max-width: 560px; width: 100%; margin-inline: auto; }
   .welcome-hero-copy { flex-basis: 100%; }
+}
+/* Keep the brand and account/planning actions together on phones. In-page links remain below. */
+@media (max-width: 599px) {
+  .welcome-header { flex-wrap: nowrap; gap: 8px; }
+  .welcome-nav { flex-wrap: nowrap; gap: 2px; font-size: 14px; min-width: 0; }
+  .welcome-nav > a[href^="#"] { display: none; }
+  .welcome-nav > * { white-space: nowrap; }
+  .welcome-nav a { padding-inline: 8px; }
+  .welcome .welcome-nav-cta { padding: 12px; font-size: 14px; white-space: normal; text-align: center; max-width: 120px; }
+  .welcome-logo { font-size: 22px; gap: 8px; flex-shrink: 0; }
+  .welcome-logo svg { width: 30px; height: 30px; }
+  .welcome-nav > [role="status"] { white-space: normal; }
+}
+@media (max-width: 359px) {
+  /* The icon retains the full accessible name while preserving both navigation actions. */
+  .welcome-header > .welcome-logo { font-size: 0; gap: 0; }
 }
 @media (max-width: 399px) {
   .welcome-trip-card { padding: 20px; }
