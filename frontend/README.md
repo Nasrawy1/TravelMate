@@ -153,19 +153,47 @@ Results display backend-selected offer IDs, source names, retrieval timestamps i
 
 ## FE-04 authenticated E2E verification — October 28, 2026
 
-This sanitized record documents Diyar's reported real browser test, separate from mocked tests. Backend under test: isolated BE-03 commit `7987f73a9f2b1754a0cd1c3da1aafb90eac65a36`. No credentials, account identifiers, tokens or raw provider payloads are included.
+These sanitized records distinguish two separately authorized live browser runs from automated/mock verification. They contain no credentials, account identifiers, tokens or raw provider payloads. Both used Istanbul → Rome, December 1–4, 2026, 2 adults and a USD 1,500 whole-trip budget.
 
-| Test detail | Reported observation |
+### Earlier partial-price run
+
+The earlier October 28, 2026 run used isolated BE-03 commit `7987f73a9f2b1754a0cd1c3da1aafb90eac65a36`. Authenticated Login → Generate Trip → Results succeeded. Retrieved Booking hotel prices, sources, timestamps, day-by-day itinerary and budget/unknown-cost handling appeared. The API returned unavailable flights; no flight-price retrieval is claimed for this run. Its exact flight-unavailability cause remains unconfirmed for Adel/Ziyad's backend/provider investigation. No frontend defect explaining missing flights was established. A later successful flight display does not explain that earlier response.
+
+### Latest live run — October 28, 2026
+
+| Evidence | Observed or retained result |
 |---|---|
+| Frontend commit | `c1b12b4d0a85973edace6d6a22ca60c73361852a` |
+| Backend commit | `bbe1a841a9a27a81ceecf632086cb72b3847d833` |
+| Effective adapter mode | Safe startup diagnostic confirmed `TRAVELMATE_FLIGHT_MODE=live`, not merely a value found in an environment file |
 | Route and dates | Istanbul → Rome; December 1–4, 2026 |
 | Travelers and budget | 2 adults; USD 1,500 whole-trip budget |
-| Authenticated workflow | Login → Generate Trip → successful authenticated POST → Results rendered |
-| Hotel and itinerary output | Retrieved Booking hotel prices, source names, retrieval timestamps, day-by-day itinerary and budget/unknown-cost handling appeared |
-| Flights | API returned unavailable flights; no flight-price retrieval is claimed |
+| Submission count | Exactly one authenticated generation POST; no retry |
+| HTTP result | 200, retained in the sanitized matching backend request diagnostic |
+| Safe request ID | `c7fef61d-d160-4b3f-b76b-4847c33b5f96` |
+| Flights | Three flight offers displayed on Results; available in the observed UI |
+| Exact `travel_options.flights.status` | NOT RETAINED; the UI observation is not a recovered response-field capture |
+| Hotel and itinerary | Hotel information and four itinerary days displayed |
+| Budget | Uncertain because some costs remained unknown; backend totals and null/unknown distinctions were rendered |
+| Complete warnings array | NOT RECOVERED because diagnostic capture failed; exact codes/messages are unavailable |
+| Warnings presentation | No Warnings section displayed; this does **not** prove `warnings=[]` |
+| Public `flights.reason_code` | NOT EXPOSED by the public response contract |
 
-The real frontend partial-price integration succeeded. This does not prove every provider succeeded. The exact flight-unavailability cause remains unconfirmed; Adel/Ziyad own backend/provider investigation. No frontend defect explaining missing flights has been established.
+The real authenticated frontend generation-to-Results workflow passed, and flights were displayed in this run. The diagnostic observer failed to preserve the allowlisted response summary; its failure cause has not been established. HTTP status/request ID come from the retained safe backend diagnostic, while offer count and rendered content are UI observations. Do not reconstruct the exact flight-status value or warnings from schema rules, fixtures or an absent UI section. No complete response, provider payload or booking token is retained in this documentation. No additional generation/provider request was made after this single run to recover diagnostics, or during the subsequent review-fix/documentation work. This evidence does not guarantee current availability or every-provider success.
 
-The subsequent lifecycle correction was verified with **335 mocked frontend tests passing, 0 failures**, including 14 identity-transition regressions; TypeScript, production build and whitespace checks passed. The build retains the existing large-chunk warning. These are prior implementation-check results, not new live tests or a claim that documentation editing reran them.
+### Automated verification after local PR review fixes
+
+The budget-echo validator now matches the inspected public request schema's decimal half-even cent normalization; it still rejects genuine mismatches and preserves backend payload values. The city-source fingerprint now hashes original function source segments with normalized line endings instead of interpreter-dependent AST displays. See [city snapshot provenance and commands](src/data/supportedCities/README.md) and the [budget implementation observation](../docs/api-contracts.md#budget-cent-normalization--implementation-observation); Adel's public tie-breaking confirmation remains pending.
+
+| Automated check | Recorded result |
+|---|---|
+| Complete frontend suite, including budget regressions and identity-transition protections | 372 passed, 0 failed |
+| City-sync `--check` on Python 3.12.14 | PASS |
+| City-sync `--check` on Python 3.14.5 | PASS |
+| Focused static sync regressions | 13 passed on each Python version |
+| TypeScript, production build and whitespace checks | PASS |
+
+These results were obtained during the preceding local fixes, not by sending another live request or rerunning tests for documentation editing. They include uncommitted changes after frontend commit `c1b12b4`; the tested live run itself used that committed revision. The production build retains its large-chunk warning. Ali confirmed the DES-03 visual review before FE-04 delivery; the pending review corrections are not a new claim of Ali's approval.
 
 ### Real authenticated unsupported-city rejection — October 28, 2026
 
@@ -181,7 +209,7 @@ One separately authorized POST used the existing verified browser session and sh
 
 This result was observed through the control's sanitized UI, not inferred from a mock. Backend source at `7987f73` confirms `search_travel()` validates city membership before entering provider search; its unsupported error maps to HTTP 400 and returns before itinerary/AI generation. **Early rejection before paid provider calls is source-confirmed; provider traffic was not independently captured or monitored.** No direct provider requests were made by the test. This is not a claim of packet-level proof that no external traffic occurred.
 
-The temporary rejection control, its state/imports and dedicated tests were removed after evidence review. The original development-only JWT/session probe remains at `/dev/auth-probe`; neither tool is a production feature. The unsupported-city real-backend acceptance evidence gap is now closed. Ali's DES-03 visual review remains pending; no confirmed frontend functional blocker remains from this verification. The unavailable-flight cause remains unconfirmed for Adel/Ziyad's backend/provider investigation, not a demonstrated frontend defect.
+The temporary rejection control, its state/imports and dedicated tests were removed after evidence review. The original development-only JWT/session probe remains at `/dev/auth-probe`; neither tool is a production feature. The unsupported-city real-backend acceptance evidence gap is now closed. Ali's DES-03 visual review was confirmed before FE-04 delivery. The earlier unavailable-flight cause remains unconfirmed for Adel/Ziyad's backend/provider investigation; the latest three-offer run and its diagnostic limitations are recorded above.
 
 ## BE-02 Auth and JWT verification
 
@@ -342,7 +370,7 @@ The original FE-03 record requested Ali/Nasrawy's agreement on the proposed
 journeys; it does not invent that approval. Current typography uses bundled
 Figtree/Fraunces rather than the earlier Georgia/system-ui-only fallback.
 Public v0.4 is now adopted; revalidate samples if the adopted contract changes.
-Ali's current DES-03 visual review remains pending. Second-computer handover
+Ali's DES-03 visual review was confirmed before FE-04 delivery. Second-computer handover
 remains outside the evidence provided here and is broader MVP handover work.
 
 The original FE-03 evidence was recorded before its delivery. That historical

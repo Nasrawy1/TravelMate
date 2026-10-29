@@ -18,6 +18,58 @@ const request = await read('request.json')
 const sample = await read('within-budget.json')
 const now = Date.parse('2026-10-15T00:00:00Z')
 const options = () => ({ signal: new AbortController().signal })
+for (const [submitted, returned] of [
+  [1500.129, 1500.13], [1500.125, 1500.12], [1500.135, 1500.14],
+  [1500.1249, 1500.12], [1500.1251, 1500.13],
+  [1.005, 1], [1.015, 1.02], [1.0049999999999997, 1], [1.0050000000000001, 1.01],
+  [0.0051, 0.01], [0.015, 0.02], [1.2345e3, 1234.5], [1.2345e-2, 0.01],
+  [1e21, 1e21], [1e25, 1e25], [9.999999999999999e25, 9.999999999999999e25],
+]) test(`half-even budget echo accepted: ${submitted} -> ${returned}, payload unchanged`, async () => {
+  const input = { ...request, budget_usd: submitted }
+  const body = structuredClone(sample)
+  body.budget.budget_usd = returned
+  const before = structuredClone(body), inputBefore = structuredClone(input)
+  assert.equal(validateGenerationResponse(body, input), body)
+  let calls = 0
+  const service = createTripGenerationApi({ request: async (_path, options) => {
+    calls++
+    assert.deepEqual(options.body, inputBefore)
+    return { status: 200, body }
+  } }, () => now)
+  const result = await service.generate(input, options())
+  assert.equal(result.ok, true)
+  assert.equal(result.response, body)
+  assert.deepEqual(body, before) // Includes totals, expenses, taxes, estimates and status.
+  assert.deepEqual(input, inputBefore)
+  assert.equal(calls, 1)
+})
+for (const [submitted, returned] of [
+  [1500.129, 1500.12], [1500.129, 1500.14], [1500.129, 1600],
+  [1500.125, 1500.13], [1500.135, 1500.13], [1.005, 1.01], [1.015, 1.01],
+  [1500.129, 1500.129], [1500.129, 1500.1301],
+  [1500.129, '1500.13'], [1500.129, null], [1500.129, NaN], [1500.129, Infinity],
+  [0.004, 0.01], [0.005, 0.01], [1e-7, 0.01], [Number.MIN_VALUE, 0.01],
+  [1e26, 1e26], [1e28, 1e28], [Number.MAX_VALUE, Number.MAX_VALUE],
+]) test(`invalid or mismatched budget echo rejected: ${submitted} -> ${returned}`, async () => {
+  const input = { ...request, budget_usd: submitted }
+  const body = structuredClone(sample)
+  body.budget.budget_usd = returned
+  assert.equal(validateGenerationResponse(body, input), null)
+  let calls = 0
+  const service = createTripGenerationApi({ request: async () => {
+    calls++
+    return { status: 200, body }
+  } }, () => now)
+  const result = await service.generate(input, options())
+  assert.equal(result.ok, false)
+  assert.equal(result.error.code, 'INVALID_RESPONSE')
+  assert.equal(calls, 1)
+})
+test('nonpositive and nonfinite submitted budgets cannot match a valid response', () => {
+  for (const budget of [0, -1, -0.005, NaN, Infinity, -Infinity]) {
+    assert.equal(validateGenerationResponse(sample, { ...request, budget_usd: budget }), null)
+  }
+})
 for (const c of manifest.cases.filter(c => c.schema === 'response')) {
   test(`valid ${c.file}: exact backend payload retained, including null and explicit zero`, async () => {
     const body = await read(c.file), before = structuredClone(body)

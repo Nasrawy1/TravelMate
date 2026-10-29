@@ -55,6 +55,27 @@ Supabase Auth SDK provides signup/signin/signout and session management. Do not 
 
 No currency selector, one-way switch or client user_id. City fields remain strings, validated against the adapter's approved fixed 80-city mapping. No new required country, airport or provider-ID field is added.
 
+### Budget cent normalization — implementation observation
+
+Inspection of BE-03 commit `bbe1a841a9a27a81ceecf632086cb72b3847d833`,
+`backend/app/api/schemas/trips.py`, confirms that the public request schema converts
+numeric budgets with `Decimal(str(value))` and returns
+`value.quantize(Decimal("0.01"))`. With the inspected default Decimal context
+(precision 28, `ROUND_HALF_EVEN`), `1500.129` becomes `1500.13`, `1500.125`
+becomes `1500.12`, and `1500.135` becomes `1500.14`. Budgets must remain positive
+after cent rounding; nonfinite, nonpositive and unquantizable oversized values are
+rejected. The endpoint passes that normalized value into budget calculation and
+returns it in `budget.budget_usd`; it is not an exact echo of a subcent input.
+The frontend review correction compares the response budget exactly against this
+normalized request expectation, without changing returned costs, totals or statuses.
+
+This is an observed implementation behavior, **not a newly approved contract
+amendment or an agreement from Adel**. The adopted schema allows positive JSON
+numbers and does not itself specify cent precision or tie-breaking. Adel's explicit
+confirmation of the intended public budget tie-breaking rule remains pending.
+The adapter's standalone half-up budget helper is distinct from the public request
+schema, which normalizes the budget first for this endpoint.
+
 ### City validation — approved reconciliation 2026-10-25
 
 Nasrawy approved the fixed 80-city adapter mapping as the current city-validation baseline, superseding the 2026-10-24 free-text/dynamic resolver amendment. The adapter owns the supported set and its name normalization; BE-03 must reuse it rather than maintain a second allowlist. Dynamic resolver integration, acceptance of cities outside that set, ambiguity handling and resolver-outage tests are superseded scope, not completed features. Live autocomplete is optional and is not a BE-03 completion requirement. Implementation and provider-evidence gates remain required. Public contract adoption is recorded by the 2026-10-27 decision below.
@@ -80,7 +101,7 @@ HTTP 200 requires a complete, validated itinerary, even when travel prices are u
 | trip | City strings match trimmed request text; start_date, return_date and adults match request; nights equals date difference |
 | itinerary | Exactly nights + 1 entries, ordered, one per date inclusive |
 | travel_options | Both flights and hotels objects always present |
-| budget | Original budget, selected offer IDs, itemized costs, subtotals, projected total, status, missing categories and notes |
+| budget | Original budget (cent-normalized in the inspected BE-03 implementation; see observation above), selected offer IDs, itemized costs, subtotals, projected total, status, missing categories and notes |
 | warnings | Array of code/message pairs; empty when none |
 
 Each itinerary day has date, activities and empty_day_reason. Activities require order, name, area, description and cost. Order is contiguous from 1 within a day. Each nonempty day has empty_day_reason null. Only first/last days may have zero activities; they require a nonempty travel-related reason. Other days must contain at least one meaningful activity.

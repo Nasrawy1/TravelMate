@@ -44,6 +44,26 @@ export function validGenerationRequest(value: unknown, today = new Date().toISOS
   return r.departure_city === r.departure_city.trim() && r.destination_city === r.destination_city.trim()
     && r.departure_city.toLowerCase() !== r.destination_city.toLowerCase() && r.start_date > today && nights >= 1 && nights <= 7
 }
+/** Mirrors the public request schema's Decimal(str(value)).quantize(0.01):
+ * half-even, positive after rounding, at most 28 coefficient digits.
+ * Decimal digits/BigInt avoid binary multiplication errors and support exponents. */
+function normalizedRequestBudget(value: number): number | null {
+  if (!Number.isFinite(value) || value <= 0) return null
+  const [mantissa, exponent = '0'] = String(value).toLowerCase().split('e')
+  const [whole, fraction = ''] = mantissa.split('.')
+  const coefficient = BigInt(whole + fraction)
+  const shift = Number(exponent) - fraction.length + 2
+  let cents: bigint
+  if (shift >= 0) cents = coefficient * 10n ** BigInt(shift)
+  else {
+    const divisor = 10n ** BigInt(-shift)
+    cents = coefficient / divisor
+    const twiceRemainder = (coefficient % divisor) * 2n
+    if (twiceRemainder > divisor || twiceRemainder === divisor && cents % 2n !== 0n) cents += 1n
+  }
+  if (cents === 0n || cents.toString().length > 28) return null
+  return Number(`${cents}e-2`)
+}
 /** Validates public structure and referential semantics. Backend owns arithmetic,
  * cheapest-offer selection, city mapping and provider provenance; never recompute those here. */
 export function validateGenerationResponse(value: unknown, request: TripGenerateRequest): TripResult | null {
@@ -51,7 +71,7 @@ export function validateGenerationResponse(value: unknown, request: TripGenerate
   const r = value as TripResult
   const { trip, budget } = r
   if (trip.departure_city !== request.departure_city.trim() || trip.destination_city !== request.destination_city.trim()
-    || trip.start_date !== request.start_date || trip.return_date !== request.return_date || trip.adults !== request.adults || budget.budget_usd !== request.budget_usd) return null
+    || trip.start_date !== request.start_date || trip.return_date !== request.return_date || trip.adults !== request.adults || budget.budget_usd !== normalizedRequestBudget(request.budget_usd)) return null
   const nights = (Date.parse(trip.return_date) - Date.parse(trip.start_date)) / 86400000
   if (nights !== trip.nights || r.itinerary.length !== nights + 1) return null
   const activities = new Map<string, typeof r.itinerary[number]['activities'][number]['cost']>()

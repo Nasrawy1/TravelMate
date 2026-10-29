@@ -2,7 +2,7 @@
   "source": {
     "path": "backend/app/adapters/travelmate.py",
     "commit": "3d3c79a8912de70b6892fed7d2d6d313ce7f4c3e",
-    "normalization_sha256": "b5121715d5282df859600b57447c71671d6774aa747ed15b5461f65e4759b162"
+    "normalization_sha256": "d9fcad511d660eb2fba62b6c9929419b5cd2a1dfc28a607eed9cf75d6450b80e"
   },
   "cities": [
     {
