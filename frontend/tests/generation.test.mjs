@@ -237,3 +237,75 @@ test('missing repository cases are explicitly development examples, never struct
     assert.equal(mock.context.live_evidence, false)
   }
 })
+
+// Real boundary outcomes: no HTTP, Supabase or chargeable generation in these tests.
+const apiContext = { contract_version: '0.4', data_mode: 'api', live_evidence: false }
+const validatedService = generate => ({ context: apiContext, generate })
+const safeFailure = (code, extra = {}) => ({ ok: false, error: { code, title: 'Safe error', message: 'Safe error', fields: {}, canRetry: true, ...extra } })
+
+test('real lifecycle publishes loading synchronously, prevents duplicates and retains exact validated response', async () => {
+  let finish, calls = 0
+  const response = readFixture('within-budget.json')
+  const before = structuredClone(response)
+  const controller = new GenerationController(() => null)
+  const service = validatedService(async (input, { signal }) => {
+    calls++; assert.deepEqual(input, request); assert.equal(signal.aborted, false)
+    return await new Promise(resolve => { finish = resolve })
+  })
+  const first = controller.start(request, service)
+  assert.equal(controller.getSnapshot().status, 'pending')
+  assert.equal(await controller.start(request, service), false)
+  assert.equal(calls, 1)
+  finish({ ok: true, status: 200, response }); await first
+  assert.equal(controller.getSnapshot().status, 'success')
+  assert.equal(controller.getSnapshot().response, response)
+  assert.deepEqual(response, before)
+  assert.equal(controller.getSnapshot().context.data_mode, 'api')
+})
+for (const [code, extra] of [
+  ['VALIDATION_ERROR', { httpStatus: 422, canRetry: false, fields: { destination_city: 'Choose a different city.' } }],
+  ['UNSUPPORTED_LOCATION', { httpStatus: 400, canRetry: false, fields: { departure_city: 'Choose a supported city.' } }],
+  ['UNAUTHORIZED', { httpStatus: 401, canRetry: false, signIn: true }],
+  ['SESSION_EXPIRED', { canRetry: false, signIn: true }],
+  ['NETWORK_ERROR', {}], ['PROVIDER_UNAVAILABLE', { httpStatus: 503 }],
+  ['AI_GENERATION_FAILED', { httpStatus: 502 }], ['GENERATION_TIMEOUT', { httpStatus: 504 }],
+]) test(`real ${code} preserves inputs and safe details without automatic retry`, async () => {
+  const input = structuredClone(request)
+  let calls = 0
+  const outcome = safeFailure(code, extra)
+  const controller = new GenerationController(() => null)
+  const service = validatedService(async () => { calls++; return outcome })
+  await controller.start(input, service)
+  assert.equal(calls, 1)
+  assert.deepEqual(input, request)
+  assert.deepEqual(controller.getSnapshot().request, request)
+  assert.equal(controller.getSnapshot().error, outcome.error)
+  if (!outcome.error.canRetry) {
+    assert.equal(await controller.start(input, service), false)
+    controller.cancel() // Edit action re-enables submission with preserved form inputs.
+  }
+  assert.equal(calls, 1)
+  await controller.start(input, service) // Only this deliberate action can send again.
+  assert.equal(calls, 2)
+})
+test('real rate limit survives edit and expires without firing generation automatically', async () => {
+  let now = 1000, calls = 0
+  const controller = new GenerationController(() => null, () => now)
+  const service = validatedService(async () => { calls++; return safeFailure('RATE_LIMITED', { httpStatus: 429, retryAt: 61000 }) })
+  await controller.start(request, service)
+  controller.cancel()
+  assert.equal(await controller.start(request, service), false)
+  now = 61000
+  assert.equal(calls, 1)
+  assert.equal(await controller.start(request, service), true)
+  assert.equal(calls, 2)
+})
+test('late real success after cancel/unmount cannot publish or replace retained state', async () => {
+  let finish
+  const controller = new GenerationController(() => null)
+  const running = controller.start(request, validatedService(() => new Promise(resolve => { finish = resolve })))
+  controller.cancel()
+  finish({ ok: true, status: 200, response: readFixture('within-budget.json') })
+  await running
+  assert.equal(controller.getSnapshot().status, 'idle')
+})

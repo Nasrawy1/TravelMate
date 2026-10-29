@@ -55,7 +55,7 @@ for (const name of RESULTS_FIXTURES) {
     for (const item of original.budget.cost_items) {
       const row = html.match(new RegExp(`<li[^>]*data-expense-id="${item.id}"[^>]*>([\\s\\S]*?)</li>`))?.[1]
       assert.ok(row, item.id)
-      assert.ok(row.includes(priceDisplay(item, data.context).amount), item.id)
+      assert.ok(row.includes(priceDisplay(item, data.context, item.category === 'activities').amount), item.id)
       if (item.kind === 'unknown' || item.amount_usd === null) assert.ok(!row.includes('$0.00'))
       if (item.kind === 'provider') assert.ok(row.includes('Sample price'))
     }
@@ -129,8 +129,8 @@ test('nullable rooms/area, empty-day reason and unknown activities have honest a
 test('fixture price provenance always defeats provider-shaped metadata; unverified API data is not Live', () => {
   const context = getResultsFixture('within-budget').context
   assert.equal(providerLabel({ ...context, live_evidence: true }), 'Sample price')
-  assert.equal(providerLabel({ data_mode: 'validated_api', live_evidence: false }), 'Unverified price')
-  assert.equal(providerLabel({ data_mode: 'validated_api', live_evidence: true }), 'Live')
+  assert.equal(providerLabel({ data_mode: 'validated_api', live_evidence: false }), 'Retrieved price')
+  assert.equal(providerLabel({ data_mode: 'validated_api', live_evidence: true }), 'Retrieved price')
   assert.equal(getResultsFixture('not-a-case'), null)
   assert.equal(getResultsFixture('__proto__'), null)
   assert.equal(warningTitle('NEW_CODE'), 'Note.')
@@ -158,9 +158,62 @@ test('direct production Results navigation renders an honest empty state without
     const { default: ResultsPage } = await import(emptyPath.href)
     const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ResultsPage)))
     assert.ok(html.includes('No trip result yet'))
-    assert.ok(html.includes('Real trip generation is not yet connected to FastAPI.'))
+    assert.ok(html.includes('No generated trip is retained in this session.'))
     assert.ok(!html.includes('Trip generation and authentication are not connected.'))
     assert.ok(!html.includes('MOCK result scenario'))
     assert.ok(!html.includes('fixture-provider'))
   } finally { await unlink(emptyPath).catch(error => { if (error.code !== 'ENOENT') throw error }) }
+})
+
+for (const name of RESULTS_FIXTURES) test(`API rendering ${name} preserves sources, timestamps and backend budget values`, () => {
+  const { response } = getResultsFixture(name)
+  const before = structuredClone(response)
+  const html = render({ response, context: { data_mode: 'validated_api', live_evidence: false } })
+  assert.ok(html.includes(budgetDisplay(response.budget).status))
+  assert.ok(html.includes(budgetDisplay(response.budget).total))
+  for (const offer of [...response.travel_options.flights.offers, ...response.travel_options.hotels.offers]) {
+    assert.ok(html.includes(offer.source)); assert.ok(html.includes(offer.retrieved_at))
+  }
+  assert.ok(!/>Live</.test(html)); assert.ok(!html.includes('Sample price'))
+  if (response.budget.missing_categories.length) assert.ok(html.includes('Not calculable'))
+  assert.deepEqual(response, before)
+})
+
+test('zero activity estimates, other zero costs and unknowns remain distinct', () => {
+  const context = { data_mode: 'validated_api', live_evidence: false }
+  assert.equal(priceDisplay({ amount_usd: 0, kind: 'estimate' }, context, true).amount, 'Estimated free')
+  assert.equal(priceDisplay({ amount_usd: 0, kind: 'estimate' }, context).amount, '$0.00')
+  assert.equal(priceDisplay({ amount_usd: 0, kind: 'provider' }, context, true).amount, '$0.00')
+  assert.equal(priceDisplay({ amount_usd: 40, kind: 'estimate' }, context, true).amount, '~$40.00')
+  for (const amount of [null, NaN, Infinity]) assert.equal(priceDisplay({ amount_usd: amount, kind: 'estimate' }, context, true).amount, 'Unknown')
+  const data = getResultsFixture('no-prices')
+  const html = render({ response: data.response, context })
+  assert.ok(html.includes('Estimated free'))
+  for (const item of data.response.budget.cost_items.filter(i => i.kind === 'unknown')) {
+    const row = html.match(new RegExp(`<li[^>]*data-expense-id="${item.id}"[^>]*>([\\s\\S]*?)</li>`))?.[1]
+    assert.ok(row.includes('<strong>Unknown</strong>'))
+    assert.ok(!row.includes('res-price-tag'))
+    assert.ok(!row.includes('$0.00')); assert.ok(!row.includes('Estimated free'))
+  }
+})
+test('missing travel keeps backend zero subtotal and adds separate explanation', () => {
+  const data = getResultsFixture('no-prices'), before = structuredClone(data.response)
+  const html = render({ response: data.response, context: { data_mode: 'validated_api', live_evidence: false } })
+  assert.ok(html.includes('<dt>Retrieved travel prices</dt><dd>$0.00</dd>'))
+  assert.ok(html.includes('No priced travel offers are available.'))
+  assert.ok(html.includes('missing travel costs are not free.'))
+  assert.ok(html.includes('Not calculable'))
+  assert.ok(!html.includes('<strong aria-hidden="true">—</strong>'))
+  assert.ok(html.includes('Counted as missing in the budget, never as $0.00.'))
+  assert.deepEqual(data.response, before)
+  assert.ok(!render(getResultsFixture('within-budget')).includes('No priced travel offers are available.'))
+})
+test('updated decoration and retrieved provenance preserve backend source and timestamps', () => {
+  const data = getResultsFixture('within-budget')
+  const html = render({ response: data.response, context: { data_mode: 'validated_api', live_evidence: false } })
+  assert.ok(html.includes('width="300" height="170"'))
+  assert.ok(html.includes('Retrieved price')); assert.ok(!/>Live</.test(html))
+  for (const offer of [...data.response.travel_options.flights.offers, ...data.response.travel_options.hotels.offers]) {
+    assert.ok(html.includes(offer.source)); assert.ok(html.includes(offer.retrieved_at))
+  }
 })

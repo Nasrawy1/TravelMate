@@ -88,3 +88,12 @@ body:has(.trip-planner) { min-width: 0; }
   .tp-dates > .tp-field, .tp-stay { flex-basis: 100%; }
   .tp-submit { width: 100%; }
 }
+
+/* Local supported-city combobox; bounded to the existing responsive field width. */
+.tp-city-control { position: relative; min-width: 0; }
+.tp-city-options { position: absolute; z-index: 10; top: 56px; left: 0; right: 0; max-height: 240px; overflow-y: auto; margin: 0; padding: 4px; list-style: none; border: 1px solid var(--tm-input-border); border-radius: 14px; background: var(--tm-surface); box-shadow: 0 8px 24px #1f3b3a20; }
+.tp-city-options[hidden] { display: none; }
+.tp-city-options [role="option"] { display: flex; justify-content: space-between; gap: 8px; align-items: center; min-height: 44px; padding: 8px 12px; border-radius: 9px; cursor: pointer; overflow-wrap: anywhere; }
+.tp-city-options [role="option"]:hover, .tp-city-options [aria-selected="true"] { background: var(--tm-sand); outline: 2px solid var(--tm-terracotta); outline-offset: -2px; }
+.tp-city-options small { flex-shrink: 0; color: var(--tm-muted); }
+.tp-city-status { display: block; margin-top: 6px; font-size: 13px; color: var(--tm-muted); }

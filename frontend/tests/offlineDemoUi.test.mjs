@@ -43,7 +43,7 @@ for (const id of OFFLINE_DEMO_IDS) {
     for (const item of r.budget.cost_items) {
       const row = html.match(new RegExp(`<li[^>]*data-expense-id="${item.id}"[^>]*>([\\s\\S]*?)</li>`))?.[1]
       assert.ok(row, item.id)
-      assert.ok(row.includes(item.amount_usd === null ? 'Unknown' : formatMoney(item.amount_usd)))
+      assert.ok(row.includes(item.amount_usd === null ? 'Unknown' : item.category === 'activities' && item.kind === 'estimate' && item.amount_usd === 0 ? 'Estimated free' : formatMoney(item.amount_usd)))
       if (item.amount_usd === null) assert.ok(!row.includes('$0.00'))
     }
     for (const day of r.itinerary) {
