@@ -14,11 +14,11 @@ export function formatMoney(value: number | null): string {
 export function providerLabel(context: ResultsContext): string {
   if (context.data_mode === 'offline_demo') return 'Demo price'
   // Fixture mode always wins, even if an invalid caller supplied live_evidence=true.
-  return context.data_mode === 'structural_mock' ? 'Sample price' : context.live_evidence === true ? 'Live' : 'Unverified price'
+  return context.data_mode === 'structural_mock' ? 'Sample price' : 'Retrieved price'
 }
-export function priceDisplay(price: Pick<ResultPrice, 'amount_usd' | 'kind'>, context: ResultsContext) {
-  if (price.kind === 'unknown' || price.amount_usd === null || !Number.isFinite(price.amount_usd)) return { amount: 'Unknown', label: 'Unknown', style: 'unknown' }
-  if (price.kind === 'estimate') return { amount: `${price.amount_usd === 0 ? '' : '~'}${formatMoney(price.amount_usd)}`, label: 'Estimate', style: 'estimate' }
+export function priceDisplay(price: Pick<ResultPrice, 'amount_usd' | 'kind'>, context: ResultsContext, activity = false) {
+  if (price.kind === 'unknown' || price.amount_usd === null || !Number.isFinite(price.amount_usd)) return { amount: 'Unknown', label: '', style: 'unknown' }
+  if (price.kind === 'estimate') return { amount: activity && price.amount_usd === 0 ? 'Estimated free' : `${price.amount_usd === 0 ? '' : '~'}${formatMoney(price.amount_usd)}`, label: 'Estimate', style: 'estimate' }
   return { amount: formatMoney(price.amount_usd), label: providerLabel(context), style: 'provider' }
 }
 export function selectedFirst<T extends { id: string }>(offers: readonly T[], selectedId: string | null): T[] {

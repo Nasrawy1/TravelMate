@@ -1,5 +1,28 @@
 import type { TripGenerateRequest } from '../types/trip'
 import type { TripField, TripFormErrors } from '../utils/tripPlanner'
+import type { AuthSessionState } from './authSession'
+
+/** Observe every verified identity transition, even when React batches A → B → A.
+ * Rechecking the same identity is not a change; definitive loss of identity is.
+ * The caller invalidates its local operation token, never server-side processing. */
+export function watchGenerationIdentity(source: {
+  getSnapshot: () => AuthSessionState
+  subscribe: (listener: () => void) => () => void
+}, invalidate: () => void): () => void {
+  const identity = (state: AuthSessionState) => state.status === 'authenticated' ? state.user?.id ?? null : null
+  let owner = identity(source.getSnapshot())
+  const check = () => {
+    const state = source.getSnapshot()
+    if (state.status === 'checking') return
+    const next = identity(state)
+    if (next === owner) return
+    owner = next
+    invalidate()
+  }
+  const unsubscribe = source.subscribe(check)
+  check()
+  return unsubscribe
+}
 
 export interface GenerationContext {
   contract_version: '0.4'
@@ -8,7 +31,7 @@ export interface GenerationContext {
   fixture?: { file: string; manifest: unknown; case: unknown }
 }
 
-/** No HTTP client is installed here. A future adapter must supply the response and headers. */
+/** Raw development fixture transport; real adapters supply normalized outcomes below. */
 export interface GenerationService {
   readonly context: GenerationContext
   generate(request: Readonly<TripGenerateRequest>, options: { signal: AbortSignal }): Promise<{
@@ -16,6 +39,14 @@ export interface GenerationService {
     headers: Readonly<Record<string, string>>
     body: unknown
   }>
+}
+
+/** Validated endpoint boundary; failures are already sanitized by the shared API adapter. */
+export interface ValidatedGenerationService<T extends { generation_status: 'complete' }> {
+  readonly context: GenerationContext
+  generate(request: Readonly<TripGenerateRequest>, options: { signal: AbortSignal }): Promise<
+    { ok: true; status: 200; response: T } | { ok: false; error: GenerationFailure }
+  >
 }
 
 export interface GenerationErrorEnvelope {
@@ -52,7 +83,7 @@ const ERROR_COPY: Record<string, { status: number; title: string; message: strin
   UNAUTHORIZED: { status: 401, title: 'Please sign in again', message: 'Sign-in is required to generate a trip. Your form details are kept on this page.', canRetry: false, signIn: true },
   RATE_LIMITED: { status: 429, title: 'Too many requests right now', message: 'Please wait before trying again. Retrying always requires your action.', canRetry: true },
   AI_GENERATION_FAILED: { status: 502, title: 'We couldn’t build your plan', message: 'A complete itinerary was not returned. Your trip details are kept, so you can try again.', canRetry: true },
-  PROVIDER_UNAVAILABLE: { status: 503, title: 'The planning service is unavailable', message: 'A service we rely on is unavailable. Try again later. Demo trips are coming soon.', canRetry: true },
+  PROVIDER_UNAVAILABLE: { status: 503, title: 'The planning service is unavailable', message: 'A service we rely on is unavailable. Try again later. Your trip details are kept.', canRetry: true },
   GENERATION_TIMEOUT: { status: 504, title: 'This is taking too long', message: 'Trip generation passed its time limit. Your details are kept; try again in a moment.', canRetry: true },
   INTERNAL_ERROR: { status: 500, title: 'Something went wrong on our side', message: 'Please try again. If it keeps happening, share the reference below with the team.', canRetry: true },
   FORBIDDEN: { status: 403, title: 'This request is not allowed', message: 'Return to your trip details or contact the team.', canRetry: false },
@@ -116,7 +147,7 @@ export function normalizeGenerationError(status: number, headers: Readonly<Recor
     start_date: 'Check your start date.', return_date: 'Check your return date.',
     adults: 'Choose between 1 and 4 adults (a whole number).', budget_usd: 'Enter a finite, positive whole-trip budget in USD.',
   }
-  if (code === 'VALIDATION_ERROR' && object(body.error.details) && Array.isArray(body.error.details.fields)) {
+  if (['VALIDATION_ERROR', 'UNSUPPORTED_LOCATION', 'INVALID_TRIP_DATES'].includes(code) && object(body.error.details) && Array.isArray(body.error.details.fields)) {
     for (const item of body.error.details.fields) {
       if (object(item) && typeof item.field === 'string' && Object.hasOwn(fieldCopy, item.field)) {
         fields[item.field as TripField] = fieldCopy[item.field as TripField]
@@ -151,7 +182,7 @@ export class GenerationController<T extends { generation_status: 'complete' }> {
     operation?.abort()
     this.publish({ status: 'idle' })
   }
-  async start(request: TripGenerateRequest, service: GenerationService): Promise<boolean> {
+  async start(request: TripGenerateRequest, service: GenerationService | ValidatedGenerationService<T>): Promise<boolean> {
     if (this.operation || this.now() < this.retryAt || (this.state.status === 'error' && !this.state.error.canRetry)) return false
     const operation = new AbortController()
     this.operation = operation // Synchronous gate, including same-tick double clicks.
@@ -168,7 +199,13 @@ export class GenerationController<T extends { generation_status: 'complete' }> {
       })
       const result = await Promise.race([service.generate(input, { signal: operation.signal }), timeout, aborted])
       if (this.operation !== operation) return false
-      if (result.status === 200) {
+      if ('ok' in result) {
+        if (result.ok) this.publish({ status: 'success', request: input, context: service.context, response: result.response })
+        else {
+          this.retryAt = Math.max(this.retryAt, result.error.retryAt ?? 0)
+          this.publish({ status: 'error', request: input, context: service.context, error: result.error })
+        }
+      } else if (result.status === 200) {
         let response: T | null = null
         try { response = this.validate(result.body, input) } catch { /* Validation failure is not a successful trip. */ }
         if (!response || response.generation_status !== 'complete') {

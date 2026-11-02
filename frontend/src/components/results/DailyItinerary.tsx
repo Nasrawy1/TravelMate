@@ -11,7 +11,7 @@ export default function DailyItinerary({ response, context }: ResultsData) {
         : <ol className="res-activities">{day.activities.map(activity => <li key={activity.order} value={activity.order}>
           <span className="res-activity-number" aria-hidden="true">{activity.order}</span>
           <div className="res-activity-copy"><h4>{activity.name} <span>· {activity.area}</span></h4><p>{activity.description}</p></div>
-          <ResultPrice price={activity.cost} context={context} />
+          <ResultPrice activity price={activity.cost} context={context} />
         </li>)}</ol>}
     </article>)}
   </section>

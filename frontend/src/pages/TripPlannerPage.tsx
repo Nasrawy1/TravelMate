@@ -1,10 +1,18 @@
-import { lazy, Suspense, useLayoutEffect, useRef, useState } from 'react'
+import CityCombobox from '../components/trip/CityCombobox'
+import { lazy, Suspense, useContext, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react'
 import type { FormEvent, ReactNode } from 'react'
-import { Link } from 'react-router-dom'
+import { useTripResult } from '../components/results/TripResultProvider'
+import { Link, useNavigate } from 'react-router-dom'
 import RivieraLogo from '../components/welcome/RivieraLogo'
 import AuthNavigationLink from '../components/auth/AuthNavigationLink'
-import type { TripGenerateRequest } from '../types/trip'
-import { MOCK_CITIES, prepareTripRequest, utcToday, validateTripForm } from '../utils/tripPlanner'
+import type { TripResult } from '../types/results'
+import { handoffGeneratedTrip } from '../services/tripResultHandoff'
+import { GenerationController, watchGenerationIdentity } from '../services/generation'
+import { validateGenerationResponse } from '../services/generationValidation'
+import { realGenerationService } from '../services/api'
+import GenerationView from '../components/generation/GenerationView'
+import { AuthSessionContext, useAuthSessionState } from '../components/auth/AuthSessionProvider'
+import { prepareTripRequest, utcToday, validateTripForm } from '../utils/tripPlanner'
 import type { TripField, TripFormErrors, TripFormValues } from '../utils/tripPlanner'
 import '../styles/trip-planner.css'
 
@@ -26,17 +34,51 @@ function Field({ name, label, error, children }: { name: TripField; label: strin
 export default function TripPlannerPage() {
   const [values, setValues] = useState<TripFormValues>(INITIAL_VALUES)
   const [submitted, setSubmitted] = useState(false)
-  const [request, setRequest] = useState<TripGenerateRequest | null>(null)
+  const [controller] = useState(() => new GenerationController<TripResult>(validateGenerationResponse))
+  const generation = useSyncExternalStore(controller.subscribe, controller.getSnapshot, controller.getSnapshot)
+  const session = useAuthSessionState()
+  const sessionSource = useContext(AuthSessionContext)
+  const navigate = useNavigate()
+  const { retain } = useTripResult()
+  const requestOwner = useRef<string | null>(null)
+  const handedOff = useRef<TripResult | null>(null)
+  useLayoutEffect(() => {
+    if (!sessionSource) return
+    return watchGenerationIdentity(sessionSource, () => {
+      requestOwner.current = null
+      handedOff.current = null
+      // cancel invalidates the unique local operation token before aborting. Late
+      // success/error cannot revive it, even after returning to the same account.
+      controller.cancel()
+    })
+  }, [sessionSource, controller])
+  useEffect(() => {
+    if (generation.status !== 'success' || handedOff.current === generation.response) return
+    if (handoffGeneratedTrip(generation, requestOwner.current, session.status === 'authenticated' ? session.user?.id ?? null : null, retain, navigate)) {
+      handedOff.current = generation.response
+    } else controller.cancel()
+  }, [generation, session.status, session.user?.id, retain, navigate, controller])
+  const [clock, setClock] = useState(Date.now())
+  const retryAt = controller.getRetryAt()
+  const remaining = Math.max(0, Math.ceil((retryAt - clock) / 1000))
+  const realActive = generation.status !== 'idle'
+  useEffect(() => () => controller.cancel(), [controller])
+  useEffect(() => {
+    setClock(Date.now())
+    if (!retryAt || retryAt <= Date.now()) return
+    const timer = setInterval(() => { const now = Date.now(); setClock(now); if (now >= retryAt) clearInterval(timer) }, 250)
+    return () => clearInterval(timer)
+  }, [retryAt])
   const [previewActive, setPreviewActive] = useState(false)
   const [serviceErrors, setServiceErrors] = useState<TripFormErrors>({})
   const fields = useRef<Partial<Record<TripField, HTMLElement | null>>>({})
   const editFocus = useRef<TripField | null>(null)
   useLayoutEffect(() => {
-    if (!previewActive && editFocus.current) {
+    if (!previewActive && !realActive && editFocus.current) {
       fields.current[editFocus.current]?.focus()
       editFocus.current = null
     }
-  }, [previewActive, serviceErrors])
+  }, [previewActive, realActive, serviceErrors])
   const { errors, nights } = validateTripForm(values)
   const valid = Object.keys(errors).length === 0
   const shownErrors = { ...serviceErrors, ...(submitted ? errors : {}) }
@@ -48,7 +90,6 @@ export default function TripPlannerPage() {
 
   function update<K extends TripField>(name: K, value: TripFormValues[K]) {
     setValues(previous => ({ ...previous, [name]: value }))
-    setRequest(null)
     setServiceErrors(previous => { const next = { ...previous }; delete next[name]; return next })
   }
 
@@ -63,14 +104,31 @@ export default function TripPlannerPage() {
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (controller.getSnapshot().status === 'pending' || controller.getRetryAt() > Date.now()) return
     setSubmitted(true)
     setServiceErrors({})
     // Revalidate at submit time, including the UTC date if midnight passed while editing.
     const result = prepareTripRequest(values)
-    setRequest(result)
+    if (result && !previewActive && session.status !== 'checking') {
+      requestOwner.current = session.status === 'authenticated' ? session.user?.id ?? null : null
+      void controller.start(result, realGenerationService)
+    }
     if (!result) {
       const firstError = Object.keys(validateTripForm(values).errors)[0] as TripField
       fields.current[firstError]?.focus()
+    }
+  }
+
+  function editReal(fieldsToEdit: TripFormErrors = {}) {
+    editFocus.current = (Object.keys(fieldsToEdit)[0] ?? 'departure_city') as TripField
+    controller.cancel()
+    setServiceErrors(fieldsToEdit)
+  }
+  function retryReal() {
+    const snapshot = controller.getSnapshot()
+    if (snapshot.status === 'error' && snapshot.error.canRetry) {
+      requestOwner.current = session.status === 'authenticated' ? session.user?.id ?? null : null
+      void controller.start(snapshot.request, realGenerationService)
     }
   }
 
@@ -92,39 +150,32 @@ export default function TripPlannerPage() {
       </div>
     </header>
     <main className="tp-container tp-main" id="trip-details" tabIndex={-1}>
-      <div className="tp-intro" hidden={previewActive}>
+      <div className="tp-intro" hidden={previewActive || realActive}>
         <h1>Where to <em>next?</em></h1>
         <p>Tell us the basics. Start with your route, dates and whole-trip budget.</p>
       </div>
-      <div className="tp-mock-notice"><strong>MOCK · Form preview</strong><span>Sample cities for testing only. Live provider coverage is not verified. Nothing is sent or saved.</span></div>
-      <div className="tp-columns" hidden={previewActive}>
+      <div className="tp-mock-notice"><span>Choose your destination, dates, and budget to plan your trip.</span></div>
+      <div className="tp-columns" hidden={previewActive || realActive}>
         <form className="tp-form" aria-label="Trip details" noValidate onSubmit={submit}>
           {submitted && !valid && <div role="alert" className="tp-error-banner">Please fix the highlighted fields.</div>}
-          {Object.keys(serviceErrors).length > 0 && <div role="alert" className="tp-error-banner">MOCK validation response: please check the highlighted fields. Your inputs are unchanged.</div>}
+          {Object.keys(serviceErrors).length > 0 && <div role="alert" className="tp-error-banner">Please check the highlighted fields. Your inputs are unchanged.</div>}
           <fieldset>
             <legend>Route</legend>
             <div className="tp-row tp-route">
               <Field name="departure_city" label="From" error={shownErrors.departure_city}>
-                <select {...fieldProps('departure_city', 'tp-cities-help')} value={values.departure_city} onChange={event => update('departure_city', event.target.value)}>
-                  <option value="">Choose a city</option>
-                  {MOCK_CITIES.map(city => <option key={city} value={city}>{city} (MOCK)</option>)}
-                </select>
+                <CityCombobox {...fieldProps('departure_city', 'tp-cities-help')} value={values.departure_city} onValueChange={value => update('departure_city', value)} />
               </Field>
               <button type="button" className="tp-swap" aria-label="Swap cities" onClick={() => {
                 setValues(previous => ({ ...previous, departure_city: previous.destination_city, destination_city: previous.departure_city }))
-                setRequest(null)
-                setServiceErrors({})
+                            setServiceErrors({})
               }}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8h14l-4-4M20 16H6l4 4" /></svg>
               </button>
               <Field name="destination_city" label="To" error={shownErrors.destination_city}>
-                <select {...fieldProps('destination_city', 'tp-cities-help')} value={values.destination_city} onChange={event => update('destination_city', event.target.value)}>
-                  <option value="">Choose a city</option>
-                  {MOCK_CITIES.map(city => <option key={city} value={city}>{city} (MOCK)</option>)}
-                </select>
+                <CityCombobox {...fieldProps('destination_city', 'tp-cities-help')} value={values.destination_city} onValueChange={value => update('destination_city', value)} />
               </Field>
             </div>
-            <p id="tp-cities-help" className="tp-help">Sample cities for testing (MOCK). These choices do not confirm live provider coverage.</p>
+            <p id="tp-cities-help" className="tp-help">Search by city name or supported alias. Country codes identify the mapped country. Supported cities do not guarantee available offers.</p>
           </fieldset>
           <fieldset>
             <legend>Dates</legend>
@@ -167,27 +218,24 @@ export default function TripPlannerPage() {
           </div>
           <div className="tp-submit-row">
             <p className="tp-summary" aria-live="polite">{summary}</p>
-            <button className="tp-submit" type="submit">Check trip details <span aria-hidden="true">→</span></button>
+            <button className="tp-submit" type="submit" disabled={generation.status === 'pending' || remaining > 0 || session.status === 'checking'}>{session.status === 'checking' ? 'Checking session…' : remaining > 0 ? `Try again in ${remaining} s` : 'Generate Trip'} <span aria-hidden="true">→</span></button>
           </div>
-          {request && <div className="tp-prepared">
-            <p role="status"><strong>Trip details checked locally.</strong> Nothing has been sent and no trip has been generated.</p>
-            <details><summary>Prepared request · v0.4 candidate</summary><pre>{JSON.stringify(request, null, 2)}</pre></details>
-          </div>}
         </form>
         <aside className="tp-aside">
           <section aria-labelledby="tp-know-heading">
             <h2 id="tp-know-heading">Good to know</h2>
             <ul>
-              <li>This preview only checks your trip details locally. Authentication and trip generation are not connected.</li>
-              <li>When pricing is connected, prices will be marked <b>Live</b>, <b>Estimate</b> or <b>Unavailable</b>. Only verified provider prices can be Live.</li>
+              <li>Generation requires sign-in. Failures keep your inputs for editing or a deliberate retry; generation is never retried automatically.</li>
+              <li>Results show <b>Retrieved prices</b>, <b>Estimates</b> and <b>Unavailable</b> costs. Retrieved prices reflect their source and retrieval time; availability and final prices can change.</li>
               <li>A missing price will never be counted as $0.00.</li>
               <li>TravelMate plans trips. It doesn't book or take payments.</li>
             </ul>
           </section>
         </aside>
       </div>
-      {GenerationDevTools && <Suspense fallback={<p role="status">Loading development preview controls…</p>}>
-        <GenerationDevTools request={request} onActiveChange={setPreviewActive} onEdit={editAfterPreview} />
+      {generation.status !== 'idle' && <GenerationView state={generation} remaining={remaining} onRetry={retryReal} onEdit={editReal} />}
+      {!realActive && GenerationDevTools && <Suspense fallback={<p role="status">Loading development preview controls…</p>}>
+        <GenerationDevTools request={prepareTripRequest(values)} onActiveChange={setPreviewActive} onEdit={editAfterPreview} />
       </Suspense>}
     </main>
   </div>

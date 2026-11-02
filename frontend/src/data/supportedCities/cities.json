@@ -1,0 +1,455 @@
+{
+  "source": {
+    "path": "backend/app/adapters/travelmate.py",
+    "commit": "3d3c79a8912de70b6892fed7d2d6d313ce7f4c3e",
+    "normalization_sha256": "d9fcad511d660eb2fba62b6c9929419b5cd2a1dfc28a607eed9cf75d6450b80e"
+  },
+  "cities": [
+    {
+      "name": "Istanbul",
+      "country_code": "tr",
+      "aliases": []
+    },
+    {
+      "name": "Cairo",
+      "country_code": "eg",
+      "aliases": []
+    },
+    {
+      "name": "Rome",
+      "country_code": "it",
+      "aliases": [
+        "roma"
+      ]
+    },
+    {
+      "name": "Riyadh",
+      "country_code": "sa",
+      "aliases": [
+        "ar riyadh",
+        "al riyadh"
+      ]
+    },
+    {
+      "name": "Jeddah",
+      "country_code": "sa",
+      "aliases": [
+        "jedda",
+        "jiddah"
+      ]
+    },
+    {
+      "name": "Dubai",
+      "country_code": "ae",
+      "aliases": []
+    },
+    {
+      "name": "Doha",
+      "country_code": "qa",
+      "aliases": []
+    },
+    {
+      "name": "Amman",
+      "country_code": "jo",
+      "aliases": []
+    },
+    {
+      "name": "Baghdad",
+      "country_code": "iq",
+      "aliases": []
+    },
+    {
+      "name": "Erbil",
+      "country_code": "iq",
+      "aliases": [
+        "arbil",
+        "hawler"
+      ]
+    },
+    {
+      "name": "London",
+      "country_code": "gb",
+      "aliases": []
+    },
+    {
+      "name": "Paris",
+      "country_code": "fr",
+      "aliases": []
+    },
+    {
+      "name": "Abu Dhabi",
+      "country_code": "ae",
+      "aliases": []
+    },
+    {
+      "name": "Sharjah",
+      "country_code": "ae",
+      "aliases": []
+    },
+    {
+      "name": "Muscat",
+      "country_code": "om",
+      "aliases": []
+    },
+    {
+      "name": "Kuwait City",
+      "country_code": "kw",
+      "aliases": [
+        "kuwait"
+      ]
+    },
+    {
+      "name": "Manama",
+      "country_code": "bh",
+      "aliases": [
+        "bahrain"
+      ]
+    },
+    {
+      "name": "Medina",
+      "country_code": "sa",
+      "aliases": [
+        "madinah",
+        "al madinah"
+      ]
+    },
+    {
+      "name": "Dammam",
+      "country_code": "sa",
+      "aliases": []
+    },
+    {
+      "name": "Beirut",
+      "country_code": "lb",
+      "aliases": []
+    },
+    {
+      "name": "Basra",
+      "country_code": "iq",
+      "aliases": [
+        "basrah"
+      ]
+    },
+    {
+      "name": "Sulaymaniyah",
+      "country_code": "iq",
+      "aliases": [
+        "sulaimani",
+        "slemani"
+      ]
+    },
+    {
+      "name": "Najaf",
+      "country_code": "iq",
+      "aliases": []
+    },
+    {
+      "name": "Casablanca",
+      "country_code": "ma",
+      "aliases": []
+    },
+    {
+      "name": "Marrakesh",
+      "country_code": "ma",
+      "aliases": [
+        "marrakech"
+      ]
+    },
+    {
+      "name": "Tunis",
+      "country_code": "tn",
+      "aliases": []
+    },
+    {
+      "name": "Algiers",
+      "country_code": "dz",
+      "aliases": []
+    },
+    {
+      "name": "Alexandria",
+      "country_code": "eg",
+      "aliases": []
+    },
+    {
+      "name": "Sharm El Sheikh",
+      "country_code": "eg",
+      "aliases": [
+        "sharm el-sheikh",
+        "sharm"
+      ]
+    },
+    {
+      "name": "Hurghada",
+      "country_code": "eg",
+      "aliases": []
+    },
+    {
+      "name": "Antalya",
+      "country_code": "tr",
+      "aliases": []
+    },
+    {
+      "name": "Izmir",
+      "country_code": "tr",
+      "aliases": []
+    },
+    {
+      "name": "Ankara",
+      "country_code": "tr",
+      "aliases": []
+    },
+    {
+      "name": "Trabzon",
+      "country_code": "tr",
+      "aliases": []
+    },
+    {
+      "name": "Baku",
+      "country_code": "az",
+      "aliases": []
+    },
+    {
+      "name": "Tbilisi",
+      "country_code": "ge",
+      "aliases": []
+    },
+    {
+      "name": "Tashkent",
+      "country_code": "uz",
+      "aliases": []
+    },
+    {
+      "name": "Berlin",
+      "country_code": "de",
+      "aliases": []
+    },
+    {
+      "name": "Munich",
+      "country_code": "de",
+      "aliases": [
+        "munchen",
+        "münchen"
+      ]
+    },
+    {
+      "name": "Frankfurt",
+      "country_code": "de",
+      "aliases": []
+    },
+    {
+      "name": "Vienna",
+      "country_code": "at",
+      "aliases": [
+        "wien"
+      ]
+    },
+    {
+      "name": "Amsterdam",
+      "country_code": "nl",
+      "aliases": []
+    },
+    {
+      "name": "Brussels",
+      "country_code": "be",
+      "aliases": []
+    },
+    {
+      "name": "Madrid",
+      "country_code": "es",
+      "aliases": []
+    },
+    {
+      "name": "Barcelona",
+      "country_code": "es",
+      "aliases": []
+    },
+    {
+      "name": "Lisbon",
+      "country_code": "pt",
+      "aliases": [
+        "lisboa"
+      ]
+    },
+    {
+      "name": "Milan",
+      "country_code": "it",
+      "aliases": [
+        "milano"
+      ]
+    },
+    {
+      "name": "Athens",
+      "country_code": "gr",
+      "aliases": []
+    },
+    {
+      "name": "Prague",
+      "country_code": "cz",
+      "aliases": []
+    },
+    {
+      "name": "Budapest",
+      "country_code": "hu",
+      "aliases": []
+    },
+    {
+      "name": "Zurich",
+      "country_code": "ch",
+      "aliases": [
+        "zürich"
+      ]
+    },
+    {
+      "name": "Geneva",
+      "country_code": "ch",
+      "aliases": []
+    },
+    {
+      "name": "Copenhagen",
+      "country_code": "dk",
+      "aliases": []
+    },
+    {
+      "name": "Stockholm",
+      "country_code": "se",
+      "aliases": []
+    },
+    {
+      "name": "Manchester",
+      "country_code": "gb",
+      "aliases": []
+    },
+    {
+      "name": "Dublin",
+      "country_code": "ie",
+      "aliases": []
+    },
+    {
+      "name": "Sarajevo",
+      "country_code": "ba",
+      "aliases": []
+    },
+    {
+      "name": "Warsaw",
+      "country_code": "pl",
+      "aliases": []
+    },
+    {
+      "name": "Bangkok",
+      "country_code": "th",
+      "aliases": []
+    },
+    {
+      "name": "Phuket",
+      "country_code": "th",
+      "aliases": []
+    },
+    {
+      "name": "Kuala Lumpur",
+      "country_code": "my",
+      "aliases": []
+    },
+    {
+      "name": "Singapore",
+      "country_code": "sg",
+      "aliases": []
+    },
+    {
+      "name": "Jakarta",
+      "country_code": "id",
+      "aliases": []
+    },
+    {
+      "name": "Tokyo",
+      "country_code": "jp",
+      "aliases": []
+    },
+    {
+      "name": "Seoul",
+      "country_code": "kr",
+      "aliases": []
+    },
+    {
+      "name": "Beijing",
+      "country_code": "cn",
+      "aliases": []
+    },
+    {
+      "name": "Shanghai",
+      "country_code": "cn",
+      "aliases": []
+    },
+    {
+      "name": "Hong Kong",
+      "country_code": "hk",
+      "aliases": []
+    },
+    {
+      "name": "Male",
+      "country_code": "mv",
+      "aliases": [
+        "malé"
+      ]
+    },
+    {
+      "name": "Delhi",
+      "country_code": "in",
+      "aliases": [
+        "new delhi"
+      ]
+    },
+    {
+      "name": "Mumbai",
+      "country_code": "in",
+      "aliases": []
+    },
+    {
+      "name": "Karachi",
+      "country_code": "pk",
+      "aliases": []
+    },
+    {
+      "name": "Lahore",
+      "country_code": "pk",
+      "aliases": []
+    },
+    {
+      "name": "Islamabad",
+      "country_code": "pk",
+      "aliases": []
+    },
+    {
+      "name": "New York",
+      "country_code": "us",
+      "aliases": [
+        "new york city",
+        "nyc"
+      ]
+    },
+    {
+      "name": "Los Angeles",
+      "country_code": "us",
+      "aliases": []
+    },
+    {
+      "name": "Miami",
+      "country_code": "us",
+      "aliases": []
+    },
+    {
+      "name": "Toronto",
+      "country_code": "ca",
+      "aliases": []
+    },
+    {
+      "name": "Nairobi",
+      "country_code": "ke",
+      "aliases": []
+    },
+    {
+      "name": "Cape Town",
+      "country_code": "za",
+      "aliases": []
+    }
+  ]
+}

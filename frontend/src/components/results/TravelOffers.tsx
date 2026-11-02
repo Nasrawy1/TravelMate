@@ -35,7 +35,7 @@ export default function TravelOffers({ response, context }: ResultsData) {
         const kind = category === 'flights' ? 'flight' : 'hotel'
         return <section key={category} className="res-section" aria-labelledby={`res-${category}-heading`}>
           <div className="res-category-heading"><h3 id={`res-${category}-heading`}>{category === 'flights' ? 'Round-trip flights' : 'Hotel'}</h3><span className="res-category-tag">{options.status === 'unavailable' ? 'Unavailable' : providerLabel(context)}</span></div>
-          {options.status === 'unavailable' ? <div className="res-unavailable res-card"><strong aria-hidden="true">—</strong><p>No {context.data_mode !== 'validated_api' ? 'sample ' : ''}{kind} offer is available for these dates and travellers.</p><p className="res-small">Counted as missing in the budget, never as $0.00.</p></div>
+          {options.status === 'unavailable' ? <div className="res-unavailable res-card"><p>No {context.data_mode !== 'validated_api' ? 'sample ' : ''}{kind} offer is available for these dates and travellers.</p><p className="res-small">Counted as missing in the budget, never as $0.00.</p></div>
             : selectedFirst<FlightOffer | HotelOffer>(options.offers, selectedId).map(offer => <OfferCard key={offer.id} offer={offer} kind={kind} selected={selectedId !== null && offer.id === selectedId} context={context} />)}
         </section>
       })}

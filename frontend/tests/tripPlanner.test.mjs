@@ -2,7 +2,17 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import test from 'node:test'
-import { prepareTripRequest, utcToday, validateTripForm } from '../src/utils/tripPlanner.ts'
+import { after } from 'node:test'
+import { mkdir, writeFile, unlink } from 'node:fs/promises'
+import { fileURLToPath } from 'node:url'
+import { build } from 'vite'
+const cache = new URL('../node_modules/.cache/', import.meta.url)
+await mkdir(cache, { recursive: true })
+const compiled = new URL(`trip-planner-tests-${process.pid}.mjs`, cache)
+const output = await build({ root: fileURLToPath(new URL('../', import.meta.url)), envDir: false, configFile: false, logLevel: 'silent', build: { ssr: 'src/utils/tripPlanner.ts', write: false, minify: false } })
+await writeFile(compiled, output.output.find(i => i.type === 'chunk' && i.isEntry).code)
+after(() => unlink(compiled))
+const { prepareTripRequest, utcToday, validateTripForm } = await import(compiled.href)
 
 const today = '2026-10-16'
 const valid = {
@@ -31,7 +41,7 @@ for (const [name, patch, field] of [
   ['missing departure', { departure_city: '' }, 'departure_city'],
   ['missing destination', { destination_city: '' }, 'destination_city'],
   ['same cities', { destination_city: 'Istanbul' }, 'destination_city'],
-  ['city outside MOCK choices', { departure_city: 'Atlantis' }, 'departure_city'],
+  ['unsupported city', { departure_city: 'Atlantis' }, 'departure_city'],
   ['missing start', { start_date: '' }, 'start_date'],
   ['missing return', { return_date: '' }, 'return_date'],
   ['today', { start_date: today }, 'start_date'],
@@ -76,4 +86,13 @@ test('accepts 1 and 7 nights, adult limits, fractional USD and leap day', () => 
 
 test('empty date counter is unknown, not zero nights', () => {
   assert.equal(validateTripForm({ ...valid, start_date: '' }, today).nights, null)
+})
+
+test('canonicalizes adapter aliases and case/whitespace variants, rejects identical mapped cities', () => {
+  const request = prepareTripRequest({ ...valid, departure_city: '  ISTANBUL  ', destination_city: ' ROMA ' }, today)
+  assert.equal(request.departure_city, 'Istanbul'); assert.equal(request.destination_city, 'Rome')
+  assert.equal(prepareTripRequest({ ...valid, departure_city: 'Rome', destination_city: ' ROMA ' }, today), null)
+})
+for (const value of [' ', '\t\n', 'x'.repeat(201)]) test(`rejects blank/overlength city ${JSON.stringify(value.slice(0, 5))}`, () => {
+  assert.equal(prepareTripRequest({ ...valid, departure_city: value }, today), null)
 })

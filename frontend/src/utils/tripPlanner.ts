@@ -1,7 +1,6 @@
 import type { TripGenerateRequest } from '../types/trip'
 
-// Testing choices only. This list does not establish live provider coverage.
-export const MOCK_CITIES = ['Istanbul', 'Rome', 'Paris', 'London', 'Barcelona', 'Dubai'] as const
+import { cityInputError, resolveSupportedCity } from '../data/supportedCities'
 
 export interface TripFormValues {
   departure_city: string
@@ -30,12 +29,11 @@ function calendarTime(value: string): number | null {
 
 export function validateTripForm(values: TripFormValues, today = utcToday()) {
   const errors: TripFormErrors = {}
-  if (!values.departure_city) errors.departure_city = 'Choose where you leave from.'
-  else if (!MOCK_CITIES.some(city => city === values.departure_city)) errors.departure_city = 'Choose a MOCK testing city from the list.'
-  if (!values.destination_city) errors.destination_city = 'Choose your destination.'
-  else if (!MOCK_CITIES.some(city => city === values.destination_city)) errors.destination_city = 'Choose a MOCK testing city from the list.'
-  else if (values.destination_city === values.departure_city) errors.destination_city = 'Pick a different city from your departure.'
-
+  const departureError = cityInputError(values.departure_city)
+  const destinationError = cityInputError(values.destination_city)
+  if (departureError) errors.departure_city = departureError
+  if (destinationError) errors.destination_city = destinationError
+  else if (!departureError && resolveSupportedCity(values.destination_city) === resolveSupportedCity(values.departure_city)) errors.destination_city = 'Pick a different city from your departure.'
   const start = calendarTime(values.start_date)
   const end = calendarTime(values.return_date)
   const nights = start !== null && end !== null ? (end - start) / DAY_MS : null
@@ -58,10 +56,10 @@ export function validateTripForm(values: TripFormValues, today = utcToday()) {
 
 export function prepareTripRequest(values: TripFormValues, today = utcToday()): TripGenerateRequest | null {
   if (Object.keys(validateTripForm(values, today).errors).length) return null
-  // Explicitly whitelist the candidate contract fields; never spread form/UI state.
+  // Explicitly whitelist the adopted contract fields; never spread form/UI state.
   return {
-    departure_city: values.departure_city,
-    destination_city: values.destination_city,
+    departure_city: resolveSupportedCity(values.departure_city)!,
+    destination_city: resolveSupportedCity(values.destination_city)!,
     start_date: values.start_date,
     return_date: values.return_date,
     adults: values.adults,

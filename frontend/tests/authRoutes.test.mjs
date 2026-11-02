@@ -33,7 +33,12 @@ test('configured direct Offline Demo renders without creating the Auth client', 
   }
 })
 test('unknown routes do not initialize online Auth', () => {
-  assert.match(render('/unknown'), /Page not found/)
+  for (const path of ['/unknown', '/unknown/nested?from=test', '/trip-planner/unknown', '/offline-demo/unknown']) {
+    const html = render(path)
+    assert.match(html, /Error 404/)
+    assert.match(html, /Go to home/)
+    assert.doesNotMatch(html, /Frontend placeholder|Page designs pending approval|href="\/login"/)
+  }
 })
 
 test('the temporary JWT probe route does not exist in production or initialize Auth', () => {

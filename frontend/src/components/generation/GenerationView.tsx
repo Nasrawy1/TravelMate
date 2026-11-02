@@ -18,7 +18,6 @@ export default function GenerationView({ state, remaining, onEdit, onRetry }: {
   const error = state.status === 'error' ? state.error : null
   const mock = state.context.data_mode !== 'api'
   return <section className="generation-view" aria-label="Generation lifecycle">
-    <div className="gen-top-actions"><button type="button" className="gen-secondary" onClick={() => onEdit(error?.fields)}>{state.status === 'pending' ? 'Cancel preview and edit trip' : 'Edit trip'}</button></div>
     <svg className={state.status === 'pending' ? 'gen-scene gen-bob' : 'gen-scene'} width="180" height="180" viewBox="0 0 180 180" aria-hidden="true">
       <defs><clipPath id="generation-scene-clip"><circle cx="90" cy="90" r="88" /></clipPath></defs>
       <g clipPath="url(#generation-scene-clip)"><circle cx="90" cy="90" r="88" fill="var(--gen-sand-deep)" /><circle cx="90" cy="72" r="38" fill="var(--gen-sun)" /><path d="M0 104c22-9 44-9 66 0s44 9 66 0 34-7 48-3v80H0z" fill="var(--gen-sea)" /><path d="M0 124c22-8 44-8 66 0s44 8 66 0 34-6 48-2" stroke="var(--gen-sand-deep)" strokeWidth="4" fill="none" /></g>
@@ -27,7 +26,7 @@ export default function GenerationView({ state, remaining, onEdit, onRetry }: {
     {error ? <div className="gen-error-card" role="alert">
       <h1 ref={heading} tabIndex={-1}>{error.title}</h1>
       <p>{error.message}</p>
-      <div className="gen-actions">
+      <div className="gen-actions" role="group" aria-label="Trip recovery actions">
         {error.canRetry && <button type="button" className="gen-primary" onClick={onRetry} disabled={remaining > 0}>{remaining > 0 ? `Try again in ${remaining} s` : mock ? 'Retry MOCK preview' : 'Try again'}</button>}
         {error.signIn && <Link className="gen-primary" to="/login">Sign in</Link>}
         <button type="button" className="gen-secondary" onClick={() => onEdit(error.fields)}>Edit trip</button>
@@ -44,8 +43,9 @@ export default function GenerationView({ state, remaining, onEdit, onRetry }: {
             <span>{label}</span><span className="gen-step-status">{index === 0 ? 'Pending' : 'Unverified'}</span>
           </li>)}
         </ol>
-        <p className="gen-small">Visual guide only. Individual provider steps are not reported or verified. Nothing is complete until the full response is validated.</p>
-      </> : <p role="status">The response passed the supplied contract validator. Results rendering is not connected in this increment.</p>}
+        <p id="gen-operation-notice" className="gen-small">{!mock && 'Stopping locally does not guarantee server cancellation. Submitting again may start another generation. '}Visual guide only. Individual provider steps are not reported or verified. Nothing is complete until the full response is validated.</p>
+        <div className="gen-actions" role="group" aria-label="Pending trip actions"><button type="button" className="gen-link" aria-describedby="gen-operation-notice" onClick={() => onEdit()}>{mock ? 'Cancel preview and edit trip' : 'Stop waiting and edit trip'}</button></div>
+      </> : <><p role="status">The trip response has been validated for Results.</p><div className="gen-actions" role="group" aria-label="Validated trip actions"><button type="button" className="gen-link" onClick={() => onEdit()}>Edit trip</button></div></>}
     </>}
   </section>
 }

@@ -1,10 +1,11 @@
 import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import AppLayout from './components/layout/AppLayout'
+import NotFoundPage from './pages/NotFoundPage'
 import PlaceholderPage from './components/PlaceholderPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import LoginPage from './pages/LoginPage'
 import OfflineDemoPage from './pages/OfflineDemoPage'
+import TripResultProvider from './components/results/TripResultProvider'
 import ResultsPage from './pages/ResultsPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import SignupPage from './pages/SignupPage'
@@ -25,16 +26,16 @@ export default function App() {
           <Route path="/" element={<WelcomePage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignupPage />} />
-          <Route path="trip-planner" element={<TripPlannerPage />} />
-          <Route path="results" element={<ResultsPage />} />
+          <Route element={<TripResultProvider />}>
+            <Route path="trip-planner" element={<TripPlannerPage />} />
+            <Route path="results" element={<ResultsPage />} />
+          </Route>
         </Route>
         <Route path="forgot-password" element={<ForgotPasswordPage />} />
         <Route path="reset-password" element={<ResetPasswordPage />} />
       </Route>
       <Route path="offline-demo" element={<OfflineDemoPage />} />
-      <Route element={<AppLayout />}>
-        <Route path="*" element={<PlaceholderPage title="Page not found">Use the navigation to return to a TravelMate page.</PlaceholderPage>} />
-      </Route>
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )
 }
