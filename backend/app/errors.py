@@ -6,6 +6,8 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from app.api.error_mapping import validation_error_fields
+
 logger = logging.getLogger("travelmate.errors")
 
 
@@ -34,26 +36,18 @@ def error_response(
 async def validation_exception_handler(
     request: Request, exc: RequestValidationError
 ) -> JSONResponse:
-    fields = [
-        {
-            "field": ".".join(str(part) for part in error["loc"] if part != "body"),
-            "message": error["msg"],
-        }
-        for error in exc.errors()
-    ]
     return error_response(
         request,
         status_code=422,
         code="VALIDATION_ERROR",
         message="Request validation failed.",
-        details={"fields": fields},
+        details={"fields": validation_error_fields(exc)},
     )
 
 
 async def http_exception_handler(
     request: Request, exc: StarletteHTTPException
 ) -> JSONResponse:
-    # TODO(BE-03): Map UNSUPPORTED_LOCATION and other specific 400 codes.
     mappings = {
         400: ("INVALID_TRIP_DATES", "The request is invalid."),
         401: ("UNAUTHORIZED", "Authentication is required."),
@@ -76,10 +70,11 @@ async def http_exception_handler(
 async def unhandled_exception_handler(
     request: Request, exc: Exception
 ) -> JSONResponse:
-    # Do not log exception details or tracebacks, which could contain secrets.
+    # Exception details stay out of logs; only the exception type and request ID are useful here.
     logger.error(
-        "Unhandled server exception request_id=%s",
+        "Unhandled server exception request_id=%s type=%s",
         getattr(request.state, "request_id", "unknown"),
+        type(exc).__name__,
     )
     return error_response(
         request,

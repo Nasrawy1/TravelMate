@@ -34,3 +34,5 @@ travelmate_cache.json
 travelmate_cache.json.lock
 travelmate_raw_data.json
 travelmate_final_report.json
+
+backend/.pytest-tmp/

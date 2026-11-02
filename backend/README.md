@@ -57,3 +57,24 @@ Run the test suite from `backend/` with the virtual environment activated:
 ```powershell
 python -m pytest
 ```
+
+## BE-03 — Generate Endpoint
+
+### Integrated endpoint
+
+`POST /api/v1/trips/generate` requires a Supabase bearer token verified by BE-02. It validates the six public request fields, calls the travel and itinerary adapters in worker threads with request and deadline context, selects eligible offers, and uses BE-04 `calculate_budget` as the authoritative ledger and total calculator. Successful responses follow `docs/api-contracts.md` §4. The endpoint does not persist a trip or return a trip ID.
+
+Adapter errors are mapped to the common error envelope without forwarding raw adapter messages. Unsupported locations map to `400 UNSUPPORTED_LOCATION`, adapter input errors to `422 VALIDATION_ERROR`, timeouts to `504 GENERATION_TIMEOUT`, provider unavailability to `503 PROVIDER_UNAVAILABLE`, rate limits to `429 RATE_LIMITED`, and invalid AI output to `502 AI_GENERATION_FAILED`. If AI succeeds while travel categories are unavailable, generation returns 200 with unavailable categories and warnings.
+
+The travel adapter may write its local cache file (`travelmate_cache.json`) even when `save_report=False`. This cache side effect is outside the trip-persistence boundary; generation does not write to Supabase.
+
+### Reproducible examples
+
+A Supabase bearer access token verified by BE-02 is required. Replace the placeholder with a valid access token:
+
+```powershell
+curl.exe -i -X POST http://localhost:8000/api/v1/trips/generate `
+  -H "Authorization: Bearer <supabase-access-token>" `
+  -H "Content-Type: application/json" `
+  -d "{\"departure_city\":\"Istanbul\",\"destination_city\":\"Rome\",\"start_date\":\"2026-12-01\",\"return_date\":\"2026-12-04\",\"adults\":2,\"budget_usd\":1500}"
+```
