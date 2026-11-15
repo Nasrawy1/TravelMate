@@ -2413,11 +2413,19 @@ def build_itinerary_messages(trip, context, policy):
     expected_dates = [(parse_iso_date(trip["start_date"]) + timedelta(days=i)).isoformat()
                       for i in range(trip["nights"] + 1)]
     if policy:
+        # API-06: the AI returns UNIT amounts only; the adapter computes the whole-trip total (build_cost_breakdown)
         ancillary_rule = (f'8. Return "ancillary_estimates" with "food" and "local_transport" objects '
-                          f'{{"amount_usd": number, "basis": string}} for the WHOLE trip and ALL {trip["adults"]} '
-                          f'traveler(s), following this reviewed policy (id "{policy["id"]}"): '
+                          f'{{"unit_amount_usd": number, "unit_low_usd": number or null, "unit_high_usd": number or null, '
+                          f'"per": "person" | "group", "period": "day" | "trip", "covered_dates": ["YYYY-MM-DD"], '
+                          f'"basis": string}} for {trip["adults"]} traveler(s), following this reviewed policy '
+                          f'(id "{policy["id"]}"): '
                           f'food: {policy["food"] or "not covered (return null)"}; '
-                          f'local_transport: {policy["local_transport"] or "not covered (return null)"}.')
+                          f'local_transport: {policy["local_transport"] or "not covered (return null)"}. '
+                          f'Give UNIT amounts only: never multiply by days or travelers (the backend computes the '
+                          f'whole-trip total). food covered_dates: the itinerary dates with meals at the destination. '
+                          f'local_transport covered_dates: the dates with planned journeys; never include the transport '
+                          f'of activities with "includes_transport": true. If the basis is insufficient, return null '
+                          f'for that object.')
     else:
         ancillary_rule = '8. Do NOT estimate food or local transport. Return "ancillary_estimates": null.'
     system_message = ("You are the TravelMate itinerary planner. You return ONLY one valid JSON object. "
@@ -2429,9 +2437,9 @@ TRIP CONTEXT (authoritative):
 RULES:
 1. "itinerary" must contain exactly {len(expected_dates)} day objects, one per date, in this exact order: {", ".join(expected_dates)}.
 2. Every day between the first and the last must have 1-4 activities. The first and last day may have 0 activities ONLY if "empty_day_reason" explains the travel reason; otherwise "empty_day_reason" is null.
-3. Each activity: {{"order": 1, "name": string, "area": string, "description": string (max 300 chars), "category": "sightseeing" | "culture" | "nature" | "shopping" | "leisure" | "meal" | "other", "cost": {{"amount_usd": number or null, "kind": "estimate" or "unknown"}}}}. "order" starts at 1 in every day and is contiguous. cost.kind must NEVER be "provider".
-4. cost.amount_usd is the estimated cost for ALL {trip["adults"]} traveler(s) together. "estimate" ALWAYS needs a number; if you have no number, use {{"amount_usd": null, "kind": "unknown"}}. Use 0 only for activities that are genuinely free.
-5. Meals belong to the food category, never to activities: do not create meal-only activities; if you include one, set "category": "meal" and cost {{"amount_usd": 0, "kind": "estimate"}}.
+3. Each activity: {{"order": 1, "name": string, "area": string, "description": string (max 300 chars), "category": "sightseeing" | "culture" | "nature" | "shopping" | "leisure" | "meal" | "other", "cost": {{"amount_usd": number or null, "kind": "estimate" or "unknown"}}, "cost_type": "priced" | "free" | "meal" | "discretionary" | "unknown", "includes_transport": true or false}}. "order" starts at 1 in every day and is contiguous. cost.kind must NEVER be "provider".
+4. cost.amount_usd is the estimated cost for ALL {trip["adults"]} traveler(s) together. "estimate" ALWAYS needs a number; if you have no number, use {{"amount_usd": null, "kind": "unknown"}} and "cost_type": "unknown" (for example a museum, tour or zoo whose admission price you do not know). Use 0 only for activities that are genuinely free, with "cost_type": "free". Use "priced" for admission, entry or tour fees. An entry fee (for example a market or venue) is the activity cost; optional purchases are never included in it, and an activity that is only optional shopping uses "discretionary". Set "includes_transport": true only when the priced activity already includes its own transport (for example a guided day trip to another city).
+5. Meals belong to the food category, never to activities: do not create meal-only activities; if you include one, set "category": "meal", "cost_type": "meal" and cost {{"amount_usd": 0, "kind": "estimate"}}.
 6. Never include flight or hotel prices in activities. Never change, recalculate or invent any flight, hotel or budget number. If a flight or hotel is null or unavailable, plan the days anyway without assuming its time, price or name.
 7. "price_explanation": 2-5 English sentences describing the selected flight and hotel prices using ONLY numbers that appear in TRIP CONTEXT, written exactly as given with a $ sign. If travel prices are unavailable, say so. Do not compute totals or remaining budget.
 {ancillary_rule}
@@ -2472,6 +2480,7 @@ def validate_itinerary_output(parsed, expected_dates, warnings):
         problems.append(f"Expected {len(expected_dates)} days (nights + 1), got {len(days)}.")
 
     normalized, meals_reassigned, blank_items_removed = [], 0, [0, 0]  # [blank items, empty estimates]
+    zero_unconfirmed = 0
     for index, (day, expected_date) in enumerate(zip(days, expected_dates)):
         where = f"Day {index + 1}"
         if not isinstance(day, dict):
@@ -2524,24 +2533,41 @@ def validate_itinerary_output(parsed, expected_dates, warnings):
             elif kind == "unknown" and amount is not None:
                 problems.append(f"{a_where} with kind 'unknown' must have a null amount_usd.")
 
-            if _is_meal_activity(activity) and kind in ALLOWED_ACTIVITY_KINDS:
+            # API-06: machine-readable cost type. A name match alone never turns an explicitly priced, free or
+            # discretionary non-meal activity (e.g., a food tour) into a meal.
+            claimed_type = activity.get("cost_type")
+            is_meal = claimed_type == "meal" or (_is_meal_activity(activity) and not (
+                claimed_type in ("priced", "free", "discretionary") and activity.get("category") != "meal"))
+            if is_meal and kind in ALLOWED_ACTIVITY_KINDS:
                 if not (kind == "estimate" and amount == 0):
                     meals_reassigned += 1
                 public_cost = {"amount_usd": 0.0, "kind": "estimate", "coverage": "all_travelers"}
                 basis = "Meal cost is covered by the food category (not counted as an activity)."
+                cost_type = "meal"
+            elif kind == "estimate" and valid_amount(amount, allow_zero=True) == 0 and claimed_type != "free":
+                # API-06: a zero that is not explicitly "free" (e.g., a missing museum, tour or zoo admission) is unknown
+                zero_unconfirmed += 1
+                public_cost = {"amount_usd": None, "kind": "unknown", "coverage": None}
+                basis = "AI returned 0 without confirming free entry; the admission price is unknown."
+                cost_type = "unknown"
             elif kind == "estimate" and valid_amount(amount, allow_zero=True) is not None:
                 public_cost = {"amount_usd": round_money(amount), "kind": "estimate", "coverage": "all_travelers"}
                 basis = "AI estimate for all travelers (not a provider price)."
+                cost_type = "free" if amount == 0 else ("discretionary" if claimed_type == "discretionary" else "priced")
             else:
                 public_cost = {"amount_usd": None, "kind": "unknown", "coverage": None}
                 basis = "AI could not estimate this cost."
+                cost_type = "unknown"
             clean_activities.append({
                 "order": a_index,
                 "name": str(activity.get("name") or "").strip(),
                 "area": str(activity.get("area") or "").strip(),
                 "description": str(activity.get("description") or "").strip(),
                 "cost": public_cost,
-                "_budget_basis": basis
+                "_budget_basis": basis,
+                "_cost_type": cost_type,
+                "_includes_transport": cost_type in ("priced", "discretionary", "unknown")
+                and activity.get("includes_transport") is True
             })
         normalized.append({"date": day.get("date"), "activities": clean_activities,
                            "empty_day_reason": reason.strip() if not activities and isinstance(reason, str) else None})
@@ -2557,6 +2583,9 @@ def validate_itinerary_output(parsed, expected_dates, warnings):
     if meals_reassigned:
         warnings.append(build_warning("MEAL_COST_REASSIGNED", f"{meals_reassigned} meal activity cost(s) were moved to "
                                       "the food category to avoid double counting."))
+    if zero_unconfirmed:
+        warnings.append(build_warning("ZERO_COST_UNCONFIRMED", f"{zero_unconfirmed} activity cost(s) of 0 were not "
+                                      "confirmed as free and were treated as unknown."))
     return normalized
 
 def build_budget_activities(itinerary):
@@ -2570,7 +2599,7 @@ def strip_internal_fields(itinerary):
              "activities": [{k: v for k, v in a.items() if not k.startswith("_")} for a in d["activities"]]}
             for d in itinerary]
 
-def build_ancillary_estimates(parsed, policy, warnings):
+def build_ancillary_estimates(parsed, policy, warnings, breakdown=None):
     """Food / local transport estimate objects (adapter-contracts.md). Unknown unless an approved policy applies."""
     if not policy:
         return {"food": unknown_estimate("No approved estimation policy."),
@@ -2580,6 +2609,8 @@ def build_ancillary_estimates(parsed, policy, warnings):
     for key in ("food", "local_transport"):
         item = raw.get(key) if isinstance(raw.get(key), dict) else {}
         amount = valid_amount(item.get("amount_usd"), allow_zero=True)
+        if breakdown is not None:  # API-06: whole-trip amount computed by the adapter from units
+            amount = breakdown[key]["whole_trip_usd"]
         basis = item.get("basis")
         if policy[key] is None:
             result[key] = unknown_estimate(f"Policy {policy['id']} does not cover {key}.")
@@ -2589,6 +2620,107 @@ def build_ancillary_estimates(parsed, policy, warnings):
         else:
             result[key] = {"amount_usd": round_money(amount), "kind": "estimate", "basis": basis.strip()[:300],
                            "policy_id": policy["id"]}
+    return result
+
+# ==========================================
+# 14.1 STRUCTURED FOOD, TRANSPORT & ACTIVITY COSTS (API-06 #36)
+# ==========================================
+# The AI supplies UNIT amounts (per person / group, per day / trip) and the covered itinerary dates; the adapter
+# computes: whole-trip estimate = unit amount x covered days (period "day") x covered travelers (per "person").
+# Everything here is an AI estimate in USD; provider flight / hotel prices are never part of cost_breakdown.
+ANCILLARY_PER = {"person", "group"}
+ANCILLARY_PERIODS = {"day", "trip"}
+
+def _activity_ref(day, activity):
+    return {"date": day["date"], "order": activity["order"]}
+
+def _transport_included_dates(itinerary):
+    """Dates whose only non-meal activities are excursions that include their own transport (e.g., Baghdad-Babylon)."""
+    dates = set()
+    for day in itinerary:
+        outings = [a for a in day["activities"] if a["_cost_type"] != "meal"]
+        if outings and all(a["_includes_transport"] for a in outings):
+            dates.add(day["date"])
+    return dates
+
+def _unknown_breakdown(key, trip, reason, included_refs, excluded_refs):
+    return {"category": key, "kind": "unknown", "currency": "USD", "source": "ai_estimate", "policy_id": None,
+            "per": None, "period": None, "unit_amount_usd": None, "unit_range_usd": None, "covered_dates": [],
+            "covered_travelers": trip["adults"], "whole_trip_usd": None, "whole_trip_range_usd": None,
+            "calculation": None, "basis": None, "reason": reason,
+            "included_activity_refs": included_refs, "excluded_activity_refs": excluded_refs}
+
+def _ancillary_breakdown(key, item, policy, trip, itinerary, included_refs, excluded_refs):
+    """One food / local_transport entry: a unit-based estimate, or unknown with the reason."""
+    unknown = lambda reason: _unknown_breakdown(key, trip, reason, included_refs, excluded_refs)
+    basis = item.get("basis")
+    if not isinstance(basis, str) or not basis.strip():
+        return unknown(f"AI did not return a {key} basis under policy {policy['id']}.")
+    trip_dates = [day["date"] for day in itinerary]
+    if not any(field in item for field in ("unit_amount_usd", "per", "period")):
+        # Earlier shape {amount_usd, basis}: one whole-trip amount for the group, kept as-is (no units supplied)
+        amount = valid_amount(item.get("amount_usd"), allow_zero=True)
+        if amount is None:
+            return unknown(f"AI did not return a valid {key} amount under policy {policy['id']}.")
+        per, period, unit, low, high, dates = "group", "trip", amount, None, None, trip_dates
+    else:
+        per, period = item.get("per"), item.get("period")
+        unit = valid_amount(item.get("unit_amount_usd"), allow_zero=True)
+        if unit is None or per not in ANCILLARY_PER or period not in ANCILLARY_PERIODS:
+            return unknown(f"AI did not return a valid {key} unit (unit_amount_usd, per, period).")
+        low = valid_amount(item.get("unit_low_usd"), allow_zero=True)
+        high = valid_amount(item.get("unit_high_usd"), allow_zero=True)
+        dates = item.get("covered_dates")
+        if dates is None:  # Default: every itinerary day for food, days with planned outings for transport
+            dates = trip_dates if key == "food" else \
+                [day["date"] for day in itinerary if any(a["_cost_type"] != "meal" for a in day["activities"])]
+        if not isinstance(dates, list) or any(d not in trip_dates for d in dates):
+            return unknown(f"{key} covered_dates must be itinerary dates.")
+        dates = [d for d in trip_dates if d in dates]
+    if key == "local_transport":  # Excursions with their own transport are not charged twice
+        dates = [d for d in dates if d not in _transport_included_dates(itinerary)]
+    if period == "day" and not dates:
+        return unknown(f"No itinerary dates are covered by the {key} estimate.")
+
+    days = len(dates) if period == "day" else 1
+    travelers = trip["adults"] if per == "person" else 1
+    whole = round_money(unit * days * travelers)
+    unit_range = whole_range = None
+    if low is not None and high is not None and low <= unit <= high:
+        unit_range = {"low_usd": round_money(low), "high_usd": round_money(high)}
+        whole_range = {"low_usd": round_money(low * days * travelers), "high_usd": round_money(high * days * travelers)}
+    who = f"{travelers} traveler(s)" if per == "person" else f"1 group of {trip['adults']} traveler(s)"
+    calculation = (f"{round_money(unit)} USD per {per} per {period} x {days} day(s) x {who} = {whole} USD"
+                   if period == "day" else f"{round_money(unit)} USD per {per} per trip x {who} = {whole} USD")
+    return {"category": key, "kind": "estimate", "currency": "USD", "source": "ai_estimate", "policy_id": policy["id"],
+            "per": per, "period": period, "unit_amount_usd": round_money(unit), "unit_range_usd": unit_range,
+            "covered_dates": dates, "covered_travelers": trip["adults"], "whole_trip_usd": whole,
+            "whole_trip_range_usd": whole_range, "calculation": calculation, "basis": basis.strip()[:300],
+            "reason": None, "included_activity_refs": included_refs, "excluded_activity_refs": excluded_refs}
+
+def build_cost_breakdown(parsed, policy, itinerary, trip):
+    """
+    Machine-readable cost output for BE-05: food / local_transport units and whole-trip estimates, and every activity
+    classified as meal (allocated to food), priced, free, discretionary or unknown. Never raises; unknown has a reason.
+    """
+    meal_refs = [_activity_ref(d, a) for d in itinerary for a in d["activities"] if a["_cost_type"] == "meal"]
+    transport_refs = [_activity_ref(d, a) for d in itinerary for a in d["activities"] if a["_includes_transport"]]
+    raw = parsed.get("ancillary_estimates") if isinstance(parsed.get("ancillary_estimates"), dict) else {}
+    result = {"currency": "USD", "source": "ai_estimate", "provider_prices_included": False}
+    for key, included, excluded in (("food", meal_refs, []), ("local_transport", [], transport_refs)):
+        item = raw.get(key) if isinstance(raw.get(key), dict) else {}
+        if not policy:
+            result[key] = _unknown_breakdown(key, trip, "No approved estimation policy.", included, excluded)
+        elif policy[key] is None:
+            result[key] = _unknown_breakdown(key, trip, f"Policy {policy['id']} does not cover {key}.", included, excluded)
+        else:
+            result[key] = _ancillary_breakdown(key, item, policy, trip, itinerary, included, excluded)
+    result["activities"] = [{
+        "activity_ref": _activity_ref(day, a), "label": a["name"], "cost_type": a["_cost_type"],
+        "allocated_to": "food" if a["_cost_type"] == "meal" else "activities",
+        "includes_transport": a["_includes_transport"], "amount_usd": a["cost"]["amount_usd"],
+        "kind": a["cost"]["kind"], "source": "ai_estimate", "basis": a["_budget_basis"]}
+        for day in itinerary for a in day["activities"]]
     return result
 
 def _collect_numbers(value, found):
@@ -2707,11 +2839,13 @@ def _generate_itinerary_validated(trip, selected_offers, travel_availability, es
     if rejected:
         warnings.append(build_warning("PRICE_EXPLANATION_DROPPED", "The AI price explanation contained numbers that "
                                       f"are not in the backend data and was dropped: {rejected[:5]}"))
+    cost_breakdown = build_cost_breakdown(parsed, policy, itinerary, trip)
     return {
         "request_id": request_id,
         "status": "ok",
         "itinerary": strip_internal_fields(itinerary),
-        "ancillary_estimates": build_ancillary_estimates(parsed, policy, warnings),
+        "ancillary_estimates": build_ancillary_estimates(parsed, policy, warnings, cost_breakdown),
+        "cost_breakdown": cost_breakdown,  # API-06: structured food / transport / activity costs for BE-05
         "budget_activities": build_budget_activities(itinerary),  # Ready for BE-04 BudgetInput.activities
         "price_explanation": explanation,
         "warnings": warnings,
@@ -2799,8 +2933,8 @@ def _run_engine_steps(request_data, deadline_at, request_id, estimation_policy, 
                                        availability, estimation_policy, deadline, request_id, evidence)
     if isinstance(evidence, dict):
         evidence["ai_validated_output"] = {k: ai.get(k) for k in
-                                           ["status", "itinerary", "ancillary_estimates", "budget_activities",
-                                            "price_explanation", "error"]}
+                                           ["status", "itinerary", "ancillary_estimates", "cost_breakdown",
+                                            "budget_activities", "price_explanation", "error"]}
 
     warnings = travel["warnings"] + ai["warnings"]
     ancillary = ai.get("ancillary_estimates") or {}
