@@ -68,6 +68,16 @@ estimate_object fields are all required:
 - policy_id: reviewed policy identifier or null.
 Unknown means amount and policy_id are null. Estimates require a non-null matching policy_id and explanatory basis; if no policy is approved, both ancillary objects must be unknown. Activity estimates need meaningful descriptions and are always labeled estimates; uncertain amounts stay null.
 
+### API-06 (#36): structured food, transport and activity costs
+
+Additive success field `cost_breakdown` for BE-05; `itinerary`, `ancillary_estimates` and `budget_activities` keep their shapes. Example: [api06-cost-breakdown-example.json](../backend/tests/evidence/api06-cost-breakdown-example.json) (simulated AI output, QA-01 #30 reproduction).
+- Top level: `currency` "USD", `source` "ai_estimate", `provider_prices_included` false. Provider flight/hotel prices never appear here.
+- `food` / `local_transport` (same keys whether estimate or unknown): `category`, `kind`, `currency`, `source`, `policy_id`, `per` (person/group), `period` (day/trip), `unit_amount_usd`, `unit_range_usd` {low_usd, high_usd} or null, `covered_dates`, `covered_travelers`, `whole_trip_usd`, `whole_trip_range_usd`, `calculation`, `basis`, `reason`, `included_activity_refs`, `excluded_activity_refs`.
+- The AI returns unit amounts only. The adapter computes `whole_trip_usd = unit_amount_usd x covered days (period "day") x adults (per "person")` and writes the formula in `calculation`; `ancillary_estimates.<key>.amount_usd` equals `whole_trip_usd`. The earlier `{amount_usd, basis}` shape is still read as one whole-trip group amount.
+- Food covers itinerary dates (default: every date); meals in the itinerary are listed in `included_activity_refs`. Local transport covers dates with planned outings; dates whose only outings include their own transport (for example a Baghdad–Babylon day trip) are removed, and those activities are listed in `excluded_activity_refs`.
+- Unknown (`kind` unknown, amounts and `policy_id` null) with a `reason` when there is no approved policy, the policy does not cover the category, or the unit, scope, basis or covered dates are missing or outside the trip.
+- `activities[]`: `{activity_ref, label, cost_type, allocated_to, includes_transport, amount_usd, kind, source, basis}`. `cost_type` is meal (`allocated_to` food, public cost 0 so it is counted once), priced, free (explicit only), discretionary (optional purchases, distinct from an entry fee) or unknown. A 0 that the AI did not mark free becomes unknown with warning `ZERO_COST_UNCONFIRMED`, so a missing museum, tour or zoo admission never silently becomes zero.
+
 Success itinerary uses the same day/activity schema as the public response: exactly nights + 1 dates, contiguous order and justified empty travel days. AI may not manufacture provider offers, select different options, calculate authoritative budget totals or return a saved-trip ID.
 
 AI errors: timeout, rate_limited, unavailable, invalid_output. Ziyad parses and validates structured output; Adel independently validates before publishing. Map these to the public error envelope (504, 429, 503, 502 respectively). Do not auto-retry chargeable generation.
